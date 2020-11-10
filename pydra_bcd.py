@@ -2,10 +2,14 @@ import pydra
 import os
 from pathlib import Path
 from BIDSFilename import *
+import nest_asyncio
+import time
+
+nest_asyncio.apply()
+
 
 def run_bcd():
 	os.system("bash run_bcd.sh")	
-
 
 
 	
@@ -38,14 +42,23 @@ def run_bcd(input_vol):
 	with pydra.Submitter(plugin="cf") as sub:
 		sub(shelly)
 	print(shelly.result())
-p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples/")
+p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples_just2/")
 all_t1 = p.glob("*")
-input_vols = list(all_t1)
-task1 = run_bcd(input_vol="/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples/sub-012716_ses-15544_run-004_T1w.nii.gz")
-#task1 = run_bcd(input_vol=input_vols)
-#task1.split("input_vol")
+filename_objs = list(all_t1)
+input_vols = []
+for t1 in filename_objs:
+	input_vols.append(str(t1))
+one_input = "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples/sub-012716_ses-15544_run-004_T1w.nii.gz"
+print(input_vols)
+print(one_input)
+#task1 = run_bcd(input_vol=one_input)
+task1 = run_bcd(input_vol=input_vols)
+task1.split("input_vol")
+t0 = time.time()
 task1()
 print(task1.result())
+print(f'total time: {time.time() - t0}')
+
 # cmd = ["bash", "/localscratch/Users/cjohnson30/BRAINSPydra/run_bcd.sh"]
 
 # cmd = "BRAINSConstellationDetector"
