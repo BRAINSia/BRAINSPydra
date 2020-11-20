@@ -447,25 +447,17 @@ class BRAINSConstellationDetector:
                 },
             ),
         ),
-    ]
-    output_fields = [
-        (
-            "outputVolume",
-            attr.ib(
-                type=File,
-                metadata={
-                    "help_string": "ACPC-aligned output image with the same voxels as the input image, but updated origin, and direction cosign so that the AC point would fall at the physical location (0.0,0.0,0.0), and the mid-sagital plane is the plane where physical L/R coordinate is 0.0. No interpolation method is involved to create the 'outputVolume', and this output image is created using 'resample in place' filter.",
-                    #"mandatory: "True",
-                },
-            ),
-        ),
-        (
+
+	(
             "outputResampledVolume",
             attr.ib(
                 type=File,
                 metadata={
                     "help_string": "ACPC-aligned output image in a resampled uniform isotropic space.  Currently this is a 1mm, 256^3 image with identity direction cosign. Choose desired interpolation mode to generate the outputResampledVolume.",
-                    #"mandatory: "True",
+                    #"output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_ACPC.nii.gz",
+                    "argstr": "--outputResampledVolume"
+		    #"output_file_template": "xxx_BCD_ACPC.nii.gz",
+		    #"mandatory: "True",
                 },
             ),
         ),
@@ -475,7 +467,10 @@ class BRAINSConstellationDetector:
                 type=File,
                 metadata={
                     "help_string": "The filename for the original space to ACPC alignment to be written (in .h5 format).,             ",
-                    #"mandatory: "True",
+                    "argstr": "--outputTransform",
+		    #"output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_Original2ACPC_transform.h5"
+                    #"output_file_template": "xxx_BCD_Original2ACPC_transform.h5",
+		    #"mandatory: "True",
                 },
             ),
         ),
@@ -485,7 +480,10 @@ class BRAINSConstellationDetector:
                 type=File,
                 metadata={
                     "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the original image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
-                    #"mandatory: "True",
+                    "argstr": "--outputLandmarksInInputSpace",
+		    #"output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_Original.fcsv"
+                    #"output_file_template": "xxx_BCD_Original.fcsv",
+		    #"mandatory: "True",
                 },
             ),
         ),
@@ -495,6 +493,80 @@ class BRAINSConstellationDetector:
                 type=File,
                 metadata={
                     "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the output image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
+                    "argstr": "--outputLandmarksInACPCAlignedSpace",
+		    #"output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_ACPC_Landmarks.fcsv"
+                    #"output_file_template": "xxx_BCD_ACPC_Landmarks.fcsv",
+		    #"mandatory: "True",
+                },
+            ),
+        ),
+
+
+    ]
+
+
+
+    SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
+
+    output_fields = [
+ 	(
+            "outputResampledVolume",
+            attr.ib(
+                type=File,
+                metadata={
+                    "help_string": "ACPC-aligned output image in a resampled uniform isotropic space.  Currently this is a 1mm, 256^3 image with identity direction cosign. Choose desired interpolation mode to generate the outputResampledVolume.",
+                    "output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_ACPC.nii.gz",
+                    "argstr": "--outputResampledVolume"
+		    #"output_file_template": "xxx_BCD_ACPC.nii.gz",
+		    #"mandatory: "True",
+                },
+            ),
+        ),
+        (
+            "outputTransform",
+            attr.ib(
+                type=File,
+                metadata={
+                    "help_string": "The filename for the original space to ACPC alignment to be written (in .h5 format).,             ",
+                    "argstr": "--outputTransform",
+		    "output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_Original2ACPC_transform.h5"
+                    #"output_file_template": "xxx_BCD_Original2ACPC_transform.h5",
+		    #"mandatory: "True",
+                },
+            ),
+        ),
+        (
+            "outputLandmarksInInputSpace",
+            attr.ib(
+                type=File,
+                metadata={
+                    "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the original image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
+                    "argstr": "--outputLandmarksInInputSpace",
+		    "output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_Original.fcsv"
+                    #"output_file_template": "xxx_BCD_Original.fcsv",
+		    #"mandatory: "True",
+                },
+            ),
+        ),
+        (
+            "outputLandmarksInACPCAlignedSpace",
+            attr.ib(
+                type=File,
+                metadata={
+                    "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the output image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
+                    "argstr": "--outputLandmarksInACPCAlignedSpace",
+		    "output_file_template": "{SESS_OUTPUT_DIR}/{inputVolume}_BCD_ACPC_Landmarks.fcsv"
+                    #"output_file_template": "xxx_BCD_ACPC_Landmarks.fcsv",
+		    #"mandatory: "True",
+                },
+            ),
+        ),
+	( 
+            "outputVolume",
+            attr.ib(
+                type=File,
+                metadata={
+                    "help_string": "ACPC-aligned output image with the same voxels as the input image, but updated origin, and direction cosign so that the AC point would fall at the physical location (0.0,0.0,0.0), and the mid-sagital plane is the plane where physical L/R coordinate is 0.0. No interpolation method is involved to create the 'outputVolume', and this output image is created using 'resample in place' filter.",
                     #"mandatory: "True",
                 },
             ),
@@ -553,23 +625,19 @@ class BRAINSConstellationDetector:
 
     input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
     output_spec = SpecInfo(name="Output", fields=output_fields, bases=(ShellSpec,))
-
+    
     task = ShellCommandTask(
     name="BRAINSConstellationDetector",
     executable="BRAINSConstellationDetector",
     input_spec=input_spec,
     #output_spec=output_spec,
     ) 
+##### END BCD input_spec and output_spec definition ######
 
 nest_asyncio.apply()
 
 bcd = BRAINSConstellationDetector()
-
-
-
 task = bcd.task
-
-
 
 p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples_just2/")
 all_t1 = p.glob("*")
@@ -577,17 +645,11 @@ filename_objs = list(all_t1)
 input_vols = []
 for t1 in filename_objs:
     input_vols.append(str(t1))
-one_input = "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples/sub-012716_ses-15544_run-004_T1w.nii.gz"
-
-input_vol = one_input 
-
+#input_vol = input_vols[1]
 
 SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
-#INPUT_VOL = input_vol
-#filename_dict = BIDSFilename(input_vol).attribute_dict
-#file_id = f'sub-{filename_dict["sub"]}_ses-{filename_dict["ses"]}_run-{filename_dict["run"]}'
-#OUT_FILE_BASE = file_id
-#
+
+
 task.inputs.inputTemplateModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
 task.inputs.LLSModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"
 task.inputs.acLowerBound = 80.000000
@@ -596,23 +658,17 @@ task.inputs.atlasLandmarks = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACH
 task.inputs.houghEyeDetectorMode = 1
 task.inputs.interpolationMode = "Linear"
 task.inputs.inputVolume = input_vols 
-#filename_dict = BIDSFilename(task.inputs.inputVolume).attribute_dict
-#OUT_FILE_BASE = f'sub-{filename_dict["sub"]}_ses-{filename_dict["ses"]}_run-{filename_dict["run"]}'
-OUT_FILE_BASE = f'{uuid.uuid1()}'
-task.inputs.writeBranded2DImage = f"{SESS_OUTPUT_DIR}/{OUT_FILE_BASE}_BCD_Branded2DQCimage.png"
-task.inputs.outputLandmarksInACPCAlignedSpace = f"{SESS_OUTPUT_DIR}/{OUT_FILE_BASE}_BCD_ACPC_Landmarks.fcsv"
-task.inputs.outputLandmarksInInputSpace = f"{SESS_OUTPUT_DIR}/{OUT_FILE_BASE}_BCD_Original.fcsv"
-task.inputs.outputResampledVolume = f"{SESS_OUTPUT_DIR}/{OUT_FILE_BASE}_BCD_ACPC.nii.gz"
-task.inputs.outputTransform = f"{SESS_OUTPUT_DIR}/{OUT_FILE_BASE}_BCD_Original2ACPC_transform.h5"
+task.inputs.outputLandmarksInInputSpace = [f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_Original.fcsv" for x in input_vols]
+task.inputs.outputResampledVolume = [f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_ACPC.nii.gz" for x in input_vols]
+task.inputs.outputTransform = [f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_Original2ACPC_transform.h5" for x in input_vols]
+task.inputs.outputLandmarksInACPCAlignedSpace = [f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_ACPC_Landmarks.fcsv" for x in input_vols]
 
 print(f"running\n{task.cmdline}")
 
-task.split("inputVolume")
-print(task.state)
+task.split(("inputVolume", "outputLandmarksInACPCAlignedSpace", "outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform"))
 t0 = time.time()
 with pydra.Submitter(plugin="cf") as sub:
 	sub(task)
 print(task.result())
 print(f'total time: {time.time() - t0}')
 
-   
