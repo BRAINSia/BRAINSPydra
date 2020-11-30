@@ -11,9 +11,9 @@ from nipype.interfaces.base import (
     OutputMultiPath,
     traits,
 )
-import pydra
 from pydra import ShellCommandTask
 from pydra.engine.specs import SpecInfo, ShellSpec
+import pydra
 
 
 class BRAINSResample:
@@ -32,14 +32,14 @@ class BRAINSResample:
         (
             "inputVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={"argstr": "--inputVolume ", "help_string": "Image To Warp"},
             ),
         ),
         (
             "referenceVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--referenceVolume ",
                     "help_string": "Reference image used only to define the output space. If not specified, the warping is done in the same space as the image to warp.",
@@ -49,7 +49,7 @@ class BRAINSResample:
         (
             "outputVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputVolume ",
                     "help_string": "Resulting deformed image",
@@ -69,7 +69,7 @@ class BRAINSResample:
         (
             "deformationVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--deformationVolume ",
                     "help_string": "Displacement Field to be used to warp the image (ITKv3 or earlier)",
@@ -79,7 +79,7 @@ class BRAINSResample:
         (
             "warpTransform",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--warpTransform ",
                     "help_string": "Filename for the BRAINSFit transform (ITKv3 or earlier) or composite transform file (ITKv4)",
@@ -141,42 +141,20 @@ class BRAINSResample:
     output_fields = [
         (
             "outputVolume",
-            attr.ib(type=pydra.specs.File, metadata={"help_string": "Resulting deformed image", "output_file_template": "{inputVolume}_resampled"}),
-        ),
-    ]
-#    output_fields=[
-#    (
-#        "out1",
-#        attr.ib(
-#            type=pydra.specs.File,
-#            metadata={
-#                "output_file_template": "{inputVolume}_resampled",
-#                "help_string": "output file",
-#            },
-#        ),
-#    )]
-    #output_fields = [("resampled_file", pydra.specs.File)]
-    input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
-    output_spec = SpecInfo(name="Output", fields=output_fields, bases=(pydra.specs.ShellOutSpec,))
-
-    my_output_spec = pydra.specs.SpecInfo(
-        name="Output",
-        fields=[
-        (
-            "out1",
             attr.ib(
                 type=pydra.specs.File,
                 metadata={
-                    "output_file_template": "{inputVolume}_resampled",
-                    "help_string": "output file",
+                    "help_string": "Resulting deformed image",
+                    "output_file_template": "{inputVolume}_out",
                 },
             ),
-        )
-    ],
+        ),
+    ]
 
-	bases=(pydra.specs.ShellOutSpec,),
+    input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
+    output_spec = SpecInfo(
+        name="Output", fields=output_fields, bases=(pydra.specs.ShellOutSpec,)
     )
-
 
     task = ShellCommandTask(
         name="BRAINSResample",

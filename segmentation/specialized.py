@@ -13,6 +13,7 @@ from nipype.interfaces.base import (
 )
 from pydra import ShellCommandTask
 from pydra.engine.specs import SpecInfo, ShellSpec
+import pydra
 
 
 class BRAINSConstellationDetector:
@@ -41,7 +42,7 @@ class BRAINSConstellationDetector:
         (
             "inputTemplateModel",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--inputTemplateModel ",
                     "help_string": "User-specified template model.,             ",
@@ -51,7 +52,7 @@ class BRAINSConstellationDetector:
         (
             "LLSModel",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--LLSModel ",
                     "help_string": "Linear least squares model filename in HD5 format",
@@ -61,7 +62,7 @@ class BRAINSConstellationDetector:
         (
             "inputVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--inputVolume ",
                     "help_string": "Input image in which to find ACPC points",
@@ -71,7 +72,7 @@ class BRAINSConstellationDetector:
         (
             "outputVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputVolume ",
                     "help_string": "ACPC-aligned output image with the same voxels as the input image, but updated origin, and direction cosign so that the AC point would fall at the physical location (0.0,0.0,0.0), and the mid-sagital plane is the plane where physical L/R coordinate is 0.0. No interpolation method is involved to create the 'outputVolume', and this output image is created using 'resample in place' filter.",
@@ -81,7 +82,7 @@ class BRAINSConstellationDetector:
         (
             "outputResampledVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputResampledVolume ",
                     "help_string": "ACPC-aligned output image in a resampled uniform isotropic space.  Currently this is a 1mm, 256^3 image with identity direction cosign. Choose desired interpolation mode to generate the outputResampledVolume.",
@@ -91,7 +92,7 @@ class BRAINSConstellationDetector:
         (
             "outputTransform",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputTransform ",
                     "help_string": "The filename for the original space to ACPC alignment to be written (in .h5 format).,             ",
@@ -101,7 +102,7 @@ class BRAINSConstellationDetector:
         (
             "outputLandmarksInInputSpace",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputLandmarksInInputSpace ",
                     "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the original image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
@@ -111,7 +112,7 @@ class BRAINSConstellationDetector:
         (
             "outputLandmarksInACPCAlignedSpace",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputLandmarksInACPCAlignedSpace ",
                     "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the output image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
@@ -121,7 +122,7 @@ class BRAINSConstellationDetector:
         (
             "outputMRML",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputMRML ",
                     "help_string": ",               The filename for the new subject-specific scene definition file in the same format produced by Slicer3 (in .mrml format). Only the components that were specified by the user on command line would be generated. Compatible components include inputVolume, outputVolume, outputLandmarksInInputSpace, outputLandmarksInACPCAlignedSpace, and outputTransform.,             ",
@@ -131,7 +132,7 @@ class BRAINSConstellationDetector:
         (
             "outputVerificationScript",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputVerificationScript ",
                     "help_string": ",               The filename for the Slicer3 script that verifies the aligned landmarks against the aligned image file.  This will happen only in conjunction with saveOutputLandmarks and an outputVolume.,             ",
@@ -181,7 +182,7 @@ class BRAINSConstellationDetector:
         (
             "outputUntransformedClippedVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--outputUntransformedClippedVolume ",
                     "help_string": "Output image in which to store neck-clipped input image, with the use of --acLowerBound and maybe --cutOutHeadInUntransformedVolume.",
@@ -286,7 +287,7 @@ class BRAINSConstellationDetector:
         (
             "inputLandmarksEMSP",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--inputLandmarksEMSP ",
                     "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (in .fcsv) with the landmarks in the estimated MSP aligned space to be loaded. The detector will only process landmarks not enlisted on the file.,             ",
@@ -366,7 +367,7 @@ class BRAINSConstellationDetector:
         (
             "writeBranded2DImage",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--writeBranded2DImage ",
                     "help_string": ",               The filename for the 2D .png branded midline debugging image.  This will happen only in conjunction with requesting an outputVolume.,             ",
@@ -406,7 +407,7 @@ class BRAINSConstellationDetector:
         (
             "atlasVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--atlasVolume ",
                     "help_string": "Atlas volume image to be used for BRAINSFit registration to redefine the final ACPC-aligned transform by registering original input image to the Atlas image. The initial registration transform is created by passing BCD_ACPC_Landmarks and atlasLandmarks to BRAINSLandmarkInitializer. This flag should be used with atlasLandmarks and atlasLandmarkWeights flags. Note that using this flag causes that AC point in the final acpcLandmark file not be exactly placed at 0,0,0 coordinates.,             ",
@@ -416,7 +417,7 @@ class BRAINSConstellationDetector:
         (
             "atlasLandmarks",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--atlasLandmarks ",
                     "help_string": "Atlas landmarks to be used for BRAINSFit registration initialization,             ",
@@ -426,7 +427,7 @@ class BRAINSConstellationDetector:
         (
             "atlasLandmarkWeights",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
                     "argstr": "--atlasLandmarkWeights ",
                     "help_string": "Weights associated with atlas landmarks to be used for BRAINSFit registration initialization,             ",
@@ -438,81 +439,90 @@ class BRAINSConstellationDetector:
         (
             "outputVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": "ACPC-aligned output image with the same voxels as the input image, but updated origin, and direction cosign so that the AC point would fall at the physical location (0.0,0.0,0.0), and the mid-sagital plane is the plane where physical L/R coordinate is 0.0. No interpolation method is involved to create the 'outputVolume', and this output image is created using 'resample in place' filter."
+                    "help_string": "ACPC-aligned output image with the same voxels as the input image, but updated origin, and direction cosign so that the AC point would fall at the physical location (0.0,0.0,0.0), and the mid-sagital plane is the plane where physical L/R coordinate is 0.0. No interpolation method is involved to create the 'outputVolume', and this output image is created using 'resample in place' filter.",
+                    "output_file_template": "{inputVolume}_out",
                 },
             ),
         ),
         (
             "outputResampledVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": "ACPC-aligned output image in a resampled uniform isotropic space.  Currently this is a 1mm, 256^3 image with identity direction cosign. Choose desired interpolation mode to generate the outputResampledVolume."
+                    "help_string": "ACPC-aligned output image in a resampled uniform isotropic space.  Currently this is a 1mm, 256^3 image with identity direction cosign. Choose desired interpolation mode to generate the outputResampledVolume.",
+                    "output_file_template": "{inputResampledVolume}_out",
                 },
             ),
         ),
         (
             "outputTransform",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": "The filename for the original space to ACPC alignment to be written (in .h5 format).,             "
+                    "help_string": "The filename for the original space to ACPC alignment to be written (in .h5 format).,             ",
+                    "output_file_template": "{inputTransform}_out",
                 },
             ),
         ),
         (
             "outputLandmarksInInputSpace",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the original image space (the detected RP, AC, PC, and VN4) in it to be written.,             "
+                    "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the original image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
+                    "output_file_template": "{inputLandmarksInInputSpace}_out",
                 },
             ),
         ),
         (
             "outputLandmarksInACPCAlignedSpace",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the output image space (the detected RP, AC, PC, and VN4) in it to be written.,             "
+                    "help_string": ",               The filename for the new subject-specific landmark definition file in the same format produced by Slicer3 (.fcsv) with the landmarks in the output image space (the detected RP, AC, PC, and VN4) in it to be written.,             ",
+                    "output_file_template": "{inputLandmarksInACPCAlignedSpace}_out",
                 },
             ),
         ),
         (
             "outputMRML",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": ",               The filename for the new subject-specific scene definition file in the same format produced by Slicer3 (in .mrml format). Only the components that were specified by the user on command line would be generated. Compatible components include inputVolume, outputVolume, outputLandmarksInInputSpace, outputLandmarksInACPCAlignedSpace, and outputTransform.,             "
+                    "help_string": ",               The filename for the new subject-specific scene definition file in the same format produced by Slicer3 (in .mrml format). Only the components that were specified by the user on command line would be generated. Compatible components include inputVolume, outputVolume, outputLandmarksInInputSpace, outputLandmarksInACPCAlignedSpace, and outputTransform.,             ",
+                    "output_file_template": "{inputMRML}_out",
                 },
             ),
         ),
         (
             "outputVerificationScript",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": ",               The filename for the Slicer3 script that verifies the aligned landmarks against the aligned image file.  This will happen only in conjunction with saveOutputLandmarks and an outputVolume.,             "
+                    "help_string": ",               The filename for the Slicer3 script that verifies the aligned landmarks against the aligned image file.  This will happen only in conjunction with saveOutputLandmarks and an outputVolume.,             ",
+                    "output_file_template": "{inputVerificationScript}_out",
                 },
             ),
         ),
         (
             "outputUntransformedClippedVolume",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": "Output image in which to store neck-clipped input image, with the use of --acLowerBound and maybe --cutOutHeadInUntransformedVolume."
+                    "help_string": "Output image in which to store neck-clipped input image, with the use of --acLowerBound and maybe --cutOutHeadInUntransformedVolume.",
+                    "output_file_template": "{inputUntransformedClippedVolume}_out",
                 },
             ),
         ),
         (
             "writeBranded2DImage",
             attr.ib(
-                type=File,
+                type=pydra.specs.File,
                 metadata={
-                    "help_string": ",               The filename for the 2D .png branded midline debugging image.  This will happen only in conjunction with requesting an outputVolume.,             "
+                    "help_string": ",               The filename for the 2D .png branded midline debugging image.  This will happen only in conjunction with requesting an outputVolume.,             ",
+                    "output_file_template": "{writeBranded2DImage}_out",
                 },
             ),
         ),
@@ -521,14 +531,17 @@ class BRAINSConstellationDetector:
             attr.ib(
                 type=Directory,
                 metadata={
-                    "help_string": ",               The directory for the debuging images to be written.,             "
+                    "help_string": ",               The directory for the debuging images to be written.,             ",
+                    "output_file_template": "{resultsDir}_out",
                 },
             ),
         ),
     ]
 
     input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
-    output_spec = SpecInfo(name="Output", fields=output_fields, bases=(ShellSpec,))
+    output_spec = SpecInfo(
+        name="Output", fields=output_fields, bases=(pydra.specs.ShellOutSpec,)
+    )
 
     task = ShellCommandTask(
         name="BRAINSConstellationDetector",

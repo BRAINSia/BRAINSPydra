@@ -27,7 +27,7 @@ resample = BRAINSResample()
 task = resample.task
 
 
-#BRAINSResample  --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz --interpolationMode Linear --outputVolume template_headregion.nii.gz --pixelType binary --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
+# BRAINSResample  --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz --interpolationMode Linear --outputVolume template_headregion.nii.gz --pixelType binary --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
 
 p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/")
@@ -40,10 +40,13 @@ for t1 in filename_objs:
 
 SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
 
-#task.inputs.inputVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz"
+# task.inputs.inputVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz"
 task.inputs.inputVolume = input_vols
 task.inputs.interpolationMode = "Linear"
-task.inputs.outputVolume = [f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_resampled.nii.gz" for x in input_vols]
+task.inputs.outputVolume = [
+    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').with_suffix('').name}_resampled.nii.gz"
+    for x in input_vols
+]
 task.inputs.pixelType = "binary"
 task.inputs.referenceVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz"
 task.inputs.warpTransform = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5"
