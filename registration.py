@@ -11,6 +11,7 @@ from nipype.interfaces.base import (
     OutputMultiPath,
     traits,
 )
+import pydra
 from pydra import ShellCommandTask
 from pydra.engine.specs import SpecInfo, ShellSpec
 
@@ -140,16 +141,46 @@ class BRAINSResample:
     output_fields = [
         (
             "outputVolume",
-            attr.ib(type=File, metadata={"help_string": "Resulting deformed image"}),
+            attr.ib(type=pydra.specs.File, metadata={"help_string": "Resulting deformed image", "output_file_template": "{inputVolume}_resampled"}),
         ),
     ]
-
+#    output_fields=[
+#    (
+#        "out1",
+#        attr.ib(
+#            type=pydra.specs.File,
+#            metadata={
+#                "output_file_template": "{inputVolume}_resampled",
+#                "help_string": "output file",
+#            },
+#        ),
+#    )]
+    #output_fields = [("resampled_file", pydra.specs.File)]
     input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
-    output_spec = SpecInfo(name="Output", fields=output_fields, bases=(ShellSpec,))
+    output_spec = SpecInfo(name="Output", fields=output_fields, bases=(pydra.specs.ShellOutSpec,))
+
+    my_output_spec = pydra.specs.SpecInfo(
+        name="Output",
+        fields=[
+        (
+            "out1",
+            attr.ib(
+                type=pydra.specs.File,
+                metadata={
+                    "output_file_template": "{inputVolume}_resampled",
+                    "help_string": "output file",
+                },
+            ),
+        )
+    ],
+
+	bases=(pydra.specs.ShellOutSpec,),
+    )
+
 
     task = ShellCommandTask(
         name="BRAINSResample",
         executable="BRAINSResample",
         input_spec=input_spec,
-        #output_spec=output_spec,
+        output_spec=output_spec,
     )
