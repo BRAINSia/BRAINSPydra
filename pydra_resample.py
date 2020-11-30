@@ -30,7 +30,7 @@ task = resample.task
 #BRAINSResample  --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz --interpolationMode Linear --outputVolume template_headregion.nii.gz --pixelType binary --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
 
-p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples100/")
+p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/")
 all_t1 = p.glob("*")
 filename_objs = list(all_t1)
 input_vols = []
@@ -40,49 +40,16 @@ for t1 in filename_objs:
 
 SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
 
-task.inputs.inputVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz"
+#task.inputs.inputVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz"
+task.inputs.inputVolume = input_vols
 task.inputs.interpolationMode = "Linear"
-task.inputs.outputVolume = f"{SESS_OUTPUT_DIR}/template_headregion.nii.gz"
+task.inputs.outputVolume = [f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_resampled.nii.gz" for x in input_vols]
 task.inputs.pixelType = "binary"
 task.inputs.referenceVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz"
 task.inputs.warpTransform = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5"
 
-#task.inputs.inputTemplateModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
-#task.inputs.LLSModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"
-#task.inputs.acLowerBound = 80.000000
-#task.inputs.atlasLandmarkWeights = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts"
-#task.inputs.atlasLandmarks = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-#task.inputs.houghEyeDetectorMode = 1
-#task.inputs.interpolationMode = "Linear"
-#task.inputs.inputVolume = input_vols
-#task.inputs.outputLandmarksInInputSpace = [
-#    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_Original.fcsv"
-#    for x in input_vols
-#]
-#task.inputs.outputResampledVolume = [
-#    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_ACPC.nii.gz"
-#    for x in input_vols
-#]
-#task.inputs.outputTransform = [
-#    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_Original2ACPC_transform.h5"
-#    for x in input_vols
-#]
-#task.inputs.outputLandmarksInACPCAlignedSpace = [
-#    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
-#    for x in input_vols
-#]
-#
-#print(f"running\n{task.cmdline}")
-#
-#task.split(
-#    (
-#        "inputVolume",
-#        "outputLandmarksInACPCAlignedSpace",
-#        "outputLandmarksInInputSpace",
-#        "outputResampledVolume",
-#        "outputTransform",
-#    )
-#)
+task.split(("inputVolume", "outputVolume"))
+
 t0 = time.time()
 with pydra.Submitter(plugin="cf") as sub:
     sub(task)
