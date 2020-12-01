@@ -23,24 +23,20 @@ from registration import BRAINSResample
 
 nest_asyncio.apply()
 
+# Define the SEM generated pydra tasks 
 resample = BRAINSResample()
 task = resample.task
 
-
-# BRAINSResample  --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz --interpolationMode Linear --outputVolume template_headregion.nii.gz --pixelType binary --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
-
-
-p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/")
+# Create a list of all the files to be resampled
+p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/")
 all_t1 = p.glob("*")
 filename_objs = list(all_t1)
 input_vols = []
 for t1 in filename_objs:
     input_vols.append(str(t1))
-# input_vol = input_vols[1]
 
+# Define the inputs in the input_spec of the pydra task
 SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
-
-# task.inputs.inputVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz"
 task.inputs.inputVolume = input_vols
 task.inputs.interpolationMode = "Linear"
 task.inputs.outputVolume = [
@@ -51,8 +47,8 @@ task.inputs.pixelType = "binary"
 task.inputs.referenceVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz"
 task.inputs.warpTransform = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5"
 
+# Use a scalar splitter to create the outputVolume from a given inputVolume
 task.split(("inputVolume", "outputVolume"))
-
 t0 = time.time()
 with pydra.Submitter(plugin="cf") as sub:
     sub(task)
