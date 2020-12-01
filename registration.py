@@ -145,7 +145,7 @@ class BRAINSResample:
                 type=pydra.specs.File,
                 metadata={
                     "help_string": "Resulting deformed image",
-                    "output_file_template": "{inputVolume}_out",
+                    "output_file_template": "{inputVolume}_BRAINSResample",
                 },
             ),
         ),
