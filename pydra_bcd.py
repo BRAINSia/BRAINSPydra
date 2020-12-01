@@ -26,7 +26,7 @@ nest_asyncio.apply()
 bcd = BRAINSConstellationDetector()
 task = bcd.task
 
-p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples100/")
+p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/")
 all_t1 = p.glob("*")
 filename_objs = list(all_t1)
 input_vols = []

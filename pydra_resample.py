@@ -23,7 +23,7 @@ from registration import BRAINSResample
 
 nest_asyncio.apply()
 
-# Define the SEM generated pydra tasks 
+# Define the SEM generated pydra tasks
 resample = BRAINSResample()
 task = resample.task
 

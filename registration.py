@@ -32,14 +32,14 @@ class BRAINSResample:
         (
             "inputVolume",
             attr.ib(
-                type=pydra.specs.File,
+                type=File,
                 metadata={"argstr": "--inputVolume ", "help_string": "Image To Warp"},
             ),
         ),
         (
             "referenceVolume",
             attr.ib(
-                type=pydra.specs.File,
+                type=File,
                 metadata={
                     "argstr": "--referenceVolume ",
                     "help_string": "Reference image used only to define the output space. If not specified, the warping is done in the same space as the image to warp.",
@@ -49,7 +49,7 @@ class BRAINSResample:
         (
             "outputVolume",
             attr.ib(
-                type=pydra.specs.File,
+                type=File,
                 metadata={
                     "argstr": "--outputVolume ",
                     "help_string": "Resulting deformed image",
@@ -69,7 +69,7 @@ class BRAINSResample:
         (
             "deformationVolume",
             attr.ib(
-                type=pydra.specs.File,
+                type=File,
                 metadata={
                     "argstr": "--deformationVolume ",
                     "help_string": "Displacement Field to be used to warp the image (ITKv3 or earlier)",
@@ -79,7 +79,7 @@ class BRAINSResample:
         (
             "warpTransform",
             attr.ib(
-                type=pydra.specs.File,
+                type=File,
                 metadata={
                     "argstr": "--warpTransform ",
                     "help_string": "Filename for the BRAINSFit transform (ITKv3 or earlier) or composite transform file (ITKv4)",
@@ -145,7 +145,7 @@ class BRAINSResample:
                 type=pydra.specs.File,
                 metadata={
                     "help_string": "Resulting deformed image",
-                    "output_file_template": "{inputVolume}_BRAINSResample",
+                    "output_file_template": "{outputVolume}",
                 },
             ),
         ),
