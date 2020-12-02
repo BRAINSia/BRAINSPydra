@@ -526,16 +526,16 @@ class BRAINSConstellationDetector:
                 },
             ),
         ),
-        (
-            "resultsDir",
-            attr.ib(
-                type=pydra.specs.Directory,
-                metadata={
-                    "help_string": ",               The directory for the debuging images to be written.,             ",
-                    "output_file_template": "{resultsDir}",
-                },
-            ),
-        ),
+#        (
+#            "resultsDir",
+#            attr.ib(
+#                type=pydra.specs.Directory,
+#                metadata={
+#                    "help_string": ",               The directory for the debuging images to be written.,             ",
+#                    "output_file_template": "{resultsDir}",
+#                },
+#            ),
+#        ),
     ]
 
     input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))

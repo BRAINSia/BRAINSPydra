@@ -64,6 +64,12 @@ task.inputs.outputLandmarksInACPCAlignedSpace = [
 
 print(f"running\n{task.cmdline}")
 
+print(len(task.inputs.inputVolume))
+print(len(task.inputs.outputLandmarksInInputSpace))
+print(len(task.inputs.outputResampledVolume))
+print(len(task.inputs.outputTransform))
+print(len(task.inputs.outputLandmarksInACPCAlignedSpace))
+
 task.split(
     (
         "inputVolume",
