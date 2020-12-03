@@ -1,2 +1,5 @@
 *__pycache__*
+*/__pycache__/*
+segmentation/__pycache__/specialized.cpython-38.pyc
+segmentation/__pycache__/*
 execution_ordering.list
