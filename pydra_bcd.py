@@ -46,22 +46,24 @@ task.inputs.atlasLandmarks = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACH
 task.inputs.houghEyeDetectorMode = 1
 task.inputs.interpolationMode = "Linear"
 task.inputs.inputVolume = input_vols
+task.inputs.resultsDir = f"{SESS_OUTPUT_DIR}"
 task.inputs.outputLandmarksInInputSpace = [
-    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_Original.fcsv"
+    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
     for x in input_vols
 ]
 task.inputs.outputResampledVolume = [
-    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_ACPC.nii.gz"
+    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
     for x in input_vols
 ]
 task.inputs.outputTransform = [
-    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_Original2ACPC_transform.h5"
+    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original2ACPC_transform.h5"
     for x in input_vols
 ]
 task.inputs.outputLandmarksInACPCAlignedSpace = [
-    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
+    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
     for x in input_vols
 ]
+task.inputs.resultsDir = f"{SESS_OUTPUT_DIR}/test"
 
 print(f"running\n{task.cmdline}")
 
