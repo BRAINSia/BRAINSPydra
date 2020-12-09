@@ -1,3 +1,5 @@
 __pycache__*
 segmentation/__pycache__/*
 execution_ordering.list
+output_dir/*
+__init__.py
