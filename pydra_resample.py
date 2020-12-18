@@ -44,8 +44,14 @@ task.inputs.outputVolume = [
     for x in input_vols
 ]
 task.inputs.pixelType = "binary"
-task.inputs.referenceVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz"
-task.inputs.warpTransform = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5"
+#task.inputs.referenceVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz"
+#task.inputs.warpTransform = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5"
+
+# Original locations for referenceVolume and warpTransform:
+#/Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/derivatives/20200915_PREDICTHD_base_Results/sub-343219/ses-23544/TissueClassify/t1_average_BRAINSABC.nii.gz
+#/Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/derivatives/20200915_PREDICTHD_base_Results/sub-343219/ses-23544/TissueClassify/atlas_to_subject.h5
+task.inputs.referenceVolume = "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz"
+task.inputs.warpTransform = "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
 
 # Use a scalar splitter to create the outputVolume from a given inputVolume
 task.split(("inputVolume", "outputVolume"))

@@ -47,23 +47,39 @@ task.inputs.houghEyeDetectorMode = 1
 task.inputs.interpolationMode = "Linear"
 task.inputs.inputVolume = input_vols
 task.inputs.resultsDir = f"{SESS_OUTPUT_DIR}"
+#task.inputs.outputLandmarksInInputSpace = [
+#    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
+#    for x in input_vols
+#]
+#task.inputs.outputResampledVolume = [
+#    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
+#    for x in input_vols
+#]
+#task.inputs.outputTransform = [
+#    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original2ACPC_transform.h5"
+#    for x in input_vols
+#]
+#task.inputs.outputLandmarksInACPCAlignedSpace = [
+#    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
+#    for x in input_vols
+#]
+#task.inputs.resultsDir = f"{SESS_OUTPUT_DIR}/test"
 task.inputs.outputLandmarksInInputSpace = [
-    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
+    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
     for x in input_vols
 ]
 task.inputs.outputResampledVolume = [
-    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
+    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
     for x in input_vols
 ]
 task.inputs.outputTransform = [
-    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original2ACPC_transform.h5"
+    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original2ACPC_transform.h5"
     for x in input_vols
 ]
 task.inputs.outputLandmarksInACPCAlignedSpace = [
-    f"{task.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
+    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
     for x in input_vols
 ]
-task.inputs.resultsDir = f"{SESS_OUTPUT_DIR}/test"
 
 print(f"running\n{task.cmdline}")
 
