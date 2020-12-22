@@ -21,38 +21,40 @@ from pydra.engine.specs import SpecInfo, ShellSpec
 from registration import BRAINSResample
 
 
+def fill_BRAINSResample(inputVolsDir="/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/",
+                        inputVolsGlob="*",
+                        outputDir="/localscratch/Users/cjohnson30/output_dir",
+                        interpolationMode="Linear",
+                        referenceVolume="/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz",
+                        warpTransform="/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"):
+    # Define the SEM generated pydra tasks
+    resample = BRAINSResample()
+    task = resample.task
+    
+    # Create a list of all the files to be resampled
+    p = Path(inputVolsDir)
+    all_t1 = p.glob(inputVolsGlob)
+    filename_objs = list(all_t1)
+    input_vols = []
+    for t1 in filename_objs:
+        input_vols.append(str(t1))
+    
+    # Define the inputs in the input_spec of the pydra task
+    task.inputs.inputVolume = input_vols
+    task.inputs.interpolationMode = "Linear"
+    task.inputs.outputVolume = [
+        f"{outputDir}/{Path(x).with_suffix('').with_suffix('').name}_resampled.nii.gz"
+        for x in input_vols
+    ]
+    task.inputs.pixelType = "binary"
+    
+    task.inputs.referenceVolume = referenceVolume
+    task.inputs.warpTransform = warpTransform
+    return task
+
+task = fill_BRAINSResample()
+
 nest_asyncio.apply()
-
-# Define the SEM generated pydra tasks
-resample = BRAINSResample()
-task = resample.task
-
-# Create a list of all the files to be resampled
-p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/")
-all_t1 = p.glob("*")
-filename_objs = list(all_t1)
-input_vols = []
-for t1 in filename_objs:
-    input_vols.append(str(t1))
-
-# Define the inputs in the input_spec of the pydra task
-SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
-task.inputs.inputVolume = input_vols
-task.inputs.interpolationMode = "Linear"
-task.inputs.outputVolume = [
-    f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').with_suffix('').name}_resampled.nii.gz"
-    for x in input_vols
-]
-task.inputs.pixelType = "binary"
-#task.inputs.referenceVolume = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz"
-#task.inputs.warpTransform = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5"
-
-# Original locations for referenceVolume and warpTransform:
-#/Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/derivatives/20200915_PREDICTHD_base_Results/sub-343219/ses-23544/TissueClassify/t1_average_BRAINSABC.nii.gz
-#/Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/derivatives/20200915_PREDICTHD_base_Results/sub-343219/ses-23544/TissueClassify/atlas_to_subject.h5
-task.inputs.referenceVolume = "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz"
-task.inputs.warpTransform = "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
-
 # Use a scalar splitter to create the outputVolume from a given inputVolume
 task.split(("inputVolume", "outputVolume"))
 t0 = time.time()
