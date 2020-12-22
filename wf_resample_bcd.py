@@ -130,22 +130,14 @@ wf.inputs.cmd2 = "BRAINSConstellationDetector"
 wf.add(task_resample)
 task_bcd.inputVolume = wf.BRAINSResample.lzout.outputVolume
 wf.add(task_bcd)
-#wf.add(
-#    ShellCommandTask(
-#        name="shelly2",
-#        input_spec=my_input_spec2,
-#        executable=wf.lzin.cmd2,
-#        orig_file=wf.shelly1.lzout.outputVolume,
-#    )
-#)
 
 wf.set_output(
     [
         ("outVol", wf.BRAINSResample.lzout.outputVolume),
-        ("outBCD", wf.BRAINSConstellationDetector.lzout.outputTransform),
-#        ("out1", wf.shelly1.lzout.stdout),
-#        ("cp_file", wf.shelly2.lzout.out_file),
-#        ("out2", wf.shelly2.lzout.stdout),
+        ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+        ("outputLandmarksInInputSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+        ("outputResampledVolume", wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
+        ("outputTransform", wf.BRAINSConstellationDetector.lzout.outputTransform),
     ]
 )
 
