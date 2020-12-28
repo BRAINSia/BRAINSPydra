@@ -2,7 +2,7 @@ from pathlib import Path
 from registration import BRAINSResample
 
 
-def resample_cmd(input_vol_path="/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/",
+def fill_resample_task(input_vol_path="/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/",
                  input_vol_glob="*",
                  sess_output_dir="/localscratch/Users/cjohnson30/output_dir",
                  interpolationMode="Linear",
