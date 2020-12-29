@@ -11,19 +11,38 @@ from nipype.interfaces.base import (
 from pydra import ShellCommandTask
 from pydra.engine.specs import SpecInfo, ShellSpec
 
-from resample_cmd import fill_resample_task
+from registration import BRAINSResample
+from segmentation.specialized import BRAINSConstellationDetector
+
+#from resample_cmd import fill_resample_task
 from bcd_cmd import fill_bcd_task
 
 if __name__ == '__main__':
-    task_resample = fill_resample_task()
+    subject1_json = {"in": {"t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples1/sub-052823_ses-43817_run-002_T1w.nii.gz",
+                            "ref": "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz", 
+                            "transform": "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"},
+                     "out":{"output_dir": "/localscratch/Users/cjohnson30/output_dir"}}
+
+    resample = BRAINSResample()
+#    bcd = BRAINSConstellationDetector()
     task_bcd = fill_bcd_task()
+
+    resample.task.inputs.inputVolume = subject1_json["in"]["t1"]
+    resample.task.inputs.referenceVolume = subject1_json["in"]["ref"]
+    resample.task.inputs.warpTransform = subject1_json["in"]["transform"]
     
+ 
     wf = pydra.Workflow(name="wf", input_spec=["cmd1", "cmd2"])
     
     wf.inputs.cmd1 = "BRAINSResample"
     wf.inputs.cmd2 = "BRAINSConstellationDetector"
     
-    wf.add(task_resample)
+    resample.task.inputs.interpolationMode = "Linear"
+    resample.task.inputs.pixelType = "binary"
+    resample.task.inputs.outputVolume = "{Path(resample.task.inputs.inputVolume).with_suffix('').with_suffix('').name}_resampled.nii.gz"
+  
+
+    wf.add(resample.task)
     task_bcd.inputVolume = wf.BRAINSResample.lzout.outputVolume
     wf.add(task_bcd)
     
