@@ -26,25 +26,35 @@ if __name__ == '__main__':
 
     resample = BRAINSResample()
     bcd = BRAINSConstellationDetector()
-    wf = pydra.Workflow(name="wf", input_spec=["t1", "ref", "transform"], output_spec=["outputDir"])
+    wf = pydra.Workflow(name="wf", input_spec=["t1", "ref", "transform"])
     wf.inputs.t1 = subject1_json['in']['t1']
     wf.inputs.ref = subject1_json['in']['ref']
     wf.inputs.transform = subject1_json['in']['transform']
     
+    resample.task.inputs.inputVolume = wf.inputs.t1
+    resample.task.inputs.referenceVolume = wf.inputs.ref
+    resample.task.inputs.warpTransform = wf.inputs.transform
+    resample.task.inputs.interpolationMode="Linear"
+    resample.task.inputs.pixelType = "binary"
+    resample.task.inputs.outputVolume = "test.nii.gz"    
+ 
+    wf.add(resample.task.split(("inputVolume")))
+    #wf.add(bcd.task)
     
-
-    wf.add(resample.task)
-    wf.add(bcd.task)
-   
     wf.set_output(
         [
-            ("outVol", wf.BRAINSResample.lzout.outputVolume),
-            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-            ("outputLandmarksInInputSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-            ("outputResampledVolume", wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
-            ("outputTransform", wf.BRAINSConstellationDetector.lzout.outputTransform),
+            ("outVol", wf.BRAINSResample.lzout.outputVolume)
         ]
-    )
+    ) 
+#    wf.set_output(
+#        [
+#            ("outVol", wf.BRAINSResample.lzout.outputVolume),
+#            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+#            ("outputLandmarksInInputSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+#            ("outputResampledVolume", wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
+#            ("outputTransform", wf.BRAINSConstellationDetector.lzout.outputTransform),
+#        ]
+#    )
     
     with pydra.Submitter(plugin="cf") as sub:
         sub(wf)
