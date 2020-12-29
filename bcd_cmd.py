@@ -2,7 +2,17 @@ from segmentation.specialized import BRAINSConstellationDetector
 from pathlib import Path
 
 
-def fill_bcd_task():
+def fill_bcd_task(input_vol_path="/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/",
+                  input_vol_glob="*",
+                  sess_output_dir="/localscratch/Users/cjohnson30/output_dir",
+                  inputTemplateModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+                  LLSModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+                  acLowerBound = 80.000000,
+                  atlasLandmarkWeights = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+                  atlasLandmarks = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+                  houghEyeDetectorMode = 1,
+                  interpolationMode = "Linear",
+                  ):
  # Get the SEM generated pydra task for BRAINSToolsBrainsConstellationDetector
     bcd = BRAINSConstellationDetector()
     task_bcd = bcd.task
@@ -17,18 +27,16 @@ def fill_bcd_task():
     for t1 in filename_objs:
         input_vols.append(str(t1))
     
-    SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
-    
     # Define the inputs to the pydra task
-    task_bcd.inputs.inputTemplateModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
-    task_bcd.inputs.LLSModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"
-    task_bcd.inputs.acLowerBound = 80.000000
-    task_bcd.inputs.atlasLandmarkWeights = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts"
-    task_bcd.inputs.atlasLandmarks = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    task_bcd.inputs.houghEyeDetectorMode = 1
-    task_bcd.inputs.interpolationMode = "Linear"
+    task_bcd.inputs.inputTemplateModel = inputTemplateModel
+    task_bcd.inputs.LLSModel = LLSModel
+    task_bcd.inputs.acLowerBound = acLowerBound
+    task_bcd.inputs.atlasLandmarkWeights = atlasLandmarkWeights 
+    task_bcd.inputs.atlasLandmarks = atlasLandmarks
+    task_bcd.inputs.houghEyeDetectorMode = houghEyeDetectorMode
+    task_bcd.inputs.interpolationMode = interpolationMode
     task_bcd.inputs.inputVolume = input_vols
-    task_bcd.inputs.resultsDir = f"{SESS_OUTPUT_DIR}"
+    task_bcd.inputs.resultsDir = f"{sess_output_dir}"
     task_bcd.inputs.outputLandmarksInInputSpace = [
         f"{task_bcd.inputs.resultsDir}/{Path(x).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
         for x in input_vols

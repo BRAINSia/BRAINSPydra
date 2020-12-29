@@ -24,12 +24,10 @@ def fill_resample_task(input_vol_path="/localscratch/Users/cjohnson30/BCD_Practi
         input_vols.append(str(t1))
     
     # Define the inputs in the input_spec of the pydra task
-    SESS_OUTPUT_DIR = sess_output_dir
-#    SESS_OUTPUT_DIR = "/localscratch/Users/cjohnson30/output_dir"
     task_resample.inputs.inputVolume = input_vols
     task_resample.inputs.interpolationMode = interpolationMode 
     task_resample.inputs.outputVolume = [
-        f"{SESS_OUTPUT_DIR}/{Path(x).with_suffix('').with_suffix('').name}_resampled.nii.gz"
+        f"{sess_output_dir}/{Path(x).with_suffix('').with_suffix('').name}_resampled.nii.gz"
         for x in input_vols
     ]
     task_resample.inputs.pixelType = pixelType
