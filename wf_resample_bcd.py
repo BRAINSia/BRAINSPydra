@@ -42,42 +42,17 @@ if __name__ == "__main__":
     resample.inputs.pixelType = "binary"
     resample.inputs.outputVolume = "sub-066260_ses-21713_run-002_T1w_resampled.nii.gz"
 
-    #    wf.add(resample)#.split(("inputVolume")))
-    # wf.add(bcd)
-
-    #    resample2 = BRAINSResample("BRAINSResample2").get_task()
-    #    resample2.inputs.inputVolume = wf.BRAINSResample.lzout.outputVolume
-    #    resample2.inputs.referenceVolume = wf.inputs.ref
-    #    resample2.inputs.warpTransform = wf.inputs.transform
-    #    resample2.inputs.interpolationMode = "Linear"
-    #    resample2.inputs.pixelType = "binary"
-    #    resample2.inputs.outputVolume = "test2.nii.gz"
-    #
-    #    wf.add(resample2)
-
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
     bcd.inputs.inputVolume = wf.inputs.t1  # wf.BRAINSResample.lzout.outputVolume
-    bcd.inputs.inputTemplateModel = (
-        "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-    )
-    bcd.inputs.LLSModel = (
-        "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-    )
-    bcd.inputs.acLowerBound = (80.000000,)
-    bcd.inputs.atlasLandmarkWeights = (
-        "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-    )
-    bcd.inputs.atlasLandmarks = (
-        "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
-    )
-    bcd.inputs.houghEyeDetectorMode = (1,)
-    bcd.inputs.interpolationMode = ("Linear",)
-    bcd.inputs.outputLandmarksInInputSpace = (
-        f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
-    )
-    bcd.inputs.outputResampledVolume = (
-        f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
-    )
+    bcd.inputs.inputTemplateModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
+    bcd.inputs.LLSModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"
+    bcd.inputs.acLowerBound = 80.000000
+    bcd.inputs.atlasLandmarkWeights = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts"
+    bcd.inputs.atlasLandmarks = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    bcd.inputs.houghEyeDetectorMode = 1
+    bcd.inputs.interpolationMode = "Linear"
+    bcd.inputs.outputLandmarksInInputSpace = f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
+    bcd.inputs.outputResampledVolume = f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
     bcd.inputs.outputTransform = f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_Original2ACPC_transform.h5"
     bcd.inputs.outputLandmarksInACPCAlignedSpace = f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
 
