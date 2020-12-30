@@ -43,7 +43,7 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read("config.ini")
 
-    # Set the location of the cache and clear its contents before running 
+    # Set the location of the cache and clear its contents before running
     output_dir = config["OUTPUT"]["output_dir"]
     cache_dir = config["OUTPUT"]["cache_dir"]
     os.system(f'rm -rf {cache_dir}/*') # Only deleting cache now as the pipeline is being developed and tested
@@ -53,6 +53,7 @@ if __name__ == "__main__":
         data = json.load(json_file)
         for subject in data:
             subject_t1s.append(data[subject]["t1"]) 
+
 
     # Create the outer workflow that interfaces witht the source and sink nodes
     outer = pydra.Workflow(name="outer", input_spec=["t1_list"], t1_list=subject_t1s, cache_dir=cache_dir)
@@ -110,6 +111,7 @@ if __name__ == "__main__":
             ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
             ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
             ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
+
             ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
             ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
             ("outputVolume",                      wf.BRAINSResample.lzout.outputVolume),
