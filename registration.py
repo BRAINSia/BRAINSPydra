@@ -19,6 +19,7 @@ import pydra
 class BRAINSResample:
     def __init__(self, name="BRAINSResample"):
         self.name = name
+
     """
     title: Resample Image (BRAINS)
     category: Registration
@@ -29,13 +30,17 @@ class BRAINSResample:
     contributor: This tool was developed by Vincent Magnotta, Greg Harris, and Hans Johnson.
     acknowledgements: The development of this tool was supported by funding from grants NS050568 and NS40068 from the National Institute of Neurological Disorders and Stroke and grants MH31593, MH40856, from the National Institute of Mental Health.
     """
+
     def get_task(self):
         input_fields = [
             (
                 "inputVolume",
                 attr.ib(
                     type=File,
-                    metadata={"argstr": "--inputVolume ", "help_string": "Image To Warp"},
+                    metadata={
+                        "argstr": "--inputVolume ",
+                        "help_string": "Image To Warp",
+                    },
                 ),
             ),
             (
@@ -152,12 +157,12 @@ class BRAINSResample:
                 ),
             ),
         ]
-    
+
         input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
         output_spec = SpecInfo(
             name="Output", fields=output_fields, bases=(pydra.specs.ShellOutSpec,)
         )
-    
+
         task = ShellCommandTask(
             name=self.name,
             executable="BRAINSResample",

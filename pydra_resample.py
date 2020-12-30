@@ -21,16 +21,18 @@ from pydra.engine.specs import SpecInfo, ShellSpec
 from registration import BRAINSResample
 
 
-def fill_BRAINSResample(inputVolsDir="/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/",
-                        inputVolsGlob="*",
-                        outputDir="/localscratch/Users/cjohnson30/output_dir",
-                        interpolationMode="Linear",
-                        referenceVolume="/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz",
-                        warpTransform="/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"):
+def fill_BRAINSResample(
+    inputVolsDir="/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/",
+    inputVolsGlob="*",
+    outputDir="/localscratch/Users/cjohnson30/output_dir",
+    interpolationMode="Linear",
+    referenceVolume="/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz",
+    warpTransform="/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5",
+):
     # Define the SEM generated pydra tasks
     resample = BRAINSResample()
     task = resample.task
-    
+
     # Create a list of all the files to be resampled
     p = Path(inputVolsDir)
     all_t1 = p.glob(inputVolsGlob)
@@ -38,7 +40,7 @@ def fill_BRAINSResample(inputVolsDir="/localscratch/Users/cjohnson30/BCD_Practic
     input_vols = []
     for t1 in filename_objs:
         input_vols.append(str(t1))
-    
+
     # Define the inputs in the input_spec of the pydra task
     task.inputs.inputVolume = input_vols
     task.inputs.interpolationMode = "Linear"
@@ -47,10 +49,11 @@ def fill_BRAINSResample(inputVolsDir="/localscratch/Users/cjohnson30/BCD_Practic
         for x in input_vols
     ]
     task.inputs.pixelType = "binary"
-    
+
     task.inputs.referenceVolume = referenceVolume
     task.inputs.warpTransform = warpTransform
     return task
+
 
 task = fill_BRAINSResample()
 
