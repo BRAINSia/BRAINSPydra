@@ -25,6 +25,7 @@ def copy_from_cache(cache_path, output_dir):
     copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
 
 if __name__ == "__main__":
+    # This serves as an example input a pipeline may be given
     subject1_json = {
         "in": {
             "t1":              "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/sub-066260_ses-21713_run-002_T1w.nii.gz", 
@@ -46,11 +47,12 @@ if __name__ == "__main__":
     wf.inputs.output_dir =           subject1_json["out"]["output_dir"]  
 
     # Set the filenames of the outputs of BCD
-    wf.add(append_filename(name="outputLandmarksInInputSpaceName",      filename=wf.lzin.t1,appended_str="_BCD_Original",               extension=".fcsv",  ))#directory="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(append_filename(name="outputResampledVolumeName",            filename=wf.lzin.t1,appended_str="_BCD_ACPC",                   extension=".nii.gz",))#directory="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(append_filename(name="outputTransformName",                  filename=wf.lzin.t1,appended_str="_BCD_Original2ACPC_transform",extension=".h5",    ))#directory="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",filename=wf.lzin.t1,appended_str="_BCD_ACPC_Landmarks",         extension=".fcsv",  ))#directory="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(append_filename(name="writeBranded2DImageName",              filename=wf.lzin.t1,appended_str="_BCD_Branded2DQCimage",       extension=".png",   ))#directory="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(append_filename(name="outputLandmarksInInputSpaceName",      filename=wf.lzin.t1,appended_str="_BCD_Original",               extension=".fcsv",  ))
+    wf.add(append_filename(name="outputResampledVolumeName",            filename=wf.lzin.t1,appended_str="_BCD_ACPC",                   extension=".nii.gz",))
+    wf.add(append_filename(name="outputTransformName",                  filename=wf.lzin.t1,appended_str="_BCD_Original2ACPC_transform",extension=".h5",    ))
+    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",filename=wf.lzin.t1,appended_str="_BCD_ACPC_Landmarks",         extension=".fcsv",  ))
+    wf.add(append_filename(name="writeBranded2DImageName",              filename=wf.lzin.t1,appended_str="_BCD_Branded2DQCimage",       extension=".png",   ))
+
     # Set the inputs of BCD
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
     bcd.inputs.inputVolume =                       wf.inputs.t1
@@ -69,7 +71,7 @@ if __name__ == "__main__":
     wf.add(bcd)
 
     # Set the filename of the output of Resample
-    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))#, directory="/localscratch/Users/cjohnson30/output_dir" ))
+    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
@@ -80,20 +82,14 @@ if __name__ == "__main__":
     resample.inputs.warpTransform =                "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
     resample.inputs.outputVolume =                 wf.resampledOutputVolumeName.lzout.out 
     wf.add(resample)
- 
-#    wf.add(append_filename(name="outputLandmarksInInputSpaceDest",       filename=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,       directory="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(append_filename(name="outputResampledVolumeDest",             filename=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,             directory="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(append_filename(name="outputTransformDest",                   filename=wf.BRAINSConstellationDetector.lzout.outputTransform,                   directory="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceDest", filename=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace, directory="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(append_filename(name="writeBranded2DImageDest",               filename=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,               directory="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(append_filename(name="resampledOutputVolumeDest",             filename=wf.BRAINSResample.lzout.outputVolume,                                   directory="/localscratch/Users/cjohnson30/output_dir"))
 
+    # Copy output file from the cache to the output_dir 
     wf.add(copy_from_cache(name="outputLandmarksInInputSpaceDest",      cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,      output_dir="/localscratch/Users/cjohnson30/output_dir")) 
     wf.add(copy_from_cache(name="outputResampledVolumeDest",            cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,            output_dir="/localscratch/Users/cjohnson30/output_dir"))
     wf.add(copy_from_cache(name="outputTransformDest",                  cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                  output_dir="/localscratch/Users/cjohnson30/output_dir"))
     wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceDest",cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,output_dir="/localscratch/Users/cjohnson30/output_dir"))
     wf.add(copy_from_cache(name="writeBranded2DImageDest",              cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,              output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="resampledOutputVolumeDest",            cache_path=wf.BRAINSResample.lzout.outputVolume,                                  output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="resampledOutputVolumeDest",            cache_path=wf.BRAINSResample.lzout.outputVolume,                                        output_dir="/localscratch/Users/cjohnson30/output_dir"))
  
 
     # Set the outputs of the entire workflow
@@ -105,16 +101,10 @@ if __name__ == "__main__":
             ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
             ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
             ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
-
-#            ("outputLandmarksInInputSpace",       wf.outputLandmarksInInputSpaceDest.lzout.out),
-#            ("outputResampledVolume",             wf.outputResampledVolumeDest.lzout.out),
-#            ("outputTransform",                   wf.outputTransformDest.lzout.out),
-#            ("outputLandmarksInACPCAlignedSpace", wf.outputLandmarksInACPCAlignedSpaceDest.lzout.out),
-#            ("writeBranded2DImage",               wf.writeBranded2DImageDest.lzout.out),
-#            ("resampledOutputVolume",             wf.resampledOutputVolumeDest.lzout.out),
         ]
     )
-
+    
+    # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
         sub(wf)
     result = wf.result()
