@@ -53,10 +53,10 @@ if __name__ == "__main__":
  
     resample = BRAINSResample("BRAINSResample").get_task()
     resample.inputs.inputVolume =                  wf.BRAINSConstellationDetector.lzout.outputResampledVolume
-    resample.inputs.referenceVolume =              "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
-    resample.inputs.warpTransform =                "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
     resample.inputs.interpolationMode =            "Linear"
     resample.inputs.pixelType =                    "binary"
+    resample.inputs.referenceVolume =              "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
+    resample.inputs.warpTransform =                "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
     resample.inputs.outputVolume =                 f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_resampled.nii.gz" 
     wf.add(resample)
  
