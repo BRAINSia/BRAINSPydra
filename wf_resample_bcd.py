@@ -28,30 +28,64 @@ if __name__ == "__main__":
     # This serves as an example input a pipeline may be given
     subject1_json = {
         "in": {
-            "t1":              "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/sub-066260_ses-21713_run-002_T1w.nii.gz", 
-            "templateModel":   "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-            "llsModel":        "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-            "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-            "landmarks":       "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+          "t1":             "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/sub-066260_ses-21713_run-002_T1w.nii.gz", 
+          "templateModel":  "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+          "llsModel":       "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+          "landmarkWeights":"/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+          "landmarks":      "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
         },
         "out": {"output_dir": "/localscratch/Users/cjohnson30/output_dir"},
     }
-       
-    # Create the inputs to the workflow
-    wf = pydra.Workflow(name="wf", input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], output_spec=["output_dir"])
-    wf.inputs.t1 =                   subject1_json["in"]["t1"]                
-    wf.inputs.templateModel =        subject1_json["in"]["templateModel"]
-    wf.inputs.llsModel =             subject1_json["in"]["llsModel"]
-    wf.inputs.landmarkWeights =      subject1_json["in"]["landmarkWeights"]
-    wf.inputs.landmarks =            subject1_json["in"]["landmarks"]
-    wf.inputs.output_dir =           subject1_json["out"]["output_dir"]  
+    subject2_json = {
+        "in": {
+          "t1":             "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/sub-066217_ses-29931_run-003_T1w.nii.gz", 
+          "templateModel":  "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+          "llsModel":       "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+          "landmarkWeights":"/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+          "landmarks":      "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+        },
+        "out": {"output_dir": "/localscratch/Users/cjohnson30/output_dir"},
+    }  
+    
+    nest_asyncio.apply()
 
+    # Create the inputs to the workflow
+    wf = pydra.Workflow(name="wf", 
+                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
+                        output_spec=["output_dir"])
+    wf.inputs.t1 =                   [subject1_json["in"]["t1"]             , subject1_json["in"]["t1"]             ] 
+    wf.inputs.templateModel =        subject1_json["in"]["templateModel"]  #, subject1_json["in"]["templateModel"]  ]
+    wf.inputs.llsModel =             subject1_json["in"]["llsModel"]       #, subject1_json["in"]["llsModel"]       ]
+    wf.inputs.landmarkWeights =      subject1_json["in"]["landmarkWeights"]#, subject1_json["in"]["landmarkWeights"]]
+    wf.inputs.landmarks =            subject1_json["in"]["landmarks"]      #, subject1_json["in"]["landmarks"]      ]
+    wf.inputs.output_dir =           subject1_json["out"]["output_dir"]    #, subject1_json["out"]["output_dir"]    ]
+
+    wf.split(("t1"))#, "templateModel", "landmarkWeights", "landmarks", "output_dir"))
+#    wf.split(("templateModel"))
+#    wf.split(("landmarkWeights"))
+#    wf.split(("landmarks"))
+#    wf.split(("output_dir"))
+ 
     # Set the filenames of the outputs of BCD
-    wf.add(append_filename(name="outputLandmarksInInputSpaceName",      filename=wf.lzin.t1,appended_str="_BCD_Original",               extension=".fcsv",  ))
-    wf.add(append_filename(name="outputResampledVolumeName",            filename=wf.lzin.t1,appended_str="_BCD_ACPC",                   extension=".nii.gz",))
-    wf.add(append_filename(name="outputTransformName",                  filename=wf.lzin.t1,appended_str="_BCD_Original2ACPC_transform",extension=".h5",    ))
-    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",filename=wf.lzin.t1,appended_str="_BCD_ACPC_Landmarks",         extension=".fcsv",  ))
-    wf.add(append_filename(name="writeBranded2DImageName",              filename=wf.lzin.t1,appended_str="_BCD_Branded2DQCimage",       extension=".png",   ))
+    wf.add(append_filename(name="outputLandmarksInInputSpaceName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_Original",
+                           extension=".fcsv"))
+    wf.add(append_filename(name="outputResampledVolumeName",
+                           filename=wf.lzin.t1,appended_str="_BCD_ACPC",
+                           extension=".nii.gz"))
+    wf.add(append_filename(name="outputTransformName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_Original2ACPC_transform",
+                           extension=".h5"))
+    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_ACPC_Landmarks",
+                           extension=".fcsv"))
+    wf.add(append_filename(name="writeBranded2DImageName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_Branded2DQCimage",       
+                           extension=".png"))
 
     # Set the inputs of BCD
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
@@ -75,21 +109,33 @@ if __name__ == "__main__":
  
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
-    resample.inputs.inputVolume =                  wf.BRAINSConstellationDetector.lzout.outputResampledVolume
-    resample.inputs.interpolationMode =            "Linear"
-    resample.inputs.pixelType =                    "binary"
-    resample.inputs.referenceVolume =              "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
-    resample.inputs.warpTransform =                "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
-    resample.inputs.outputVolume =                 wf.resampledOutputVolumeName.lzout.out 
+    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
+    resample.inputs.interpolationMode = "Linear"
+    resample.inputs.pixelType =         "binary"
+    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
+    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
+    resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
     wf.add(resample)
 
     # Copy output file from the cache to the output_dir 
-    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceDest",      cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,      output_dir="/localscratch/Users/cjohnson30/output_dir")) 
-    wf.add(copy_from_cache(name="outputResampledVolumeDest",            cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,            output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="outputTransformDest",                  cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                  output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceDest",cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="writeBranded2DImageDest",              cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,              output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="resampledOutputVolumeDest",            cache_path=wf.BRAINSResample.lzout.outputVolume,                                        output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceDest",      
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,      
+                           output_dir="/localscratch/Users/cjohnson30/output_dir")) 
+    wf.add(copy_from_cache(name="outputResampledVolumeDest",            
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,            
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="outputTransformDest",                  
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                  
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceDest",
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="writeBranded2DImageDest",              
+                           cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,              
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="resampledOutputVolumeDest",            
+                           cache_path=wf.BRAINSResample.lzout.outputVolume,                                        
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
  
 
     # Set the outputs of the entire workflow
@@ -103,9 +149,11 @@ if __name__ == "__main__":
             ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
-    
+   
+    t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
         sub(wf)
     result = wf.result()
     print(result)
+    print(f"total time: {time.time() - t0}")
