@@ -27,43 +27,43 @@ if __name__ == "__main__":
         "out": {"output_dir": "/localscratch/Users/cjohnson30/output_dir"},
     }
 
-    resample = BRAINSResample("BRAINSResample").get_task()
-    bcd = BRAINSConstellationDetector()
     wf = pydra.Workflow(name="wf", input_spec=["t1", "ref", "transform", "output_dir"])
     wf.inputs.t1 = subject1_json["in"]["t1"]
     wf.inputs.ref = subject1_json["in"]["ref"]
     wf.inputs.transform = subject1_json["in"]["transform"]
     wf.inputs.output_dir = subject1_json["out"]["output_dir"]
 
-    resample.inputs.inputVolume = wf.inputs.t1
-    resample.inputs.referenceVolume = wf.inputs.ref
-    resample.inputs.warpTransform = wf.inputs.transform
-    resample.inputs.interpolationMode = "Linear"
-    resample.inputs.pixelType = "binary"
-    resample.inputs.outputVolume = "sub-066260_ses-21713_run-002_T1w.nii.gz"
+    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
+    bcd.inputs.inputVolume =                       wf.inputs.t1 #wf.BRAINSResample.lzout.outputVolume #wf.inputs.t1
+    bcd.inputs.inputTemplateModel =                "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
+    bcd.inputs.LLSModel =                          "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"
+    bcd.inputs.acLowerBound =                      80.000000
+    bcd.inputs.atlasLandmarkWeights =              "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts"
+    bcd.inputs.atlasLandmarks =                    "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    bcd.inputs.houghEyeDetectorMode =              1
+    bcd.inputs.interpolationMode =                 "Linear"
+    bcd.inputs.outputLandmarksInInputSpace =       f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
+    bcd.inputs.outputResampledVolume =             f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
+    bcd.inputs.outputTransform =                   f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_Original2ACPC_transform.h5"
+    bcd.inputs.outputLandmarksInACPCAlignedSpace = f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
+    bcd.inputs.writeBranded2DImage =               f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_Branded2DQCimage.png"
+
+    wf.add(bcd)
+ 
+    resample = BRAINSResample("BRAINSResample").get_task()
+    resample.inputs.inputVolume =                  wf.BRAINSConstellationDetector.lzout.outputResampledVolume
+    resample.inputs.referenceVolume =              wf.inputs.ref
+    resample.inputs.warpTransform =                wf.inputs.transform
+    resample.inputs.interpolationMode =            "Linear"
+    resample.inputs.pixelType =                    "binary"
+    resample.inputs.outputVolume =                 f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_resampled.nii.gz" 
 
     wf.add(resample)
  
-    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
-    bcd.inputs.inputVolume = wf.BRAINSResample.lzout.outputVolume #wf.inputs.t1
-    bcd.inputs.inputTemplateModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
-    bcd.inputs.LLSModel = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"
-    bcd.inputs.acLowerBound = 80.000000
-    bcd.inputs.atlasLandmarkWeights = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts"
-    bcd.inputs.atlasLandmarks = "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    bcd.inputs.houghEyeDetectorMode = 1
-    bcd.inputs.interpolationMode = "Linear"
-    bcd.inputs.outputLandmarksInInputSpace = f"{Path(wf.BRAINSResample.lzout.outputVolume).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
-    bcd.inputs.outputResampledVolume = f"{Path(wf.BRAINSResample.lzout.outputVolume).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
-    bcd.inputs.outputTransform = f"{Path(wf.BRAINSResample.lzout.outputVolume).with_suffix('').with_suffix('').name}_BCD_Original2ACPC_transform.h5"
-    bcd.inputs.outputLandmarksInACPCAlignedSpace = f"{Path(wf.BRAINSResample.lzout.outputVolume).with_suffix('').with_suffix('').name}_BCD_ACPC_Landmarks.fcsv"
-    bcd.inputs.writeBranded2DImage = f"{Path(wf.BRAINSResample.lzout.outputVolume).with_suffix('').with_suffix('').name}_BCD_Branded2DQCimage.png"
-    print(bcd.inputs.outputLandmarksInInputSpace)
-    print(bcd.inputs.inputVolume)
-    wf.add(bcd)  # .split(("inputVolume", "outputLandmarksInACPCAlignedSpace", "outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform")))
+#    wf.add(bcd)  # .split(("inputVolume", "outputLandmarksInACPCAlignedSpace", "outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform")))
     wf.set_output(
         [
-            ("outVol", wf.BRAINSResample.lzout.outputVolume),
+            ("resampled", wf.BRAINSResample.lzout.outputVolume),
             (
                 "outputLandmarksInACPCAlignedSpace",
                 wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
