@@ -39,10 +39,10 @@ if __name__ == "__main__":
     bcd.inputs.inputVolume =                       wf.inputs.t1
     bcd.inputs.inputTemplateModel =                wf.inputs.templateModel
     bcd.inputs.LLSModel =                          wf.inputs.llsModel
-    bcd.inputs.acLowerBound =                      80.000000
     bcd.inputs.atlasLandmarkWeights =              wf.inputs.landmarkWeights 
     bcd.inputs.atlasLandmarks =                    wf.inputs.landmarks
     bcd.inputs.houghEyeDetectorMode =              1
+    bcd.inputs.acLowerBound =                      80.000000
     bcd.inputs.interpolationMode =                 "Linear"
     bcd.inputs.outputLandmarksInInputSpace =       f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_Original.fcsv"
     bcd.inputs.outputResampledVolume =             f"{Path(wf.inputs.t1).with_suffix('').with_suffix('').name}_BCD_ACPC.nii.gz"
