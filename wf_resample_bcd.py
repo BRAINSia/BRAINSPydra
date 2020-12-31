@@ -25,14 +25,15 @@ if __name__ == "__main__":
         },
         "out": {"output_dir": "/localscratch/Users/cjohnson30/output_dir"},
     }
+       
 
     wf = pydra.Workflow(name="wf", input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], output_spec=["output_dir"])
-    wf.inputs.t1 =         subject1_json["in"]["t1"]
+    wf.inputs.t1 =                   subject1_json["in"]["t1"]                
     wf.inputs.templateModel =        subject1_json["in"]["templateModel"]
-    wf.inputs.llsModel =  subject1_json["in"]["llsModel"]
-    wf.inputs.landmarkWeights =  subject1_json["in"]["landmarkWeights"]
-    wf.inputs.landmarks =  subject1_json["in"]["landmarks"]
-    wf.inputs.output_dir = subject1_json["out"]["output_dir"]
+    wf.inputs.llsModel =             subject1_json["in"]["llsModel"]
+    wf.inputs.landmarkWeights =      subject1_json["in"]["landmarkWeights"]
+    wf.inputs.landmarks =            subject1_json["in"]["landmarks"]
+    wf.inputs.output_dir =           subject1_json["out"]["output_dir"]  
 
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
     bcd.inputs.inputVolume =                       wf.inputs.t1
