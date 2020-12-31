@@ -63,18 +63,9 @@ if __name__ == "__main__":
     wf.set_output(
         [
             ("resampled", wf.BRAINSResample.lzout.outputVolume),
-            (
-                "outputLandmarksInACPCAlignedSpace",
-                wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
-            ),
-            (
-                "outputLandmarksInInputSpace",
-                wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,
-            ),
-            (
-                "outputResampledVolume",
-                wf.BRAINSConstellationDetector.lzout.outputResampledVolume,
-            ),
+            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+            ("outputLandmarksInInputSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume", wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
             ("outputTransform", wf.BRAINSConstellationDetector.lzout.outputTransform),
         ]
     )
