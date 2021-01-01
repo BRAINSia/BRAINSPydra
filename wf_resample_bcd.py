@@ -53,7 +53,10 @@ if __name__ == "__main__":
     wf = pydra.Workflow(name="wf", 
                         input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
                         output_spec=["output_dir"])
-    wf.inputs.t1 =                    subject1_json["in"]["t1"]             # , subject1_json["in"]["t1"]             ] 
+
+    wf.split("t1", t1=[subject1_json["in"]["t1"], subject2_json["in"]["t1"]])    
+    #wf.split("t1", t1=[subject1_json["in"]["t1"]])#, subject2_json["in"]["t1"]])
+    #wf.inputs.t1 =                    subject1_json["in"]["t1"]             # , subject1_json["in"]["t1"]             ] 
 #    wf.inputs.templateModel =        subject1_json["in"]["templateModel"]  #, subject1_json["in"]["templateModel"]  ]
 #    wf.inputs.llsModel =             subject1_json["in"]["llsModel"]       #, subject1_json["in"]["llsModel"]       ]
 #    wf.inputs.landmarkWeights =      subject1_json["in"]["landmarkWeights"]#, subject1_json["in"]["landmarkWeights"]]
@@ -105,7 +108,7 @@ if __name__ == "__main__":
 #    wf.add(bcd)
 
     # Set the filename of the output of Resample
-    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
+#    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
