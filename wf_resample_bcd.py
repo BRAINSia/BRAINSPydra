@@ -54,7 +54,8 @@ if __name__ == "__main__":
                         input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
                         output_spec=["output_dir"])
 
-    wf.split("t1", t1=[subject1_json["in"]["t1"], subject2_json["in"]["t1"]])    
+    wf.inputs.t1 = [subject1_json["in"]["t1"], subject2_json["in"]["t1"]]
+    wf.split("t1")#, t1=[subject1_json["in"]["t1"], subject2_json["in"]["t1"]])    
     #wf.split("t1", t1=[subject1_json["in"]["t1"]])#, subject2_json["in"]["t1"]])
     #wf.inputs.t1 =                    subject1_json["in"]["t1"]             # , subject1_json["in"]["t1"]             ] 
 #    wf.inputs.templateModel =        subject1_json["in"]["templateModel"]  #, subject1_json["in"]["templateModel"]  ]
