@@ -3,6 +3,9 @@ from pathlib import Path
 import nest_asyncio
 import time
 from shutil import copyfile
+import json
+import os
+import glob
 
 import attr
 from nipype.interfaces.base import (
@@ -25,27 +28,26 @@ def copy_from_cache(cache_path, output_dir):
     copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
 
 if __name__ == "__main__":
-    # This serves as an example input a pipeline may be given
+    # Set the location of the cache and clear its contents before running 
     output_dir = "/localscratch/Users/cjohnson30/output_dir"
-    subject1_json = {
-        "in": {
-          "t1":             "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/sub-066260_ses-21713_run-002_T1w.nii.gz", 
-          "templateModel":  "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-          "llsModel":       "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-          "landmarkWeights":"/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-          "landmarks":      "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
-        },
-    }
-    subject2_json = {
-        "in": {
-          "t1":             "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/sub-066217_ses-29931_run-003_T1w.nii.gz", 
-          "templateModel":  "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-          "llsModel":       "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-          "landmarkWeights":"/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-          "landmarks":      "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
-        },
-    }  
-    
+    os.system(f'rm -rf {output_dir}/*')
+     
+    # Get the subject data listed in the subject_jsons.json file 
+    subject_t1s = []
+    subject_templateModels = []
+    subject_llsModels = []
+    subject_landmarkWeights = []
+    subject_landmarks = []
+    with open('/localscratch/Users/cjohnson30/BRAINSPydra/subject_jsons.json') as json_file:
+        data = json.load(json_file)
+        for subject in data:
+            subject_t1s.append(data[subject]["t1"])
+            subject_templateModels.append(data[subject]["templateModel"])
+            subject_llsModels.append(data[subject]["llsModel"])
+            subject_landmarkWeights.append(data[subject]["landmarkWeights"])
+            subject_landmarks.append(data[subject]["landmarks"])
+   
+ 
     nest_asyncio.apply()
 
     # Create the inputs to the workflow
@@ -53,11 +55,11 @@ if __name__ == "__main__":
                         input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
                         cache_dir=output_dir)
 
-    wf.inputs.t1 =                   [subject1_json["in"]["t1"]             , subject2_json["in"]["t1"]             ] 
-    wf.inputs.templateModel =        [subject1_json["in"]["templateModel"]  , subject2_json["in"]["templateModel"]  ]
-    wf.inputs.llsModel =             [subject1_json["in"]["llsModel"]       , subject2_json["in"]["llsModel"]       ]
-    wf.inputs.landmarkWeights =      [subject1_json["in"]["landmarkWeights"], subject2_json["in"]["landmarkWeights"]]
-    wf.inputs.landmarks =            [subject1_json["in"]["landmarks"]      , subject2_json["in"]["landmarks"]      ]
+    wf.inputs.t1 =                   subject_t1s
+    wf.inputs.templateModel =        subject_templateModels
+    wf.inputs.llsModel =             subject_llsModels
+    wf.inputs.landmarkWeights =      subject_landmarkWeights
+    wf.inputs.landmarks =            subject_landmarks
     wf.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks"))
  
     # Set the filenames of the outputs of BCD
