@@ -26,6 +26,7 @@ def copy_from_cache(cache_path, output_dir):
 
 if __name__ == "__main__":
     # This serves as an example input a pipeline may be given
+    output_dir = "/localscratch/Users/cjohnson30/output_dir"
     subject1_json = {
         "in": {
           "t1":             "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples2/sub-066260_ses-21713_run-002_T1w.nii.gz", 
@@ -50,7 +51,7 @@ if __name__ == "__main__":
     # Create the inputs to the workflow
     wf = pydra.Workflow(name="wf", 
                         input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
-                        cache_dir=subject1_json["out"]["output_dir"])
+                        cache_dir=output_dir)
 
     wf.inputs.t1 =                   [subject1_json["in"]["t1"]             , subject2_json["in"]["t1"]             ] 
     wf.inputs.templateModel =        [subject1_json["in"]["templateModel"]  , subject2_json["in"]["templateModel"]  ]
