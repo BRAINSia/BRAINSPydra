@@ -34,7 +34,6 @@ if __name__ == "__main__":
           "landmarkWeights":"/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
           "landmarks":      "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
         },
-        "out": {"output_dir": "/localscratch/Users/cjohnson30/output_dir"},
     }
     subject2_json = {
         "in": {
@@ -44,7 +43,6 @@ if __name__ == "__main__":
           "landmarkWeights":"/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
           "landmarks":      "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
         },
-        "out": {"output_dir": "/localscratch/Users/cjohnson30/output_dir"},
     }  
     
     nest_asyncio.apply()
@@ -52,16 +50,14 @@ if __name__ == "__main__":
     # Create the inputs to the workflow
     wf = pydra.Workflow(name="wf", 
                         input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
-                        output_spec=["output_dir"])
+                        cache_dir=subject1_json["out"]["output_dir"])
 
     wf.inputs.t1 =                   [subject1_json["in"]["t1"]             , subject2_json["in"]["t1"]             ] 
     wf.inputs.templateModel =        [subject1_json["in"]["templateModel"]  , subject2_json["in"]["templateModel"]  ]
     wf.inputs.llsModel =             [subject1_json["in"]["llsModel"]       , subject2_json["in"]["llsModel"]       ]
     wf.inputs.landmarkWeights =      [subject1_json["in"]["landmarkWeights"], subject2_json["in"]["landmarkWeights"]]
     wf.inputs.landmarks =            [subject1_json["in"]["landmarks"]      , subject2_json["in"]["landmarks"]      ]
-    wf.inputs.output_dir =           [subject1_json["out"]["output_dir"]    , subject2_json["out"]["output_dir"]    ]
-    
-    wf.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"))
+    wf.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks"))
  
     # Set the filenames of the outputs of BCD
     wf.add(append_filename(name="outputLandmarksInInputSpaceName",
