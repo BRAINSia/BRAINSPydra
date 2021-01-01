@@ -114,26 +114,6 @@ if __name__ == "__main__":
     resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
     wf.add(resample)
 
-    # Copy output file from the cache to the output_dir 
-    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceDest",      
-                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,      
-                           output_dir="/localscratch/Users/cjohnson30/output_dir")) 
-    wf.add(copy_from_cache(name="outputResampledVolumeDest",            
-                           cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,            
-                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="outputTransformDest",                  
-                           cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                  
-                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceDest",
-                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
-                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="writeBranded2DImageDest",              
-                           cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,              
-                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-    wf.add(copy_from_cache(name="resampledOutputVolumeDest",            
-                           cache_path=wf.BRAINSResample.lzout.outputVolume,                                        
-                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-
     # Set the outputs of the entire workflow
     wf.set_output(
         [
@@ -145,7 +125,11 @@ if __name__ == "__main__":
             ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
-   
+    
+    wf2 = pydra.Workflow(name="wf",
+                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"],
+                        output_spec=["output_dir"]) 
+    
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
