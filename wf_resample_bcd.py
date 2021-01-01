@@ -126,10 +126,6 @@ if __name__ == "__main__":
         ]
     )
     
-    wf2 = pydra.Workflow(name="wf",
-                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"],
-                        output_spec=["output_dir"]) 
-    
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
