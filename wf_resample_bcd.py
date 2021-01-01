@@ -66,22 +66,22 @@ if __name__ == "__main__":
     # Set the filenames of the outputs of BCD
     wf.add(append_filename(name="outputLandmarksInInputSpaceName",
                            filename=wf.lzin.t1,
-                           appended_str="_BCD_Original",
+                           append_str="_BCD_Original",
                            extension=".fcsv"))
     wf.add(append_filename(name="outputResampledVolumeName",
-                           filename=wf.lzin.t1,appended_str="_BCD_ACPC",
+                           filename=wf.lzin.t1,append_str="_BCD_ACPC",
                            extension=".nii.gz"))
     wf.add(append_filename(name="outputTransformName",
                            filename=wf.lzin.t1,
-                           appended_str="_BCD_Original2ACPC_transform",
+                           append_str="_BCD_Original2ACPC_transform",
                            extension=".h5"))
     wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",
                            filename=wf.lzin.t1,
-                           appended_str="_BCD_ACPC_Landmarks",
+                           append_str="_BCD_ACPC_Landmarks",
                            extension=".fcsv"))
     wf.add(append_filename(name="writeBranded2DImageName",
                            filename=wf.lzin.t1,
-                           appended_str="_BCD_Branded2DQCimage",       
+                           append_str="_BCD_Branded2DQCimage",       
                            extension=".png"))
 
     # Set the inputs of BCD
@@ -101,49 +101,49 @@ if __name__ == "__main__":
     bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImageName.lzout.out 
     wf.add(bcd)
     # Set the filename of the output of Resample
-#    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
+    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
-#    resample = BRAINSResample("BRAINSResample").get_task()
-#    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
-#    resample.inputs.interpolationMode = "Linear"
-#    resample.inputs.pixelType =         "binary"
-#    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
-#    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
-#    resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
-#    wf.add(resample)
+    resample = BRAINSResample("BRAINSResample").get_task()
+    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
+    resample.inputs.interpolationMode = "Linear"
+    resample.inputs.pixelType =         "binary"
+    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
+    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
+    resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
+    wf.add(resample)
 
     # Copy output file from the cache to the output_dir 
-#    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceDest",      
-#                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,      
-#                           output_dir="/localscratch/Users/cjohnson30/output_dir")) 
-#    wf.add(copy_from_cache(name="outputResampledVolumeDest",            
-#                           cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,            
-#                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(copy_from_cache(name="outputTransformDest",                  
-#                           cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                  
-#                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceDest",
-#                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
-#                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(copy_from_cache(name="writeBranded2DImageDest",              
-#                           cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,              
-#                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
-#    wf.add(copy_from_cache(name="resampledOutputVolumeDest",            
-#                           cache_path=wf.BRAINSResample.lzout.outputVolume,                                        
-#                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceDest",      
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,      
+                           output_dir="/localscratch/Users/cjohnson30/output_dir")) 
+    wf.add(copy_from_cache(name="outputResampledVolumeDest",            
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,            
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="outputTransformDest",                  
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                  
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceDest",
+                           cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="writeBranded2DImageDest",              
+                           cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,              
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
+    wf.add(copy_from_cache(name="resampledOutputVolumeDest",            
+                           cache_path=wf.BRAINSResample.lzout.outputVolume,                                        
+                           output_dir="/localscratch/Users/cjohnson30/output_dir"))
  
 
     # Set the outputs of the entire workflow
     wf.set_output(
         [
               
-#            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-#            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
-#            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
-#            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-#            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
-#            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
+            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
+            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
+            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
+            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
    
