@@ -16,8 +16,8 @@ from registration import BRAINSResample
 from segmentation.specialized import BRAINSConstellationDetector
 
 @pydra.mark.task
-def append_filename(filename="", appended_str="", extension="", directory=""):
-    new_filename = f"{Path(Path(directory) / Path(Path(filename).with_suffix('').with_suffix('').name))}{appended_str}{extension}"
+def append_filename(filename="", append_str="", extension="", directory=""):
+    new_filename = f"{Path(Path(directory) / Path(Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
     return new_filename 
 
 @pydra.mark.task
