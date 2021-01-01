@@ -54,73 +54,64 @@ if __name__ == "__main__":
                         input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
                         output_spec=["output_dir"])
 
-    wf.inputs.t1 = [subject1_json["in"]["t1"], subject2_json["in"]["t1"]]
-    wf.split("t1")#, t1=[subject1_json["in"]["t1"], subject2_json["in"]["t1"]])    
-    #wf.split("t1", t1=[subject1_json["in"]["t1"]])#, subject2_json["in"]["t1"]])
-    #wf.inputs.t1 =                    subject1_json["in"]["t1"]             # , subject1_json["in"]["t1"]             ] 
-#    wf.inputs.templateModel =        subject1_json["in"]["templateModel"]  #, subject1_json["in"]["templateModel"]  ]
-#    wf.inputs.llsModel =             subject1_json["in"]["llsModel"]       #, subject1_json["in"]["llsModel"]       ]
-#    wf.inputs.landmarkWeights =      subject1_json["in"]["landmarkWeights"]#, subject1_json["in"]["landmarkWeights"]]
-#    wf.inputs.landmarks =            subject1_json["in"]["landmarks"]      #, subject1_json["in"]["landmarks"]      ]
-#    wf.inputs.output_dir =           subject1_json["out"]["output_dir"]    #, subject1_json["out"]["output_dir"]    ]
-#
-#    wf.split("t1")#, "templateModel", "landmarkWeights", "landmarks", "output_dir"))
-#    wf.split(("templateModel"))
-#    wf.split(("landmarkWeights"))
-#    wf.split(("landmarks"))
-#    wf.split(("output_dir"))
+    wf.inputs.t1 =                   [subject1_json["in"]["t1"]             , subject2_json["in"]["t1"]             ] 
+    wf.inputs.templateModel =        subject1_json["in"]["templateModel"]  #, subject2_json["in"]["templateModel"]  ]
+    wf.inputs.llsModel =             subject1_json["in"]["llsModel"]       #, subject2_json["in"]["llsModel"]       ]
+    wf.inputs.landmarkWeights =      subject1_json["in"]["landmarkWeights"]#, subject2_json["in"]["landmarkWeights"]]
+    wf.inputs.landmarks =            subject1_json["in"]["landmarks"]      #, subject2_json["in"]["landmarks"]      ]
+    wf.inputs.output_dir =           subject1_json["out"]["output_dir"]    #, subject2_json["out"]["output_dir"]    ]
+    
+    wf.split(("t1"))#, "templateModel", "landmarkWeights", "landmarks", "output_dir"))
  
     # Set the filenames of the outputs of BCD
-#    wf.add(append_filename(name="outputLandmarksInInputSpaceName",
-#                           filename=wf.lzin.t1,
-#                           appended_str="_BCD_Original",
-#                           extension=".fcsv").split("filename"))
-#    wf.add(append_filename(name="outputResampledVolumeName",
-#                           filename=wf.lzin.t1,appended_str="_BCD_ACPC",
-#                           extension=".nii.gz"))
-#    wf.add(append_filename(name="outputTransformName",
-#                           filename=wf.lzin.t1,
-#                           appended_str="_BCD_Original2ACPC_transform",
-#                           extension=".h5").split("filename"))
-#    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",
-#                           filename=wf.lzin.t1,
-#                           appended_str="_BCD_ACPC_Landmarks",
-#                           extension=".fcsv").split("filename"))
-#    wf.add(append_filename(name="writeBranded2DImageName",
-#                           filename=wf.lzin.t1,
-#                           appended_str="_BCD_Branded2DQCimage",       
-#                           extension=".png").split("filename"))
+    wf.add(append_filename(name="outputLandmarksInInputSpaceName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_Original",
+                           extension=".fcsv"))
+    wf.add(append_filename(name="outputResampledVolumeName",
+                           filename=wf.lzin.t1,appended_str="_BCD_ACPC",
+                           extension=".nii.gz"))
+    wf.add(append_filename(name="outputTransformName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_Original2ACPC_transform",
+                           extension=".h5"))
+    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_ACPC_Landmarks",
+                           extension=".fcsv"))
+    wf.add(append_filename(name="writeBranded2DImageName",
+                           filename=wf.lzin.t1,
+                           appended_str="_BCD_Branded2DQCimage",       
+                           extension=".png"))
 
     # Set the inputs of BCD
-#    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
-#    bcd.inputs.inputVolume =                       wf.inputs.t1
-#    bcd.inputs.inputTemplateModel =                wf.inputs.templateModel
-#    bcd.inputs.LLSModel =                          wf.inputs.llsModel
-#    bcd.inputs.atlasLandmarkWeights =              wf.inputs.landmarkWeights 
-#    bcd.inputs.atlasLandmarks =                    wf.inputs.landmarks
-#    bcd.inputs.houghEyeDetectorMode =              1
-#    bcd.inputs.acLowerBound =                      80.000000
-#    bcd.inputs.interpolationMode =                 "Linear"
-#    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpaceName.lzout.out 
-#    bcd.inputs.outputResampledVolume =             wf.outputResampledVolumeName.lzout.out 
-#    bcd.inputs.outputTransform =                   wf.outputTransformName.lzout.out 
-#    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpaceName.lzout.out 
-#    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImageName.lzout.out 
-#    wf.add(bcd)
-
+    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
+    bcd.inputs.inputVolume =                       wf.lzin.t1
+    bcd.inputs.inputTemplateModel =                wf.lzin.templateModel
+    bcd.inputs.LLSModel =                          wf.lzin.llsModel
+    bcd.inputs.atlasLandmarkWeights =              wf.lzin.landmarkWeights 
+    bcd.inputs.atlasLandmarks =                    wf.lzin.landmarks
+    bcd.inputs.houghEyeDetectorMode =              1
+    bcd.inputs.acLowerBound =                      80.000000
+    bcd.inputs.interpolationMode =                 "Linear"
+    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpaceName.lzout.out 
+    bcd.inputs.outputResampledVolume =             wf.outputResampledVolumeName.lzout.out 
+    bcd.inputs.outputTransform =                   wf.outputTransformName.lzout.out 
+    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpaceName.lzout.out 
+    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImageName.lzout.out 
+    wf.add(bcd)
     # Set the filename of the output of Resample
-    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
+#    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
-    resample = BRAINSResample("BRAINSResample").get_task()
-    resample.inputs.inputVolume =       wf.lzin.t1 #wf.BRAINSConstellationDetector.lzout.outputResampledVolume
-    resample.inputs.interpolationMode = "Linear"
-    resample.inputs.pixelType =         "binary"
-    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
-    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
-    resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
-#    resample.split(("intputVolume")) 
-    wf.add(resample)
+#    resample = BRAINSResample("BRAINSResample").get_task()
+#    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
+#    resample.inputs.interpolationMode = "Linear"
+#    resample.inputs.pixelType =         "binary"
+#    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
+#    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
+#    resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
+#    wf.add(resample)
 
     # Copy output file from the cache to the output_dir 
 #    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceDest",      
@@ -146,12 +137,13 @@ if __name__ == "__main__":
     # Set the outputs of the entire workflow
     wf.set_output(
         [
+              
 #            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
 #            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
 #            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
 #            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
 #            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
-            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
+#            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
    
