@@ -100,6 +100,7 @@ if __name__ == "__main__":
     bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpaceName.lzout.out 
     bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImageName.lzout.out 
     wf.add(bcd)
+
     # Set the filename of the output of Resample
     wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
@@ -132,12 +133,10 @@ if __name__ == "__main__":
     wf.add(copy_from_cache(name="resampledOutputVolumeDest",            
                            cache_path=wf.BRAINSResample.lzout.outputVolume,                                        
                            output_dir="/localscratch/Users/cjohnson30/output_dir"))
- 
 
     # Set the outputs of the entire workflow
     wf.set_output(
         [
-              
             ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
             ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
             ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
