@@ -108,7 +108,7 @@ if __name__ == "__main__":
 #    wf.add(bcd)
 
     # Set the filename of the output of Resample
-#    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
+    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     resample.inputs.pixelType =         "binary"
     resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
     resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
-    resample.inputs.outputVolume =      "out.nii.gz"#wf.resampledOutputVolumeName.lzout.out 
+    resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
 #    resample.split(("intputVolume")) 
     wf.add(resample)
 
