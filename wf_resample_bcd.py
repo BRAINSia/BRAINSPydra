@@ -53,7 +53,8 @@ if __name__ == "__main__":
 
     # Create the inputs to the workflow
     wf = pydra.Workflow(name="wf", 
-                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"]) 
+                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"],
+                        cache_dir=cache_dir) 
 
     wf.inputs.t1 =                   subject_t1s
     wf.inputs.templateModel =        subject_templateModels
