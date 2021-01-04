@@ -30,7 +30,8 @@ def copy_from_cache(cache_path, output_dir):
 if __name__ == "__main__":
     # Set the location of the cache and clear its contents before running 
     output_dir = "/localscratch/Users/cjohnson30/output_dir"
-    os.system(f'rm -rf {output_dir}/*')
+    cache_dir = "/localscratch/Users/cjohnson30/cache_dir"
+    os.system(f'rm -rf {cache_dir}/*') # Only deleting cache now as the pipeline is being developed and tested
      
     # Get the subject data listed in the subject_jsons.json file 
     subject_t1s = []
@@ -51,118 +52,137 @@ if __name__ == "__main__":
     nest_asyncio.apply()
 
     # Create the inputs to the workflow
-    wf1 = pydra.Workflow(name="wf1", 
-                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
-                        cache_dir=output_dir)
+    wf = pydra.Workflow(name="wf", 
+                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"]) 
 
-    wf1.inputs.t1 =                   subject_t1s
-    wf1.inputs.templateModel =        subject_templateModels
-    wf1.inputs.llsModel =             subject_llsModels
-    wf1.inputs.landmarkWeights =      subject_landmarkWeights
-    wf1.inputs.landmarks =            subject_landmarks
-    wf1.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks"))
+    wf.inputs.t1 =                   subject_t1s
+    wf.inputs.templateModel =        subject_templateModels
+    wf.inputs.llsModel =             subject_llsModels
+    wf.inputs.landmarkWeights =      subject_landmarkWeights
+    wf.inputs.landmarks =            subject_landmarks
+    wf.inputs.output_dir =           output_dir
+    wf.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks"))
  
     # Set the filenames of the outputs of BCD
-    wf1.add(append_filename(name="outputLandmarksInInputSpaceName",
-                           filename=wf1.lzin.t1,
+    wf.add(append_filename(name="outputLandmarksInInputSpace",
+                           filename=wf.lzin.t1,
                            append_str="_BCD_Original",
                            extension=".fcsv"))
-    wf1.add(append_filename(name="outputResampledVolumeName",
-                           filename=wf1.lzin.t1,append_str="_BCD_ACPC",
+    wf.add(append_filename(name="outputResampledVolume",
+                           filename=wf.lzin.t1,append_str="_BCD_ACPC",
                            extension=".nii.gz"))
-    wf1.add(append_filename(name="outputTransformName",
-                           filename=wf1.lzin.t1,
+    wf.add(append_filename(name="outputTransform",
+                           filename=wf.lzin.t1,
                            append_str="_BCD_Original2ACPC_transform",
                            extension=".h5"))
-    wf1.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",
-                           filename=wf1.lzin.t1,
+    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpace",
+                           filename=wf.lzin.t1,
                            append_str="_BCD_ACPC_Landmarks",
                            extension=".fcsv"))
-    wf1.add(append_filename(name="writeBranded2DImageName",
-                           filename=wf1.lzin.t1,
+    wf.add(append_filename(name="writeBranded2DImage",
+                           filename=wf.lzin.t1,
                            append_str="_BCD_Branded2DQCimage",       
                            extension=".png"))
 
     # Set the inputs of BCD
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
-    bcd.inputs.inputVolume =                       wf1.lzin.t1
-    bcd.inputs.inputTemplateModel =                wf1.lzin.templateModel
-    bcd.inputs.LLSModel =                          wf1.lzin.llsModel
-    bcd.inputs.atlasLandmarkWeights =              wf1.lzin.landmarkWeights 
-    bcd.inputs.atlasLandmarks =                    wf1.lzin.landmarks
+    bcd.inputs.inputVolume =                       wf.lzin.t1
+    bcd.inputs.inputTemplateModel =                wf.lzin.templateModel
+    bcd.inputs.LLSModel =                          wf.lzin.llsModel
+    bcd.inputs.atlasLandmarkWeights =              wf.lzin.landmarkWeights 
+    bcd.inputs.atlasLandmarks =                    wf.lzin.landmarks
     bcd.inputs.houghEyeDetectorMode =              1
     bcd.inputs.acLowerBound =                      80.000000
     bcd.inputs.interpolationMode =                 "Linear"
-    bcd.inputs.outputLandmarksInInputSpace =       wf1.outputLandmarksInInputSpaceName.lzout.out 
-    bcd.inputs.outputResampledVolume =             wf1.outputResampledVolumeName.lzout.out 
-    bcd.inputs.outputTransform =                   wf1.outputTransformName.lzout.out 
-    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf1.outputLandmarksInACPCAlignedSpaceName.lzout.out 
-    bcd.inputs.writeBranded2DImage =               wf1.writeBranded2DImageName.lzout.out 
-    wf1.add(bcd)
+    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpace.lzout.out 
+    bcd.inputs.outputResampledVolume =             wf.outputResampledVolume.lzout.out 
+    bcd.inputs.outputTransform =                   wf.outputTransform.lzout.out 
+    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpace.lzout.out 
+    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImage.lzout.out 
+    wf.add(bcd)
 
     # Set the filename of the output of Resample
-    wf1.add(append_filename(name="resampledOutputVolumeName", filename=wf1.lzin.t1, append_str="_resampled", extension=".nii.gz"))
+    wf.add(append_filename(name="resampledOutputVolume", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
-    resample.inputs.inputVolume =       wf1.BRAINSConstellationDetector.lzout.outputResampledVolume
+    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
     resample.inputs.interpolationMode = "Linear"
     resample.inputs.pixelType =         "binary"
     resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
     resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
-    resample.inputs.outputVolume =      wf1.resampledOutputVolumeName.lzout.out 
-    wf1.add(resample)
+    resample.inputs.outputVolume =      wf.resampledOutputVolume.lzout.out 
+    wf.add(resample)
 
+    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",
+                            cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,
+                            output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputResampledVolumeWritten",
+                            cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,
+                            output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputTransformWritten",
+                            cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,
+                            output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten",
+                            cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
+                            output_dir=output_dir))
+    wf.add(copy_from_cache(name="writeBranded2DImageWritten",
+                            cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,
+                            output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputVolumeWritten",
+                            cache_path=wf.BRAINSResample.lzout.outputVolume,
+                            output_dir=output_dir))
+ 
     # Set the outputs of the entire workflow
-    wf1.set_output(
+    wf.set_output(
         [
-            ("outputLandmarksInInputSpace",       wf1.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-            ("bcdResampledVolume",             wf1.BRAINSConstellationDetector.lzout.outputResampledVolume),
-            ("outputTransform",                   wf1.BRAINSConstellationDetector.lzout.outputTransform),
-            ("outputLandmarksInACPCAlignedSpace", wf1.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-            ("writeBranded2DImage",               wf1.BRAINSConstellationDetector.lzout.writeBranded2DImage),
-            ("resampledOutputVolume",             wf1.BRAINSResample.lzout.outputVolume),
+            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
+            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
+            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
+            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
    
-    wf2 = pydra.Workflow(name="wf2", input_spec=["output_file"])
-    wf2.add(wf1)
-    wf2.add(copy_from_cache(name="outputLandmarksInInputSpace",
-                            cache_path=wf2.wf1.lzout.outputLandmarksInInputSpace,
-                            output_dir=output_dir))
-    wf2.add(copy_from_cache(name="bcdResampledVolume",
-                            cache_path=wf2.wf1.lzout.bcdResampledVolume,
-                            output_dir=output_dir))
-    wf2.add(copy_from_cache(name="outputTransform",
-                            cache_path=wf2.wf1.lzout.outputTransform,
-                            output_dir=output_dir))
-    wf2.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace",
-                            cache_path=wf2.wf1.lzout.outputLandmarksInACPCAlignedSpace,
-                            output_dir=output_dir)) 
-    wf2.add(copy_from_cache(name="writeBranded2DImage",
-                            cache_path=wf2.wf1.lzout.writeBranded2DImage,
-                            output_dir=output_dir))
-    wf2.add(copy_from_cache(name="resampledOutputVolume",
-                            cache_path=wf2.wf1.lzout.resampledOutputVolume,
-                            output_dir=output_dir))
-
-    wf2.set_output(
-        [
-            ("outputLandmarksInInputSpace", wf2.outputLandmarksInInputSpace.lzout.out),
-            ("bcdResampledVolume", wf2.bcdResampledVolume.lzout.out),
-            ("outputTransform", wf2.outputTransform.lzout.out),
-            ("outputLandmarksInACPCAlignedSpace", wf2.outputLandmarksInACPCAlignedSpace.lzout.out),
-            ("writeBranded2DImage", wf2.writeBranded2DImage.lzout.out),
-            ("resampledOutputVolume", wf2.resampledOutputVolume.lzout.out),
-        ]
-    ) 
+#    wf2 = pydra.Workflow(name="wf2", input_spec=["output_file"], cache_dir=cache_dir)
+#    wf2.add(wf)
+#    wf2.add(copy_from_cache(name="outputLandmarksInInputSpace",
+#                            cache_path=wf2.wf.lzout.outputLandmarksInInputSpace,
+#                            output_dir=output_dir))
+#    wf2.add(copy_from_cache(name="bcdResampledVolume",
+#                            cache_path=wf2.wf.lzout.bcdResampledVolume,
+#                            output_dir=output_dir))
+#    wf2.add(copy_from_cache(name="outputTransform",
+#                            cache_path=wf2.wf.lzout.outputTransform,
+#                            output_dir=output_dir))
+#    wf2.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace",
+#                            cache_path=wf2.wf.lzout.outputLandmarksInACPCAlignedSpace,
+#                            output_dir=output_dir)) 
+#    wf2.add(copy_from_cache(name="writeBranded2DImage",
+#                            cache_path=wf2.wf.lzout.writeBranded2DImage,
+#                            output_dir=output_dir))
+#    wf2.add(copy_from_cache(name="resampledOutputVolume",
+#                            cache_path=wf2.wf.lzout.resampledOutputVolume,
+#                            output_dir=output_dir))
+#
+#    wf2.set_output(
+#        [
+#            ("outputLandmarksInInputSpace",       wf2.wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+#            ("bcdResampledVolume",                wf2.wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
+#            ("outputTransform",                   wf2.wf.BRAINSConstellationDetector.lzout.outputTransform),
+#            ("outputLandmarksInACPCAlignedSpace", wf2.wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+#            ("writeBranded2DImage",               wf2.wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
+#            ("resampledOutputVolume",             wf2.wf.BRAINSResample.lzout.outputVolume),
+#        ]
+#    ) 
                            
    
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
-        sub(wf2)
-    result = wf2.result()
+        sub(wf)
+    result = wf.result()
     print(result)
     print(f"total time: {time.time() - t0}")
     
