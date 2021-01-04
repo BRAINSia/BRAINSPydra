@@ -51,84 +51,101 @@ if __name__ == "__main__":
     nest_asyncio.apply()
 
     # Create the inputs to the workflow
-    wf = pydra.Workflow(name="wf", 
+    wf1 = pydra.Workflow(name="wf1", 
                         input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"], 
                         cache_dir=output_dir)
 
-    wf.inputs.t1 =                   subject_t1s
-    wf.inputs.templateModel =        subject_templateModels
-    wf.inputs.llsModel =             subject_llsModels
-    wf.inputs.landmarkWeights =      subject_landmarkWeights
-    wf.inputs.landmarks =            subject_landmarks
-    wf.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks"))
+    wf1.inputs.t1 =                   subject_t1s
+    wf1.inputs.templateModel =        subject_templateModels
+    wf1.inputs.llsModel =             subject_llsModels
+    wf1.inputs.landmarkWeights =      subject_landmarkWeights
+    wf1.inputs.landmarks =            subject_landmarks
+    wf1.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks"))
  
     # Set the filenames of the outputs of BCD
-    wf.add(append_filename(name="outputLandmarksInInputSpaceName",
-                           filename=wf.lzin.t1,
+    wf1.add(append_filename(name="outputLandmarksInInputSpaceName",
+                           filename=wf1.lzin.t1,
                            append_str="_BCD_Original",
                            extension=".fcsv"))
-    wf.add(append_filename(name="outputResampledVolumeName",
-                           filename=wf.lzin.t1,append_str="_BCD_ACPC",
+    wf1.add(append_filename(name="outputResampledVolumeName",
+                           filename=wf1.lzin.t1,append_str="_BCD_ACPC",
                            extension=".nii.gz"))
-    wf.add(append_filename(name="outputTransformName",
-                           filename=wf.lzin.t1,
+    wf1.add(append_filename(name="outputTransformName",
+                           filename=wf1.lzin.t1,
                            append_str="_BCD_Original2ACPC_transform",
                            extension=".h5"))
-    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",
-                           filename=wf.lzin.t1,
+    wf1.add(append_filename(name="outputLandmarksInACPCAlignedSpaceName",
+                           filename=wf1.lzin.t1,
                            append_str="_BCD_ACPC_Landmarks",
                            extension=".fcsv"))
-    wf.add(append_filename(name="writeBranded2DImageName",
-                           filename=wf.lzin.t1,
+    wf1.add(append_filename(name="writeBranded2DImageName",
+                           filename=wf1.lzin.t1,
                            append_str="_BCD_Branded2DQCimage",       
                            extension=".png"))
 
     # Set the inputs of BCD
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
-    bcd.inputs.inputVolume =                       wf.lzin.t1
-    bcd.inputs.inputTemplateModel =                wf.lzin.templateModel
-    bcd.inputs.LLSModel =                          wf.lzin.llsModel
-    bcd.inputs.atlasLandmarkWeights =              wf.lzin.landmarkWeights 
-    bcd.inputs.atlasLandmarks =                    wf.lzin.landmarks
+    bcd.inputs.inputVolume =                       wf1.lzin.t1
+    bcd.inputs.inputTemplateModel =                wf1.lzin.templateModel
+    bcd.inputs.LLSModel =                          wf1.lzin.llsModel
+    bcd.inputs.atlasLandmarkWeights =              wf1.lzin.landmarkWeights 
+    bcd.inputs.atlasLandmarks =                    wf1.lzin.landmarks
     bcd.inputs.houghEyeDetectorMode =              1
     bcd.inputs.acLowerBound =                      80.000000
     bcd.inputs.interpolationMode =                 "Linear"
-    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpaceName.lzout.out 
-    bcd.inputs.outputResampledVolume =             wf.outputResampledVolumeName.lzout.out 
-    bcd.inputs.outputTransform =                   wf.outputTransformName.lzout.out 
-    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpaceName.lzout.out 
-    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImageName.lzout.out 
-    wf.add(bcd)
+    bcd.inputs.outputLandmarksInInputSpace =       wf1.outputLandmarksInInputSpaceName.lzout.out 
+    bcd.inputs.outputResampledVolume =             wf1.outputResampledVolumeName.lzout.out 
+    bcd.inputs.outputTransform =                   wf1.outputTransformName.lzout.out 
+    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf1.outputLandmarksInACPCAlignedSpaceName.lzout.out 
+    bcd.inputs.writeBranded2DImage =               wf1.writeBranded2DImageName.lzout.out 
+    wf1.add(bcd)
 
     # Set the filename of the output of Resample
-    wf.add(append_filename(name="resampledOutputVolumeName", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
+    wf1.add(append_filename(name="resampledOutputVolumeName", filename=wf1.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
-    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
+    resample.inputs.inputVolume =       wf1.BRAINSConstellationDetector.lzout.outputResampledVolume
     resample.inputs.interpolationMode = "Linear"
     resample.inputs.pixelType =         "binary"
     resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
     resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
-    resample.inputs.outputVolume =      wf.resampledOutputVolumeName.lzout.out 
-    wf.add(resample)
+    resample.inputs.outputVolume =      wf1.resampledOutputVolumeName.lzout.out 
+    wf1.add(resample)
 
     # Set the outputs of the entire workflow
-    wf.set_output(
+    wf1.set_output(
         [
-            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
-            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
-            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
-            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
+            ("outputLandmarksInInputSpace",       wf1.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume",             wf1.BRAINSConstellationDetector.lzout.outputResampledVolume),
+            ("outputTransform",                   wf1.BRAINSConstellationDetector.lzout.outputTransform),
+            ("outputLandmarksInACPCAlignedSpace", wf1.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+            ("writeBranded2DImage",               wf1.BRAINSConstellationDetector.lzout.writeBranded2DImage),
+            ("resampledOutputVolume",             wf1.BRAINSResample.lzout.outputVolume),
         ]
     )
-    
+   
+    wf2 = pydra.Workflow(name="wf2", input_spec=["output_file"])
+    wf2.add(wf1)
+    wf2.add(copy_from_cache(name="outputLandmarksInInputSpace",
+                            cache_path=wf2.wf1.lzout.outputLandmarksInInputSpace,
+                            output_dir=output_dir))
+#    wf2.add(copy_from_cache(name="outputResampledVolume",
+#                            cache_path=wf2.wf1.lzout.outputResampledVolume,
+#                            output_dir=output_dir))
+    wf2.set_output([("outputLandmarksInInputSpace", wf2.outputLandmarksInInputSpace.lzout.out,)])
+#                     "outputResampledVolume", wf2.outputLandmarksInInputSpace.lzout.out)]) 
+                           
+   
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
-        sub(wf)
-    result = wf.result()
+        sub(wf2)
+    result = wf2.result()
     print(result)
     print(f"total time: {time.time() - t0}")
+    
+#    with pydra.Submitter(plugin="cf") as sub:
+#        sub(wf2)
+#    result=wf2.result()
+#    print(result)
