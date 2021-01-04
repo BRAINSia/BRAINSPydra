@@ -49,41 +49,25 @@ if __name__ == "__main__":
             subject_landmarks.append(data[subject]["landmarks"])
    
  
+
+    # Define the workflow
     nest_asyncio.apply()
+    wf = pydra.Workflow(name="wf",input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"])
 
     # Create the inputs to the workflow
-    wf = pydra.Workflow(name="wf", 
-                        input_spec=["t1", "templateModel", "llsModel", "landmarkWeights", "landmarks", "output_dir"],
-                        cache_dir=cache_dir) 
-
     wf.inputs.t1 =                   subject_t1s
     wf.inputs.templateModel =        subject_templateModels
     wf.inputs.llsModel =             subject_llsModels
     wf.inputs.landmarkWeights =      subject_landmarkWeights
     wf.inputs.landmarks =            subject_landmarks
-    wf.inputs.output_dir =           output_dir
     wf.split(("t1", "templateModel", "llsModel", "landmarkWeights", "landmarks"))
  
     # Set the filenames of the outputs of BCD
-    wf.add(append_filename(name="outputLandmarksInInputSpace",
-                           filename=wf.lzin.t1,
-                           append_str="_BCD_Original",
-                           extension=".fcsv"))
-    wf.add(append_filename(name="outputResampledVolume",
-                           filename=wf.lzin.t1,append_str="_BCD_ACPC",
-                           extension=".nii.gz"))
-    wf.add(append_filename(name="outputTransform",
-                           filename=wf.lzin.t1,
-                           append_str="_BCD_Original2ACPC_transform",
-                           extension=".h5"))
-    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpace",
-                           filename=wf.lzin.t1,
-                           append_str="_BCD_ACPC_Landmarks",
-                           extension=".fcsv"))
-    wf.add(append_filename(name="writeBranded2DImage",
-                           filename=wf.lzin.t1,
-                           append_str="_BCD_Branded2DQCimage",       
-                           extension=".png"))
+    wf.add(append_filename(name="outputLandmarksInInputSpace",       filename=wf.lzin.t1, append_str="_BCD_Original",                extension=".fcsv"))
+    wf.add(append_filename(name="outputResampledVolume",             filename=wf.lzin.t1, append_str="_BCD_ACPC",                    extension=".nii.gz"))
+    wf.add(append_filename(name="outputTransform",                   filename=wf.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
+    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=wf.lzin.t1, append_str="_BCD_ACPC_Landmarks",          extension=".fcsv"))
+    wf.add(append_filename(name="writeBranded2DImage",               filename=wf.lzin.t1, append_str="_BCD_Branded2DQCimage",        extension=".png"))
 
     # Set the inputs of BCD
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
@@ -116,24 +100,12 @@ if __name__ == "__main__":
     wf.add(resample)
 
     # Copy the files from the cache to the output directory so the resulting files can be accessed
-    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",
-                            cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,
-                            output_dir=output_dir))
-    wf.add(copy_from_cache(name="outputResampledVolumeWritten",
-                            cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,
-                            output_dir=output_dir))
-    wf.add(copy_from_cache(name="outputTransformWritten",
-                            cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,
-                            output_dir=output_dir))
-    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten",
-                            cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace,
-                            output_dir=output_dir))
-    wf.add(copy_from_cache(name="writeBranded2DImageWritten",
-                            cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,
-                            output_dir=output_dir))
-    wf.add(copy_from_cache(name="outputVolumeWritten",
-                            cache_path=wf.BRAINSResample.lzout.outputVolume,
-                            output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",       cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,             output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputTransformWritten",                   cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                   output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
+    wf.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,               output_dir=output_dir))
+    wf.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=wf.BRAINSResample.lzout.outputVolume,                                   output_dir=output_dir))
  
     # Set the outputs of the entire workflow
     wf.set_output(
