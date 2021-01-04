@@ -1,349 +1,139 @@
 {
-    "sub-491093_ses-64461_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-491093_ses-64461_run-003_T1w.nii.gz",
+    "sub-066217_ses-29931_run-003_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066217_ses-29931_run-003_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-273625_ses-18699_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-273625_ses-18699_run-002_T1w.nii.gz",
+    "sub-066260_ses-45409_run-002_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066260_ses-45409_run-002_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-687564_ses-37815_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-687564_ses-37815_run-003_T1w.nii.gz",
+    "sub-066217_ses-57740_run-003_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066217_ses-57740_run-003_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-509139_ses-21379_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-509139_ses-21379_run-002_T1w.nii.gz",
+    "sub-130854_ses-68913_run-005_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-130854_ses-68913_run-005_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-052823_ses-32611_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-052823_ses-32611_run-002_T1w.nii.gz",
+    "sub-491093_ses-75976_run-003_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-491093_ses-75976_run-003_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-066260_ses-40168_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-066260_ses-40168_run-003_T1w.nii.gz",
+    "sub-273625_ses-68343_run-002_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-273625_ses-68343_run-002_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-273625_ses-30926_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-273625_ses-30926_run-002_T1w.nii.gz",
+    "sub-066217_ses-76130_run-501_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066217_ses-76130_run-501_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-026445_ses-23443_run-007_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-026445_ses-23443_run-007_T1w.nii.gz",
+    "sub-052823_ses-43817_run-002_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-052823_ses-43817_run-002_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-066217_ses-97124_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-066217_ses-97124_run-003_T1w.nii.gz",
+    "sub-273625_ses-47445_run-002_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-273625_ses-47445_run-002_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-118844_ses-55865_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-118844_ses-55865_run-002_T1w.nii.gz",
+    "sub-121609_ses-92212_run-002_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-121609_ses-92212_run-002_T1w.nii.gz",
+        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    },
+    "sub-026445_ses-71569_run-006_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-026445_ses-71569_run-006_T1w.nii.gz",
+        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    },
+    "sub-427920_ses-61709_run-004_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-427920_ses-61709_run-004_T1w.nii.gz",
+        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    },
+    "sub-118844_ses-94702_run-002_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-118844_ses-94702_run-002_T1w.nii.gz",
+        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    },
+    "sub-273625_ses-19351_run-002_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-273625_ses-19351_run-002_T1w.nii.gz",
+        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    },
+    "sub-066217_ses-76130_run-301_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066217_ses-76130_run-301_T1w.nii.gz",
+        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    },
+    "sub-066260_ses-41710_run-003_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066260_ses-41710_run-003_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
     "sub-066217_ses-36042_run-301_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-066217_ses-36042_run-301_T1w.nii.gz",
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066217_ses-36042_run-301_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-012716_ses-67221_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-67221_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-62510_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-62510_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-97197_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-97197_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-687564_ses-80742_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-687564_ses-80742_run-003_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-60397_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-60397_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-53162_run-004_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-53162_run-004_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-347909_ses-43320_run-1301_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-347909_ses-43320_run-1301_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-026445_ses-40163_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-026445_ses-40163_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-509139_ses-85937_run-004_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-509139_ses-85937_run-004_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-578972_ses-44134_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-578972_ses-44134_run-003_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-67221_run-005_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-67221_run-005_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-347909_ses-43320_run-901_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-347909_ses-43320_run-901_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-066217_ses-36042_run-401_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-066217_ses-36042_run-401_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-130854_ses-68913_run-004_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-130854_ses-68913_run-004_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-41731_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-41731_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-491093_ses-14138_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-491093_ses-14138_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-452613_ses-33776_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-452613_ses-33776_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-452613_ses-32275_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-452613_ses-32275_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-63973_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-63973_run-002_T1w.nii.gz",
+    "sub-066260_ses-40168_run-003_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066260_ses-40168_run-003_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
     "sub-066260_ses-21713_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-066260_ses-21713_run-002_T1w.nii.gz",
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066260_ses-21713_run-002_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
         "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
     },
-    "sub-012716_ses-15544_run-004_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-15544_run-004_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-118844_ses-72692_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-118844_ses-72692_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-509139_ses-90603_run-005_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-509139_ses-90603_run-005_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-118844_ses-41814_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-118844_ses-41814_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-509139_ses-40461_run-004_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-509139_ses-40461_run-004_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-560904_ses-53887_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-560904_ses-53887_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-578972_ses-81340_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-578972_ses-81340_run-003_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-026445_ses-71569_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-026445_ses-71569_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-53533_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-53533_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-012716_ses-69079_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-012716_ses-69079_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-273625_ses-41088_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-273625_ses-41088_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-026445_ses-70305_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-026445_ses-70305_run-003_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-273625_ses-48422_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-273625_ses-48422_run-003_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-118844_ses-10969_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-118844_ses-10969_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-052823_ses-88255_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-052823_ses-88255_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-273625_ses-78366_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-273625_ses-78366_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-026445_ses-23443_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-026445_ses-23443_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-687564_ses-26209_run-002_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-687564_ses-26209_run-002_T1w.nii.gz",
-        "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
-        "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-        "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-        "landmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    },
-    "sub-118844_ses-10969_run-003_T1w.nii.gz": {
-        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50/sub-118844_ses-10969_run-003_T1w.nii.gz",
+    "sub-066217_ses-36042_run-401_T1w.nii.gz": {
+        "t1": "/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10/sub-066217_ses-36042_run-401_T1w.nii.gz",
         "templateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
         "llsModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
         "landmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",

@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 
-p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples50")
+p = Path("/localscratch/Users/cjohnson30/BCD_Practice/t1w_examples10")
 
 out_json = {}
 for path in p.glob("*.nii.gz"):
