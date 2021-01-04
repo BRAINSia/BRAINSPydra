@@ -114,6 +114,7 @@ if __name__ == "__main__":
     resample.inputs.outputVolume =      wf.resampledOutputVolume.lzout.out 
     wf.add(resample)
 
+    # Copy the files from the cache to the output directory so the resulting files can be accessed
     wf.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",
                             cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,
                             output_dir=output_dir))
@@ -145,39 +146,6 @@ if __name__ == "__main__":
         ]
     )
    
-#    wf2 = pydra.Workflow(name="wf2", input_spec=["output_file"], cache_dir=cache_dir)
-#    wf2.add(wf)
-#    wf2.add(copy_from_cache(name="outputLandmarksInInputSpace",
-#                            cache_path=wf2.wf.lzout.outputLandmarksInInputSpace,
-#                            output_dir=output_dir))
-#    wf2.add(copy_from_cache(name="bcdResampledVolume",
-#                            cache_path=wf2.wf.lzout.bcdResampledVolume,
-#                            output_dir=output_dir))
-#    wf2.add(copy_from_cache(name="outputTransform",
-#                            cache_path=wf2.wf.lzout.outputTransform,
-#                            output_dir=output_dir))
-#    wf2.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace",
-#                            cache_path=wf2.wf.lzout.outputLandmarksInACPCAlignedSpace,
-#                            output_dir=output_dir)) 
-#    wf2.add(copy_from_cache(name="writeBranded2DImage",
-#                            cache_path=wf2.wf.lzout.writeBranded2DImage,
-#                            output_dir=output_dir))
-#    wf2.add(copy_from_cache(name="resampledOutputVolume",
-#                            cache_path=wf2.wf.lzout.resampledOutputVolume,
-#                            output_dir=output_dir))
-#
-#    wf2.set_output(
-#        [
-#            ("outputLandmarksInInputSpace",       wf2.wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-#            ("bcdResampledVolume",                wf2.wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
-#            ("outputTransform",                   wf2.wf.BRAINSConstellationDetector.lzout.outputTransform),
-#            ("outputLandmarksInACPCAlignedSpace", wf2.wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-#            ("writeBranded2DImage",               wf2.wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
-#            ("resampledOutputVolume",             wf2.wf.BRAINSResample.lzout.outputVolume),
-#        ]
-#    ) 
-                           
-   
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
@@ -185,8 +153,3 @@ if __name__ == "__main__":
     result = wf.result()
     print(result)
     print(f"total time: {time.time() - t0}")
-    
-#    with pydra.Submitter(plugin="cf") as sub:
-#        sub(wf2)
-#    result=wf2.result()
-#    print(result)
