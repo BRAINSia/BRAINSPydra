@@ -117,7 +117,7 @@ if __name__ == "__main__":
     wf1.set_output(
         [
             ("outputLandmarksInInputSpace",       wf1.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-            ("outputResampledVolume",             wf1.BRAINSConstellationDetector.lzout.outputResampledVolume),
+            ("bcdResampledVolume",             wf1.BRAINSConstellationDetector.lzout.outputResampledVolume),
             ("outputTransform",                   wf1.BRAINSConstellationDetector.lzout.outputTransform),
             ("outputLandmarksInACPCAlignedSpace", wf1.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
             ("writeBranded2DImage",               wf1.BRAINSConstellationDetector.lzout.writeBranded2DImage),
@@ -130,11 +130,32 @@ if __name__ == "__main__":
     wf2.add(copy_from_cache(name="outputLandmarksInInputSpace",
                             cache_path=wf2.wf1.lzout.outputLandmarksInInputSpace,
                             output_dir=output_dir))
-#    wf2.add(copy_from_cache(name="outputResampledVolume",
-#                            cache_path=wf2.wf1.lzout.outputResampledVolume,
-#                            output_dir=output_dir))
-    wf2.set_output([("outputLandmarksInInputSpace", wf2.outputLandmarksInInputSpace.lzout.out,)])
-#                     "outputResampledVolume", wf2.outputLandmarksInInputSpace.lzout.out)]) 
+    wf2.add(copy_from_cache(name="bcdResampledVolume",
+                            cache_path=wf2.wf1.lzout.bcdResampledVolume,
+                            output_dir=output_dir))
+    wf2.add(copy_from_cache(name="outputTransform",
+                            cache_path=wf2.wf1.lzout.outputTransform,
+                            output_dir=output_dir))
+    wf2.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace",
+                            cache_path=wf2.wf1.lzout.outputLandmarksInACPCAlignedSpace,
+                            output_dir=output_dir)) 
+    wf2.add(copy_from_cache(name="writeBranded2DImage",
+                            cache_path=wf2.wf1.lzout.writeBranded2DImage,
+                            output_dir=output_dir))
+    wf2.add(copy_from_cache(name="resampledOutputVolume",
+                            cache_path=wf2.wf1.lzout.resampledOutputVolume,
+                            output_dir=output_dir))
+
+    wf2.set_output(
+        [
+            ("outputLandmarksInInputSpace", wf2.outputLandmarksInInputSpace.lzout.out),
+            ("bcdResampledVolume", wf2.bcdResampledVolume.lzout.out),
+            ("outputTransform", wf2.outputTransform.lzout.out),
+            ("outputLandmarksInACPCAlignedSpace", wf2.outputLandmarksInACPCAlignedSpace.lzout.out),
+            ("writeBranded2DImage", wf2.writeBranded2DImage.lzout.out),
+            ("resampledOutputVolume", wf2.resampledOutputVolume.lzout.out),
+        ]
+    ) 
                            
    
     t0 = time.time() 
