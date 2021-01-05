@@ -124,8 +124,7 @@ if __name__ == "__main__":
     )
 
 
-    sink_node = pydra.Workflow(name="sink_node", input_spec=["t1"])
-    sink_node.add(source_node)
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform", "outputLandmarksInACPCAlignedSpace", "writeBranded2DImage", "outputVolume"])
        
 
     # Copy the files from the cache to the output directory so the resulting files can be accessed
@@ -146,6 +145,8 @@ if __name__ == "__main__":
             ("outputVolume",                      sink_node.outputVolumeWritten.lzout.out)
         ]
     )   
+#    source_node.add(sink_node)
+    sink_node.add(source_node)
 
     t0 = time.time() 
     # Run the pipeline
