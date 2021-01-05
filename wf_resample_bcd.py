@@ -136,21 +136,25 @@ if __name__ == "__main__":
                                                              "outputResampledVolume",
                                                              "outputTransform",                   
                                                              "outputLandmarksInACPCAlignedSpace",
-                                                             "writeBranded2DImage"]               
-    sink_node.inputs.outputLandmarksInInputSpace = wf.lzout.
+                                                             "writeBranded2DImage"]) 
+#    sink_node.inputs.outputLandmarksInInputSpace = source_node.lzout.outputLandmarksInInputSpace
     sink_node.add(source_node)
        
 
     # Copy the files from the cache to the output directory so the resulting files can be accessed
-    sink_node.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",       cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputResampledVolume,             output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputTransformWritten",                   cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputTransform,                   output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=source_node.wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,               output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=source_node.wf.BRAINSResample.lzout.outputVolume,                                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",       cache_path=source_node.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
+#    sink_node.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputResampledVolume,             output_dir=output_dir))
+#    sink_node.add(copy_from_cache(name="outputTransformWritten",                   cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputTransform,                   output_dir=output_dir))
+#    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
+#    sink_node.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=source_node.wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,               output_dir=output_dir))
+#    sink_node.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=source_node.wf.BRAINSResample.lzout.outputVolume,                                   output_dir=output_dir))
  
+    sink_node.set_output(
+        [
+            ("outputLandmarksInInputSpace",       sink_node.outputLandmarksInInputSpaceWritten.lzout.out)
+        ]
+    )   
 
-   
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
