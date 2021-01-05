@@ -71,27 +71,27 @@ if __name__ == "__main__":
 #
 #    # Set the filenames of the outputs of BCD
     wf.add(append_filename(name="outputLandmarksInInputSpace",       filename=wf.lzin.t1, append_str="_BCD_Original",                extension=".fcsv"))
-#    wf.add(append_filename(name="outputResampledVolume",             filename=wf.source_node.lzout.t1, append_str="_BCD_ACPC",                    extension=".nii.gz"))
-#    wf.add(append_filename(name="outputTransform",                   filename=wf.source_node.lzout.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
-#    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=wf.source_node.lzout.t1, append_str="_BCD_ACPC_Landmarks",          extension=".fcsv"))
-#    wf.add(append_filename(name="writeBranded2DImage",               filename=wf.source_node.lzout.t1, append_str="_BCD_Branded2DQCimage",        extension=".png"))
-#
-#    # Set the inputs of BCD
-#    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
-#    bcd.inputs.inputVolume =                       wf.source_node.lzout.t1
-#    bcd.inputs.inputTemplateModel =                "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
-#    bcd.inputs.LLSModel =                          "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"                 # can be in config file, hardcoded
-#    bcd.inputs.atlasLandmarkWeights =              "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts" # hardcoded
-#    bcd.inputs.atlasLandmarks =                    "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-#    bcd.inputs.houghEyeDetectorMode =              1
-#    bcd.inputs.acLowerBound =                      80.000000
-#    bcd.inputs.interpolationMode =                 "Linear"
-#    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpace.lzout.out 
-#    bcd.inputs.outputResampledVolume =             wf.outputResampledVolume.lzout.out 
-#    bcd.inputs.outputTransform =                   wf.outputTransform.lzout.out 
-#    bcd.inputs.outputLandmarksInACPCAlignedSpace = "test.fcsv"            #wf.outputLandmarksInACPCAlignedSpace.lzout.out 
-#    bcd.inputs.writeBranded2DImage =               "test.png"            #wf.writeBranded2DImage.lzout.out 
-#    wf.add(bcd)
+    wf.add(append_filename(name="outputResampledVolume",             filename=wf.lzin.t1, append_str="_BCD_ACPC",                    extension=".nii.gz"))
+    wf.add(append_filename(name="outputTransform",                   filename=wf.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
+    wf.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=wf.lzin.t1, append_str="_BCD_ACPC_Landmarks",          extension=".fcsv"))
+    wf.add(append_filename(name="writeBranded2DImage",               filename=wf.lzin.t1, append_str="_BCD_Branded2DQCimage",        extension=".png"))
+
+    # Set the inputs of BCD
+    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
+    bcd.inputs.inputVolume =                       wf.lzin.t1
+    bcd.inputs.inputTemplateModel =                "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
+    bcd.inputs.LLSModel =                          "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"                 # can be in config file, hardcoded
+    bcd.inputs.atlasLandmarkWeights =              "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts" # hardcoded
+    bcd.inputs.atlasLandmarks =                    "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
+    bcd.inputs.houghEyeDetectorMode =              1
+    bcd.inputs.acLowerBound =                      80.000000
+    bcd.inputs.interpolationMode =                 "Linear"
+    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpace.lzout.out 
+    bcd.inputs.outputResampledVolume =             wf.outputResampledVolume.lzout.out 
+    bcd.inputs.outputTransform =                   wf.outputTransform.lzout.out 
+    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpace.lzout.out 
+    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImage.lzout.out 
+    wf.add(bcd)
 #
 #    # Set the filename of the output of Resample
 #    wf.add(append_filename(name="resampledOutputVolume", filename=wf.source_node.lzout.t1, append_str="_resampled", extension=".nii.gz"))
@@ -117,18 +117,31 @@ if __name__ == "__main__":
 #    # Set the outputs of the entire workflow
     wf.set_output(
         [
-            ("outputLandmarksInInputSpace",       wf.outputLandmarksInInputSpace.lzout.out),
-#            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-#            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
-#            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
-#            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-#            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
+#            ("outputLandmarksInInputSpace",       wf.outputLandmarksInInputSpace.lzout.out),
+#            ("outputResampledVolume",             wf.outputResampledVolume.lzout.out),
+#            ("outputTransform",                   wf.outputTransform.lzout.out),
+#            ("outputLandmarksInACPCAlignedSpace", wf.outputLandmarksInACPCAlignedSpace.lzout.out),
+#            ("writeBranded2DImage",               wf.writeBranded2DImage.lzout.out),
+            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
+            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
+            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
 #            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
 
     source_node.add(wf)
-    source_node.set_output([("out", source_node.wf.lzout.outputLandmarksInInputSpace)])
+    source_node.set_output(
+        [
+#            ("out", source_node.wf.lzout.outputLandmarksInInputSpace)
+            ("outputLandmarksInInputSpace",       source_node.wf.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume",             source_node.wf.lzout.outputResampledVolume),
+            ("outputTransform",                   source_node.wf.lzout.outputTransform),
+            ("outputLandmarksInACPCAlignedSpace", source_node.wf.lzout.outputLandmarksInACPCAlignedSpace),
+            ("writeBranded2DImage",               source_node.wf.lzout.writeBranded2DImage),
+        ]
+    )
    
     t0 = time.time() 
     # Run the pipeline
