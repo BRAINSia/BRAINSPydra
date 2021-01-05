@@ -113,7 +113,7 @@ if __name__ == "__main__":
             ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
             ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
             ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
-            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
+            ("outputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
 
@@ -128,30 +128,32 @@ if __name__ == "__main__":
             ("outputTransform",                   source_node.wf.lzout.outputTransform),
             ("outputLandmarksInACPCAlignedSpace", source_node.wf.lzout.outputLandmarksInACPCAlignedSpace),
             ("writeBranded2DImage",               source_node.wf.lzout.writeBranded2DImage),
+            ("outputVolume",                      source_node.wf.lzout.outputVolume),
         ]
     )
 
 
-    sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace",
-                                                             "outputResampledVolume",
-                                                             "outputTransform",                   
-                                                             "outputLandmarksInACPCAlignedSpace",
-                                                             "writeBranded2DImage"]) 
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["t1"])
 #    sink_node.inputs.outputLandmarksInInputSpace = source_node.lzout.outputLandmarksInInputSpace
     sink_node.add(source_node)
        
 
     # Copy the files from the cache to the output directory so the resulting files can be accessed
     sink_node.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",       cache_path=source_node.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputResampledVolume,             output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputTransformWritten",                   cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputTransform,                   output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=source_node.wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,               output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=source_node.wf.BRAINSResample.lzout.outputVolume,                                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=source_node.lzout.outputResampledVolume,             output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputTransformWritten",                   cache_path=source_node.lzout.outputTransform,                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=source_node.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=source_node.lzout.writeBranded2DImage,               output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=source_node.lzout.outputVolume,                                   output_dir=output_dir))
  
     sink_node.set_output(
         [
-            ("outputLandmarksInInputSpace",       sink_node.outputLandmarksInInputSpaceWritten.lzout.out)
+            ("outputLandmarksInInputSpace",       sink_node.outputLandmarksInInputSpaceWritten.lzout.out),
+            ("outputResampledVolume",             sink_node.outputResampledVolumeWritten.lzout.out),
+            ("outputTransform",                   sink_node.outputTransformWritten.lzout.out),
+            ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpaceWritten.lzout.out),
+            ("writeBranded2DImage",               sink_node.writeBranded2DImageWritten.lzout.out),
+            ("outputVolume",                      sink_node.outputVolumeWritten.lzout.out)
         ]
     )   
 
