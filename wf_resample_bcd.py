@@ -83,9 +83,9 @@ if __name__ == "__main__":
     bcd.inputs.interpolationMode =                 "Linear"
     bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpace.lzout.out 
     bcd.inputs.outputResampledVolume =             wf.outputResampledVolume.lzout.out 
-    bcd.inputs.outputTransform =                   "test.h5"               #wf.outputTransform.lzout.out 
-    bcd.inputs.outputLandmarksInACPCAlignedSpace = "test.fcsv"               #wf.outputLandmarksInACPCAlignedSpace.lzout.out 
-    bcd.inputs.writeBranded2DImage =               "test.png"               #wf.writeBranded2DImage.lzout.out 
+    bcd.inputs.outputTransform =                   wf.outputTransform.lzout.out 
+    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpace.lzout.out 
+    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImage.lzout.out 
     wf.add(bcd)
 
     # Set the filename of the output of Resample
