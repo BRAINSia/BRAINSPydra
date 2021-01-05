@@ -92,44 +92,32 @@ if __name__ == "__main__":
     bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpace.lzout.out 
     bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImage.lzout.out 
     wf.add(bcd)
-#
-#    # Set the filename of the output of Resample
-#    wf.add(append_filename(name="resampledOutputVolume", filename=wf.source_node.lzout.t1, append_str="_resampled", extension=".nii.gz"))
-# 
-#    # Set the inputs of Resample
-##    resample = BRAINSResample("BRAINSResample").get_task()
-##    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
-##    resample.inputs.interpolationMode = "Linear"
-##    resample.inputs.pixelType =         "binary"
-##    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
-##    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5" # outputTransform
-##    resample.inputs.outputVolume =      wf.resampledOutputVolume.lzout.out 
-##    wf.add(resample)
-#
-#    # Copy the files from the cache to the output directory so the resulting files can be accessed
-##    wf.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",       cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
-##    wf.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=wf.BRAINSConstellationDetector.lzout.outputResampledVolume,             output_dir=output_dir))
-##    wf.add(copy_from_cache(name="outputTransformWritten",                   cache_path=wf.BRAINSConstellationDetector.lzout.outputTransform,                   output_dir=output_dir))
-##    wf.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
-##    wf.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,               output_dir=output_dir))
-##    wf.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=wf.BRAINSResample.lzout.outputVolume,                                   output_dir=output_dir))
-# 
+
+    # Set the filename of the output of Resample
+    wf.add(append_filename(name="resampledOutputVolume", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
+ 
+    # Set the inputs of Resample
+    resample = BRAINSResample("BRAINSResample").get_task()
+    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
+    resample.inputs.interpolationMode = "Linear"
+    resample.inputs.pixelType =         "binary"
+    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
+    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5" # outputTransform
+    resample.inputs.outputVolume =      wf.resampledOutputVolume.lzout.out 
+    wf.add(resample)
 #    # Set the outputs of the entire workflow
     wf.set_output(
         [
-#            ("outputLandmarksInInputSpace",       wf.outputLandmarksInInputSpace.lzout.out),
-#            ("outputResampledVolume",             wf.outputResampledVolume.lzout.out),
-#            ("outputTransform",                   wf.outputTransform.lzout.out),
-#            ("outputLandmarksInACPCAlignedSpace", wf.outputLandmarksInACPCAlignedSpace.lzout.out),
-#            ("writeBranded2DImage",               wf.writeBranded2DImage.lzout.out),
             ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
             ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
             ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
             ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
             ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
-#            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
+            ("resampledOutputVolume",             wf.BRAINSResample.lzout.outputVolume),
         ]
     )
+
+
 
     source_node.add(wf)
     source_node.set_output(
@@ -142,11 +130,31 @@ if __name__ == "__main__":
             ("writeBranded2DImage",               source_node.wf.lzout.writeBranded2DImage),
         ]
     )
+
+
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace",
+                                                             "outputResampledVolume",
+                                                             "outputTransform",                   
+                                                             "outputLandmarksInACPCAlignedSpace",
+                                                             "writeBranded2DImage"]               
+    sink_node.inputs.outputLandmarksInInputSpace = wf.lzout.
+    sink_node.add(source_node)
+       
+
+    # Copy the files from the cache to the output directory so the resulting files can be accessed
+    sink_node.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",       cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputResampledVolume,             output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputTransformWritten",                   cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputTransform,                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=source_node.wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=source_node.wf.BRAINSConstellationDetector.lzout.writeBranded2DImage,               output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=source_node.wf.BRAINSResample.lzout.outputVolume,                                   output_dir=output_dir))
+ 
+
    
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
-        sub(source_node)
-    result = source_node.result()
+        sub(sink_node)
+    result = sink_node.result()
     print(result)
     print(f"total time: {time.time() - t0}")
