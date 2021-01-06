@@ -33,14 +33,17 @@ def copy_from_cache(cache_path, output_dir):
 
 if __name__ == "__main__":
     nest_asyncio.apply()
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+
     # Set the location of the cache and clear its contents before running 
-    output_dir = "/localscratch/Users/cjohnson30/output_dir"
-    cache_dir = "/localscratch/Users/cjohnson30/cache_dir"
+    output_dir = "./output_dir"
+    cache_dir = "./cache_dir"
     os.system(f'rm -rf {cache_dir}/*') # Only deleting cache now as the pipeline is being developed and tested
  
     # Get the subject data listed in the subject_jsons.json file 
     subject_t1s = []
-    with open('/localscratch/Users/cjohnson30/BRAINSPydra/subject_jsons.json') as json_file:
+    with open(config["SOURCE"]["subject_jsons_file"]) as json_file:
         data = json.load(json_file)
         for subject in data:
             subject_t1s.append(data[subject]["t1"])
@@ -70,13 +73,13 @@ if __name__ == "__main__":
     # Set the inputs of BCD
     bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
     bcd.inputs.inputVolume =                       wf.lzin.t1
-    bcd.inputs.inputTemplateModel =                "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl"
-    bcd.inputs.LLSModel =                          "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5"                 # can be in config file, hardcoded
-    bcd.inputs.atlasLandmarkWeights =              "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts" # hardcoded
-    bcd.inputs.atlasLandmarks =                    "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv"
-    bcd.inputs.houghEyeDetectorMode =              1
-    bcd.inputs.acLowerBound =                      80.000000
-    bcd.inputs.interpolationMode =                 "Linear"
+    bcd.inputs.inputTemplateModel =                config["BCD"]["inputTemplateModel"]
+    bcd.inputs.LLSModel =                          config["BCD"]["LLSModel"]
+    bcd.inputs.atlasLandmarkWeights =              config["BCD"]["atlasLandmarkWeights"]
+    bcd.inputs.atlasLandmarks =                    config["BCD"]["atlasLandmarks"]
+    bcd.inputs.houghEyeDetectorMode =              config["BCD"]["houghEyeDetectorMode"]
+    bcd.inputs.acLowerBound =                      config["BCD"]["acLowerBound"]
+    bcd.inputs.interpolationMode =                 config["BCD"]["interpolationMode"]
     bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpace.lzout.out 
     bcd.inputs.outputResampledVolume =             wf.outputResampledVolume.lzout.out 
     bcd.inputs.outputTransform =                   wf.outputTransform.lzout.out 
