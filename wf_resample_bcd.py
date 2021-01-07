@@ -132,21 +132,21 @@ if __name__ == "__main__":
        
 
     # Copy the files from the cache to the output directory so the resulting files can be accessed
-    sink_node.add(copy_from_cache(name="outputLandmarksInInputSpaceWritten",       cache_path=source_node.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputResampledVolumeWritten",             cache_path=source_node.lzout.outputResampledVolume,             output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputTransformWritten",                   cache_path=source_node.lzout.outputTransform,                   output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpaceWritten", cache_path=source_node.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="writeBranded2DImageWritten",               cache_path=source_node.lzout.writeBranded2DImage,               output_dir=output_dir))
-    sink_node.add(copy_from_cache(name="outputVolumeWritten",                      cache_path=source_node.lzout.outputVolume,                                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       cache_path=source_node.lzout.outputLandmarksInInputSpace,       output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputResampledVolume",             cache_path=source_node.lzout.outputResampledVolume,             output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputTransform",                   cache_path=source_node.lzout.outputTransform,                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", cache_path=source_node.lzout.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="writeBranded2DImage",               cache_path=source_node.lzout.writeBranded2DImage,               output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputVolume",                      cache_path=source_node.lzout.outputVolume,                                   output_dir=output_dir))
  
     sink_node.set_output(
         [
-            ("outputLandmarksInInputSpace",       sink_node.outputLandmarksInInputSpaceWritten.lzout.out),
-            ("outputResampledVolume",             sink_node.outputResampledVolumeWritten.lzout.out),
-            ("outputTransform",                   sink_node.outputTransformWritten.lzout.out),
-            ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpaceWritten.lzout.out),
-            ("writeBranded2DImage",               sink_node.writeBranded2DImageWritten.lzout.out),
-            ("outputVolume",                      sink_node.outputVolumeWritten.lzout.out)
+            ("outputLandmarksInInputSpace",       sink_node.outputLandmarksInInputSpace.lzout.out),
+            ("outputResampledVolume",             sink_node.outputResampledVolume.lzout.out),
+            ("outputTransform",                   sink_node.outputTransform.lzout.out),
+            ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpace.lzout.out),
+            ("writeBranded2DImage",               sink_node.writeBranded2DImage.lzout.out),
+            ("outputVolume",                      sink_node.outputVolume.lzout.out)
         ]
     )   
 #    source_node.add(sink_node)
