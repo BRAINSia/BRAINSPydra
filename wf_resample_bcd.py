@@ -6,6 +6,7 @@ from shutil import copyfile
 import json
 import os
 import glob
+from configparser import ConfigParser
 
 import attr
 from nipype.interfaces.base import (
@@ -33,12 +34,12 @@ def copy_from_cache(cache_path, output_dir):
 
 if __name__ == "__main__":
     nest_asyncio.apply()
-    config = configparser.ConfigParser()
+    config = ConfigParser()
     config.read("config.ini")
 
     # Set the location of the cache and clear its contents before running 
-    output_dir = "./output_dir"
-    cache_dir = "./cache_dir"
+    output_dir = config["OUTPUT"]["output_dir"]
+    cache_dir = config["OUTPUT"]["cache_dir"]
     os.system(f'rm -rf {cache_dir}/*') # Only deleting cache now as the pipeline is being developed and tested
  
     # Get the subject data listed in the subject_jsons.json file 
