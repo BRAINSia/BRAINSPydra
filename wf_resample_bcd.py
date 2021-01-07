@@ -94,8 +94,8 @@ if __name__ == "__main__":
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
     resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
-    resample.inputs.interpolationMode = "Linear"
-    resample.inputs.pixelType =         "binary"
+    resample.inputs.interpolationMode = config["RESAMPLE"]["interpolationMode"]
+    resample.inputs.pixelType =         config["RESAMPLE"]["pixelType"]        
     resample.inputs.referenceVolume =   wf.BRAINSConstellationDetector.lzout.outputResampledVolume 
     resample.inputs.warpTransform =     wf.BRAINSConstellationDetector.lzout.outputTransform 
     resample.inputs.outputVolume =      wf.resampledOutputVolume.lzout.out 
