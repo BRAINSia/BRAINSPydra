@@ -31,6 +31,9 @@ def append_filename(filename="", append_str="", extension="", directory=""):
 @pydra.mark.task
 def copy_from_cache(cache_path, output_dir):
     copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
+    out_path = Path(output_dir) / Path(cache_path).name
+    copyfile(cache_path, out_path)
+    return out_path
 
 if __name__ == "__main__":
     nest_asyncio.apply()
