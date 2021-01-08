@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pydra
 import nest_asyncio
 nest_asyncio.apply()
@@ -32,4 +33,3 @@ with pydra.Submitter(plugin="cf") as sub:
     sub(sink_node)
 result=sink_node.result()
 print(result)
-
