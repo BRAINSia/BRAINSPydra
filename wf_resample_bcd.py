@@ -73,103 +73,92 @@ if __name__ == "__main__":
     wf.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=wf.lzin.t1, append_str="_BCD_ACPC_Landmarks",          extension=".fcsv"))
     wf.add(append_filename(name="writeBranded2DImage",               filename=wf.lzin.t1, append_str="_BCD_Branded2DQCimage",        extension=".png"))
 
-#    # Set the inputs of BCD
-#    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
-#    bcd.inputs.inputVolume =                       wf.lzin.t1
-#    bcd.inputs.inputTemplateModel =                config["BCD"]["inputTemplateModel"]
-#    bcd.inputs.LLSModel =                          config["BCD"]["LLSModel"]
-#    bcd.inputs.atlasLandmarkWeights =              config["BCD"]["atlasLandmarkWeights"]
-#    bcd.inputs.atlasLandmarks =                    config["BCD"]["atlasLandmarks"]
-#    bcd.inputs.houghEyeDetectorMode =              config["BCD"]["houghEyeDetectorMode"]
-#    bcd.inputs.acLowerBound =                      config["BCD"]["acLowerBound"]
-#    bcd.inputs.interpolationMode =                 config["BCD"]["interpolationMode"]
-#    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpace.lzout.out 
-#    bcd.inputs.outputResampledVolume =             wf.outputResampledVolume.lzout.out 
-#    bcd.inputs.outputTransform =                   wf.outputTransform.lzout.out 
-#    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpace.lzout.out 
-#    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImage.lzout.out 
-#    wf.add(bcd)
+    # Set the inputs of BCD
+    bcd = BRAINSConstellationDetector("BRAINSConstellationDetector").get_task()
+    bcd.inputs.inputVolume =                       wf.lzin.t1
+    bcd.inputs.inputTemplateModel =                config["BCD"]["inputTemplateModel"]
+    bcd.inputs.LLSModel =                          config["BCD"]["LLSModel"]
+    bcd.inputs.atlasLandmarkWeights =              config["BCD"]["atlasLandmarkWeights"]
+    bcd.inputs.atlasLandmarks =                    config["BCD"]["atlasLandmarks"]
+    bcd.inputs.houghEyeDetectorMode =              config["BCD"]["houghEyeDetectorMode"]
+    bcd.inputs.acLowerBound =                      config["BCD"]["acLowerBound"]
+    bcd.inputs.interpolationMode =                 config["BCD"]["interpolationMode"]
+    bcd.inputs.outputLandmarksInInputSpace =       wf.outputLandmarksInInputSpace.lzout.out 
+    bcd.inputs.outputResampledVolume =             wf.outputResampledVolume.lzout.out 
+    bcd.inputs.outputTransform =                   wf.outputTransform.lzout.out 
+    bcd.inputs.outputLandmarksInACPCAlignedSpace = wf.outputLandmarksInACPCAlignedSpace.lzout.out 
+    bcd.inputs.writeBranded2DImage =               wf.writeBranded2DImage.lzout.out 
+    wf.add(bcd)
 
     # Set the filename of the output of Resample
     wf.add(append_filename(name="resampledOutputVolume", filename=wf.lzin.t1, append_str="_resampled", extension=".nii.gz"))
  
     # Set the inputs of Resample
     resample = BRAINSResample("BRAINSResample").get_task()
-#    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
+    resample.inputs.inputVolume =       wf.BRAINSConstellationDetector.lzout.outputResampledVolume
     resample.inputs.inputVolume = wf.lzin.t1
     resample.inputs.interpolationMode = config["RESAMPLE"]["interpolationMode"]
     resample.inputs.pixelType =         config["RESAMPLE"]["pixelType"]        
-#    resample.inputs.referenceVolume =   wf.BRAINSConstellationDetector.lzout.outputResampledVolume 
-#    resample.inputs.warpTransform =     wf.BRAINSConstellationDetector.lzout.outputTransform 
-    resample.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz" 
-    resample.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5" # outputTransform
+    resample.inputs.referenceVolume =   wf.BRAINSConstellationDetector.lzout.outputResampledVolume 
+    resample.inputs.warpTransform =     wf.BRAINSConstellationDetector.lzout.outputTransform 
     resample.inputs.outputVolume =      wf.resampledOutputVolume.lzout.out 
     wf.add(resample)
-
+    
     # Set the outputs of the entire workflow
     wf.set_output(
         [
-#            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-#            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
-#            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
-#            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-#            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
+            ("outputLandmarksInInputSpace",       wf.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume",             wf.BRAINSConstellationDetector.lzout.outputResampledVolume),
+            ("outputTransform",                   wf.BRAINSConstellationDetector.lzout.outputTransform),
+            ("outputLandmarksInACPCAlignedSpace", wf.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+            ("writeBranded2DImage",               wf.BRAINSConstellationDetector.lzout.writeBranded2DImage),
             ("outputVolume",                      wf.BRAINSResample.lzout.outputVolume),
         ]
     )
 
-#    sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform", "outputLandmarksInACPCAlignedSpace", "writeBranded2DImage", "outputVolume"], outputLandmarksInInputSpace=wf.lzout.outputLandmarksInInputSpace, outputResampledVolume=wf.lzout.outputLandmarksInInputSpace, outputTransform=wf.lzout.outputTransform, outputLandmarksInACPCAlignedSpace=wf.lzout.outputLandmarksInACPCAlignedSpace, writeBranded2DImage=wf.lzout.writeBranded2DImage, outputVolume=wf.lzout.outputVolume)
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform", "outputLandmarksInACPCAlignedSpace", "writeBranded2DImage", "outputVolume"])
 
-#    sink_node.inputs.outputLandmarksInInputSpace      =wf.lzout.outputLandmarksInInputSpace  
-#    sink_node.inputs.outputResampledVolume            =wf.lzout.outputLandmarksInInputSpace
-#    sink_node.inputs.outputTransform                  =wf.lzout.outputTransform
-#    sink_node.inputs.outputLandmarksInACPCAlignedSpace=wf.lzout.outputLandmarksInACPCAlignedSpace
-#    sink_node.inputs.writeBranded2DImage              =wf.lzout.writeBranded2DImage
-#    sink_node.inputs.outputVolume                     =wf.lzout.outputVolume
+    sink_node.inputs.outputLandmarksInInputSpace      =wf.lzout.outputLandmarksInInputSpace  
+    sink_node.inputs.outputResampledVolume            =wf.lzout.outputLandmarksInInputSpace
+    sink_node.inputs.outputTransform                  =wf.lzout.outputTransform
+    sink_node.inputs.outputLandmarksInACPCAlignedSpace=wf.lzout.outputLandmarksInACPCAlignedSpace
+    sink_node.inputs.writeBranded2DImage              =wf.lzout.writeBranded2DImage
+    sink_node.inputs.outputVolume                     =wf.lzout.outputVolume
 
 
     # Copy the files from the cache to the output directory so the resulting files can be accessed
-#    sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       cache_path=sink_node.lzin.outputLandmarksInInputSpace,       output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputResampledVolume",             cache_path=sink_node.lzin.outputResampledVolume,             output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputTransform",                   cache_path=sink_node.lzin.outputTransform,                   output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", cache_path=sink_node.lzin.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="writeBranded2DImage",               cache_path=sink_node.lzin.writeBranded2DImage,               output_dir=output_dir))
-#    sink_node.add(copy_from_cache(name="outputVolume",                      cache_path=sink_node.lzin.outputVolume,                                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       cache_path=sink_node.lzin.outputLandmarksInInputSpace,       output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputResampledVolume",             cache_path=sink_node.lzin.outputResampledVolume,             output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputTransform",                   cache_path=sink_node.lzin.outputTransform,                   output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", cache_path=sink_node.lzin.outputLandmarksInACPCAlignedSpace, output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="writeBranded2DImage",               cache_path=sink_node.lzin.writeBranded2DImage,               output_dir=output_dir))
+    sink_node.add(copy_from_cache(name="outputVolume",                      cache_path=sink_node.lzin.outputVolume,                                   output_dir=output_dir))
  
-#    sink_node.set_output(
-#        [
-#            ("outputLandmarksInInputSpace",       sink_node.outputLandmarksInInputSpace.lzout.out),
-#            ("outputResampledVolume",             sink_node.outputResampledVolume.lzout.out),
-#            ("outputTransform",                   sink_node.outputTransform.lzout.out),
-#            ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpace.lzout.out),
-#            ("writeBranded2DImage",               sink_node.writeBranded2DImage.lzout.out),
-#            ("outputVolume",                      sink_node.outputVolume.lzout.out)
-#        ]
-#    )   
+    sink_node.set_output(
+        [
+            ("outputLandmarksInInputSpace",       sink_node.outputLandmarksInInputSpace.lzout.out),
+            ("outputResampledVolume",             sink_node.outputResampledVolume.lzout.out),
+            ("outputTransform",                   sink_node.outputTransform.lzout.out),
+            ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpace.lzout.out),
+            ("writeBranded2DImage",               sink_node.writeBranded2DImage.lzout.out),
+            ("outputVolume",                      sink_node.outputVolume.lzout.out)
+        ]
+    )   
 
     outer.add(source_node)
     outer.add(wf)
-#    outer.add(sink_node)
-#    outer.set_output(
-#        [
-#            ("outputLandmarksInInputSpace",       outer.sink_node.lzout.outputLandmarksInInputSpace),
-#            ("outputResampledVolume",             outer.sink_node.lzout.outputResampledVolume),
-#            ("outputTransform",                   outer.sink_node.lzout.outputTransform),
-#            ("outputLandmarksInACPCAlignedSpace", outer.sink_node.lzout.outputLandmarksInACPCAlignedSpace),
-#            ("writeBranded2DImage",               outer.sink_node.lzout.writeBranded2DImage),
-#            ("outputVolume",                      outer.sink_node.lzout.outputVolume)
-#        ]
-#    )        
+    outer.add(sink_node)
     outer.set_output(
         [
-#            ("outputLandmarksInInputSpace",       outer.wf.lzout.outputLandmarksInInputSpace),
-#            ("outputResampledVolume",             outer.wf.lzout.outputResampledVolume),
-#            ("outputTransform",                   outer.wf.lzout.outputTransform),
-#            ("outputLandmarksInACPCAlignedSpace", outer.wf.lzout.outputLandmarksInACPCAlignedSpace),
-#            ("writeBranded2DImage",               outer.wf.lzout.writeBranded2DImage),
-            ("outputVolume",                      outer.wf.lzout.outputVolume)
+            ("outputLandmarksInInputSpace",       outer.sink_node.lzout.outputLandmarksInInputSpace),
+            ("outputResampledVolume",             outer.sink_node.lzout.outputResampledVolume),
+            ("outputTransform",                   outer.sink_node.lzout.outputTransform),
+            ("outputLandmarksInACPCAlignedSpace", outer.sink_node.lzout.outputLandmarksInACPCAlignedSpace),
+            ("writeBranded2DImage",               outer.sink_node.lzout.writeBranded2DImage),
+            ("outputVolume",                      outer.sink_node.lzout.outputVolume)
         ]
-    )
+    )        
+    
     t0 = time.time() 
     # Run the pipeline
     with pydra.Submitter(plugin="cf") as sub:
