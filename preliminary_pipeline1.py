@@ -32,29 +32,14 @@ wf.set_output([("output_in_cache1", wf.append1.lzout.out),
 
 sink_node = pydra.Workflow(name="sink_node", input_spec=["output_in_cache1"])
 sink_node.add(wf)
+sink_node.add(append(name="append").split("t1", t1=sink_node.wf.lzout.output_in_cache3))
+sink_node.set_output([("output_not_in_cache", sink_node.append.lzout.out)])
 
-# sink_node.add(wf)
-# sink_node.add(source_node)
-# # sink_node.split("output_in_cache", output_in_cache=sink_node.wf.lzout.output_in_cache)
-# sink_node.add(get_subject(name="get_subject", subj=sink_node.lzin.output_in_cache))
-# sink_node.add(append(name="append", t1=sink_node.wf.lzout.output_in_cache3))
-sink_node.set_output([("output_not_in_cache", sink_node.wf.lzout.output_in_cache3)])
-#
-#
-# outer.add(source_node)
-# outer.add(wf)
-# outer.add(sink_node)
-# outer.set_output([("t1", outer.source_node.lzout.t1)])
-                  # ("output", outer.wf.lzout.output_in_cache),
-                  # ("output_not_cached", outer.sink_node.lzout.output_not_in_cache)])
 
 
 
 with pydra.Submitter(plugin="cf") as sub:
     sub(sink_node)
 result=sink_node.result()
-# with pydra.Submitter(plugin="cf") as sub:
-#     sub(outer)
-# result=outer.result()
 print(result)
 
