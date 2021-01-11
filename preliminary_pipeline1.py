@@ -1,5 +1,6 @@
 import pydra
 import nest_asyncio
+
 nest_asyncio.apply()
 
 @pydra.mark.task
@@ -11,6 +12,7 @@ def append(t1, appended):
     return t1 + appended
 
 t1_list = ["subject1.txt", "subject2.txt"]
+
 
 source_node = pydra.Workflow(name="source_node", input_spec=["t1_list"])
 source_node.split("t1_list", t1_list=t1_list)
