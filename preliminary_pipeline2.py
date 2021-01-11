@@ -55,7 +55,7 @@ my_output_spec = pydra.specs.SpecInfo(
     bases=(pydra.specs.ShellOutSpec,),
 )
 args = ["newfile_1.txt", "newfile_2.txt"]
-preliminary_workflow2 = pydra.Workflow(name="preliminary_workflow2", args=args, input_spec=["t1"], t1=source_node.lzout.t1)
+preliminary_workflow2 = pydra.Workflow(name="preliminary_workflow2", input_spec=["t1"], t1=source_node.lzout.t1)
 preliminary_workflow2.add(source_node)
 preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSResample", executable="echo", args=args, output_spec=my_output_spec).split("args"))
 # preliminary_workflow2.add(append(name="BRAINSResample", t1=preliminary_workflow2.source_node.lzout.t1, appended="_resampled"))
