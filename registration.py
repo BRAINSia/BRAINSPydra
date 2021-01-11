@@ -17,8 +17,9 @@ import pydra
 
 
 class BRAINSResample:
-    def __init__(self, name="BRAINSResample"):
+    def __init__(self, name="BRAINSResample", executable="BRAINSResample"):
         self.name = name
+        self.executable = executable
 
     """
     title: Resample Image (BRAINS)
@@ -165,7 +166,7 @@ class BRAINSResample:
 
         task = ShellCommandTask(
             name=self.name,
-            executable="BRAINSResample",
+            executable=self.executable,
             input_spec=input_spec,
             output_spec=output_spec,
         )

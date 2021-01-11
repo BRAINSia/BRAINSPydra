@@ -17,8 +17,13 @@ import pydra
 
 
 class BRAINSConstellationDetector:
-    def __init__(self, name="BRAINSConstellationDetector"):
+    def __init__(
+        self,
+        name="BRAINSConstellationDetector",
+        executable="BRAINSConstellationDetector",
+    ):
         self.name = name
+        self.executable = executable
 
     """
     title: Brain Landmark Constellation Detector (BRAINS)
@@ -549,7 +554,7 @@ class BRAINSConstellationDetector:
 
         task = ShellCommandTask(
             name=self.name,
-            executable="BRAINSConstellationDetector",
+            executable=self.executable,
             input_spec=input_spec,
             output_spec=output_spec,
         )

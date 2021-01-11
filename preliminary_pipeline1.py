@@ -10,11 +10,12 @@ def get_subject(sub):
 
 
 @pydra.mark.task
-def append(t1):
-    return t1 + "_append"
+def append(t1, appended):
+    return t1 + appended
 
 
-t1_list = ["subject1.nii.gz", "subject2.nii.gz"]
+t1_list = ["subject1.txt", "subject2.txt"]
+
 
 source_node = pydra.Workflow(name="source_node", input_spec=["t1_list"])
 source_node.split("t1_list", t1_list=t1_list)
@@ -24,26 +25,31 @@ source_node.set_output([("t1", source_node.get_subject.lzout.out)])
 preliminary_workflow1 = pydra.Workflow(name="preliminary_workflow1", input_spec=["t1"])
 preliminary_workflow1.add(source_node)
 preliminary_workflow1.add(
-    append(name="append1", t1=preliminary_workflow1.source_node.lzout.t1)
+    append(
+        name="BRAINSConstellationDetector1",
+        t1=preliminary_workflow1.source_node.lzout.t1,
+        appended="_bcd",
+    )
 )
 preliminary_workflow1.add(
-    append(name="append2", t1=preliminary_workflow1.append1.lzout.out)
-)
-preliminary_workflow1.add(
-    append(name="append3", t1=preliminary_workflow1.append2.lzout.out)
+    append(
+        name="BRAINSResample1",
+        t1=preliminary_workflow1.BRAINSConstellationDetector1.lzout.out,
+        appended="_resampled",
+    )
 )
 preliminary_workflow1.set_output(
-    [("output_in_cache3", preliminary_workflow1.append3.lzout.out)]
+    [("processed", preliminary_workflow1.BRAINSResample1.lzout.out)]
 )
 
 sink_node = pydra.Workflow(name="sink_node", input_spec=["output_in_cache1"])
 sink_node.add(preliminary_workflow1)
 sink_node.add(
-    append(name="append").split(
-        "t1", t1=sink_node.preliminary_workflow1.lzout.output_in_cache3
+    append(name="append", appended="_output").split(
+        "t1", t1=sink_node.preliminary_workflow1.lzout.processed
     )
 )
-sink_node.set_output([("output_not_in_cache", sink_node.append.lzout.out)])
+sink_node.set_output([("output", sink_node.append.lzout.out)])
 
 with pydra.Submitter(plugin="cf") as sub:
     sub(sink_node)

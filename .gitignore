@@ -4,4 +4,7 @@ __pycache__/*
 segmentation/__pycache__/*
 execution_ordering.list
 output_dir/*
+input_files/*
 __init__.py
+.idea
+input_files
