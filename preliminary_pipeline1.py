@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import pydra
 import nest_asyncio
 nest_asyncio.apply()
