@@ -22,9 +22,7 @@ preliminary_workflow1.add(source_node)
 preliminary_workflow1.add(append(name="append1", t1=preliminary_workflow1.source_node.lzout.t1))
 preliminary_workflow1.add(append(name="append2", t1=preliminary_workflow1.append1.lzout.out))
 preliminary_workflow1.add(append(name="append3", t1=preliminary_workflow1.append2.lzout.out))
-preliminary_workflow1.set_output([("output_in_cache1", preliminary_workflow1.append1.lzout.out),
-                                  ("output_in_cache2", preliminary_workflow1.append2.lzout.out),
-                                  ("output_in_cache3", preliminary_workflow1.append3.lzout.out)])
+preliminary_workflow1.set_output([("output_in_cache3", preliminary_workflow1.append3.lzout.out)])
 
 sink_node = pydra.Workflow(name="sink_node", input_spec=["output_in_cache1"])
 sink_node.add(preliminary_workflow1)
