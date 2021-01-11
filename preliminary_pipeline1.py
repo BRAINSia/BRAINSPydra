@@ -23,6 +23,7 @@ preliminary_workflow1.add(append(name="BRAINSResample1", t1=preliminary_workflow
 preliminary_workflow1.add(append(name="BRAINSConstellationDetector1", t1=preliminary_workflow1.BRAINSResample1.lzout.out, appended="_bcd"))
 preliminary_workflow1.set_output([("processed", preliminary_workflow1.BRAINSConstellationDetector1.lzout.out)])
 
+
 sink_node = pydra.Workflow(name="sink_node", input_spec=["output_in_cache1"])
 sink_node.add(preliminary_workflow1)
 sink_node.add(append(name="append", appended="_output").split("t1", t1=sink_node.preliminary_workflow1.lzout.processed))
@@ -32,3 +33,4 @@ with pydra.Submitter(plugin="cf") as sub:
     sub(sink_node)
 result=sink_node.result()
 print(result)
+
