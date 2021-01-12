@@ -2,7 +2,7 @@
 
 function BRAINSResample
 {
-echo $1 "$1_resampled"
-return "$1_resampled"
+cp $1 "${1%$2}_resampled$2" 
+return "${1%$2}_resampled$2"
 }
-#mv $1 "${1%$2}_resampled$2
+#mv $1 "${1%$2}_resampled$2"
