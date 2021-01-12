@@ -8,7 +8,6 @@ nest_asyncio.apply()
 
 @pydra.mark.task
 def get_subject(sub):
-    # print(sub)
     return sub
 
 @pydra.mark.task
@@ -18,7 +17,7 @@ def copy_from_cache(cache_path, output_dir):
     copyfile(cache_path, out_path)
     return out_path
 
-# Get the list of two files by the patter subject*.txt images in this directory
+# Get the list of two files of the pattern subject*.txt images in this directory
 t1_list = []
 p = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files")
 for t1 in p.glob("subject*.txt"):
