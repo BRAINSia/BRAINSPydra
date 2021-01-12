@@ -81,7 +81,7 @@ bcd_output_spec = pydra.specs.SpecInfo(
 preliminary_workflow2 = pydra.Workflow(name="preliminary_workflow2", input_spec=["t1"])
 preliminary_workflow2.add(source_node)
 preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSResample", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample.sh", t1=preliminary_workflow2.source_node.lzout.t1, input_spec=my_input_spec, output_spec=resample_output_spec))
-# preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSConstellationDetector", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector.sh", t1=preliminary_workflow2.BRAINSResample.lzout.out, extension=".txt", input_spec=my_input_spec, output_spec=bcd_output_spec))
+# preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSConstellationDetector", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector.sh", t1=preliminary_workflow2.BRAINSResample.lzout.out, input_spec=my_input_spec, output_spec=bcd_output_spec))
 preliminary_workflow2.set_output([("processed", preliminary_workflow2.BRAINSResample.lzout.out)])
 #
 # sink_node = pydra.Workflow(name="sink_node", input_spec=["output_in_cache1"])
