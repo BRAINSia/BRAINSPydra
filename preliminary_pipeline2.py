@@ -39,20 +39,13 @@ my_input_spec = pydra.specs.SpecInfo(
             "t1",
             attr.ib(
                 type=pydra.specs.File,
-                metadata={"position": 1, "argstr": "", "help_string": "text", "mandatory": True},
+                metadata={"position": 1, "argstr": "", "help_string": "text", "mandatory": True, "copyfile":True},
                 ),
         ),
-        (
-            "extension",
-            attr.ib(
-                type=str,
-                metadata={"position": 2, "argstr": "", "help_string": "text", "mandatory": True},
-            ),
-        )
     ],
     bases=(pydra.specs.ShellSpec,),
 )
-my_output_spec = pydra.specs.SpecInfo(
+resample_output_spec = pydra.specs.SpecInfo(
     name="Output",
     fields=[
         (
@@ -60,7 +53,23 @@ my_output_spec = pydra.specs.SpecInfo(
             attr.ib(
                 type=pydra.specs.File,
                 metadata={
-                    "output_file_template": "{t1}_resampled",
+                    "output_file_template": "{t1}",
+                    "help_string": "output file",
+                },
+            ),
+        )
+    ],
+    bases=(pydra.specs.ShellOutSpec,),
+)
+bcd_output_spec = pydra.specs.SpecInfo(
+    name="Output",
+    fields=[
+        (
+            "out",
+            attr.ib(
+                type=pydra.specs.File,
+                metadata={
+                    "output_file_template": "{t1}",
                     "help_string": "output file",
                 },
             ),
@@ -71,9 +80,8 @@ my_output_spec = pydra.specs.SpecInfo(
 
 preliminary_workflow2 = pydra.Workflow(name="preliminary_workflow2", input_spec=["t1"])
 preliminary_workflow2.add(source_node)
-preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSResample", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample.sh", t1=preliminary_workflow2.source_node.lzout.t1, extension=".txt", input_spec=my_input_spec, output_spec=my_output_spec))
-# preliminary_workflow2.add(append(name="BRAINSResample", t1=preliminary_workflow2.source_node.lzout.t1, appended="_resampled"))
-# preliminary_workflow2.add(append(name="BRAINSConstellationDetector", t1=preliminary_workflow2.BRAINSResample.lzout.out, appended="_bcd"))
+preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSResample", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample.sh", t1=preliminary_workflow2.source_node.lzout.t1, input_spec=my_input_spec, output_spec=resample_output_spec))
+# preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSConstellationDetector", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector.sh", t1=preliminary_workflow2.BRAINSResample.lzout.out, extension=".txt", input_spec=my_input_spec, output_spec=bcd_output_spec))
 preliminary_workflow2.set_output([("processed", preliminary_workflow2.BRAINSResample.lzout.out)])
 #
 # sink_node = pydra.Workflow(name="sink_node", input_spec=["output_in_cache1"])
