@@ -13,6 +13,12 @@ def get_subject(sub):
     return sub
 
 @pydra.mark.task
+def append_filename(filename="", append_str="", extension="", directory=""):
+    print(f"filename: {filename}")
+    new_filename = f"{Path(Path(directory) / Path(Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+    return new_filename
+
+@pydra.mark.task
 def copy_from_cache(cache_path, output_dir):
     copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
     out_path = Path(output_dir) / Path(cache_path).name
@@ -68,12 +74,15 @@ my_output_spec = pydra.specs.SpecInfo(
 preliminary_workflow3 = pydra.Workflow(name="preliminary_workflow3", input_spec=["t1"])
 preliminary_workflow3.add(source_node)
 
-bcd_task = pydra.ShellCommandTask(name="BRAINSConstellationDetector3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector2.sh", t1=preliminary_workflow3.source_node.lzout.t1, input_spec=my_input_spec, output_spec=my_output_spec)
+bcd_task = pydra.ShellCommandTask(name="BRAINSConstellationDetector3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh", t1=preliminary_workflow3.source_node.lzout.t1, input_spec=my_input_spec, output_spec=my_output_spec)
 preliminary_workflow3.add(bcd_task)
 
-# resample_task = pydra.ShellCommandTask(name="BRAINSResample3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample2.sh", t1=preliminary_workflow3.BRAINSConstellationDetector3.lzout.out, input_spec=my_input_spec, output_spec=my_output_spec)
-resample_task = BRAINSResample("BRAINSResample").get_task()
-resample_task.inputs.inputVolume = t1=preliminary_workflow3.BRAINSConstellationDetector3.lzout.out
+# resampledOutputVolumeTask = append_filename(name="resampledOutputVolume", filename=preliminary_workflow3.source_node.lzout.t1, append_str="_resampled", extension=".nii.gz")
+# resampledOutputVolumeTask.split("filename", filename=preliminary_workflow3.source_node.lzout.t1)
+# preliminary_workflow3.add(resampledOutputVolumeTask)
+# resample_task = pydra.ShellCommandTask(name="BRAINSResample3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample3.sh", t1=preliminary_workflow3.BRAINSConstellationDetector3.lzout.out, input_spec=my_input_spec, output_spec=my_output_spec)
+resample_task = BRAINSResample("BRAINSResample3").get_task()
+resample_task.inputs.inputVolume = preliminary_workflow3.BRAINSConstellationDetector3.lzout.out
 resample_task.inputs.interpolationMode = "Linear"
 resample_task.inputs.pixelType =         "binary"
 resample_task.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz"
@@ -81,7 +90,8 @@ resample_task.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resampl
 resample_task.inputs.outputVolume =      "out.txt"
 preliminary_workflow3.add(resample_task)
 
-preliminary_workflow3.set_output([("processed_files", preliminary_workflow3.BRAINSResample.lzout.outputVolume)])
+preliminary_workflow3.set_output([("processed_files", preliminary_workflow3.BRAINSResample3.lzout.outputVolume)])
+# preliminary_workflow3.set_output([("processed_files", preliminary_workflow3.resampledOutputVolume.lzout.out)])
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"])
