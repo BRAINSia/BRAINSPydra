@@ -165,7 +165,7 @@ class BRAINSResample:
 
         task = ShellCommandTask(
             name=self.name,
-            executable="BRAINSResample",
+            executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample2.sh",
             input_spec=input_spec,
             output_spec=output_spec,
         )
