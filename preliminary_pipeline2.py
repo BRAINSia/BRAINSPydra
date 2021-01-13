@@ -65,9 +65,9 @@ my_output_spec = pydra.specs.SpecInfo(
 # Setup the workflow to process the files
 preliminary_workflow2 = pydra.Workflow(name="preliminary_workflow2", input_spec=["t1"])
 preliminary_workflow2.add(source_node)
-preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSResample2", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample2.sh", t1=preliminary_workflow2.source_node.lzout.t1, input_spec=my_input_spec, output_spec=my_output_spec))
-preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSConstellationDetector2", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector2.sh", t1=preliminary_workflow2.BRAINSResample2.lzout.out, input_spec=my_input_spec, output_spec=my_output_spec))
-preliminary_workflow2.set_output([("processed_files", preliminary_workflow2.BRAINSResample2.lzout.out)])
+preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSConstellationDetector2", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector2.sh", t1=preliminary_workflow2.source_node.lzout.t1, input_spec=my_input_spec, output_spec=my_output_spec))
+preliminary_workflow2.add(pydra.ShellCommandTask(name="BRAINSResample2", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample2.sh", t1=preliminary_workflow2.BRAINSConstellationDetector2.lzout.out, input_spec=my_input_spec, output_spec=my_output_spec))
+preliminary_workflow2.set_output([("processed_files", preliminary_workflow2.BRAINSConstellationDetector2.lzout.out)])
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"])
