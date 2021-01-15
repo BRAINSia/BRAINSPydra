@@ -45,7 +45,7 @@ preliminary_workflow3.add(append_filename(name="outputLandmarksInACPCAlignedSpac
 preliminary_workflow3.add(append_filename(name="writeBranded2DImage", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Branded2DQCimage", extension=".png"))
 
 
-bcd_task = BRAINSConstellationDetector("BRAINSConstellationDetector3").get_task()
+bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh").get_task()
 bcd_task.inputs.inputVolume =             "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt"#preliminary_workflow3.lzin.t1
 bcd_task.inputs.inputTemplateModel =      "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/T1_50Lmks.mdl"
 bcd_task.inputs.LLSModel =                "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/LLSModel_50Lmks.h5"
@@ -64,7 +64,7 @@ preliminary_workflow3.add(bcd_task)
 resampledOutputVolumeTask = append_filename(name="resampledOutputVolume", filename=preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume, append_str="_resampled", extension=".txt", directory="")
 preliminary_workflow3.add(resampledOutputVolumeTask)
 
-resample_task = BRAINSResample("BRAINSResample3").get_task()
+resample_task = BRAINSResample(name="BRAINSResample3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample3.sh").get_task()
 resample_task.inputs.inputVolume =       preliminary_workflow3.lzin.t1 #preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume
 resample_task.inputs.interpolationMode = "Linear"
 resample_task.inputs.pixelType =         "binary"
@@ -98,13 +98,6 @@ sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_d
 sink_node.add(copy_from_cache(name="writeBranded2DImage",               output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.writeBranded2DImage))
 sink_node.add(copy_from_cache(name="outputVolume",                      output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputVolume))
 sink_node.set_output([("output", sink_node.outputVolume.lzout.out)])
-
-
-# # Run the entire workflow
-# with pydra.Submitter(plugin="cf") as sub:
-#     sub(source_node)
-# result=source_node.result()
-# print(result)
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:

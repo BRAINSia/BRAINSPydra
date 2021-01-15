@@ -16,10 +16,14 @@ from pydra.engine.specs import SpecInfo, ShellSpec
 import pydra
 
 
-
 class BRAINSConstellationDetector:
-    def __init__(self, name="BRAINSConstellationDetector"):
+    def __init__(
+        self,
+        name="BRAINSConstellationDetector",
+        executable="BRAINSConstellationDetector",
+    ):
         self.name = name
+        self.executable = executable
 
     """
     title: Brain Landmark Constellation Detector (BRAINS)
@@ -550,7 +554,7 @@ class BRAINSConstellationDetector:
 
         task = ShellCommandTask(
             name=self.name,
-            executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh",
+            executable=self.executable,
             input_spec=input_spec,
             output_spec=output_spec,
         )
