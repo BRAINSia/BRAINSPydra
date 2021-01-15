@@ -6,9 +6,6 @@ from shutil import copyfile
 from registration import BRAINSResample
 from segmentation.specialized import BRAINSConstellationDetector
 
-
-nest_asyncio.apply()
-
 @pydra.mark.task
 def get_subject(sub):
     return sub
@@ -25,26 +22,29 @@ def copy_from_cache(cache_path, output_dir):
     copyfile(cache_path, out_path)
     return out_path
 
+nest_asyncio.apply()
+
 # Get the list of two files of the pattern subject*.txt images in this directory
 t1_list = []
 p = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files")
 for t1 in p.glob("subject*.txt"):
     t1_list.append(t1)
 
-# Put the files into the pydra cache and split them into iterable objects
+# Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node
 source_node = pydra.Workflow(name="source_node", input_spec=["t1_list"])
 preliminary_workflow3 = pydra.Workflow(name="preliminary_workflow3", input_spec=["t1"], t1=source_node.lzin.t1_list)
 source_node.add(preliminary_workflow3)
 source_node.split("t1_list")
 source_node.inputs.t1_list = t1_list
 
+# Create the output file names for BRAINSConstellationDetector
 preliminary_workflow3.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original", extension=".fcsv"))
 preliminary_workflow3.add(append_filename(name="outputResampledVolume", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC", extension=".nii.gz"))
 preliminary_workflow3.add(append_filename(name="outputTransform", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
 preliminary_workflow3.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
 preliminary_workflow3.add(append_filename(name="writeBranded2DImage", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Branded2DQCimage", extension=".png"))
 
-
+# Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
 bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh").get_task()
 bcd_task.inputs.inputVolume =             "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt"#preliminary_workflow3.lzin.t1
 bcd_task.inputs.inputTemplateModel =      "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/T1_50Lmks.mdl"
@@ -73,6 +73,7 @@ resample_task.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resampl
 resample_task.inputs.outputVolume =      preliminary_workflow3.resampledOutputVolume.lzout.out
 preliminary_workflow3.add(resample_task)
 
+# Set the outputs of the processing node and the source node so they are output to the sink node
 preliminary_workflow3.set_output([("outputLandmarksInInputSpace",       preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputLandmarksInInputSpace),
                                   ("outputResampledVolume",             preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume),
                                   ("outputTransform",                   preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputTransform),
