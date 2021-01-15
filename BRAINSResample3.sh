@@ -16,5 +16,6 @@ do
 
 echo "creating outputVolume : $outputVolume"
 
+echo "touching $outputVolume"
 touch "$outputVolume"
-#echo "resampled" >> $1
+echo "resampled" >> "$outputVolume"
