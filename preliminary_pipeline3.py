@@ -15,7 +15,7 @@ def get_subject(sub):
 @pydra.mark.task
 def append_filename(filename="", append_str="", extension="", directory=""):
     new_filename = f"{Path(Path(directory) / Path(Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
-    Path(new_filename).touch()
+    # Path(new_filename).touch()
     return new_filename
 
 @pydra.mark.task
@@ -38,8 +38,7 @@ source_node.add(preliminary_workflow3)
 source_node.split("t1_list")
 source_node.inputs.t1_list = t1_list
 
-#
-resampledOutputVolumeTask = append_filename(name="resampledOutputVolume", filename=preliminary_workflow3.lzin.t1, append_str="_resampled", extension=".txt", directory="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir")
+resampledOutputVolumeTask = append_filename(name="resampledOutputVolume", filename=preliminary_workflow3.lzin.t1, append_str="_resampled", extension=".txt", directory="")
 preliminary_workflow3.add(resampledOutputVolumeTask)
 
 resample_task = BRAINSResample("BRAINSResample3").get_task()
@@ -51,7 +50,7 @@ resample_task.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resampl
 resample_task.inputs.outputVolume =      preliminary_workflow3.resampledOutputVolume.lzout.out
 preliminary_workflow3.add(resample_task)
 
-preliminary_workflow3.set_output([("t1", preliminary_workflow3.resampledOutputVolume.lzout.out)])
+preliminary_workflow3.set_output([("t1", preliminary_workflow3.BRAINSResample3.lzout.outputVolume)])
 source_node.set_output([("t1", source_node.preliminary_workflow3.lzout.t1)])
 
 
@@ -59,11 +58,18 @@ source_node.set_output([("t1", source_node.preliminary_workflow3.lzout.t1)])
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"])
 sink_node.add(source_node)
-sink_node.add(copy_from_cache(name="copy_from_cache", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir").split("cache_path", cache_path=sink_node.source_node.lzout.t1))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.t1))#.split("cache_path", cache_path=sink_node.source_node.lzout.t1))
 sink_node.set_output([("output", sink_node.copy_from_cache.lzout.out)])
+
+
+# # Run the entire workflow
+# with pydra.Submitter(plugin="cf") as sub:
+#     sub(source_node)
+# result=source_node.result()
+# print(result)
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
-    sub(source_node)
-result=source_node.result()
+    sub(sink_node)
+result=sink_node.result()
 print(result)
