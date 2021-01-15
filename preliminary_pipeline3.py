@@ -38,7 +38,7 @@ source_node.add(preliminary_workflow3)
 source_node.split("t1_list")
 source_node.inputs.t1_list = t1_list
 
-preliminary_workflow3.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original", extension=".fcsv"))
+# preliminary_workflow3.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original", extension=".fcsv"))
 preliminary_workflow3.add(append_filename(name="outputResampledVolume", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC", extension=".nii.gz"))
 preliminary_workflow3.add(append_filename(name="outputTransform", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
 preliminary_workflow3.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
@@ -54,11 +54,11 @@ bcd_task.inputs.atlasLandmarks =          "/mnt/c/2020_Grad_School/Research/BRAI
 bcd_task.inputs.houghEyeDetectorMode =    1
 bcd_task.inputs.acLowerBound =            80.000000
 bcd_task.inputs.interpolationMode =       "Linear"
-bcd_task.inputs.outputLandmarksInInputSpace = preliminary_workflow3.outputLandmarksInInputSpace.lzout.out
-bcd_task.inputs.outputResampledVolume = preliminary_workflow3.outputResampledVolume.lzout.out
-bcd_task.inputs.outputTransform = preliminary_workflow3.outputTransform.lzout.out
+# bcd_task.inputs.outputLandmarksInInputSpace =       preliminary_workflow3.outputLandmarksInInputSpace.lzout.out
+bcd_task.inputs.outputResampledVolume =             preliminary_workflow3.outputResampledVolume.lzout.out
+bcd_task.inputs.outputTransform =                   preliminary_workflow3.outputTransform.lzout.out
 bcd_task.inputs.outputLandmarksInACPCAlignedSpace = preliminary_workflow3.outputLandmarksInACPCAlignedSpace.lzout.out
-bcd_task.inputs.writeBranded2DImage = preliminary_workflow3.writeBranded2DImage.lzout.out
+bcd_task.inputs.writeBranded2DImage =               preliminary_workflow3.writeBranded2DImage.lzout.out
 preliminary_workflow3.add(bcd_task)
 
 # resampledOutputVolumeTask = append_filename(name="resampledOutputVolume", filename=preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume, append_str="_resampled", extension=".txt", directory="")
@@ -74,24 +74,38 @@ resample_task.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resampl
 resample_task.inputs.outputVolume =      preliminary_workflow3.resampledOutputVolume.lzout.out
 preliminary_workflow3.add(resample_task)
 
-# preliminary_workflow3.set_output([("t1", preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume)])
-preliminary_workflow3.set_output([("t1", preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume)])
-source_node.set_output([("t1", source_node.preliminary_workflow3.lzout.t1)])
+preliminary_workflow3.set_output([#("outputLandmarksInInputSpace",       preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputLandmarksInInputSpace),
+                                  ("outputResampledVolume",             preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume),
+                                  ("outputTransform",                   preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputTransform),
+                                  ("outputLandmarksInACPCAlignedSpace", preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputLandmarksInACPCAlignedSpace),
+                                  ("writeBranded2DImage",               preliminary_workflow3.BRAINSConstellationDetector3.lzout.writeBranded2DImage),
+                                  ("outputVolume",                      preliminary_workflow3.BRAINSResample3.lzout.outputVolume)])
+source_node.set_output([#("outputLandmarksInInputSpace",       source_node.preliminary_workflow3.lzout.outputLandmarksInInputSpace),
+                        ("outputResampledVolume",             source_node.preliminary_workflow3.lzout.outputResampledVolume),
+                        ("outputTransform",                   source_node.preliminary_workflow3.lzout.outputTransform),
+                        ("outputLandmarksInACPCAlignedSpace", source_node.preliminary_workflow3.lzout.outputLandmarksInACPCAlignedSpace),
+                        ("writeBranded2DImage",               source_node.preliminary_workflow3.lzout.writeBranded2DImage),
+                        ("outputVolume",                      source_node.preliminary_workflow3.lzout.outputVolume)])
 
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"])
 sink_node.add(source_node)
-sink_node.add(copy_from_cache(name="copy_from_cache", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.t1))#.split("cache_path", cache_path=sink_node.source_node.lzout.t1))
-sink_node.set_output([("output", sink_node.copy_from_cache.lzout.out)])
+# sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputLandmarksInInputSpace))
+sink_node.add(copy_from_cache(name="outputResampledVolume",             output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputResampledVolume))
+sink_node.add(copy_from_cache(name="outputTransform",                   output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputTransform))
+sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputLandmarksInACPCAlignedSpace))
+sink_node.add(copy_from_cache(name="writeBranded2DImage",               output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.writeBranded2DImage))
+sink_node.add(copy_from_cache(name="outputVolume",                      output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputVolume))
+sink_node.set_output([("output", sink_node.outputVolume.lzout.out)])
 
 
-# Run the entire workflow
-with pydra.Submitter(plugin="cf") as sub:
-    sub(source_node)
-result=source_node.result()
-print(result)
+# # Run the entire workflow
+# with pydra.Submitter(plugin="cf") as sub:
+#     sub(source_node)
+# result=source_node.result()
+# print(result)
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
