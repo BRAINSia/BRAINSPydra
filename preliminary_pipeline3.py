@@ -69,7 +69,7 @@ resample_task = BRAINSResample(name="BRAINSResample3", executable="/mnt/c/2020_G
 resample_task.inputs.inputVolume =       preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume
 resample_task.inputs.interpolationMode = "Linear"
 resample_task.inputs.pixelType =         "binary"
-resample_task.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz"
+resample_task.inputs.referenceVolume =   "/mnt/c/2020_Grad_School/Research/BRAINSPydra/resample_refs/t1_average_BRAINSABC.nii.gz"
 resample_task.inputs.warpTransform =     preliminary_workflow3.outputTransform.lzout.out
 resample_task.inputs.outputVolume =      preliminary_workflow3.resampledOutputVolume.lzout.out
 preliminary_workflow3.add(resample_task)
