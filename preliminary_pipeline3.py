@@ -115,14 +115,14 @@ bcd_task.inputs.writeBranded2DImage = (
 preliminary_workflow3.add(bcd_task)
 
 # Set the filename for the output of the Resample task
-resampledOutputVolumeTask = append_filename(
+resampledOutputVolume = append_filename(
     name="resampledOutputVolume",
     filename=preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume,
     append_str="_resampled",
     extension=".txt",
     directory="",
 )
-preliminary_workflow3.add(resampledOutputVolumeTask)
+preliminary_workflow3.add(resampledOutputVolume)
 
 # Create and fill a task to run a dummy BRAINSResample script that runs appends resample to the inputVolume
 resample_task = BRAINSResample(
@@ -134,9 +134,7 @@ resample_task.inputs.inputVolume = (
 )
 resample_task.inputs.interpolationMode = "Linear"
 resample_task.inputs.pixelType = "binary"
-resample_task.inputs.referenceVolume = (
-    "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz"
-)
+resample_task.inputs.referenceVolume = "/mnt/c/2020_Grad_School/Research/BRAINSPydra/resample_refs/t1_average_BRAINSABC.nii.gz"
 resample_task.inputs.warpTransform = preliminary_workflow3.outputTransform.lzout.out
 resample_task.inputs.outputVolume = (
     preliminary_workflow3.resampledOutputVolume.lzout.out
