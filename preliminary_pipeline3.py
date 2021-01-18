@@ -1,6 +1,5 @@
 import pydra
 import nest_asyncio
-import attr
 from pathlib import Path
 from shutil import copyfile
 from registration import BRAINSResample
@@ -30,19 +29,19 @@ p = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files")
 for t1 in p.glob("subject*.txt"):
     t1_list.append(t1)
 
-# Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node
+# Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow3)
 source_node = pydra.Workflow(name="source_node", input_spec=["t1_list"])
 preliminary_workflow3 = pydra.Workflow(name="preliminary_workflow3", input_spec=["t1"], t1=source_node.lzin.t1_list)
 source_node.add(preliminary_workflow3)
-source_node.split("t1_list")
+source_node.split("t1_list") # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 source_node.inputs.t1_list = t1_list
 
 # Set the filenames for the output of the BRAINSConstellationDetector task
-preliminary_workflow3.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original", extension=".fcsv"))
-preliminary_workflow3.add(append_filename(name="outputResampledVolume", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC", extension=".nii.gz"))
-preliminary_workflow3.add(append_filename(name="outputTransform", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
-preliminary_workflow3.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
-preliminary_workflow3.add(append_filename(name="writeBranded2DImage", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Branded2DQCimage", extension=".png"))
+preliminary_workflow3.add(append_filename(name="outputLandmarksInInputSpace",       filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original",                extension=".fcsv"))
+preliminary_workflow3.add(append_filename(name="outputResampledVolume",             filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC",                    extension=".nii.gz"))
+preliminary_workflow3.add(append_filename(name="outputTransform",                   filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
+preliminary_workflow3.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC_Landmarks",          extension=".fcsv"))
+preliminary_workflow3.add(append_filename(name="writeBranded2DImage",               filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Branded2DQCimage",        extension=".png"))
 
 # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
 bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh").get_task()
