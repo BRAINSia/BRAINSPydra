@@ -46,7 +46,7 @@ preliminary_workflow3.add(append_filename(name="writeBranded2DImage", filename=p
 
 # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
 bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh").get_task()
-bcd_task.inputs.inputVolume =             "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt"#preliminary_workflow3.lzin.t1
+bcd_task.inputs.inputVolume =             preliminary_workflow3.lzin.t1
 bcd_task.inputs.inputTemplateModel =      "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/T1_50Lmks.mdl"
 bcd_task.inputs.LLSModel =                "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/LLSModel_50Lmks.h5"
 bcd_task.inputs.atlasLandmarkWeights =    "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/template_weights_50Lmks.wts"
