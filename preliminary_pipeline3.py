@@ -37,7 +37,7 @@ source_node.add(preliminary_workflow3)
 source_node.split("t1_list")
 source_node.inputs.t1_list = t1_list
 
-# Create the output file names for BRAINSConstellationDetector
+# Set the filenames for the output of the BRAINSConstellationDetector task
 preliminary_workflow3.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original", extension=".fcsv"))
 preliminary_workflow3.add(append_filename(name="outputResampledVolume", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_ACPC", extension=".nii.gz"))
 preliminary_workflow3.add(append_filename(name="outputTransform", filename=preliminary_workflow3.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
@@ -61,15 +61,17 @@ bcd_task.inputs.outputLandmarksInACPCAlignedSpace = preliminary_workflow3.output
 bcd_task.inputs.writeBranded2DImage =               preliminary_workflow3.writeBranded2DImage.lzout.out
 preliminary_workflow3.add(bcd_task)
 
+# Set the filename for the output of the Resample task
 resampledOutputVolumeTask = append_filename(name="resampledOutputVolume", filename=preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume, append_str="_resampled", extension=".txt", directory="")
 preliminary_workflow3.add(resampledOutputVolumeTask)
 
+# Create and fill a task to run a dummy BRAINSResample script that runs appends resample to the inputVolume
 resample_task = BRAINSResample(name="BRAINSResample3", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample3.sh").get_task()
-resample_task.inputs.inputVolume =       preliminary_workflow3.lzin.t1 #preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume
+resample_task.inputs.inputVolume =       preliminary_workflow3.BRAINSConstellationDetector3.lzout.outputResampledVolume
 resample_task.inputs.interpolationMode = "Linear"
 resample_task.inputs.pixelType =         "binary"
 resample_task.inputs.referenceVolume =   "/localscratch/Users/cjohnson30/resample_refs/t1_average_BRAINSABC.nii.gz"
-resample_task.inputs.warpTransform =     "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5" # outputTransform
+resample_task.inputs.warpTransform =     preliminary_workflow3.outputTransform.lzout.out
 resample_task.inputs.outputVolume =      preliminary_workflow3.resampledOutputVolume.lzout.out
 preliminary_workflow3.add(resample_task)
 
