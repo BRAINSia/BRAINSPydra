@@ -84,7 +84,7 @@ source_node.set_output([("outputLandmarksInInputSpace",       source_node.prelim
                         ("outputVolume",                      source_node.preliminary_workflow4.lzout.outputVolume)])
 
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], cache_dir="")
+sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], cache_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/cache_dir")
 sink_node.add(source_node)
 sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputLandmarksInInputSpace))
 sink_node.add(copy_from_cache(name="outputResampledVolume",             output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputResampledVolume))

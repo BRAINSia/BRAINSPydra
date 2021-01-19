@@ -50,6 +50,13 @@ def get_workflow_components():
 
     return workflow_components_contents
 
+def get_cache_dir_str():
+    cache_dir_str = ""
+    if "cache_dir" in config['OUTPUT']:
+        if config['OUTPUT']['cache_dir'] != "":
+            cache_dir_str = f"cache_dir={config['OUTPUT']['cache_dir']}"
+    return cache_dir_str
+
 pipeline_contents = f"""
 import pydra
 import nest_asyncio
@@ -103,7 +110,7 @@ source_node.set_output([("outputLandmarksInInputSpace",       source_node.{WORKF
                         ("outputVolume",                      source_node.{WORKFLOW_NAME}.lzout.outputVolume)])
 
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], cache_dir="{config['OUTPUT']['cache_dir']}")
+sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], {get_cache_dir_str()})
 sink_node.add(source_node)
 sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.outputLandmarksInInputSpace))
 sink_node.add(copy_from_cache(name="outputResampledVolume",             output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.outputResampledVolume))
