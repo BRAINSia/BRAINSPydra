@@ -17,31 +17,29 @@ def get_workflow_components():
         filename_components = ""
         task_components = ""
         task_components += f'{workflow_component}_task = {config[workflow_component]["SEM_class"]}(name="{workflow_component}", executable={config[workflow_component]["executable"]}).get_task()\n'
-        config[workflow_component].pop('executable')
-        config[workflow_component].pop('SEM_class')
         for parameter in config[workflow_component]:
-
-            value = config[workflow_component][parameter]
-            try: # Try to read the value as a json-style entry - it should be a dictionary
-                value_dict = json.loads(value)
-                if value_dict['function'] == 'out':
-                    if value_dict['section'] == "INPUT":
-                        task_input = f'{workflow_component}_task.inputs.{parameter} = {WORKFLOW_NAME}.lzin.{value_dict["variable"]}'
-                    else:
-                        task_input = f'{workflow_component}_task.inputs.{parameter} = {WORKFLOW_NAME}.{value_dict["section"]}.lzout.{value_dict["variable"]}'
-                    task_components += f"{task_input}\n"
-                elif value_dict['function'] == 'append':
-                    if value_dict['section'] == "INPUT":
-                        filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.lzin.{value_dict["variable"]}, append_str="{value_dict["append"]}", extension="{value_dict["extension"]}"))'
-                    else:
-                        filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.{value_dict["section"]}.lzout.{value_dict["variable"]}, append_str="{value_dict["append"]}", extension="{value_dict["extension"]}"))'
-                    task_input = f'{workflow_component}_task.inputs.{parameter} = {WORKFLOW_NAME}.{parameter}.lzout.out'
-                    filename_components += f'{filename_task}\n'
-                    task_components += f'{task_input}\n'
-            except: # If the entry is not json-style, read it as a normal configuration parameter
-                # print(value, int(value))
-                value = f'{workflow_component}_task.inputs.{parameter} = {value}'
-                task_components += f'{value}\n'
+            if parameter not in ['executable', 'SEM_class', 'outputs']:
+                value = config[workflow_component][parameter]
+                try: # Try to read the value as a json-style entry - it should be a dictionary
+                    value_dict = json.loads(value)
+                    if value_dict['function'] == 'out':
+                        if value_dict['section'] == "INPUT":
+                            task_input = f'{workflow_component}_task.inputs.{parameter} = {WORKFLOW_NAME}.lzin.{value_dict["variable"]}'
+                        else:
+                            task_input = f'{workflow_component}_task.inputs.{parameter} = {WORKFLOW_NAME}.{value_dict["section"]}.lzout.{value_dict["variable"]}'
+                        task_components += f"{task_input}\n"
+                    elif value_dict['function'] == 'append':
+                        if value_dict['section'] == "INPUT":
+                            filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.lzin.{value_dict["variable"]}, append_str="{value_dict["append"]}", extension="{value_dict["extension"]}"))'
+                        else:
+                            filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.{value_dict["section"]}.lzout.{value_dict["variable"]}, append_str="{value_dict["append"]}", extension="{value_dict["extension"]}"))'
+                        task_input = f'{workflow_component}_task.inputs.{parameter} = {WORKFLOW_NAME}.{parameter}.lzout.out'
+                        filename_components += f'{filename_task}\n'
+                        task_components += f'{task_input}\n'
+                except: # If the entry is not json-style, read it as a normal configuration parameter
+                    # print(value, int(value))
+                    value = f'{workflow_component}_task.inputs.{parameter} = {value}'
+                    task_components += f'{value}\n'
         task_components += f'{WORKFLOW_NAME}.add({workflow_component}_task)'
 
         workflow_components_contents += f'{filename_components}\n'
@@ -49,6 +47,31 @@ def get_workflow_components():
         workflow_components_contents += '\n'
 
     return workflow_components_contents
+
+def get_workflow_outputs():
+    workflow_output_contents = ""
+    source_output_contents = ""
+    sink_output_contents = ""
+
+    workflow_output_contents = f'{WORKFLOW_NAME}.set_output(['
+    source_output_contents = f'source_node.set_output(['
+    for workflow_component in json.loads(config['TASKS']['workflow_components']):
+        # print(config[workflow_component]['outputs'])
+        for output_variable in json.loads(config[workflow_component]['outputs']):
+            workflow_output_contents += f'("{output_variable}", {WORKFLOW_NAME}.{workflow_component}.lzout.{output_variable}),\n'
+            source_output_contents += f'("{output_variable}", source_node.{WORKFLOW_NAME}.lzout.{output_variable}),\n'
+    workflow_output_contents += '])\n'
+    source_output_contents += '])\n'
+
+    # for workflow_component in json.loads(config['TASKS']['workflow_components']):
+    #     # print(config[workflow_component]['outputs'])
+    #     for output_variable in json.loads(config[workflow_component]['outputs']):
+    #         output_contents += f'("{output_variable}", source_node.{WORKFLOW_NAME}.lzout.{output_variable}),\n'
+    # output_contents += '])\n'
+
+
+    return workflow_output_contents + source_output_contents
+
 
 def get_cache_dir_str():
     cache_dir_str = ""
@@ -95,19 +118,7 @@ source_node.inputs.input = input
 
 {get_workflow_components()}
 
-# Set the outputs of the processing node and the source node so they are output to the sink node
-{WORKFLOW_NAME}.set_output([("outputLandmarksInInputSpace",             {WORKFLOW_NAME}.BCD.lzout.outputLandmarksInInputSpace),
-                                  ("outputResampledVolume",             {WORKFLOW_NAME}.BCD.lzout.outputResampledVolume),
-                                  ("outputTransform",                   {WORKFLOW_NAME}.BCD.lzout.outputTransform),
-                                  ("outputLandmarksInACPCAlignedSpace", {WORKFLOW_NAME}.BCD.lzout.outputLandmarksInACPCAlignedSpace),
-                                  ("writeBranded2DImage",               {WORKFLOW_NAME}.BCD.lzout.writeBranded2DImage),
-                                  ("outputVolume",                      {WORKFLOW_NAME}.RESAMPLE.lzout.outputVolume)])
-source_node.set_output([("outputLandmarksInInputSpace",       source_node.{WORKFLOW_NAME}.lzout.outputLandmarksInInputSpace),
-                        ("outputResampledVolume",             source_node.{WORKFLOW_NAME}.lzout.outputResampledVolume),
-                        ("outputTransform",                   source_node.{WORKFLOW_NAME}.lzout.outputTransform),
-                        ("outputLandmarksInACPCAlignedSpace", source_node.{WORKFLOW_NAME}.lzout.outputLandmarksInACPCAlignedSpace),
-                        ("writeBranded2DImage",               source_node.{WORKFLOW_NAME}.lzout.writeBranded2DImage),
-                        ("outputVolume",                      source_node.{WORKFLOW_NAME}.lzout.outputVolume)])
+{get_workflow_outputs()}
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], {get_cache_dir_str()})
