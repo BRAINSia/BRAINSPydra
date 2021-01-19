@@ -1,0 +1,12 @@
+{
+  "BRAINSConstellationDetector": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh",
+    "inputTemplateModel": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/T1_50Lmks.mdl",
+    "LLSModel": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/LLSModel_50Lmks.h5",
+    "atlasLandmarkWeights": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/template_weights_50Lmks.wts",
+    "atlasLandmarks": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "houghEyeDetectorMode": 1,
+    "acLowerBound": 80.000000,
+    "interpolationMode": "Linear"
+  }
+}
