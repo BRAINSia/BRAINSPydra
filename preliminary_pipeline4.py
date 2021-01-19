@@ -34,11 +34,11 @@ source_node.add(preliminary_workflow4)
 source_node.split("input") # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 source_node.inputs.input = input
 
-preliminary_workflow4.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow4.lzin.input, appended_str="_BCD_Original", extension=".fcsv"))
-preliminary_workflow4.add(append_filename(name="outputResampledVolume", filename=preliminary_workflow4.lzin.input, appended_str="_BCD_ACPC", extension=".nii.gz"))
-preliminary_workflow4.add(append_filename(name="outputTransform", filename=preliminary_workflow4.lzin.input, appended_str="_BCD_Original2ACPC_transform", extension=".h5"))
-preliminary_workflow4.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=preliminary_workflow4.lzin.input, appended_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
-preliminary_workflow4.add(append_filename(name="writeBranded2DImage", filename=preliminary_workflow4.lzin.input, appended_str="_BCD_Branded2DQCimage", extension=".png"))
+preliminary_workflow4.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow4.lzin.input, append_str="_BCD_Original", extension=".fcsv"))
+preliminary_workflow4.add(append_filename(name="outputResampledVolume", filename=preliminary_workflow4.lzin.input, append_str="_BCD_ACPC", extension=".nii.gz"))
+preliminary_workflow4.add(append_filename(name="outputTransform", filename=preliminary_workflow4.lzin.input, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
+preliminary_workflow4.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=preliminary_workflow4.lzin.input, append_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
+preliminary_workflow4.add(append_filename(name="writeBranded2DImage", filename=preliminary_workflow4.lzin.input, append_str="_BCD_Branded2DQCimage", extension=".png"))
 
 BCD_task = BRAINSConstellationDetector(name="BCD", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh").get_task()
 BCD_task.inputs.inputVolume = preliminary_workflow4.lzin.input
@@ -56,7 +56,7 @@ BCD_task.inputs.outputLandmarksInACPCAlignedSpace = preliminary_workflow4.output
 BCD_task.inputs.writeBranded2DImage = preliminary_workflow4.writeBranded2DImage.lzout.out
 preliminary_workflow4.add(BCD_task)
 
-preliminary_workflow4.add(append_filename(name="outputVolume", filename=preliminary_workflow4.BCD.lzout.outputResampledVolume, appended_str="_resampled", extension=".txt"))
+preliminary_workflow4.add(append_filename(name="outputVolume", filename=preliminary_workflow4.BCD.lzout.outputResampledVolume, append_str="_resampled", extension=".txt"))
 
 RESAMPLE_task = BRAINSResample(name="RESAMPLE", executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample3.sh").get_task()
 RESAMPLE_task.inputs.inputVolume = preliminary_workflow4.BCD.lzout.outputResampledVolume
@@ -84,7 +84,7 @@ source_node.set_output([("outputLandmarksInInputSpace",       source_node.prelim
                         ("outputVolume",                      source_node.preliminary_workflow4.lzout.outputVolume)])
 
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], cache_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/cache_dir")
+sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], cache_dir="")
 sink_node.add(source_node)
 sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputLandmarksInInputSpace))
 sink_node.add(copy_from_cache(name="outputResampledVolume",             output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputResampledVolume))

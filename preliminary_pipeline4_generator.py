@@ -32,9 +32,9 @@ def get_workflow_components():
                     task_components += f"{task_input}\n"
                 elif value_dict['function'] == 'append':
                     if value_dict['section'] == "INPUT":
-                        filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.lzin.{value_dict["variable"]}, appended_str="{value_dict["appended"]}", extension="{value_dict["extension"]}"))'
+                        filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.lzin.{value_dict["variable"]}, append_str="{value_dict["append"]}", extension="{value_dict["extension"]}"))'
                     else:
-                        filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.{value_dict["section"]}.lzout.{value_dict["variable"]}, appended_str="{value_dict["appended"]}", extension="{value_dict["extension"]}"))'
+                        filename_task = f'{WORKFLOW_NAME}.add(append_filename(name="{parameter}", filename={WORKFLOW_NAME}.{value_dict["section"]}.lzout.{value_dict["variable"]}, append_str="{value_dict["append"]}", extension="{value_dict["extension"]}"))'
                     task_input = f'{workflow_component}_task.inputs.{parameter} = {WORKFLOW_NAME}.{parameter}.lzout.out'
                     filename_components += f'{filename_task}\n'
                     task_components += f'{task_input}\n'
@@ -105,12 +105,12 @@ source_node.set_output([("outputLandmarksInInputSpace",       source_node.{WORKF
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"], cache_dir="{config['OUTPUT']['cache_dir']}")
 sink_node.add(source_node)
-sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       output_dir="{config['OUTPUT']['output_dir']}", cache_path=sink_node.source_node.lzout.outputLandmarksInInputSpace))
-sink_node.add(copy_from_cache(name="outputResampledVolume",             output_dir="{config['OUTPUT']['output_dir']}", cache_path=sink_node.source_node.lzout.outputResampledVolume))
-sink_node.add(copy_from_cache(name="outputTransform",                   output_dir="{config['OUTPUT']['output_dir']}", cache_path=sink_node.source_node.lzout.outputTransform))
-sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_dir="{config['OUTPUT']['output_dir']}", cache_path=sink_node.source_node.lzout.outputLandmarksInACPCAlignedSpace))
-sink_node.add(copy_from_cache(name="writeBranded2DImage",               output_dir="{config['OUTPUT']['output_dir']}", cache_path=sink_node.source_node.lzout.writeBranded2DImage))
-sink_node.add(copy_from_cache(name="outputVolume",                      output_dir="{config['OUTPUT']['output_dir']}", cache_path=sink_node.source_node.lzout.outputVolume))
+sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace",       output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.outputLandmarksInInputSpace))
+sink_node.add(copy_from_cache(name="outputResampledVolume",             output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.outputResampledVolume))
+sink_node.add(copy_from_cache(name="outputTransform",                   output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.outputTransform))
+sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.outputLandmarksInACPCAlignedSpace))
+sink_node.add(copy_from_cache(name="writeBranded2DImage",               output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.writeBranded2DImage))
+sink_node.add(copy_from_cache(name="outputVolume",                      output_dir={config['OUTPUT']['output_dir']}, cache_path=sink_node.source_node.lzout.outputVolume))
 sink_node.set_output([("output", sink_node.outputVolume.lzout.out)])
 
 # Run the entire workflow
