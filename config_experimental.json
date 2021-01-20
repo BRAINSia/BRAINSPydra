@@ -1,4 +1,6 @@
 {
+  "t1_list": ["/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt", "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt"],
+  "output_dir": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir",
   "BRAINSConstellationDetector": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh",
     "inputTemplateModel": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/20141004_BCD/T1_50Lmks.mdl",
