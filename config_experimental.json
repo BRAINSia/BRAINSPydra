@@ -17,5 +17,10 @@
     "pixelType": "binary",
     "referenceVolume": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/resample_refs/t1_average_BRAINSABC.nii.gz",
     "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/resample_refs/atlas_to_subject.h5"
+  },
+  "BRAINSROIAuto": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSROIAuto4.sh",
+    "ROIAutoDilateSize": 10.000000,
+    "cropOutput": ""
   }
 }
