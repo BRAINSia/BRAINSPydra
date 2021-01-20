@@ -12,7 +12,8 @@ def append_filename(filename="", append_str="", extension="", directory=""):
     return new_filename
 
 def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
-    from segmentation.specialized import BRAINSConstellationDetector
+    # from .sem_tasks.segmentation.specialized import BRAINSConstellationDetector
+    from .sem_tasks.segmentation.specialized import BRAINSConstellationDetector
 
     bcd_workflow = pydra.Workflow(name="preliminary_workflow4", input_spec=["t1"], t1=my_source_node.lzin.t1_list)
     # Set the filenames for the output of the BRAINSConstellationDetector task
@@ -53,7 +54,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     return bcd_workflow
 
 def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
-    from registration import BRAINSResample
+    from sem_tasks.registration import BRAINSResample
 
     resample_workflow = pydra.Workflow(name="resample_workflow", input_spec=["t1"], t1=my_source_node.lzin.t1_list)
 
