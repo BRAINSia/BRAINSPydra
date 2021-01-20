@@ -10,5 +10,12 @@
     "houghEyeDetectorMode": 1,
     "acLowerBound": 80.000000,
     "interpolationMode": "Linear"
+  },
+  "BRAINSResample": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample3.sh",
+    "interpolationMode": "Linear",
+    "pixelType": "binary",
+    "referenceVolume": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/resample_refs/t1_average_BRAINSABC.nii.gz",
+    "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/resample_refs/atlas_to_subject.h5"
   }
 }
