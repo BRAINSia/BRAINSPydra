@@ -7,6 +7,10 @@ from segmentation.specialized import BRAINSConstellationDetector
 from registration import BRAINSResample
 
 @pydra.mark.task
+def get_t1(x):
+    return x
+
+@pydra.mark.task
 def append_filename(filename="", append_str="", extension="", directory=""):
     new_filename = f"{Path(Path(directory) / Path(Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
     return new_filename
@@ -14,8 +18,8 @@ def append_filename(filename="", append_str="", extension="", directory=""):
 def make_bcd_workflow(source_node: pydra.Workflow) -> pydra.Workflow:
     with open('config_experimental.json') as f:
         config_experimental_dict = json.load(f)
-    preliminary_workflow4 = pydra.Workflow(name="preliminary_workflow4", input_spec=["t1"])
-    preliminary_workflow4.inputs.t1 = source_node.lzin.t1_list
+    preliminary_workflow4 = pydra.Workflow(name="preliminary_workflow4", input_spec=["t1"], t1=source_node.get_t1.lzout.out)
+    # preliminary_workflow4.inputs.t1 = source_node.lzin.t1_list
     # Set the filenames for the output of the BRAINSConstellationDetector task
     preliminary_workflow4.add(append_filename(name="outputLandmarksInInputSpace", filename=preliminary_workflow4.lzin.t1, append_str="_BCD_Original", extension=".fcsv"))
     preliminary_workflow4.add(append_filename(name="outputResampledVolume", filename=preliminary_workflow4.lzin.t1, append_str="_BCD_ACPC", extension=".nii.gz"))
@@ -71,9 +75,7 @@ def copy_from_cache(cache_path, output_dir):
 
 nest_asyncio.apply()
 
-local_config_stuff = {
 
-}
 # Get the list of two files of the pattern subject*.txt images in this directory
 t1_list = []
 p = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files")
@@ -83,36 +85,52 @@ for t1 in p.glob("subject*.txt"):
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
 source_node = pydra.Workflow(name="source_node", input_spec=["t1_list"])
-source_node.split(
-    "t1_list")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
+source_node.add(get_t1(name="get_t1", x=source_node.lzin.t1_list))
 source_node.inputs.t1_list = t1_list
+source_node.split("t1_list")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 preliminary_workflow4 = make_bcd_workflow(source_node)
 
+
+
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=["processed_files"])
-source_node.add(preliminary_workflow4)
-sink_node.add(source_node)
-source_node.set_output([("outputLandmarksInInputSpace", source_node.preliminary_workflow4.lzout.outputLandmarksInInputSpace),
-     ("outputResampledVolume", source_node.preliminary_workflow4.lzout.outputResampledVolume),
-     ("outputTransform", source_node.preliminary_workflow4.lzout.outputTransform),
-     ("outputLandmarksInACPCAlignedSpace", source_node.preliminary_workflow4.lzout.outputLandmarksInACPCAlignedSpace),
-     ("writeBranded2DImage", source_node.preliminary_workflow4.lzout.writeBranded2DImage)])
-sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputLandmarksInInputSpace))
-sink_node.add(copy_from_cache(name="outputResampledVolume", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputResampledVolume))
-sink_node.add(copy_from_cache(name="outputTransform", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputTransform))
-sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.outputLandmarksInACPCAlignedSpace))
-sink_node.add(copy_from_cache(name="writeBranded2DImage", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.source_node.lzout.writeBranded2DImage))
+sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform", "outputLandmarksInACPCAlignedSpace", "writeBranded2DImage"],
+                           outputLandmarksInInputSpace=preliminary_workflow4.lzout.outputLandmarksInInputSpace,
+                           outputResampledVolume=preliminary_workflow4.lzout.outputResampledVolume,
+                           outputTransform=preliminary_workflow4.lzout.outputTransform,
+                           outputLandmarksInACPCAlignedSpace=preliminary_workflow4.lzout.outputLandmarksInACPCAlignedSpace,
+                           writeBranded2DImage=preliminary_workflow4.lzout.writeBranded2DImage)
+
+
+sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputLandmarksInInputSpace))
+sink_node.add(copy_from_cache(name="outputResampledVolume", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputResampledVolume))
+sink_node.add(copy_from_cache(name="outputTransform", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputTransform))
+sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputLandmarksInACPCAlignedSpace))
+sink_node.add(copy_from_cache(name="writeBranded2DImage", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.writeBranded2DImage))
 sink_node.set_output([("outputLandmarksInInputSpace", sink_node.outputLandmarksInInputSpace.lzout.out),
      ("outputResampledVolume", sink_node.outputResampledVolume.lzout.out),
      ("outputTransform", sink_node.outputTransform.lzout.out),
      ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpace.lzout.out),
      ("writeBranded2DImage", sink_node.writeBranded2DImage.lzout.out)])
 
+source_node.add(preliminary_workflow4)
+source_node.add(sink_node)
+# sink_node.add(source_node)
 
+source_node.set_output([("outputLandmarksInInputSpace", source_node.sink_node.lzout.outputLandmarksInInputSpace),])
+     # ("outputResampledVolume", source_node.preliminary_workflow4.lzout.outputResampledVolume),
+     # ("outputTransform", source_node.preliminary_workflow4.lzout.outputTransform),
+     # ("outputLandmarksInACPCAlignedSpace", source_node.preliminary_workflow4.lzout.outputLandmarksInACPCAlignedSpace),
+     # ("writeBranded2DImage", source_node.preliminary_workflow4.lzout.writeBranded2DImage)])
+# source_node.set_output([("all_workflow_output", source_node.preliminary_workflow4.lzout.all_)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
-    sub(sink_node)
-result = sink_node.result()
+    sub(source_node)
+result = source_node.result()
 print(result)
+# # Run the entire workflow
+# with pydra.Submitter(plugin="cf") as sub:
+#     sub(sink_node)
+# result = sink_node.result()
+# print(result)
