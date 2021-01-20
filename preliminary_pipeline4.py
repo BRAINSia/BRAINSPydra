@@ -6,6 +6,12 @@ import json
 from segmentation.specialized import BRAINSConstellationDetector
 from registration import BRAINSResample
 
+
+
+@pydra.mark.task
+def get_processed_outputs(processed_dict: dict):
+    return list(processed_dict.values())
+
 @pydra.mark.task
 def get_t1(x):
     return x
@@ -82,6 +88,8 @@ p = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files")
 for t1 in p.glob("subject*.txt"):
     t1_list.append(t1)
 
+with open('config_experimental.json') as f:
+    config_experimental_dict = json.load(f)
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
 source_node = pydra.Workflow(name="source_node", input_spec=["t1_list"])
@@ -94,30 +102,34 @@ preliminary_workflow4 = make_bcd_workflow(source_node)
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform", "outputLandmarksInACPCAlignedSpace", "writeBranded2DImage"],
-                           outputLandmarksInInputSpace=preliminary_workflow4.lzout.outputLandmarksInInputSpace,
-                           outputResampledVolume=preliminary_workflow4.lzout.outputResampledVolume,
-                           outputTransform=preliminary_workflow4.lzout.outputTransform,
-                           outputLandmarksInACPCAlignedSpace=preliminary_workflow4.lzout.outputLandmarksInACPCAlignedSpace,
-                           writeBranded2DImage=preliminary_workflow4.lzout.writeBranded2DImage)
+# sink_node = pydra.Workflow(name="sink_node", input_spec=["outputLandmarksInInputSpace", "outputResampledVolume", "outputTransform", "outputLandmarksInACPCAlignedSpace", "writeBranded2DImage"],
+#                            outputLandmarksInInputSpace=preliminary_workflow4.lzout.outputLandmarksInInputSpace,
+#                            outputResampledVolume=preliminary_workflow4.lzout.outputResampledVolume,
+#                            outputTransform=preliminary_workflow4.lzout.outputTransform,
+#                            outputLandmarksInACPCAlignedSpace=preliminary_workflow4.lzout.outputLandmarksInACPCAlignedSpace,
+#                            writeBranded2DImage=preliminary_workflow4.lzout.writeBranded2DImage)
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)
+sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=config_experimental_dict['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out).split("cache_path"))
+sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
+# sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputLandmarksInInputSpace))
+# sink_node.add(copy_from_cache(name="outputResampledVolume", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputResampledVolume))
+# sink_node.add(copy_from_cache(name="outputTransform", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputTransform))
+# sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputLandmarksInACPCAlignedSpace))
+# sink_node.add(copy_from_cache(name="writeBranded2DImage", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.writeBranded2DImage))
+# sink_node.set_output([("outputLandmarksInInputSpace", sink_node.outputLandmarksInInputSpace.lzout.out),
+#      ("outputResampledVolume", sink_node.outputResampledVolume.lzout.out),
+#      ("outputTransform", sink_node.outputTransform.lzout.out),
+#      ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpace.lzout.out),
+#      ("writeBranded2DImage", sink_node.writeBranded2DImage.lzout.out)])
 
-sink_node.add(copy_from_cache(name="outputLandmarksInInputSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputLandmarksInInputSpace))
-sink_node.add(copy_from_cache(name="outputResampledVolume", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputResampledVolume))
-sink_node.add(copy_from_cache(name="outputTransform", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputTransform))
-sink_node.add(copy_from_cache(name="outputLandmarksInACPCAlignedSpace", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.outputLandmarksInACPCAlignedSpace))
-sink_node.add(copy_from_cache(name="writeBranded2DImage", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.lzin.writeBranded2DImage))
-sink_node.set_output([("outputLandmarksInInputSpace", sink_node.outputLandmarksInInputSpace.lzout.out),
-     ("outputResampledVolume", sink_node.outputResampledVolume.lzout.out),
-     ("outputTransform", sink_node.outputTransform.lzout.out),
-     ("outputLandmarksInACPCAlignedSpace", sink_node.outputLandmarksInACPCAlignedSpace.lzout.out),
-     ("writeBranded2DImage", sink_node.writeBranded2DImage.lzout.out)])
 
 source_node.add(preliminary_workflow4)
 source_node.add(sink_node)
 # sink_node.add(source_node)
 
-source_node.set_output([("outputLandmarksInInputSpace", source_node.sink_node.lzout.outputLandmarksInInputSpace),])
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
      # ("outputResampledVolume", source_node.preliminary_workflow4.lzout.outputResampledVolume),
      # ("outputTransform", source_node.preliminary_workflow4.lzout.outputTransform),
      # ("outputLandmarksInACPCAlignedSpace", source_node.preliminary_workflow4.lzout.outputLandmarksInACPCAlignedSpace),
