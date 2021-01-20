@@ -38,8 +38,7 @@ processing_node.set_output([("add2_1", processing_node.add2_1.lzout.out),
 sink_node = pydra.Workflow(name="sink_node", input_spec=["x"], x=processing_node.lzout.all_)
 sink_node.add(extract_from_outall_dict(name="extract_from_outall_dict", d=sink_node.lzin.x))
 sink_node.add(add2(name="add2", x=sink_node.extract_from_outall_dict.lzout.out).split("x"))
-sink_node.set_output([("out", sink_node.extract_from_outall_dict.lzout.out),
-                      ("add2", sink_node.add2.lzout.out)])
+sink_node.set_output([("add2", sink_node.add2.lzout.out)])
 
 source_node.add(processing_node)
 source_node.add(sink_node)
