@@ -26,7 +26,7 @@ def extract_from_outall_dict(d: dict):
     print(d)
     return list(d.values())
 
-source_node = pydra.Workflow(name="wf_st_3", input_spec=["x", "y"])
+source_node = pydra.Workflow(name="wf_st_3", input_spec=["x"])
 source_node.add(add2(name="add2", x=source_node.lzin.x))
 source_node.inputs.x = [2, 4]
 source_node.split("x")
@@ -36,8 +36,8 @@ processing_node.add(add2(name="add2", x=processing_node.lzin.x))
 processing_node.set_output([("out", processing_node.add2.lzout.out)])
 
 sink_node = pydra.Workflow(name="sink_node", input_spec=["x"], x=processing_node.lzout.out)
-sink_node.add(get_self(name="get_self", x=sink_node.lzin.x))
-sink_node.set_output([("out", sink_node.get_self.lzout.out)])
+sink_node.add(add2(name="add2", x=sink_node.lzin.x))
+sink_node.set_output([("out", sink_node.add2.lzout.out)])
 
 source_node.add(processing_node)
 source_node.add(sink_node)
