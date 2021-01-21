@@ -26,17 +26,21 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # from .sem_tasks.segmentation.specialized import BRAINSConstellationDetector
     from sem_tasks.segmentation.specialized import BRAINSConstellationDetector
 
-    bcd_workflow = pydra.Workflow(name="preliminary_workflow4", input_spec=["t1"], t1=my_source_node.lzin.t1_list)
+    bcd_workflow = pydra.Workflow(name="preliminary_workflow4", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+
+    bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
+
+
     # Set the filenames for the output of the BRAINSConstellationDetector task
-    bcd_workflow.add(append_filename(name="outputLandmarksInInputSpace", filename=bcd_workflow.lzin.t1, append_str="_BCD_Original", extension=".fcsv"))
-    bcd_workflow.add(append_filename(name="outputResampledVolume", filename=bcd_workflow.lzin.t1, append_str="_BCD_ACPC", extension=".nii.gz"))
-    bcd_workflow.add(append_filename(name="outputTransform", filename=bcd_workflow.lzin.t1, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
-    bcd_workflow.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=bcd_workflow.lzin.t1, append_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
-    bcd_workflow.add(append_filename(name="writeBranded2DImage", filename=bcd_workflow.lzin.t1, append_str="_BCD_Branded2DQCimage", extension=".png"))
+    bcd_workflow.add(append_filename(name="outputLandmarksInInputSpace", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_Original", extension=".fcsv"))
+    bcd_workflow.add(append_filename(name="outputResampledVolume", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_ACPC", extension=".nii.gz"))
+    bcd_workflow.add(append_filename(name="outputTransform", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
+    bcd_workflow.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
+    bcd_workflow.add(append_filename(name="writeBranded2DImage", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_Branded2DQCimage", extension=".png"))
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration['BRAINSConstellationDetector']['executable']).get_task()
-    bcd_task.inputs.inputVolume = bcd_workflow.lzin.t1
+    bcd_task.inputs.inputVolume = bcd_workflow.get_t1.lzout.out
     bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector']['inputTemplateModel']
     bcd_task.inputs.LLSModel = experiment_configuration['BRAINSConstellationDetector']['LLSModel']
     bcd_task.inputs.atlasLandmarkWeights = experiment_configuration['BRAINSConstellationDetector']['atlasLandmarkWeights']
@@ -92,13 +96,14 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSROIAuto
 
-    roi_workflow = pydra.Workflow(name="roi_workflow", input_spec=["t1"], t1=my_source_node.lzin.t1_list)
+    roi_workflow = pydra.Workflow(name="roi_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
 
+    roi_workflow.add(get_input_field(name="get_t1", input_dict=roi_workflow.lzin.input_data, field="t1"))
 
-    roi_workflow.add(append_filename(name="roiOutputVolume", filename=roi_workflow.lzin.t1, before_str="Cropped_", append_str="_Aligned", extension=".txt"))
+    roi_workflow.add(append_filename(name="roiOutputVolume", filename=roi_workflow.get_t1.lzout.out, before_str="Cropped_", append_str="_Aligned", extension=".txt"))
 
     roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto']['executable']).get_task()
-    roi_task.inputs.inputVolume = roi_workflow.lzin.t1
+    roi_task.inputs.inputVolume = roi_workflow.get_t1.lzout.out
     roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto']['ROIAutoDilateSize']
     roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto']['cropOutput']
     roi_task.inputs.outputVolume = roi_workflow.roiOutputVolume.lzout.out
@@ -132,8 +137,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
-preliminary_workflow4 = make_resample_workflow(source_node)
-# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+# preliminary_workflow4 = make_resample_workflow(source_node)
+preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)
