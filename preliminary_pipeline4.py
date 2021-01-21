@@ -115,8 +115,20 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.utilities.brains import BRAINSLandmarkInitializer
 
-    landmarkInitializer_workflow = pydra.Workflow(name="landmarkInitializer_workflow", input_spec=["t1"], )
+    landmarkInitializer_workflow = pydra.Workflow(name="landmarkInitializer_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
 
+    landmarkInitializer_workflow.add(get_input_field(name="get_movingLandmark", input_dict=landmarkInitializer_workflow.lzin.input_data, field="inputMovingLandmarkFilename"))
+
+    landmarkInitializer_workflow.add(append_filename(name="outputTransformFilename", filename="landmarkInitializer_subject_to_atlas_transform", extension=".h5"))
+    landmarkInitializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration['BRAINSLandmarkInitializer']['executable']).get_task()
+    landmarkInitializer_task.inputs.inputFixedLandmarkFilename = experiment_configuration['BRAINSLandmarkInitializer']['inputFixedLandmarkFilename']
+    landmarkInitializer_task.inputs.inputMovingLandmarkFilename = landmarkInitializer_workflow.get_movingLandmark.lzout.out
+    landmarkInitializer_task.inputs.inputWeightFilename = experiment_configuration['BRAINSLandmarkInitializer']['inputWeightFilename']
+    landmarkInitializer_task.inputs.outputTransformFilename = landmarkInitializer_workflow.outputTransformFilename.lzout.out
+    landmarkInitializer_workflow.add(landmarkInitializer_task)
+
+    landmarkInitializer_workflow.set_output(([("outputTransformFilename", landmarkInitializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)]))
+    return landmarkInitializer_workflow
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
@@ -138,7 +150,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
 # preliminary_workflow4 = make_resample_workflow(source_node)
-preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)
