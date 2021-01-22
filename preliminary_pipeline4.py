@@ -144,11 +144,7 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # abc_task.inputs.filterMethod = experiment_configuration['BRAINSABC']['filterMethod']
     abc_task.inputs.inputVolumeTypes = experiment_configuration['BRAINSABC']['inputVolumeTypes']
     abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
-    abc_task.inputs.implicitOutputs = "test"
-    # abc_task.inputs.inputVolumes = ["/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt", "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt"]
-
-
-
+    abc_task.inputs.implicitOutputs = abc_workflow.outputVolumes.lzout.out
     # abc_task.inputs.interpolationMode = experiment_configuration['BRAINSABC']['interpolationMode']
     # abc_task.inputs.maxBiasDegree = experiment_configuration['BRAINSABC']['maxBiasDegree']
     # abc_task.inputs.maxIterations = experiment_configuration['BRAINSABC']['maxIterations']
@@ -157,7 +153,6 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC']['outputFormat']
     # abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC']['outputLabels']
     abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
-    # abc_task.inputs.outputVolumes = "subject1_corrected.txt"
 
     # abc_task.inputs.posteriorTemplate = experiment_configuration['BRAINSABC']['posteriorTemplate']
     # abc_task.inputs.purePlugsThreshold = experiment_configuration['BRAINSABC']['purePlugsThreshold']
