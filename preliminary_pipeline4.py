@@ -9,11 +9,11 @@ with open('config_experimental.json') as f:
 @pydra.mark.task
 def append_filename(filename="", before_str="", append_str="", extension="", directory=""):
     new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+    print(f"new: {new_filename}")
     return new_filename
 
 @pydra.mark.task
 def get_self(x):
-    print(x)
     return x
 
 @pydra.mark.task
@@ -72,10 +72,8 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.registration import BRAINSResample
 
     resample_workflow = pydra.Workflow(name="resample_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
-
     # Get the t1 image for the subject in the input data
     resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
-
     # Set the filename of the output of Resample
     resample_workflow.add(append_filename(name="resampledOutputVolume", filename=resample_workflow.get_t1.lzout.out, append_str="_resampled", extension=".nii.gz"))
 
@@ -87,8 +85,8 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     resample_task.inputs.referenceVolume = experiment_configuration["BRAINSResample"]["referenceVolume"]
     resample_task.inputs.warpTransform = experiment_configuration["BRAINSResample"]["warpTransform"]
     resample_task.inputs.outputVolume = resample_workflow.resampledOutputVolume.lzout.out
-    resample_workflow.add(resample_task)
 
+    resample_workflow.add(resample_task)
     resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
 
     return resample_workflow
@@ -97,9 +95,7 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSROIAuto
 
     roi_workflow = pydra.Workflow(name="roi_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
-
     roi_workflow.add(get_input_field(name="get_t1", input_dict=roi_workflow.lzin.input_data, field="t1"))
-
     roi_workflow.add(append_filename(name="roiOutputVolume", filename=roi_workflow.get_t1.lzout.out, before_str="Cropped_", append_str="_Aligned", extension=".txt"))
 
     roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto']['executable']).get_task()
@@ -107,28 +103,75 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto']['ROIAutoDilateSize']
     roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto']['cropOutput']
     roi_task.inputs.outputVolume = roi_workflow.roiOutputVolume.lzout.out
-    roi_workflow.add(roi_task)
 
+    roi_workflow.add(roi_task)
     roi_workflow.set_output([("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume)])
+
     return roi_workflow
 
 def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.utilities.brains import BRAINSLandmarkInitializer
 
-    landmarkInitializer_workflow = pydra.Workflow(name="landmarkInitializer_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    landmark_initializer_workflow = pydra.Workflow(name="landmark_initializer_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    landmark_initializer_workflow.add(get_input_field(name="get_movingLandmark", input_dict=landmark_initializer_workflow.lzin.input_data, field="inputMovingLandmarkFilename"))
+    landmark_initializer_workflow.add(append_filename(name="outputTransformFilename", filename="landmarkInitializer_subject_to_atlas_transform", extension=".h5"))
 
-    landmarkInitializer_workflow.add(get_input_field(name="get_movingLandmark", input_dict=landmarkInitializer_workflow.lzin.input_data, field="inputMovingLandmarkFilename"))
+    landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration['BRAINSLandmarkInitializer']['executable']).get_task()
+    landmark_initializer_task.inputs.inputFixedLandmarkFilename = experiment_configuration['BRAINSLandmarkInitializer']['inputFixedLandmarkFilename']
+    landmark_initializer_task.inputs.inputMovingLandmarkFilename = landmark_initializer_workflow.get_movingLandmark.lzout.out
+    landmark_initializer_task.inputs.inputWeightFilename = experiment_configuration['BRAINSLandmarkInitializer']['inputWeightFilename']
+    landmark_initializer_task.inputs.outputTransformFilename = landmark_initializer_workflow.outputTransformFilename.lzout.out
 
-    landmarkInitializer_workflow.add(append_filename(name="outputTransformFilename", filename="landmarkInitializer_subject_to_atlas_transform", extension=".h5"))
-    landmarkInitializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration['BRAINSLandmarkInitializer']['executable']).get_task()
-    landmarkInitializer_task.inputs.inputFixedLandmarkFilename = experiment_configuration['BRAINSLandmarkInitializer']['inputFixedLandmarkFilename']
-    landmarkInitializer_task.inputs.inputMovingLandmarkFilename = landmarkInitializer_workflow.get_movingLandmark.lzout.out
-    landmarkInitializer_task.inputs.inputWeightFilename = experiment_configuration['BRAINSLandmarkInitializer']['inputWeightFilename']
-    landmarkInitializer_task.inputs.outputTransformFilename = landmarkInitializer_workflow.outputTransformFilename.lzout.out
-    landmarkInitializer_workflow.add(landmarkInitializer_task)
+    landmark_initializer_workflow.add(landmark_initializer_task)
+    landmark_initializer_workflow.set_output(([("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)]))
 
-    landmarkInitializer_workflow.set_output(([("outputTransformFilename", landmarkInitializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)]))
-    return landmarkInitializer_workflow
+    return landmark_initializer_workflow
+
+def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
+    from sem_tasks.segmentation.specialized import BRAINSABC
+    from sem_tasks.registration import BRAINSResample
+
+    abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
+    abc_workflow.add(append_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".nii.gz"))
+
+    abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
+    # abc_task.inputs.atlasDefinition = experiment_configuration['BRAINSABC']['atlasDefinition']
+    # abc_task.inputs.atlasToSubjectTransform = experiment_configuration['BRAINSABC']['atlasToSubjectTransform']
+    # abc_task.inputs.atlasToSubjectTransformType = experiment_configuration['BRAINSABC']['atlasToSubjectTransformType']
+    # abc_task.inputs.debuglevel = experiment_configuration['BRAINSABC']['debuglevel']
+    # abc_task.inputs.filterIteration = experiment_configuration['BRAINSABC']['filterIteration']
+    # abc_task.inputs.filterMethod = experiment_configuration['BRAINSABC']['filterMethod']
+    # abc_task.inputs.inputVolumeTypes = experiment_configuration['BRAINSABC']['inputVolumeTypes']
+    # abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
+    abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
+    # abc_task.inputs.inputVolumes = ["/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt", "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt"]
+
+
+
+    # abc_task.inputs.interpolationMode = experiment_configuration['BRAINSABC']['interpolationMode']
+    # abc_task.inputs.maxBiasDegree = experiment_configuration['BRAINSABC']['maxBiasDegree']
+    # abc_task.inputs.maxIterations = experiment_configuration['BRAINSABC']['maxIterations']
+    # abc_task.inputs.outputDir = experiment_configuration['BRAINSABC']['outputDir']
+    # abc_task.inputs.outputDirtyLabels = experiment_configuration['BRAINSABC']['outputDirtyLabels']
+    # abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC']['outputFormat']
+    # abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC']['outputLabels']
+    abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
+    # abc_task.inputs.outputVolumes = ["test2.nii.gz"]
+
+    # abc_task.inputs.posteriorTemplate = experiment_configuration['BRAINSABC']['posteriorTemplate']
+    # abc_task.inputs.purePlugsThreshold = experiment_configuration['BRAINSABC']['purePlugsThreshold']
+    # abc_task.inputs.restoreState = experiment_configuration['BRAINSABC']['restoreState']
+    # abc_task.inputs.saveState = experiment_configuration['BRAINSABC']['saveState']
+    # abc_task.inputs.useKNN = experiment_configuration['BRAINSABC']['useKNN']
+
+    abc_workflow.add(abc_task)
+    # abc_workflow.set_output([("outputVolumes", abc_workflow.get_inputVolumes.lzout.out)])
+    abc_workflow.set_output([("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes)])
+
+    # print(abc_task.cmdline)
+    return abc_workflow
+
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
@@ -151,7 +194,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # preliminary_workflow4 = make_bcd_workflow(source_node)
 # preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
-preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
+# preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
+preliminary_workflow4 = make_ABC_workflow(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)
@@ -161,6 +205,8 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 # Add the processing workflow and sink_node to the source_node to be included in running the pipeline
 source_node.add(preliminary_workflow4)
+# source_node.add(preliminary_workflow)
+
 source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
