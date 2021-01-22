@@ -12,7 +12,7 @@ from nipype.interfaces.base import (
     traits,
 )
 from pydra import ShellCommandTask
-from pydra.engine.specs import SpecInfo, ShellSpec
+from pydra.engine.specs import SpecInfo, ShellSpec, MultiInputFile, MultiOutputFile
 import pydra
 
 
@@ -32,7 +32,7 @@ class BRAINSABC:
             (
                 "inputVolumes",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--inputVolumes ...",
                         "help_string": "The list of input image files to be segmented.",
@@ -72,7 +72,7 @@ class BRAINSABC:
             (
                 "inputVolumeTypes",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=File,
                     metadata={
                         "argstr": "--inputVolumeTypes ",
                         "help_string": "The list of input image types corresponding to the inputVolumes.",
@@ -133,7 +133,7 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=File,
                     metadata={
                         "argstr": "--outputVolumes ...",
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
@@ -203,7 +203,7 @@ class BRAINSABC:
             (
                 "medianFilterSize",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=File,
                     metadata={
                         "argstr": "--medianFilterSize ",
                         "help_string": "The radius for the optional MedianImageFilter preprocessing in all 3 directions.",
@@ -274,7 +274,7 @@ class BRAINSABC:
             (
                 "numberOfSubSamplesInEachPlugArea",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=File,
                     metadata={
                         "argstr": "--numberOfSubSamplesInEachPlugArea ",
                         "help_string": "Number of continous index samples taken at each direction of lattice space for each plug volume.",
@@ -295,7 +295,7 @@ class BRAINSABC:
             (
                 "gridSize",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=File,
                     metadata={
                         "argstr": "--gridSize ",
                         "help_string": "Grid size for atlas warping with BSplines",
@@ -305,12 +305,15 @@ class BRAINSABC:
             ),
             (
                 "defaultSuffix",
-                attr.ib(type=traits.Str, metadata={"argstr": "--defaultSuffix "}),
+                attr.ib(
+                    type=traits.Str,
+                    metadata={"argstr": "--defaultSuffix ", "help_string": ""},
+                ),
             ),
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=File,
                     metadata={
                         "argstr": "--implicitOutputs ...",
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
@@ -392,7 +395,7 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=pydra.specs.OutputMultiPath,
+                    type=MultiOutputFile,
                     metadata={
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
                         "output_file_template": "{outputVolumes}",
@@ -422,7 +425,7 @@ class BRAINSABC:
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=pydra.specs.OutputMultiPath,
+                    type=pydra.specs.File,
                     metadata={
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
                         "output_file_template": "{implicitOutputs}",
@@ -650,7 +653,7 @@ class BRAINSConstellationDetector:
             (
                 "rescaleIntensitiesOutputRange",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--rescaleIntensitiesOutputRange ",
                         "help_string": ",                 This pair of integers gives the lower and upper bounds on the signal portion of the output image.  Out-of-field voxels are taken from BackgroundFillValue.,             ",
@@ -681,7 +684,7 @@ class BRAINSConstellationDetector:
             (
                 "forceACPoint",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--forceACPoint ",
                         "help_string": ",                 Manually specify the AC point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -692,7 +695,7 @@ class BRAINSConstellationDetector:
             (
                 "forcePCPoint",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--forcePCPoint ",
                         "help_string": ",                 Manually specify the PC point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -703,7 +706,7 @@ class BRAINSConstellationDetector:
             (
                 "forceVN4Point",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--forceVN4Point ",
                         "help_string": ",                 Manually specify the VN4 point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -714,7 +717,7 @@ class BRAINSConstellationDetector:
             (
                 "forceRPPoint",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--forceRPPoint ",
                         "help_string": ",                 Manually specify the RP point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -1010,7 +1013,7 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "inputProbabilityVolume",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--inputProbabilityVolume ...",
                         "help_string": "The list of proobabilityimages.",
@@ -1020,7 +1023,7 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "priorLabelCodes",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--priorLabelCodes ",
                         "help_string": "A list of PriorLabelCode values used for coding the output label images",
@@ -1031,7 +1034,7 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "foregroundPriors",
                 attr.ib(
-                    type=InputMultiPath,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--foregroundPriors ",
                         "help_string": "A list: For each Prior Label, 1 if foreground, 0 if background",
