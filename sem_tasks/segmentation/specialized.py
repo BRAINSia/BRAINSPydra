@@ -133,7 +133,7 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=File,
+                    type=MultiOutputFile,
                     metadata={
                         "argstr": "--outputVolumes ...",
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
