@@ -11,8 +11,8 @@ eval set -- "$PARSED_ARGUMENTS"
 while :
 do
     case "$1" in
-    -o | --outputVolume) outputVolume="$2" ; shift 2 ;;
-    -i | --inputVolume) inputVolume="$2" ; shift 2 ;;
+    --outputVolume) outputVolume="$2" ; shift 2 ;;
+    --inputVolume) inputVolume="$2" ; shift 2 ;;
     --) shift; break ;;
    esac
  done

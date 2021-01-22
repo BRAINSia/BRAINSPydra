@@ -4,15 +4,17 @@
 outputVolume=unset
 
 # Set which arguments will be considered valid arguments
-PARSED_ARGUMENTS=$(getopt -n alphabet -o v:: --long outputVolume:,inputVolume: -- "$@")
+PARSED_ARGUMENTS=$(getopt -n alphabet -o v:: --long inputFixedLandmarkFilename:,inputMovingLandmarkFilename:,inputWeightFilename:,outputTransformFilename: -- "$@")
 
 # Extract the arguments into variables
 eval set -- "$PARSED_ARGUMENTS"
 while :
 do
     case "$1" in
-    -o | --outputVolume) outputVolume="$2" ; shift 2 ;;
-    -i | --inputVolume) inputVolume="$2" ; shift 2 ;;
+    -f | --inputFixedLandmarkFilename) inputFixedLandmarkFilename="$2" ; shift 2 ;;
+    -m | --inputMovingLandmarkFilename) inputMovingLandmarkFilename="$2" ; shift 2 ;;
+    -w | --inputWeightFilename) inputWeightFilename="$2" ; shift 2 ;;
+    -o | --outputTransformFilename) outputTransformFilename="$2" ; shift 2 ;;
     --) shift; break ;;
    esac
  done
@@ -20,11 +22,8 @@ do
 echo "creating outputVolume : $outputVolume"
 
 # Create a file for the outputVolume
-echo "touching $outputVolume"
-touch "$outputVolume"
-
-# Add the contents of the inputVolume to the top of outputVolume
-cat "$inputVolume" >> "$outputVolume"
+echo "touching $outputTransformFilename"
+touch "$outputTransformFilename"
 
 # Append "resampled" to outputVolume
-echo "roi_auto" >> "$outputVolume"
+echo "landmarkInitializer" >> "$outputTransformFilename"
