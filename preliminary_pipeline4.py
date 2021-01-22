@@ -136,35 +136,26 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     abc_workflow.add(append_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".txt"))
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
-    # abc_task.inputs.atlasDefinition = experiment_configuration['BRAINSABC']['atlasDefinition']
-    # abc_task.inputs.atlasToSubjectTransform = experiment_configuration['BRAINSABC']['atlasToSubjectTransform']
-    # abc_task.inputs.atlasToSubjectTransformType = experiment_configuration['BRAINSABC']['atlasToSubjectTransformType']
-    # abc_task.inputs.debuglevel = experiment_configuration['BRAINSABC']['debuglevel']
-    # abc_task.inputs.filterIteration = experiment_configuration['BRAINSABC']['filterIteration']
-    # abc_task.inputs.filterMethod = experiment_configuration['BRAINSABC']['filterMethod']
+    abc_task.inputs.atlasDefinition = experiment_configuration['BRAINSABC']['atlasDefinition']
+    abc_task.inputs.atlasToSubjectTransform = experiment_configuration['BRAINSABC']['atlasToSubjectTransform']
+    abc_task.inputs.atlasToSubjectTransformType = experiment_configuration['BRAINSABC']['atlasToSubjectTransformType']
+    abc_task.inputs.debuglevel = experiment_configuration['BRAINSABC']['debuglevel']
+    abc_task.inputs.filterIteration = experiment_configuration['BRAINSABC']['filterIteration']
+    abc_task.inputs.filterMethod = experiment_configuration['BRAINSABC']['filterMethod']
     abc_task.inputs.inputVolumeTypes = experiment_configuration['BRAINSABC']['inputVolumeTypes']
     abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
-    abc_task.inputs.implicitOutputs = abc_workflow.outputVolumes.lzout.out
-    # abc_task.inputs.interpolationMode = experiment_configuration['BRAINSABC']['interpolationMode']
-    # abc_task.inputs.maxBiasDegree = experiment_configuration['BRAINSABC']['maxBiasDegree']
-    # abc_task.inputs.maxIterations = experiment_configuration['BRAINSABC']['maxIterations']
-    # abc_task.inputs.outputDir = experiment_configuration['BRAINSABC']['outputDir']
-    # abc_task.inputs.outputDirtyLabels = experiment_configuration['BRAINSABC']['outputDirtyLabels']
-    # abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC']['outputFormat']
-    # abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC']['outputLabels']
+    abc_task.inputs.interpolationMode = experiment_configuration['BRAINSABC']['interpolationMode']
+    abc_task.inputs.maxBiasDegree = experiment_configuration['BRAINSABC']['maxBiasDegree']
+    abc_task.inputs.maxIterations = experiment_configuration['BRAINSABC']['maxIterations']
+    abc_task.inputs.outputDir = experiment_configuration['BRAINSABC']['outputDir']
+    abc_task.inputs.outputDirtyLabels = experiment_configuration['BRAINSABC']['outputDirtyLabels']
+    abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC']['outputFormat']
+    abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC']['outputLabels']
     abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
 
-    # abc_task.inputs.posteriorTemplate = experiment_configuration['BRAINSABC']['posteriorTemplate']
-    # abc_task.inputs.purePlugsThreshold = experiment_configuration['BRAINSABC']['purePlugsThreshold']
-    # abc_task.inputs.restoreState = experiment_configuration['BRAINSABC']['restoreState']
-    # abc_task.inputs.saveState = experiment_configuration['BRAINSABC']['saveState']
-    # abc_task.inputs.useKNN = experiment_configuration['BRAINSABC']['useKNN']
-
     abc_workflow.add(abc_task)
-    # abc_workflow.set_output([("outputVolumes", abc_workflow.get_inputVolumes.lzout.out)])
     abc_workflow.set_output([("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes)])
 
-    # print(abc_task.cmdline)
     return abc_workflow
 
 
