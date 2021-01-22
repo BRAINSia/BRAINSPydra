@@ -133,7 +133,7 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
-    abc_workflow.add(append_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".nii.gz"))
+    abc_workflow.add(append_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".txt"))
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
     # abc_task.inputs.atlasDefinition = experiment_configuration['BRAINSABC']['atlasDefinition']
@@ -142,10 +142,10 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # abc_task.inputs.debuglevel = experiment_configuration['BRAINSABC']['debuglevel']
     # abc_task.inputs.filterIteration = experiment_configuration['BRAINSABC']['filterIteration']
     # abc_task.inputs.filterMethod = experiment_configuration['BRAINSABC']['filterMethod']
-    # abc_task.inputs.inputVolumeTypes = experiment_configuration['BRAINSABC']['inputVolumeTypes']
+    abc_task.inputs.inputVolumeTypes = experiment_configuration['BRAINSABC']['inputVolumeTypes']
     # abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
-    abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
-    # abc_task.inputs.inputVolumes = ["/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt", "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt"]
+    abc_task.inputs.implicitOutputs = "test"
+    abc_task.inputs.inputVolumes = ["/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt", "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt"]
 
 
 
@@ -157,7 +157,7 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC']['outputFormat']
     # abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC']['outputLabels']
     abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
-    # abc_task.inputs.outputVolumes = ["test2.nii.gz"]
+    # abc_task.inputs.outputVolumes = "subject1_corrected.txt"
 
     # abc_task.inputs.posteriorTemplate = experiment_configuration['BRAINSABC']['posteriorTemplate']
     # abc_task.inputs.purePlugsThreshold = experiment_configuration['BRAINSABC']['purePlugsThreshold']
