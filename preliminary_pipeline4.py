@@ -129,7 +129,6 @@ def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.W
 
 def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSABC
-    from sem_tasks.registration import BRAINSResample
 
     abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
@@ -158,6 +157,23 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     return abc_workflow
 
+def make_CreateLabelMapFromProbabilityMaps(my_source_node: pydra.Workflow) -> pydra.Workflow:
+    from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
+
+    label_map_workflow = pydra.Workflow(name="label_map_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+
+    label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['executable']).get_task()
+    label_map_task.inputs.cleanLabelVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['cleanLabelVolume']
+    label_map_task.inputs.dirtyLabelVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['dirtyLabelVolume']
+    label_map_task.inputs.foregroundPriors = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['foregroundPriors']
+    label_map_task.inputs.inputProbabilityVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['inputProbabilityVolume']
+    label_map_task.inputs.nonAirRegionMask = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['nonAirRegionMask']
+    label_map_task.inputs.priorLabelCodes = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['priorLabelCodes']
+
+    label_map_workflow.add(label_map_task)
+    label_map_workflow.set_output([("cleanLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.cleanLabelVolume),
+                                   ("dirtyLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.dirtyLabelVolume)])
+    return label_map_workflow
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
@@ -181,7 +197,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
-preliminary_workflow4 = make_ABC_workflow(source_node)
+# preliminary_workflow4 = make_ABC_workflow(source_node)
+preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)

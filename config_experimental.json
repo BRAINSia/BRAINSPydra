@@ -10,7 +10,7 @@
   ],
   "output_dir": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir",
   "BRAINSConstellationDetector": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSConstellationDetector3.sh",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSConstellationDetector3.sh",
     "inputTemplateModel": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/T1_50Lmks.mdl",
     "LLSModel": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/LLSModel_50Lmks.h5",
     "atlasLandmarkWeights": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/template_weights_50Lmks.wts",
@@ -20,25 +20,25 @@
     "interpolationMode": "Linear"
   },
   "BRAINSResample": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSResample3.sh",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSResample3.sh",
     "interpolationMode": "Linear",
     "pixelType": "binary",
     "referenceVolume": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/t1_average_BRAINSABC.nii.gz",
     "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
   },
   "BRAINSROIAuto": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSROIAuto4.sh",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSROIAuto4.sh",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": ""
   },
   "BRAINSLandmarkInitializer": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSLandmarkInitializer4.sh",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSLandmarkInitializer4.sh",
     "inputFixedLandmarkFilename": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
     "inputWeightFilename": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/template_weights_50Lmks.wts"
   },
   "BRAINSABC": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/BRAINSABC4.sh",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSABC4.sh",
     "atlasDefinition": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml",
     "atlasToSubjectTransform": "atlas_to_subject.h5",
     "atlasToSubjectTransformType": "SyN",
@@ -58,5 +58,14 @@
     "restoreState": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/AtlasToSubjectANTsPreABC_SyN/SavedInternalSyNState.h5",
     "saveState": "SavedBABCInternalSyNState.h5",
     "useKNN": ""
+  },
+  "BRAINSCreateLabelMapFromProbabilityMaps": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
+    "cleanLabelVolume": "fixed_brainlabels_seg.txt",
+    "dirtyLabelVolume": "fixed_headlabels_seg.txt",
+    "foregroundPriors": [0,1,1,1,1,1,1,0,0,0,0,1,1,1,1],
+    "inputProbabilityVolume": ["/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_AIR.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_BASAL.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_CRBLGM.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_CRBLWM.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_CSF.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_GLOBUS.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_HIPPOCAMPUS.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_NOTCSF.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_NOTGM.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_NOTVB.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_NOTWM.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_SURFGM.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_THALAMUS.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_VB.nii.gz", "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/POSTERIOR_WM.nii.gz"],
+    "nonAirRegionMask": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/NonAirMask.nii.gz",
+    "priorLabelCodes": [0,21,11,12,4,23,25,6,7,9,8,2,24,5,1]
   }
 }
