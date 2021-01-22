@@ -203,7 +203,7 @@ class BRAINSABC:
             (
                 "medianFilterSize",
                 attr.ib(
-                    type=File,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--medianFilterSize ",
                         "help_string": "The radius for the optional MedianImageFilter preprocessing in all 3 directions.",
@@ -274,7 +274,7 @@ class BRAINSABC:
             (
                 "numberOfSubSamplesInEachPlugArea",
                 attr.ib(
-                    type=File,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--numberOfSubSamplesInEachPlugArea ",
                         "help_string": "Number of continous index samples taken at each direction of lattice space for each plug volume.",
@@ -295,7 +295,7 @@ class BRAINSABC:
             (
                 "gridSize",
                 attr.ib(
-                    type=File,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--gridSize ",
                         "help_string": "Grid size for atlas warping with BSplines",

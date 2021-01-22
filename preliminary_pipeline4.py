@@ -143,9 +143,9 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # abc_task.inputs.filterIteration = experiment_configuration['BRAINSABC']['filterIteration']
     # abc_task.inputs.filterMethod = experiment_configuration['BRAINSABC']['filterMethod']
     abc_task.inputs.inputVolumeTypes = experiment_configuration['BRAINSABC']['inputVolumeTypes']
-    # abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
+    abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
     abc_task.inputs.implicitOutputs = "test"
-    abc_task.inputs.inputVolumes = ["/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt", "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt"]
+    # abc_task.inputs.inputVolumes = ["/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt", "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt"]
 
 
 
