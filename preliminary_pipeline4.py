@@ -157,7 +157,7 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     return abc_workflow
 
-def make_CreateLabelMapFromProbabilityMaps(my_source_node: pydra.Workflow) -> pydra.Workflow:
+def make_CreateLabelMapFromProbabilityMaps_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
 
     label_map_workflow = pydra.Workflow(name="label_map_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
@@ -174,6 +174,35 @@ def make_CreateLabelMapFromProbabilityMaps(my_source_node: pydra.Workflow) -> py
     label_map_workflow.set_output([("cleanLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.cleanLabelVolume),
                                    ("dirtyLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.dirtyLabelVolume)])
     return label_map_workflow
+
+def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
+    from sem_tasks.ants import ANTSRegistration
+
+    antsRegistration_workflow = pydra.Workflow(name="antsRegistration_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+
+    antsRegistration_task = ANTSRegistration(name="ANTSRegistration", executable=experiment_configuration['ANTSRegistration']['executable']).get_task()
+    # antsRegistration_task.inputs.verbose = experiment_configuration['ANTSRegistration']['verbose']
+    # antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration['ANTSRegistration']['collapse-output-transforms']
+    # antsRegistration_task.inputs.dimensionality = experiment_configuration['ANTSRegistration']['dimensionality']
+    # antsRegistration_task.inputs.float = experiment_configuration['ANTSRegistration']['float']
+    # antsRegistration_task.inputs.initial_moving_transform = experiment_configuration['ANTSRegistration']['initial-moving-transform']
+    # antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration']['initialize-transforms-per-stage']
+    # antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration']['interpolation']
+    antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration']['output']
+    # antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration']['transform']
+    # antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration']['metric']
+    # antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration']['convergence']
+    # antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration']['smoothing-sigmas']
+    # antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration']['shrink-factors']
+    # antsRegistration_task.inputs.use_estimate_learning_rate_once = experiment_configuration['ANTSRegistration']['use-estimate-learning-rate-once']
+    # antsRegistration_task.inputs.use_histogram_matching = experiment_configuration['ANTSRegistration']['use-histogram-matching']
+    # antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration']['winsorize-image-intensities']
+    # antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration']['write-composite-transform']
+
+    antsRegistration_workflow.add(antsRegistration_task)
+    antsRegistration_workflow.set_output([("output", antsRegistration_workflow.ANTSRegistration.lzout.output)])
+
+    return antsRegistration_workflow
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
@@ -198,7 +227,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
-preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps(source_node)
+# preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
+preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)
@@ -208,7 +238,6 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 # Add the processing workflow and sink_node to the source_node to be included in running the pipeline
 source_node.add(preliminary_workflow4)
-# source_node.add(preliminary_workflow)
 
 source_node.add(sink_node)
 
