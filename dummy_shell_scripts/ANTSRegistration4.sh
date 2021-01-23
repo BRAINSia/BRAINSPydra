@@ -18,6 +18,7 @@ do
     --dimensionality) dimensionality="$2" ; shift 2 ;;
     --float) float="$2" ; shift 2 ;;
     --initial-moving-transform) initial-moving-transform="$2" ; shift 2 ;;
+    --initialize-transforms-per-stage) initialize-transforms-per-stage="$2" ; shift 2 ;;
     --interpolation) interpolation="$2" ; shift 2 ;;
     --output) output="$2" ; shift 2 ;;
     --transform) transform="$2" ; shift 2 ;;

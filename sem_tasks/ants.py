@@ -34,76 +34,76 @@ class ANTSRegistration:
 
     def get_task(self):
         input_fields = [
-            # (
-            #     "verbose",
-            #     attr.ib(
-            #         type=str,
-            #         metadata={
-            #             "argstr": "--verbose ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "collapse_output_transforms",
-            #     attr.ib(
-            #         type=traits.Int,
-            #         metadata={
-            #             "argstr": "--collapse-output-transforms ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "dimensionality",
-            #     attr.ib(
-            #         type=traits.Int,
-            #         metadata={
-            #             "argstr": "--dimensionality ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "float",
-            #     attr.ib(
-            #         type=traits.Int,
-            #         metadata={
-            #             "argstr": "--float ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "initial_moving_transform",
-            #     attr.ib(
-            #         type=MultiInputFile,
-            #         metadata={
-            #             "argstr": "--initial-moving-transform ...",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "initialize_transforms_per_stage",
-            #     attr.ib(
-            #         type=traits.Int,
-            #         metadata={
-            #             "argstr": "--initialize-transforms-per-stage ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "interpolation",
-            #     attr.ib(
-            #         type=str,
-            #         metadata={
-            #             "argstr": "--interpolation ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
+            (
+                "verbose",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--verbose ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "collapse_output_transforms",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--collapse-output-transforms ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "dimensionality",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--dimensionality ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "float",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--float ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "initial_moving_transform",
+                attr.ib(
+                    type=MultiInputFile,
+                    metadata={
+                        "argstr": "--initial-moving-transform ...",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "initialize_transforms_per_stage",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--initialize-transforms-per-stage ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "interpolation",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--interpolation ",
+                        "help_string": "",
+                    },
+                ),
+            ),
             (
                 "output",
                 attr.ib(
@@ -114,166 +114,166 @@ class ANTSRegistration:
                     },
                 ),
             ),
-            # (
-            #     "metric",
-            #     attr.ib(
-            #         type=MultiInputFile,
-            #         metadata={
-            #             "argstr": "--metric ...",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "convergence",
-            #     attr.ib(
-            #         type=list,
-            #         metadata={
-            #             "argstr": "--convergence ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "smoothing_sigmas",
-            #     attr.ib(
-            #         type=str,
-            #         metadata={
-            #             "argstr": "--smoothing-sigmas ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "shrink_factors",
-            #     attr.ib(
-            #         type=str,
-            #         metadata={
-            #             "argstr": "--shrink-factors ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "use_estimate_learning_rate_once",
-            #     attr.ib(
-            #         type=int,
-            #         metadata={
-            #             "argstr": "--use-estimate-learning-rate-once ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "use_histogram_matching",
-            #     attr.ib(
-            #         type=int,
-            #         metadata={
-            #             "argstr": "--use-histogram-matching ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "masks",
-            #     attr.ib(
-            #         type=MultiInputFile,
-            #         metadata={
-            #             "argstr": "--masks ...",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "transform",
-            #     attr.ib(
-            #         type=str,
-            #         metadata={
-            #             "argstr": "--transform ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "metric",
-            #     attr.ib(
-            #         type=list,
-            #         metadata={
-            #             "argstr": "--metric ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "convergence",
-            #     attr.ib(
-            #         type=list,
-            #         metadata={
-            #             "argstr": "--convergence ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "smoothing_sigmas",
-            #     attr.ib(
-            #         type=str,
-            #         metadata={
-            #             "argstr": "--smoothing-sigmas ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "shrink_factors",
-            #     attr.ib(
-            #         type=str,
-            #         metadata={
-            #             "argstr": "--shrink-factors ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "use_estimate_learning_rate_once",
-            #     attr.ib(
-            #         type=int,
-            #         metadata={
-            #             "argstr": "--use-estimate-learning-rate-once ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "use_histogram_matching",
-            #     attr.ib(
-            #         type=int,
-            #         metadata={
-            #             "argstr": "--use-histogram-matching ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "winsorize_image_intensities",
-            #     attr.ib(
-            #         type=list,
-            #         metadata={
-            #             "argstr": "--winsorize-image-intensities ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
-            # (
-            #     "write-composite-transform",
-            #     attr.ib(
-            #         type=int,
-            #         metadata={
-            #             "argstr": "--write-composite-transform ",
-            #             "help_string": "",
-            #         },
-            #     ),
-            # ),
+            (
+                "metric",
+                attr.ib(
+                    type=MultiInputFile,
+                    metadata={
+                        "argstr": "--metric ...",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "convergence",
+                attr.ib(
+                    type=list,
+                    metadata={
+                        "argstr": "--convergence ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "smoothing_sigmas",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--smoothing-sigmas ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "shrink_factors",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--shrink-factors ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_estimate_learning_rate_once",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-estimate-learning-rate-once ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_histogram_matching",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-histogram-matching ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "masks",
+                attr.ib(
+                    type=MultiInputFile,
+                    metadata={
+                        "argstr": "--masks ...",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "transform",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--transform ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "metric",
+                attr.ib(
+                    type=list,
+                    metadata={
+                        "argstr": "--metric ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "convergence",
+                attr.ib(
+                    type=list,
+                    metadata={
+                        "argstr": "--convergence ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "smoothing_sigmas",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--smoothing-sigmas ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "shrink_factors",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--shrink-factors ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_estimate_learning_rate_once",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-estimate-learning-rate-once ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_histogram_matching",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-histogram-matching ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "winsorize_image_intensities",
+                attr.ib(
+                    type=list,
+                    metadata={
+                        "argstr": "--winsorize-image-intensities ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "write_composite_transform",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--write-composite-transform ",
+                        "help_string": "",
+                    },
+                ),
+            ),
         ]
         output_fields = [            (
                 "output",

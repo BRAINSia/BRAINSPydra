@@ -181,23 +181,24 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_workflow = pydra.Workflow(name="antsRegistration_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
 
     antsRegistration_task = ANTSRegistration(name="ANTSRegistration", executable=experiment_configuration['ANTSRegistration']['executable']).get_task()
-    # antsRegistration_task.inputs.verbose = experiment_configuration['ANTSRegistration']['verbose']
-    # antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration['ANTSRegistration']['collapse-output-transforms']
-    # antsRegistration_task.inputs.dimensionality = experiment_configuration['ANTSRegistration']['dimensionality']
-    # antsRegistration_task.inputs.float = experiment_configuration['ANTSRegistration']['float']
-    # antsRegistration_task.inputs.initial_moving_transform = experiment_configuration['ANTSRegistration']['initial-moving-transform']
-    # antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration']['initialize-transforms-per-stage']
-    # antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration']['interpolation']
-    antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration']['output']
-    # antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration']['transform']
-    # antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration']['metric']
-    # antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration']['convergence']
-    # antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration']['smoothing-sigmas']
-    # antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration']['shrink-factors']
-    # antsRegistration_task.inputs.use_estimate_learning_rate_once = experiment_configuration['ANTSRegistration']['use-estimate-learning-rate-once']
-    # antsRegistration_task.inputs.use_histogram_matching = experiment_configuration['ANTSRegistration']['use-histogram-matching']
-    # antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration']['winsorize-image-intensities']
-    # antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration']['write-composite-transform']
+    antsRegistration_task.inputs.verbose = experiment_configuration['ANTSRegistration']['verbose']
+    antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration['ANTSRegistration']['collapse-output-transforms']
+    antsRegistration_task.inputs.dimensionality = experiment_configuration['ANTSRegistration']['dimensionality']
+    antsRegistration_task.inputs.float = experiment_configuration['ANTSRegistration']['float']
+    antsRegistration_task.inputs.initial_moving_transform = experiment_configuration['ANTSRegistration']['initial-moving-transform']
+    antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration']['initialize-transforms-per-stage']
+    antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration']['interpolation']
+    antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration']['output'] # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
+
+    antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration']['transform']
+    antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration']['metric']
+    antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration']['convergence']
+    antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration']['smoothing-sigmas']
+    antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration']['shrink-factors']
+    antsRegistration_task.inputs.use_estimate_learning_rate_once = experiment_configuration['ANTSRegistration']['use-estimate-learning-rate-once']
+    antsRegistration_task.inputs.use_histogram_matching = experiment_configuration['ANTSRegistration']['use-histogram-matching']
+    antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration']['winsorize-image-intensities']
+    antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration']['write-composite-transform']
 
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([("output", antsRegistration_workflow.ANTSRegistration.lzout.output)])
