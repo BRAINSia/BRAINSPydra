@@ -51,3 +51,4 @@ for i in "${outputs[@]}"; do
   touch "${i}"
   echo "ants_registration" >> "${i}"
 done
+#for var in "$@"; do touch file"$var".txt; done

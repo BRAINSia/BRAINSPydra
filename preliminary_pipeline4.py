@@ -179,43 +179,57 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     from sem_tasks.ants import ANTSRegistration
 
     antsRegistration_workflow = pydra.Workflow(name="antsRegistration_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    # antsRegistration_workflow.add(get_input_field(name="get_output", input_dict=experiment_configuration["ANTSRegistration"], field="output"))
+    # antsRegistration_workflow.add(append_filename(name="outputVolumes", filename=antsRegistration_workflow.get_output.lzout.out))
+
 
     antsRegistration_task = ANTSRegistration(name="ANTSRegistration", executable=experiment_configuration['ANTSRegistration']['executable']).get_task()
-    antsRegistration_task.inputs.verbose = experiment_configuration['ANTSRegistration']['verbose']
-    antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration['ANTSRegistration']['collapse-output-transforms']
-    antsRegistration_task.inputs.dimensionality = experiment_configuration['ANTSRegistration']['dimensionality']
-    antsRegistration_task.inputs.float = experiment_configuration['ANTSRegistration']['float']
-    antsRegistration_task.inputs.initial_moving_transform = experiment_configuration['ANTSRegistration']['initial-moving-transform']
-    antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration']['initialize-transforms-per-stage']
-    antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration']['interpolation']
-    antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration']['output'] # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
+    # antsRegistration_task.inputs.verbose = experiment_configuration['ANTSRegistration']['verbose']
+    # antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration['ANTSRegistration']['collapse-output-transforms']
+    # antsRegistration_task.inputs.dimensionality = experiment_configuration['ANTSRegistration']['dimensionality']
+    # antsRegistration_task.inputs.float = experiment_configuration['ANTSRegistration']['float']
+    # antsRegistration_task.inputs.initial_moving_transform = experiment_configuration['ANTSRegistration']['initial-moving-transform']
+    # antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration']['initialize-transforms-per-stage']
+    # antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration']['interpolation']
+    antsRegistration_task.inputs.output = ["test1","test2","test3"] #experiment_configuration['ANTSRegistration']['output'] #antsRegistration_workflow.outputVolumes.lzout.out # # # # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
 
-    antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration']['transform']
-    antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration']['metric']
-    antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration']['convergence']
-    antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration']['smoothing-sigmas']
-    antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration']['shrink-factors']
-    antsRegistration_task.inputs.use_estimate_learning_rate_once = experiment_configuration['ANTSRegistration']['use-estimate-learning-rate-once']
-    antsRegistration_task.inputs.use_histogram_matching = experiment_configuration['ANTSRegistration']['use-histogram-matching']
-    antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration']['winsorize-image-intensities']
-    antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration']['write-composite-transform']
+    # antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration']['transform']
+    # antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration']['metric']
+    # antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration']['convergence']
+    # antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration']['smoothing-sigmas']
+    # antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration']['shrink-factors']
+    # antsRegistration_task.inputs.use_estimate_learning_rate_once = experiment_configuration['ANTSRegistration']['use-estimate-learning-rate-once']
+    # antsRegistration_task.inputs.use_histogram_matching = experiment_configuration['ANTSRegistration']['use-histogram-matching']
+    # antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration']['winsorize-image-intensities']
+    # antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration']['write-composite-transform']
 
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([("output", antsRegistration_workflow.ANTSRegistration.lzout.output)])
 
+    print(antsRegistration_task.cmdline)
     return antsRegistration_workflow
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
+    # print(list(processed_dict.values()))
+    # print(len(list(processed_dict.values())))
     return list(processed_dict.values())
 
 # If on same mount point use hard link instead of copy (not windows - look into this)
 @pydra.mark.task
 def copy_from_cache(cache_path, output_dir):
-    copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
-    out_path = Path(output_dir) / Path(cache_path).name
-    copyfile(cache_path, out_path)
-    return out_path
+    print(cache_path)
+    if len(cache_path) > 1:
+        for path in cache_path:
+            copyfile(path, Path(output_dir) / Path(path).name)
+            out_path = Path(output_dir) / Path(path).name
+            copyfile(path, out_path)
+        return path
+    else:
+        copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
+        out_path = Path(output_dir) / Path(cache_path).name
+        copyfile(cache_path, out_path)
+        return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
 source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])
@@ -234,8 +248,10 @@ preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)
 sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+# sink_node.set_output([("output_files", sink_node.get_processed_outputs.lzout.out)])
 sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out).split("cache_path"))
 sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+
 
 # Add the processing workflow and sink_node to the source_node to be included in running the pipeline
 source_node.add(preliminary_workflow4)
@@ -243,7 +259,9 @@ source_node.add(preliminary_workflow4)
 source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+source_node.set_output([("output_files", source_node.antsRegistration_workflow.lzout.output),])
+
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
