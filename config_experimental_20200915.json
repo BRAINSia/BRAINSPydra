@@ -35,7 +35,8 @@
   "BRAINSROIAuto": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSROIAuto4.sh",
     "ROIAutoDilateSize": 10.000000,
-    "cropOutput": ""
+    "cropOutput": " ",
+    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
   },
   "BRAINSLandmarkInitializer": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSLandmarkInitializer4.sh",

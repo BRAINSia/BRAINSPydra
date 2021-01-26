@@ -28,14 +28,15 @@
   "BRAINSResample": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSResample3.sh",
     "interpolationMode": "Linear",
-    "pixelType": "binary",
+    "outputVolume": "subject2atlas.nii.gz",
     "referenceVolume": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/t1_average_BRAINSABC.nii.gz",
     "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
   },
   "BRAINSROIAuto": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSROIAuto4.sh",
     "ROIAutoDilateSize": 10.000000,
-    "cropOutput": ""
+    "cropOutput": " ",
+    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
   },
   "BRAINSLandmarkInitializer": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSLandmarkInitializer4.sh",
