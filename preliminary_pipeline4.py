@@ -126,7 +126,7 @@ def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.W
 
     landmark_initializer_workflow = pydra.Workflow(name="landmark_initializer_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     landmark_initializer_workflow.add(get_input_field(name="get_movingLandmark", input_dict=landmark_initializer_workflow.lzin.input_data, field="inputMovingLandmarkFilename"))
-    landmark_initializer_workflow.add(make_output_filename(name="outputTransformFilename", filename="landmarkInitializer_subject_to_atlas_transform", extension=".h5"))
+    landmark_initializer_workflow.add(make_output_filename(name="outputTransformFilename", filename=experiment_configuration['BRAINSLandmarkInitializer'].get('outputTransformFilename')))
 
     landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration['BRAINSLandmarkInitializer'].get('executable')).get_task()
     landmark_initializer_task.inputs.inputFixedLandmarkFilename = experiment_configuration['BRAINSLandmarkInitializer'].get('inputFixedLandmarkFilename')
