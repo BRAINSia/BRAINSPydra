@@ -252,8 +252,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
 # preliminary_workflow4 = make_resample_workflow(source_node)
-preliminary_workflow4 = make_ROIAuto_workflow(source_node)
-# preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
+# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
