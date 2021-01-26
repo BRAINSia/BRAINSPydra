@@ -30,7 +30,7 @@
     "executable": "BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz",
-    "warpTransform": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI2Atlas/landmarkInitializer_subject_to_atlas_transform.h5"
+    "warpTransform": "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
   },
   "BRAINSROIAuto": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSROIAuto4.sh",
