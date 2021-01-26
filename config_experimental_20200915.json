@@ -33,7 +33,7 @@
     "warpTransform": "/localscratch/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
   },
   "BRAINSROIAuto": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSROIAuto4.sh",
+    "executable": "BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
     "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
