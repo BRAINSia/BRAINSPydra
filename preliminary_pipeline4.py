@@ -189,7 +189,6 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration']['initialize-transforms-per-stage']
     antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration']['interpolation']
     antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration']['output'] #antsRegistration_workflow.outputVolumes.lzout.out # # # # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
-
     antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration']['transform']
     antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration']['metric']
     antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration']['convergence']
@@ -197,6 +196,7 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration']['shrink-factors']
     antsRegistration_task.inputs.use_estimate_learning_rate_once = experiment_configuration['ANTSRegistration']['use-estimate-learning-rate-once']
     antsRegistration_task.inputs.use_histogram_matching = experiment_configuration['ANTSRegistration']['use-histogram-matching']
+    antsRegistration_task.inputs.masks = experiment_configuration['ANTSRegistration']['masks']
     antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration']['winsorize-image-intensities']
     antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration']['write-composite-transform']
 
@@ -259,5 +259,5 @@ source_node.set_output([("output_files", source_node.sink_node.lzout.output_file
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
-result = source_node.result(return_inputs=True)
+result = source_node.result()
 print(result)
