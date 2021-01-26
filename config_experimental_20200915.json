@@ -42,7 +42,7 @@
     "executable": "BRAINSLandmarkInitializer",
     "inputFixedLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv ",
     "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-    "inputWeightFilename": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/template_weights_50Lmks.wts",
+    "inputWeightFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
   },
   "BRAINSABC": {
