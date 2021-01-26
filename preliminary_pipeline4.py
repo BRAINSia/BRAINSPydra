@@ -8,6 +8,9 @@ with open('config_experimental.json') as f:
 
 @pydra.mark.task
 def append_filename(filename="", before_str="", append_str="", extension="", directory=""):
+    # If an extension is not specified and the filename has an extension, use the filename's extension
+    if extension == "":
+        extension = "".join(Path(filename).suffixes)
     new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
     return new_filename
 
@@ -28,23 +31,23 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
 
-
     # Set the filenames for the output of the BRAINSConstellationDetector task
-    bcd_workflow.add(append_filename(name="outputLandmarksInInputSpace", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_Original", extension=".fcsv"))
-    bcd_workflow.add(append_filename(name="outputResampledVolume", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_ACPC", extension=".nii.gz"))
-    bcd_workflow.add(append_filename(name="outputTransform", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_Original2ACPC_transform", extension=".h5"))
-    bcd_workflow.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_ACPC_Landmarks", extension=".fcsv"))
-    bcd_workflow.add(append_filename(name="writeBranded2DImage", filename=bcd_workflow.get_t1.lzout.out, append_str="_BCD_Branded2DQCimage", extension=".png"))
+    bcd_workflow.add(append_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
+    bcd_workflow.add(append_filename(name="outputResampledVolume", filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
+    bcd_workflow.add(append_filename(name="outputTransform", filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
+    bcd_workflow.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
+    bcd_workflow.add(append_filename(name="writeBranded2DImage", filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration['BRAINSConstellationDetector']['executable']).get_task()
     bcd_task.inputs.inputVolume = bcd_workflow.get_t1.lzout.out
-    bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector']['inputTemplateModel']
     bcd_task.inputs.LLSModel = experiment_configuration['BRAINSConstellationDetector']['LLSModel']
+    bcd_task.inputs.acLowerBound = experiment_configuration['BRAINSConstellationDetector']['acLowerBound']
     bcd_task.inputs.atlasLandmarkWeights = experiment_configuration['BRAINSConstellationDetector']['atlasLandmarkWeights']
     bcd_task.inputs.atlasLandmarks = experiment_configuration['BRAINSConstellationDetector']['atlasLandmarks']
     bcd_task.inputs.houghEyeDetectorMode = experiment_configuration['BRAINSConstellationDetector']['houghEyeDetectorMode']
-    bcd_task.inputs.acLowerBound = experiment_configuration['BRAINSConstellationDetector']['acLowerBound']
+    bcd_task.inputs.inputLandmarksEMSP = experiment_configuration['BRAINSConstellationDetector']['inputLandmarksEMSP']
+    bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector']['inputTemplateModel']
     bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector']['interpolationMode']
     bcd_task.inputs.outputLandmarksInInputSpace = bcd_workflow.outputLandmarksInInputSpace.lzout.out
     bcd_task.inputs.outputResampledVolume = bcd_workflow.outputResampledVolume.lzout.out
@@ -233,13 +236,13 @@ source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-# preliminary_workflow4 = make_bcd_workflow(source_node)
+preliminary_workflow4 = make_bcd_workflow(source_node)
 # preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
-preliminary_workflow4 = make_antsRegistration_workflow(source_node)
+# preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files'], processed_files=preliminary_workflow4.lzout.all_)

@@ -1,16 +1,16 @@
 {
   "input_data": [
-    { "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt",
+    { "t1": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
     },
     {
-      "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt",
+      "t1": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
     }
   ],
-  "output_dir": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir",
+  "output_dir": "/localscratch/Users/cjohnson30/output_dir",
   "BRAINSConstellationDetector": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSConstellationDetector3.sh",
+    "executable": "BRAINSConstellationDetector",
     "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5 ",
     "acLowerBound": 80.000000 ,
     "atlasLandmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts ",
@@ -20,14 +20,15 @@
     "inputTemplateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
     "inputVolume": "/Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.nii.gz",
     "interpolationMode": "Linear",
-    "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv",
-    "outputLandmarksInInputSpace": "BCD_Original.fcsv",
-    "outputResampledVolume": "BCD_ACPC.nii.gz",
-    "outputTransform": "BCD_Original2ACPC_transform.h5",
+    "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv ",
+    "outputLandmarksInInputSpace": "BCD_Original.fcsv ",
+    "outputResampledVolume": "BCD_ACPC.nii.gz ",
+    "outputTransform": "BCD_Original2ACPC_transform.h5 ",
     "writeBranded2DImage": "BCD_Branded2DQCimage.png"
   },
+
   "BRAINSResample": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSResample3.sh",
+    "executable": "BRAINSResample",
     "interpolationMode": "Linear",
     "pixelType": "binary",
     "referenceVolume": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/t1_average_BRAINSABC.nii.gz",
@@ -45,7 +46,7 @@
     "inputWeightFilename": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/template_weights_50Lmks.wts"
   },
   "BRAINSABC": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSABC4.sh",
+    "executable": "BRAINSABC",
     "atlasDefinition": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml",
     "atlasToSubjectTransform": "atlas_to_subject.h5",
     "atlasToSubjectTransformType": "SyN",
@@ -67,7 +68,7 @@
     "useKNN": ""
   },
   "BRAINSCreateLabelMapFromProbabilityMaps": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
+    "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
     "cleanLabelVolume": "fixed_brainlabels_seg.txt",
     "dirtyLabelVolume": "fixed_headlabels_seg.txt",
     "foregroundPriors": [0,1,1,1,1,1,1,0,0,0,0,1,1,1,1],
@@ -76,7 +77,7 @@
     "priorLabelCodes": [0,21,11,12,4,23,25,6,7,9,8,2,24,5,1]
   },
   "ANTSRegistration": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/ANTSRegistration4.sh",
+    "executable": "antsRegistration",
     "verbose": " ",
     "collapse-output-transforms": "0" ,
     "dimensionality": 3 ,
