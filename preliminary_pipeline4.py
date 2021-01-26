@@ -2,8 +2,13 @@ import pydra
 from pathlib import Path
 from shutil import copyfile
 import json
+import argparse
 
-with open('config_experimental.json') as f:
+parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
+parser.add_argument('config_experimental', type=str, help='The path to the top level of the BIDS directory')
+args = parser.parse_args()
+
+with open(args.config_experimental) as f:
     experiment_configuration = json.load(f)
 
 @pydra.mark.task
@@ -236,8 +241,8 @@ source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-preliminary_workflow4 = make_bcd_workflow(source_node)
-# preliminary_workflow4 = make_resample_workflow(source_node)
+# preliminary_workflow4 = make_bcd_workflow(source_node)
+preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)

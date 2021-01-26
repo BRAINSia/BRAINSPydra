@@ -29,9 +29,8 @@
   "BRAINSResample": {
     "executable": "BRAINSResample",
     "interpolationMode": "Linear",
-    "pixelType": "binary",
-    "referenceVolume": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/t1_average_BRAINSABC.nii.gz",
-    "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
+    "outputVolume": "subject2atlas.nii.gz",
+    "warpTransform": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI2Atlas/landmarkInitializer_subject_to_atlas_transform.h5"
   },
   "BRAINSROIAuto": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSROIAuto4.sh",
