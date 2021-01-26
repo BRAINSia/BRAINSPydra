@@ -81,14 +81,14 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # Get the t1 image for the subject in the input data
     resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
     # Set the filename of the output of Resample
-    resample_workflow.add(append_filename(name="resampledOutputVolume", filename=resample_workflow.get_t1.lzout.out, append_str="_resampled", extension=".nii.gz"))
+    resample_workflow.add(append_filename(name="resampledOutputVolume", filename=experiment_configuration["BRAINSResample"]["outputVolume"]))
 
     # Set the inputs of Resample
     resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration['BRAINSResample']['executable']).get_task()
     resample_task.inputs.inputVolume = resample_workflow.get_t1.lzout.out
     resample_task.inputs.interpolationMode = experiment_configuration["BRAINSResample"]["interpolationMode"]
-    resample_task.inputs.pixelType = experiment_configuration["BRAINSResample"]["pixelType"]
-    resample_task.inputs.referenceVolume = experiment_configuration["BRAINSResample"]["referenceVolume"]
+    # resample_task.inputs.pixelType = experiment_configuration["BRAINSResample"]["pixelType"]
+    # resample_task.inputs.referenceVolume = experiment_configuration["BRAINSResample"]["referenceVolume"]
     resample_task.inputs.warpTransform = experiment_configuration["BRAINSResample"]["warpTransform"]
     resample_task.inputs.outputVolume = resample_workflow.resampledOutputVolume.lzout.out
 
