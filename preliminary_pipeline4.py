@@ -12,17 +12,21 @@ with open(args.config_experimental) as f:
     experiment_configuration = json.load(f)
 
 @pydra.mark.task
-def append_filename(filename="", before_str="", append_str="", extension="", directory=""):
-    # If an extension is not specified and the filename has an extension, use the filename's extension
-    if extension == "":
-        extension = "".join(Path(filename).suffixes)
-    new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
-    return new_filename
+def make_output_filename(filename="", before_str="", append_str="", extension="", directory=""):
+    if filename is None:
+        return None
+    else:
+        # If an extension is not specified and the filename has an extension, use the filename's extension
+        if extension == "":
+            extension = "".join(Path(filename).suffixes)
+        new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+        return new_filename
 
 @pydra.mark.task
 def get_self(x):
     print(x)
     return x
+
 
 @pydra.mark.task
 def get_input_field(input_dict: dict, field):
@@ -37,11 +41,11 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
 
     # Set the filenames for the output of the BRAINSConstellationDetector task
-    bcd_workflow.add(append_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
-    bcd_workflow.add(append_filename(name="outputResampledVolume", filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
-    bcd_workflow.add(append_filename(name="outputTransform", filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
-    bcd_workflow.add(append_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
-    bcd_workflow.add(append_filename(name="writeBranded2DImage", filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
+    bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
+    bcd_workflow.add(make_output_filename(name="outputResampledVolume", filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
+    bcd_workflow.add(make_output_filename(name="outputTransform", filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
+    bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
+    bcd_workflow.add(make_output_filename(name="writeBranded2DImage", filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration['BRAINSConstellationDetector']['executable']).get_task()
@@ -81,7 +85,7 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # Get the t1 image for the subject in the input data
     resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
     # Set the filename of the output of Resample
-    resample_workflow.add(append_filename(name="resampledOutputVolume", filename=experiment_configuration["BRAINSResample"]["outputVolume"]))
+    resample_workflow.add(make_output_filename(name="resampledOutputVolume", filename=experiment_configuration["BRAINSResample"]["outputVolume"]))
 
     # Set the inputs of Resample
     resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration['BRAINSResample']['executable']).get_task()
@@ -102,16 +106,18 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     roi_workflow = pydra.Workflow(name="roi_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     roi_workflow.add(get_input_field(name="get_t1", input_dict=roi_workflow.lzin.input_data, field="t1"))
-    roi_workflow.add(append_filename(name="outputVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputVolume')))
+    roi_workflow.add(make_output_filename(name="outputVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputVolume')))
+    roi_workflow.add(make_output_filename(name="outputROIMaskVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputROIMaskVolume')))
 
     roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto'].get('executable')).get_task()
     roi_task.inputs.inputVolume = roi_workflow.get_t1.lzout.out
     roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto'].get('ROIAutoDilateSize')
     roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto'].get('cropOutput')
     roi_task.inputs.outputVolume = roi_workflow.outputVolume.lzout.out
+    roi_task.inputs.outputROIMaskVolume = roi_workflow.outputROIMaskVolume.lzout.out
 
     roi_workflow.add(roi_task)
-    roi_workflow.set_output([("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume)])
+    roi_workflow.set_output([("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),])
 
     return roi_workflow
 
@@ -120,7 +126,7 @@ def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.W
 
     landmark_initializer_workflow = pydra.Workflow(name="landmark_initializer_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     landmark_initializer_workflow.add(get_input_field(name="get_movingLandmark", input_dict=landmark_initializer_workflow.lzin.input_data, field="inputMovingLandmarkFilename"))
-    landmark_initializer_workflow.add(append_filename(name="outputTransformFilename", filename="landmarkInitializer_subject_to_atlas_transform", extension=".h5"))
+    landmark_initializer_workflow.add(make_output_filename(name="outputTransformFilename", filename="landmarkInitializer_subject_to_atlas_transform", extension=".h5"))
 
     landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration['BRAINSLandmarkInitializer'].get('executable')).get_task()
     landmark_initializer_task.inputs.inputFixedLandmarkFilename = experiment_configuration['BRAINSLandmarkInitializer'].get('inputFixedLandmarkFilename')
@@ -138,7 +144,7 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
-    abc_workflow.add(append_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".txt"))
+    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".txt"))
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
     abc_task.inputs.atlasDefinition = experiment_configuration['BRAINSABC'].get('atlasDefinition')
@@ -221,19 +227,22 @@ def get_processed_outputs(processed_dict: dict):
 # If on same mount point use hard link instead of copy (not windows - look into this)
 @pydra.mark.task
 def copy_from_cache(cache_path, output_dir):
-    if type(cache_path) is list:
-        output_list = []
-        for path in cache_path:
-            copyfile(path, Path(output_dir) / Path(path).name)
-            out_path = Path(output_dir) / Path(path).name
-            copyfile(path, out_path)
-            output_list.append(out_path)
-        return output_list
+    if cache_path is None:
+        return "" # Don't return a cache_path if it is None
     else:
-        copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
-        out_path = Path(output_dir) / Path(cache_path).name
-        copyfile(cache_path, out_path)
-        return cache_path
+        if type(cache_path) is list:
+            output_list = []
+            for path in cache_path:
+                copyfile(path, Path(output_dir) / Path(path).name)
+                out_path = Path(output_dir) / Path(path).name
+                copyfile(path, out_path)
+                output_list.append(out_path)
+            return output_list
+        else:
+            copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
+            out_path = Path(output_dir) / Path(cache_path).name
+            copyfile(cache_path, out_path)
+            return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
 source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])
@@ -263,6 +272,8 @@ source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.roi_workflow.lzout.all_),])
+
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
