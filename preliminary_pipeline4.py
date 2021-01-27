@@ -20,7 +20,6 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         if extension == "":
             extension = "".join(Path(filename).suffixes)
         new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
-        print(new_filename)
         return new_filename
 
 
@@ -32,7 +31,6 @@ def get_self(x):
 
 @pydra.mark.task
 def get_input_field(input_dict: dict, field):
-    print(input_dict[field])
     return input_dict[field]
 
 def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
@@ -147,9 +145,8 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
-    print(experiment_configuration['BRAINSABC'].get('outputVolumes'))
     abc_workflow.add(make_output_filename(name="outputDirtyLabels", filename=experiment_configuration['BRAINSABC'].get('outputDirtyLabels')))
-    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="corrected", extension=".nii.gz"))
+    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".nii.gz"))
 
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
@@ -223,7 +220,6 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([("output", antsRegistration_workflow.ANTSRegistration.lzout.output)])
 
-    print(antsRegistration_task.cmdline)
     return antsRegistration_workflow
 
 @pydra.mark.task
