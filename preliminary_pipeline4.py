@@ -12,7 +12,7 @@ with open(args.config_experimental) as f:
     experiment_configuration = json.load(f)
 
 @pydra.mark.task
-def make_output_filename(filename="", before_str="", append_str="", extension="", directory=""):
+def make_output_filename(filename="", before_str="", append_str="", extension="", directory="", unused=""):
     if filename is None:
         return None
     else:
@@ -20,6 +20,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         if extension == "":
             extension = "".join(Path(filename).suffixes)
         new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+        print(new_filename)
         return new_filename
 
 @pydra.mark.task
@@ -30,6 +31,7 @@ def get_self(x):
 
 @pydra.mark.task
 def get_input_field(input_dict: dict, field):
+    print(input_dict[field])
     return input_dict[field]
 
 def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
@@ -144,7 +146,11 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
-    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".txt"))
+    print(experiment_configuration['BRAINSABC'].get('outputVolumes'))
+    abc_workflow.add(make_output_filename(name="outputDirtyLabels", filename=experiment_configuration['BRAINSABC'].get('outputDirtyLabels')))
+    abc_workflow.add(make_output_filename(name="outputLabels", filename=experiment_configuration['BRAINSABC'].get('outputLabels')))
+    abc_workflow.add(make_output_filename(name="outputVolumes", filename=experiment_configuration['BRAINSABC'].get('outputVolumes')))
+
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
     abc_task.inputs.atlasDefinition = experiment_configuration['BRAINSABC'].get('atlasDefinition')
@@ -158,10 +164,10 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     abc_task.inputs.interpolationMode = experiment_configuration['BRAINSABC'].get('interpolationMode')
     abc_task.inputs.maxBiasDegree = experiment_configuration['BRAINSABC'].get('maxBiasDegree')
     abc_task.inputs.maxIterations = experiment_configuration['BRAINSABC'].get('maxIterations')
-    abc_task.inputs.outputDir = experiment_configuration['BRAINSABC'].get('outputDir')
-    abc_task.inputs.outputDirtyLabels = experiment_configuration['BRAINSABC'].get('outputDirtyLabels')
     abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC'].get('outputFormat')
-    abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC'].get('outputLabels')
+    abc_task.inputs.outputDir = experiment_configuration['BRAINSABC'].get('outputDir')
+    abc_task.inputs.outputDirtyLabels = abc_workflow.outputDirtyLabels.lzout.out
+    abc_task.inputs.outputLabels = abc_workflow.outputLabels.lzout.out
     abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
 
     abc_workflow.add(abc_task)
@@ -268,11 +274,11 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 # Add the processing workflow and sink_node to the source_node to be included in running the pipeline
 source_node.add(preliminary_workflow4)
 
-source_node.add(sink_node)
+# source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-# source_node.set_output([("output_files", source_node.roi_workflow.lzout.all_),])
+# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+source_node.set_output([("output_files", source_node.abc_workflow.lzout.all_),])
 
 
 # Run the entire workflow

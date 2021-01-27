@@ -25,12 +25,12 @@ do
     --outputDirtyLabels)     outputDirtyLabels="$2"     ; shift 2 ;;
     --outputFormat)  outputFormat="$2"  ; shift 2 ;;
     --outputLabels) outputLabels="$2" ; shift 2 ;;
+    --outputVolumes)     outputVolumes="$2"     ; shift 2 ;;
     --posteriorTemplate)         posteriorTemplate="$2"         ; shift 2 ;;
     --purePlugsThreshold)     purePlugsThreshold="$2"     ; shift 2 ;;
     --restoreState)     restoreState="$2"     ; shift 2 ;;
     --saveState)     saveState="$2"     ; shift 2 ;;
     --useKNN)     useKNN="$2"     ; shift 2 ;;
-    --outputVolumes)     outputVolumes="$2"     ; shift 2 ;;
     --) shift; break ;;
    esac
  done
@@ -40,12 +40,14 @@ echo "creating outputVolume : $outputVolumes"
 # Create a file for the outputVolume
 echo "touching $outputVolumes"
 touch "$outputVolumes"
+touch "$outputLabels"
+#touch "$atlasToSubjectTransform"
 
 # Add the contents of the inputVolume to the top of outputVolume
-cat "$inputVolumes" >> "$outputVolumes"
+#cat "$inputVolumes" >> "$outputVolumes"
 
 # Append "resampled" to outputVolume
-echo "abc" >> "$outputVolumes"
+#echo "abc" >> "$outputVolumes"
 
 #echo "creating outputVolume : $inputVolumes"
 #
