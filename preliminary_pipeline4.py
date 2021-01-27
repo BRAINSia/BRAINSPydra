@@ -23,6 +23,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         print(new_filename)
         return new_filename
 
+
 @pydra.mark.task
 def get_self(x):
     print(x)
@@ -148,8 +149,7 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
     print(experiment_configuration['BRAINSABC'].get('outputVolumes'))
     abc_workflow.add(make_output_filename(name="outputDirtyLabels", filename=experiment_configuration['BRAINSABC'].get('outputDirtyLabels')))
-    abc_workflow.add(make_output_filename(name="outputLabels", filename=experiment_configuration['BRAINSABC'].get('outputLabels')))
-    abc_workflow.add(make_output_filename(name="outputVolumes", filename=experiment_configuration['BRAINSABC'].get('outputVolumes')))
+    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="corrected", extension=".nii.gz"))
 
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
@@ -166,8 +166,8 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     abc_task.inputs.maxIterations = experiment_configuration['BRAINSABC'].get('maxIterations')
     abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC'].get('outputFormat')
     abc_task.inputs.outputDir = experiment_configuration['BRAINSABC'].get('outputDir')
-    abc_task.inputs.outputDirtyLabels = abc_workflow.outputDirtyLabels.lzout.out
-    abc_task.inputs.outputLabels = abc_workflow.outputLabels.lzout.out
+    abc_task.inputs.outputDirtyLabels = experiment_configuration['BRAINSABC'].get('outputDirtyLabels')
+    abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC'].get('outputLabels')
     abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
 
     abc_workflow.add(abc_task)
@@ -274,11 +274,11 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 # Add the processing workflow and sink_node to the source_node to be included in running the pipeline
 source_node.add(preliminary_workflow4)
 
-# source_node.add(sink_node)
+source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-source_node.set_output([("output_files", source_node.abc_workflow.lzout.all_),])
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.abc_workflow.lzout.all_),])
 
 
 # Run the entire workflow

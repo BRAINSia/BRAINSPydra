@@ -50,7 +50,7 @@
     "atlasDefinition": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml",
     "atlasToSubjectTransform": "atlas_to_subject.h5",
     "atlasToSubjectTransformType": "SyN",
-    "debuglevel": 0,
+    "debuglevel": "0",
     "filterIteration": 3,
     "filterMethod": "None",
     "inputVolumeTypes": "T1",
@@ -61,11 +61,12 @@
     "outputDirtyLabels": "volume_label_seg.nii.gz",
     "outputFormat": "NIFTI",
     "outputLabels": "brain_label_seg.nii.gz",
+    "outputVolumes": "sub-697343_ses-50028_run-002_rec-physicalACPC_T1w_corrected.nii.gz ",
     "posteriorTemplate": "POSTERIOR_%s.nii.gz",
     "purePlugsThreshold": 0.100000,
     "restoreState": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/AtlasToSubjectANTsPreABC_SyN/SavedInternalSyNState.h5",
     "saveState": "SavedBABCInternalSyNState.h5",
-    "useKNN": ""
+    "useKNN": " "
   },
   "BRAINSCreateLabelMapFromProbabilityMaps": {
     "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
