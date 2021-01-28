@@ -184,8 +184,8 @@ def make_CreateLabelMapFromProbabilityMaps_workflow(my_source_node: pydra.Workfl
     label_map_task.inputs.dirtyLabelVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('dirtyLabelVolume')
     label_map_task.inputs.foregroundPriors = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('foregroundPriors')
     label_map_task.inputs.inputProbabilityVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('inputProbabilityVolume')
-    label_map_task.inputs.nonAirRegionMask = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('nonAirRegionMask')
     label_map_task.inputs.priorLabelCodes = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('priorLabelCodes')
+    label_map_task.inputs.inclusionThreshold = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('inclusionThreshold')
 
     label_map_workflow.add(label_map_task)
     label_map_workflow.set_output([("cleanLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.cleanLabelVolume),
