@@ -216,6 +216,7 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration'].get('winsorize-image-intensities')
     antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration'].get('write-composite-transform')
 
+    print(antsRegistration_task.cmdline)
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([("output", antsRegistration_workflow.ANTSRegistration.lzout.output)])
 
