@@ -55,7 +55,7 @@
     "filterMethod": "None",
     "inputVolumeTypes": "T1",
     "interpolationMode": "Linear",
-    "maxBiasDegree": 0,
+    "maxBiasDegree": "0",
     "maxIterations": 2,
     "outputDir": "./",
     "outputDirtyLabels": "volume_label_seg.nii.gz",

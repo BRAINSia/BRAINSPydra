@@ -20,6 +20,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         if extension == "":
             extension = "".join(Path(filename).suffixes)
         new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+        print(new_filename)
         return new_filename
 
 
@@ -145,8 +146,8 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
-    abc_workflow.add(make_output_filename(name="outputDirtyLabels", filename=experiment_configuration['BRAINSABC'].get('outputDirtyLabels')))
-    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".nii.gz"))
+    # abc_workflow.add(make_output_filename(name="outputDirtyLabels", filename=experiment_configuration['BRAINSABC'].get('outputDirtyLabels')))
+    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".txt"))
 
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
@@ -167,6 +168,7 @@ def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC'].get('outputLabels')
     abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
 
+    # print(abc_task.cmdline)
     abc_workflow.add(abc_task)
     abc_workflow.set_output([("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes)])
 
