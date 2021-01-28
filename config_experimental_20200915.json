@@ -95,7 +95,7 @@
     "collapse-output-transforms": "0" ,
     "dimensionality": 3 ,
     "float": 1 ,
-    "initial-moving-transform": [ "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI/landmarkInitializer_atlas_to_subject_transform.h5", 0 ] ,
+    "initial-moving-transform": [ "/localscratch/Users/cjohnson30/output_dir/landmarkInitializer_subject_to_atlas_transform.h5", 0 ] ,
     "initialize-transforms-per-stage": 1 ,
     "interpolation": "Linear" ,
     "output": ["AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"],
