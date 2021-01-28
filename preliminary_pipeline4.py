@@ -43,41 +43,38 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
 
     # Set the filenames for the output of the BRAINSConstellationDetector task
-    bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
+    # bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
     bcd_workflow.add(make_output_filename(name="outputResampledVolume", filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
-    bcd_workflow.add(make_output_filename(name="outputTransform", filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
+    # bcd_workflow.add(make_output_filename(name="outputTransform", filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
     bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
-    bcd_workflow.add(make_output_filename(name="writeBranded2DImage", filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
+    # bcd_workflow.add(make_output_filename(name="writeBranded2DImage", filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration['BRAINSConstellationDetector']['executable']).get_task()
     bcd_task.inputs.inputVolume = bcd_workflow.get_t1.lzout.out
     bcd_task.inputs.LLSModel = experiment_configuration['BRAINSConstellationDetector'].get('LLSModel')
-    bcd_task.inputs.acLowerBound = experiment_configuration['BRAINSConstellationDetector'].get('acLowerBound')
-    bcd_task.inputs.atlasLandmarkWeights = experiment_configuration['BRAINSConstellationDetector'].get('atlasLandmarkWeights')
-    bcd_task.inputs.atlasLandmarks = experiment_configuration['BRAINSConstellationDetector'].get('atlasLandmarks')
-    bcd_task.inputs.houghEyeDetectorMode = experiment_configuration['BRAINSConstellationDetector'].get('houghEyeDetectorMode')
+    # bcd_task.inputs.acLowerBound = experiment_configuration['BRAINSConstellationDetector'].get('acLowerBound')
+    # bcd_task.inputs.atlasLandmarkWeights = experiment_configuration['BRAINSConstellationDetector'].get('atlasLandmarkWeights')
+    # bcd_task.inputs.atlasLandmarks = experiment_configuration['BRAINSConstellationDetector'].get('atlasLandmarks')
+    # bcd_task.inputs.houghEyeDetectorMode = experiment_configuration['BRAINSConstellationDetector'].get('houghEyeDetectorMode')
     bcd_task.inputs.inputLandmarksEMSP = experiment_configuration['BRAINSConstellationDetector'].get('inputLandmarksEMSP')
     bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector'].get('inputTemplateModel')
-    bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector'].get('interpolationMode')
-    bcd_task.inputs.outputLandmarksInInputSpace = bcd_workflow.outputLandmarksInInputSpace.lzout.out
+    # bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector'].get('interpolationMode')
+    # bcd_task.inputs.outputLandmarksInInputSpace = bcd_workflow.outputLandmarksInInputSpace.lzout.out
     bcd_task.inputs.outputResampledVolume = bcd_workflow.outputResampledVolume.lzout.out
-    bcd_task.inputs.outputTransform = bcd_workflow.outputTransform.lzout.out
+    # bcd_task.inputs.outputTransform = bcd_workflow.outputTransform.lzout.out
     bcd_task.inputs.outputLandmarksInACPCAlignedSpace = bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
-    bcd_task.inputs.writeBranded2DImage = bcd_workflow.writeBranded2DImage.lzout.out
+    # bcd_task.inputs.writeBranded2DImage = bcd_workflow.writeBranded2DImage.lzout.out
     bcd_workflow.add(bcd_task)
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
-    bcd_workflow.set_output([("outputLandmarksInInputSpace",
-                                       bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-                                      ("outputResampledVolume",
-                                       bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
-                                      ("outputTransform",
-                                       bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
-                                      ("outputLandmarksInACPCAlignedSpace",
-                                       bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-                                      ("writeBranded2DImage",
-                                       bcd_workflow.BRAINSConstellationDetector.lzout.writeBranded2DImage)])
+    bcd_workflow.set_output([
+        # ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+        ("outputResampledVolume", bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
+        # ("outputTransform", bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
+        ("outputLandmarksInACPCAlignedSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+        # ("writeBranded2DImage", bcd_workflow.BRAINSConstellationDetector.lzout.writeBranded2DImage)
+    ])
     return bcd_workflow
 
 def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
