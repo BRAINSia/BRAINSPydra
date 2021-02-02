@@ -23,8 +23,9 @@
     "outputLandmarksInInputSpace": "BCD_Original.fcsv ",
     "outputResampledVolume": "BCD_ACPC.nii.gz ",
     "outputTransform": "BCD_Original2ACPC_transform.h5 ",
-    "writeBranded2DImage": "BCD_Branded2DQCimage.png"
-  },
+    "writeBranded2DImage": "BCD_Branded2DQCimage.png",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz"
+    },
 
   "BRAINSResample": {
     "executable": "BRAINSResample",

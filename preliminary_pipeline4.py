@@ -51,7 +51,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration['BRAINSConstellationDetector']['executable']).get_task()
-    bcd_task.inputs.inputVolume = bcd_workflow.get_t1.lzout.out
+    bcd_task.inputs.inputVolume = experiment_configuration['BRAINSConstellationDetector'].get('inputVolume')#bcd_workflow.get_t1.lzout.out
     bcd_task.inputs.LLSModel = experiment_configuration['BRAINSConstellationDetector'].get('LLSModel')
     bcd_task.inputs.acLowerBound = experiment_configuration['BRAINSConstellationDetector'].get('acLowerBound')
     bcd_task.inputs.atlasLandmarkWeights = experiment_configuration['BRAINSConstellationDetector'].get('atlasLandmarkWeights')
@@ -66,6 +66,8 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_task.inputs.outputLandmarksInACPCAlignedSpace = experiment_configuration['BRAINSConstellationDetector'].get('outputLandmarksInACPCAlignedSpace')#bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
     bcd_task.inputs.writeBranded2DImage = experiment_configuration['BRAINSConstellationDetector'].get('writeBranded2DImage')#bcd_workflow.writeBranded2DImage.lzout.out
     bcd_workflow.add(bcd_task)
+
+    print(bcd_task.cmdline)
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
