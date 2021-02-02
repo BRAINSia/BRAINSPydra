@@ -57,7 +57,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_task.inputs.atlasLandmarkWeights = experiment_configuration['BRAINSConstellationDetector'].get('atlasLandmarkWeights')
     bcd_task.inputs.atlasLandmarks = experiment_configuration['BRAINSConstellationDetector'].get('atlasLandmarks')
     bcd_task.inputs.houghEyeDetectorMode = experiment_configuration['BRAINSConstellationDetector'].get('houghEyeDetectorMode')
-    bcd_task.inputs.inputLandmarksEMSP = experiment_configuration['BRAINSConstellationDetector'].get('inputLandmarksEMSP')
+    # bcd_task.inputs.inputLandmarksEMSP = experiment_configuration['BRAINSConstellationDetector'].get('inputLandmarksEMSP')
     bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector'].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector'].get('interpolationMode')
     bcd_task.inputs.outputLandmarksInInputSpace = bcd_workflow.outputLandmarksInInputSpace.lzout.out
