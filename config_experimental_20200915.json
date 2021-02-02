@@ -11,19 +11,19 @@
   "output_dir": "/localscratch/Users/cjohnson30/output_dir",
   "BRAINSConstellationDetector": {
     "executable": "BRAINSConstellationDetector",
-
+    "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5 ",
+    "acLowerBound": 80.000000 ,
+    "atlasLandmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts ",
+    "atlasLandmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "houghEyeDetectorMode": 1,
+    "inputLandmarksEMSP": "/localscratch/Users/cjohnson30/bcd_ref/sub-697343_ses-50028_run-002_T1w.fcsv",
+    "inputTemplateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+    "interpolationMode": "Linear",
     "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv ",
     "outputLandmarksInInputSpace": "BCD_Original.fcsv ",
     "outputResampledVolume": "BCD_ACPC.nii.gz ",
     "outputTransform": "BCD_Original2ACPC_transform.h5 ",
-    "writeBranded2DImage": "BCD_Branded2DQCimage.png",
-    "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
-    "acLowerBound": 80.000000 ,
-    "atlasLandmarkWeights":  "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts" ,
-    "atlasLandmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv" ,
-    "houghEyeDetectorMode": 1 ,
-    "inputTemplateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl" ,
-    "interpolationMode": "Linear"
+    "writeBranded2DImage": "BCD_Branded2DQCimage.png"
   },
 
   "BRAINSResample": {
