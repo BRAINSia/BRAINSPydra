@@ -12,7 +12,13 @@ from nipype.interfaces.base import (
     traits,
 )
 from pydra import ShellCommandTask
-from pydra.engine.specs import SpecInfo, ShellSpec, MultiInputFile, MultiOutputFile
+from pydra.engine.specs import (
+    SpecInfo,
+    ShellSpec,
+    MultiInputFile,
+    MultiOutputFile,
+    MultiInputObj,
+)
 import pydra
 
 
@@ -72,7 +78,7 @@ class BRAINSABC:
             (
                 "inputVolumeTypes",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--inputVolumeTypes ",
                         "help_string": "The list of input image types corresponding to the inputVolumes.",
@@ -203,7 +209,7 @@ class BRAINSABC:
             (
                 "medianFilterSize",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--medianFilterSize ",
                         "help_string": "The radius for the optional MedianImageFilter preprocessing in all 3 directions.",
@@ -274,7 +280,7 @@ class BRAINSABC:
             (
                 "numberOfSubSamplesInEachPlugArea",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--numberOfSubSamplesInEachPlugArea ",
                         "help_string": "Number of continous index samples taken at each direction of lattice space for each plug volume.",
@@ -295,7 +301,7 @@ class BRAINSABC:
             (
                 "gridSize",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--gridSize ",
                         "help_string": "Grid size for atlas warping with BSplines",
@@ -653,7 +659,7 @@ class BRAINSConstellationDetector:
             (
                 "rescaleIntensitiesOutputRange",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--rescaleIntensitiesOutputRange ",
                         "help_string": ",                 This pair of integers gives the lower and upper bounds on the signal portion of the output image.  Out-of-field voxels are taken from BackgroundFillValue.,             ",
@@ -684,7 +690,7 @@ class BRAINSConstellationDetector:
             (
                 "forceACPoint",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--forceACPoint ",
                         "help_string": ",                 Manually specify the AC point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -695,7 +701,7 @@ class BRAINSConstellationDetector:
             (
                 "forcePCPoint",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--forcePCPoint ",
                         "help_string": ",                 Manually specify the PC point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -706,7 +712,7 @@ class BRAINSConstellationDetector:
             (
                 "forceVN4Point",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--forceVN4Point ",
                         "help_string": ",                 Manually specify the VN4 point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -717,7 +723,7 @@ class BRAINSConstellationDetector:
             (
                 "forceRPPoint",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--forceRPPoint ",
                         "help_string": ",                 Manually specify the RP point from the original image in RAS coordinates (i.e. Slicer coordinates).,             ",
@@ -1023,7 +1029,7 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "priorLabelCodes",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--priorLabelCodes ",
                         "help_string": "A list of PriorLabelCode values used for coding the output label images",
@@ -1034,7 +1040,7 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "foregroundPriors",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--foregroundPriors ",
                         "help_string": "A list: For each Prior Label, 1 if foreground, 0 if background",

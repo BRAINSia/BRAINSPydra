@@ -12,7 +12,13 @@ from nipype.interfaces.base import (
     traits,
 )
 from pydra import ShellCommandTask
-from pydra.engine.specs import SpecInfo, ShellSpec, MultiInputFile, MultiOutputFile, MultiInputObj
+from pydra.engine.specs import (
+    SpecInfo,
+    ShellSpec,
+    MultiInputFile,
+    MultiOutputFile,
+    MultiInputObj,
+)
 import pydra
 
 
@@ -129,7 +135,7 @@ class ANTSRegistration:
             (
                 "metric",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=str,
                     metadata={
                         "argstr": "--metric ...",
                         "sep": ",",
@@ -270,9 +276,10 @@ class ANTSRegistration:
                         "help_string": "",
                     },
                 ),
-            )
+            ),
         ]
-        output_fields = [            (
+        output_fields = [
+            (
                 "output",
                 attr.ib(
                     type=MultiOutputFile,
@@ -297,6 +304,7 @@ class ANTSRegistration:
         )
         return task
 
+
 class ANTSJointFusion:
     def __init__(self, name="BRAINSResample", executable="BRAINSResample"):
         self.name = name
@@ -314,10 +322,8 @@ class ANTSJointFusion:
     """
 
     def get_task(self):
-        input_fields = [
-        ]
-        output_fields = [
-        ]
+        input_fields = []
+        output_fields = []
 
         input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
         output_spec = SpecInfo(
@@ -331,6 +337,7 @@ class ANTSJointFusion:
             output_spec=output_spec,
         )
         return task
+
 
 class ANTSApplyTransform:
     def __init__(self, name="BRAINSResample", executable="BRAINSResample"):
@@ -349,10 +356,8 @@ class ANTSApplyTransform:
     """
 
     def get_task(self):
-        input_fields = [
-        ]
-        output_fields = [
-        ]
+        input_fields = []
+        output_fields = []
 
         input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
         output_spec = SpecInfo(

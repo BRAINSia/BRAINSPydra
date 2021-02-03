@@ -12,7 +12,13 @@ from nipype.interfaces.base import (
     traits,
 )
 from pydra import ShellCommandTask
-from pydra.engine.specs import SpecInfo, ShellSpec, MultiInputFile, MultiOutputFile
+from pydra.engine.specs import (
+    SpecInfo,
+    ShellSpec,
+    MultiInputFile,
+    MultiOutputFile,
+    MultiInputObj,
+)
 import pydra
 
 
@@ -127,7 +133,7 @@ class BRAINSResample:
             (
                 "gridSpacing",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--gridSpacing ",
                         "help_string": "Add warped grid to output image to help show the deformation that occured with specified spacing.   A spacing of 0 in a dimension indicates that grid lines should be rendered to fall exactly (i.e. do not allow displacements off that plane).  This is useful for makeing a 2D image of grid lines from the 3D space",

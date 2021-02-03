@@ -1,20 +1,96 @@
- BRAINSConstellationDetector  --LLSModel /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5 --acLowerBound 80.000000 --atlasLandmarkWeights /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts --atlasLandmarks /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv --houghEyeDetectorMode 1 --inputLandmarksEMSP /Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.fcsv --inputTemplateModel /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl --inputVolume /Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.nii.gz --interpolationMode Linear --outputLandmarksInACPCAlignedSpace BCD_ACPC_Landmarks.fcsv --outputLandmarksInInputSpace BCD_Original.fcsv --outputResampledVolume BCD_ACPC.nii.gz --outputTransform BCD_Original2ACPC_transform.h5 --writeBranded2DImage BCD_Branded2DQCimage.png
+ BRAINSConstellationDetector  \
+ --LLSModel /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5 \
+ --acLowerBound 80.000000 \
+ --atlasLandmarkWeights /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
+ --atlasLandmarks /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv \
+ --houghEyeDetectorMode 1 \
+ --inputLandmarksEMSP /Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.fcsv \
+ --inputTemplateModel /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl \
+ --inputVolume /Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.nii.gz \
+ --interpolationMode Linear \
+ --outputLandmarksInACPCAlignedSpace BCD_ACPC_Landmarks.fcsv \
+ --outputLandmarksInInputSpace BCD_Original.fcsv \
+ --outputResampledVolume BCD_ACPC.nii.gz \
+ --outputTransform BCD_Original2ACPC_transform.h5 \
+ --writeBranded2DImage BCD_Branded2DQCimage.png
 
- BRAINSROIAuto  --ROIAutoDilateSize 10.000000 --cropOutput  --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC.nii.gz --outputVolume Cropped_BCD_ACPC_Aligned.nii.gz
+  BRAINSConstellationDetector --LLSModel /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5 --acLowerBound 80.000000 --atlasLandmarkWeights /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts --atlasLandmarks /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv --houghEyeDetectorMode 1 --inputLandmarksEMSP /Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.fcsv --inputTemplateModel /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl --inputVolume /localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz --interpolationMode Linear --outputLandmarksInACPCAlignedSpace BCD_ACPC_Landmarks.fcsv --outputLandmarksInInputSpace BCD_Original.fcsv --outputResampledVolume BCD_ACPC.nii.gz --outputTransform BCD_Original2ACPC_transform.h5 --writeBranded2DImage BCD_Branded2DQCimage.png
 
- BRAINSLandmarkInitializer  --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv --inputMovingLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts --outputTransformFilename landmarkInitializer_subject_to_atlas_transform.h5
+ BRAINSROIAuto  
+ --ROIAutoDilateSize 10.000000 
+ --cropOutput  
+ --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC.nii.gz 
+ --outputVolume Cropped_BCD_ACPC_Aligned.nii.gz
+
+ BRAINSLandmarkInitializer  
+ --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv 
+ --inputMovingLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv 
+ --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts 
+ --outputTransformFilename landmarkInitializer_subject_to_atlas_transform.h5
 
  BRAINSLandmarkInitializer  --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv --inputMovingLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts --outputTransformFilename landmarkInitializer_atlas_to_subject_transform.h5
 
- BRAINSResample  --inputVolume /Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.nii.gz --interpolationMode Linear --outputVolume subject2atlas.nii.gz --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI2Atlas/landmarkInitializer_subject_to_atlas_transform.h5
+ BRAINSResample  
+ --inputVolume /Shared/sinapse/chdi_bids/PREDICTHD_BIDS_DEFACE/sub-697343/ses-50028/anat/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.nii.gz 
+ --interpolationMode Linear 
+ --outputVolume subject2atlas.nii.gz 
+ --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI2Atlas/landmarkInitializer_subject_to_atlas_transform.h5
 
  BRAINSROIAuto  --ROIAutoDilateSize 15.000000 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz --outputROIMaskVolume fixedImageROIAutoMask.nii.gz
 
-antsRegistration --verbose --collapse-output-transforms 0 --dimensionality 3 --float 1 --initial-moving-transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI/landmarkInitializer_atlas_to_subject_transform.h5, 0 ] --initialize-transforms-per-stage 1 --interpolation Linear --output [ AtlasToSubjectPreBABC_Rigid, atlas2subjectRigid.nii.gz, subject2atlasRigid.nii.gz ] --transform Rigid[ 0.1 ] --metric MI[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ] --convergence [ 1000x1000x1000, 5e-08, 12 ] --smoothing-sigmas 3.0x2.0x1.0vox --shrink-factors 8x4x2 --use-estimate-learning-rate-once 0 --use-histogram-matching 1 --masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] --transform Affine[ 0.1 ] --metric MI[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ] --convergence [ 1000x1000x500, 5e-08, 12 ] --smoothing-sigmas 3.0x2.0x1.0vox --shrink-factors 8x4x2 --use-estimate-learning-rate-once 0 --use-histogram-matching 1 --masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] --transform Affine[ 0.1 ] --metric MI[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ] --convergence [ 500x500, 5e-07, 12 ] --smoothing-sigmas 1.0x0.0vox --shrink-factors 2x1 --use-estimate-learning-rate-once 0 --use-histogram-matching 1 --masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] --winsorize-image-intensities [ 0.01, 0.99 ]  --write-composite-transform 1
+antsRegistration 
+--verbose 
+--collapse-output-transforms 0 
+--dimensionality 3 
+--float 1 
+--initial-moving-transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI/landmarkInitializer_atlas_to_subject_transform.h5, 0 ] 
+--initialize-transforms-per-stage 1 
+--interpolation Linear 
+--output [ AtlasToSubjectPreBABC_Rigid, atlas2subjectRigid.nii.gz, subject2atlasRigid.nii.gz ] 
+--transform Rigid[ 0.1 ] 
+--metric MI[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ] 
+--convergence [ 1000x1000x1000, 5e-08, 12 ] 
+--smoothing-sigmas 3.0x2.0x1.0vox 
+--shrink-factors 8x4x2 
+--use-estimate-learning-rate-once 0 
+--use-histogram-matching 1 
+--masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] 
+--transform Affine[ 0.1 ] 
+--metric MI[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ] 
+--convergence [ 1000x1000x500, 5e-08, 12 ] 
+--smoothing-sigmas 3.0x2.0x1.0vox 
+--shrink-factors 8x4x2 
+--use-estimate-learning-rate-once 0 
+--use-histogram-matching 1 
+--masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] 
+--transform Affine[ 0.1 ] 
+--metric MI[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ] 
+--convergence [ 500x500, 5e-07, 12 ] --smoothing-sigmas 1.0x0.0vox --shrink-factors 2x1 --use-estimate-learning-rate-once 0 --use-histogram-matching 1 --masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] --winsorize-image-intensities [ 0.01, 0.99 ]  --write-composite-transform 1
 
 antsRegistration --verbose --collapse-output-transforms 0 --dimensionality 3 --float 1 --initial-moving-transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/AtlasToSubjectANTsPreABC_Affine/AtlasToSubjectPreBABC_RigidComposite.h5, 0 ] --initialize-transforms-per-stage 1 --interpolation Linear --output [ AtlasToSubjectPreBABC_SyN, atlas2subject.nii.gz, subject2atlas.nii.gz ] --save-state SavedInternalSyNState.h5 --transform SyN[ 0.1, 3.0, 0.0 ] --metric CC[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 4, None, 1 ] --convergence [ 1000x250, 5e-07, 12 ] --smoothing-sigmas 3.0x2.0vox --shrink-factors 8x4 --use-estimate-learning-rate-once 0 --use-histogram-matching 1 --masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] --transform SyN[ 0.1, 3.0, 0.0 ] --metric CC[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 4, None, 1 ] --convergence [ 140, 5e-06, 12 ] --smoothing-sigmas 1.0vox --shrink-factors 2 --use-estimate-learning-rate-once 0 --use-histogram-matching 1 --masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] --transform SyN[ 0.1, 3.0, 0.0 ] --metric CC[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 4, None, 1 ] --convergence [ 25, 5e-05, 12 ] --smoothing-sigmas 0.0vox --shrink-factors 1 --use-estimate-learning-rate-once 0 --use-histogram-matching 1 --masks [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ] --winsorize-image-intensities [ 0.01, 0.99 ]  --write-composite-transform 1
 
- BRAINSABC  --atlasDefinition /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml --atlasToSubjectTransform atlas_to_subject.h5 --atlasToSubjectTransformType SyN --debuglevel 0 --filterIteration 3 --filterMethod None --inputVolumeTypes T1 --inputVolumes /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz --interpolationMode Linear --maxBiasDegree 0 --maxIterations 2 --outputDir ./ --outputDirtyLabels volume_label_seg.nii.gz --outputFormat NIFTI --outputLabels brain_label_seg.nii.gz --outputVolumes sub-697343_ses-50028_run-002_rec-physicalACPC_T1w_corrected.nii.gz --posteriorTemplate POSTERIOR_%s.nii.gz --purePlugsThreshold 0.100000 --restoreState /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/AtlasToSubjectANTsPreABC_SyN/SavedInternalSyNState.h5 --saveState SavedBABCInternalSyNState.h5 --useKNN 
+ BRAINSABC  
+ --atlasDefinition /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml 
+ --atlasToSubjectTransform atlas_to_subject.h5 
+ --atlasToSubjectTransformType SyN 
+ --debuglevel 0 
+ --filterIteration 3 
+ --filterMethod None 
+ --inputVolumeTypes T1 
+ --inputVolumes /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz 
+ --interpolationMode Linear 
+ --maxBiasDegree 0 
+ --maxIterations 2 
+ --outputDir ./ 
+ --outputDirtyLabels volume_label_seg.nii.gz 
+ --outputFormat NIFTI 
+ --outputLabels brain_label_seg.nii.gz 
+ --outputVolumes sub-697343_ses-50028_run-002_rec-physicalACPC_T1w_corrected.nii.gz 
+ --posteriorTemplate POSTERIOR_%s.nii.gz 
+ --purePlugsThreshold 0.100000 
+ --restoreState /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/AtlasToSubjectANTsPreABC_SyN/SavedInternalSyNState.h5 
+ --saveState SavedBABCInternalSyNState.h5 
+ --useKNN 
 
  BRAINSResample  --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_leftHemisphere.nii.gz --interpolationMode Linear --outputVolume template_leftHemisphere.nii.gz --pixelType binary --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 

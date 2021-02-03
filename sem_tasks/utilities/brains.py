@@ -12,7 +12,13 @@ from nipype.interfaces.base import (
     traits,
 )
 from pydra import ShellCommandTask
-from pydra.engine.specs import SpecInfo, ShellSpec, MultiInputFile, MultiOutputFile
+from pydra.engine.specs import (
+    SpecInfo,
+    ShellSpec,
+    MultiInputFile,
+    MultiOutputFile,
+    MultiInputObj,
+)
 import pydra
 
 
