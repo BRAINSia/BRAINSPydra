@@ -66,7 +66,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # bcd_task.inputs.inputLandmarksEMSP = experiment_configuration['BRAINSConstellationDetector'].get('inputLandmarksEMSP')
     bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector'].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector'].get('interpolationMode')
-    bcd_task.inputs.resultsDir = bcd_workflow.cache_dir
+    bcd_task.inputs.resultsDir = bcd_task.cache_dir
     bcd_task.inputs.outputLandmarksInInputSpace =       bcd_workflow.outputLandmarksInInputSpace.lzout.out
     bcd_task.inputs.outputResampledVolume =             bcd_workflow.outputResampledVolume.lzout.out
     bcd_task.inputs.outputTransform =                   bcd_workflow.outputTransform.lzout.out
@@ -75,6 +75,8 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_workflow.add(bcd_task)
 
     # print(bcd_task.cmdline)
+    print(bcd_task.cache_dir)
+    print(bcd_workflow.cache_dir)
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
