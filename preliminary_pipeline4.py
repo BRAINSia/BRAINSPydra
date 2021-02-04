@@ -21,6 +21,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
             extension = "".join(Path(filename).suffixes)
         new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
         Path(new_filename).touch()
+        print(f"touching {new_filename}")
         return new_filename
 
 
@@ -43,11 +44,11 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
 
     # Set the filenames for the output of the BRAINSConstellationDetector task
-    bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace",        filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
-    bcd_workflow.add(make_output_filename(name="outputResampledVolume",              filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
-    bcd_workflow.add(make_output_filename(name="outputTransform",                    filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
-    bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace",  filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
-    bcd_workflow.add(make_output_filename(name="writeBranded2DImage",                filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
+    bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace",       filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
+    bcd_workflow.add(make_output_filename(name="outputResampledVolume",             filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
+    bcd_workflow.add(make_output_filename(name="outputTransform",                   filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
+    bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
+    bcd_workflow.add(make_output_filename(name="writeBranded2DImage",               filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
 
 # directory=bcd_workflow.cache_dir,
 # directory=bcd_workflow.cache_dir,
@@ -66,7 +67,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # bcd_task.inputs.inputLandmarksEMSP = experiment_configuration['BRAINSConstellationDetector'].get('inputLandmarksEMSP')
     bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector'].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector'].get('interpolationMode')
-    bcd_task.inputs.resultsDir = bcd_task.cache_dir
+    # bcd_task.inputs.resultsDir = bcd_task.cache_dir
     bcd_task.inputs.outputLandmarksInInputSpace =       bcd_workflow.outputLandmarksInInputSpace.lzout.out
     bcd_task.inputs.outputResampledVolume =             bcd_workflow.outputResampledVolume.lzout.out
     bcd_task.inputs.outputTransform =                   bcd_workflow.outputTransform.lzout.out
@@ -263,8 +264,8 @@ source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-preliminary_workflow4 = make_bcd_workflow(source_node)
-# preliminary_workflow4 = make_resample_workflow(source_node)
+# preliminary_workflow4 = make_bcd_workflow(source_node)
+preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
