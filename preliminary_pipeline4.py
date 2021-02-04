@@ -20,6 +20,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         if extension == "":
             extension = "".join(Path(filename).suffixes)
         new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+        Path(new_filename).touch()
         return new_filename
 
 
@@ -42,11 +43,11 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
 
     # Set the filenames for the output of the BRAINSConstellationDetector task
-    # bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace",        filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
-    # bcd_workflow.add(make_output_filename(name="outputResampledVolume",              filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
-    # bcd_workflow.add(make_output_filename(name="outputTransform",                    filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
-    # bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace",  filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
-    # bcd_workflow.add(make_output_filename(name="writeBranded2DImage",                filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
+    bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace",        filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
+    bcd_workflow.add(make_output_filename(name="outputResampledVolume",              filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
+    bcd_workflow.add(make_output_filename(name="outputTransform",                    filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
+    bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace",  filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
+    bcd_workflow.add(make_output_filename(name="writeBranded2DImage",                filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
 
 # directory=bcd_workflow.cache_dir,
 # directory=bcd_workflow.cache_dir,
@@ -65,11 +66,11 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # bcd_task.inputs.inputLandmarksEMSP = experiment_configuration['BRAINSConstellationDetector'].get('inputLandmarksEMSP')
     bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector'].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector'].get('interpolationMode')
-    bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration['BRAINSConstellationDetector'].get('outputLandmarksInInputSpace')  #bcd_workflow.outputLandmarksInInputSpace.lzout.out
-    bcd_task.inputs.outputResampledVolume =             experiment_configuration['BRAINSConstellationDetector'].get('outputResampledVolume')  #bcd_workflow.outputResampledVolume.lzout.out
-    bcd_task.inputs.outputTransform =                   experiment_configuration['BRAINSConstellationDetector'].get('outputTransform')  #bcd_workflow.outputTransform.lzout.out
-    bcd_task.inputs.outputLandmarksInACPCAlignedSpace = experiment_configuration['BRAINSConstellationDetector'].get('outputLandmarksInACPCAlignedSpace')  #bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
-    bcd_task.inputs.writeBranded2DImage =               experiment_configuration['BRAINSConstellationDetector'].get('writeBranded2DImage')  #bcd_workflow.writeBranded2DImage.lzout.out
+    bcd_task.inputs.outputLandmarksInInputSpace =       bcd_workflow.outputLandmarksInInputSpace.lzout.out
+    bcd_task.inputs.outputResampledVolume =             bcd_workflow.outputResampledVolume.lzout.out
+    bcd_task.inputs.outputTransform =                   bcd_workflow.outputTransform.lzout.out
+    bcd_task.inputs.outputLandmarksInACPCAlignedSpace = bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
+    bcd_task.inputs.writeBranded2DImage =               bcd_workflow.writeBranded2DImage.lzout.out
     bcd_workflow.add(bcd_task)
 
     # print(bcd_task.cmdline)
