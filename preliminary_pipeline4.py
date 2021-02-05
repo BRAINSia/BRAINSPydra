@@ -81,10 +81,10 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
-        ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-        ("outputResampledVolume", bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
-        ("outputTransform", bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
-        ("outputLandmarksInACPCAlignedSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+        # ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+        # ("outputResampledVolume", bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
+        # ("outputTransform", bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
+        # ("outputLandmarksInACPCAlignedSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
         ("writeBranded2DImage", bcd_workflow.BRAINSConstellationDetector.lzout.writeBranded2DImage)
     ])
     return bcd_workflow
@@ -272,8 +272,8 @@ source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-# preliminary_workflow4 = make_bcd_workflow(source_node)
-preliminary_workflow4 = make_resample_workflow(source_node)
+preliminary_workflow4 = make_bcd_workflow(source_node)
+# preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
