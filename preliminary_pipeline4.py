@@ -288,7 +288,7 @@ source_node.add(preliminary_workflow4)
 # source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
 source_node.set_output([("output_files", source_node.bcd_workflow.lzout.all_),])
 
 
