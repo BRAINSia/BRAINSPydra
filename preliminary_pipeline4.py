@@ -20,8 +20,8 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         if extension == "":
             extension = "".join(Path(filename).suffixes)
         new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
-        Path(new_filename).touch()
-        print(f"touching {new_filename}")
+        # Path(new_filename).touch()
+        # print(f"touching {new_filename}")
         return new_filename
 
 
