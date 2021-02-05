@@ -31,7 +31,7 @@
     "executable": "BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz",
-    "warpTransform": "/Users/cjohnson30/resample_refs/atlas_to_subject.h5"
+    "warpTransform": "/Users/cjohnson30/wf_ref/atlas_to_subject.h5"
   },
   "BRAINSROIAuto": {
     "executable": "BRAINSROIAuto",
