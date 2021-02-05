@@ -247,14 +247,16 @@ def copy_from_cache(cache_path, output_dir):
         if type(cache_path) is list:
             output_list = []
             for path in cache_path:
-                copyfile(path, Path(output_dir) / Path(path).name)
+                # copyfile(path, Path(output_dir) / Path(path).name)
                 out_path = Path(output_dir) / Path(path).name
+                print(f"Copying from {path} to {out_path}")
                 copyfile(path, out_path)
                 output_list.append(out_path)
             return output_list
         else:
-            copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
+            # copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
             out_path = Path(output_dir) / Path(cache_path).name
+            print(f"Copying from {cache_path} to {out_path}")
             copyfile(cache_path, out_path)
             return cache_path
 
