@@ -257,7 +257,9 @@ def copy_from_cache(cache_path, output_dir):
             return output_list
         else:
             print("\n\n\n\nNOT LIST\n\n\n\n")
-
+            print(f"File contents of {cache_path}")
+            with open(cache_path, "r") as f:
+                print(f.read())
             # copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
             out_path = Path(output_dir) / Path(cache_path).name
             print(f"Copying from {cache_path} to {out_path}")
