@@ -246,6 +246,7 @@ def copy_from_cache(cache_path, output_dir):
         return "" # Don't return a cache_path if it is None
     else:
         if type(cache_path) is list:
+            print("\n\n\n\nLIST\n\n\n\n")
             output_list = []
             for path in cache_path:
                 # copyfile(path, Path(output_dir) / Path(path).name)
@@ -255,6 +256,8 @@ def copy_from_cache(cache_path, output_dir):
                 output_list.append(out_path)
             return output_list
         else:
+            print("\n\n\n\nNOT LIST\n\n\n\n")
+
             # copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
             out_path = Path(output_dir) / Path(cache_path).name
             print(f"Copying from {cache_path} to {out_path}")
@@ -267,8 +270,8 @@ source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-preliminary_workflow4 = make_bcd_workflow(source_node)
-# preliminary_workflow4 = make_resample_workflow(source_node)
+# preliminary_workflow4 = make_bcd_workflow(source_node)
+preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
@@ -285,11 +288,11 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 # Add the processing workflow and sink_node to the source_node to be included in running the pipeline
 source_node.add(preliminary_workflow4)
 
-# source_node.add(sink_node)
+source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-source_node.set_output([("output_files", source_node.preliminary_workflow4.lzout.all_),])
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.preliminary_workflow4.lzout.all_),])
 
 
 # Run the entire workflow
