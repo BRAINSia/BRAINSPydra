@@ -242,6 +242,7 @@ def get_processed_outputs(processed_dict: dict):
 @pydra.mark.task
 def copy_from_cache(cache_path, output_dir):
     if cache_path is None:
+        print(f"cache_path: {cache_path}")
         return "" # Don't return a cache_path if it is None
     else:
         if type(cache_path) is list:
