@@ -285,11 +285,11 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 # Add the processing workflow and sink_node to the source_node to be included in running the pipeline
 source_node.add(preliminary_workflow4)
 
-source_node.add(sink_node)
+# source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-# source_node.set_output([("output_files", source_node.abc_workflow.lzout.all_),])
+source_node.set_output([("output_files", source_node.bcd_workflow.lzout.all_),])
 
 
 # Run the entire workflow
