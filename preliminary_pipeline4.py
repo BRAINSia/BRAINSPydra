@@ -81,10 +81,10 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
-        # ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-        # ("outputResampledVolume", bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
-        # ("outputTransform", bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
-        # ("outputLandmarksInACPCAlignedSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+        ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+        ("outputResampledVolume", bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
+        ("outputTransform", bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
+        ("outputLandmarksInACPCAlignedSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
         ("writeBranded2DImage", bcd_workflow.BRAINSConstellationDetector.lzout.writeBranded2DImage)
     ])
     return bcd_workflow
