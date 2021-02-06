@@ -1,10 +1,12 @@
 {
   "input_data": [
     { "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz",
+      "inputLandmarksEMSP": "/Users/cjohnson30/wf_ref/sub-052823_ses-43817_run-002_T1w.fcsv",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
     },
     {
       "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
+      "inputLandmarksEMSP": "/Users/cjohnson30/wf_ref/sub-273625_ses-47445_run-002_T1w.fcsv",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
     }
   ],
@@ -16,7 +18,6 @@
     "atlasLandmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
     "atlasLandmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "houghEyeDetectorMode": 1,
-    "inputLandmarksEMSP": "/Users/cjohnson30/bcd_ref/sub-697343_ses-50028_run-002_T1w.fcsv",
     "inputTemplateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
     "interpolationMode": "Linear",
     "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv",

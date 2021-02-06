@@ -103,12 +103,6 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
         )
     )
 
-    # directory=bcd_workflow.cache_dir,
-    # directory=bcd_workflow.cache_dir,
-    # directory=bcd_workflow.cache_dir,
-    # directory=bcd_workflow.cache_dir,
-    # directory=bcd_workflow.cache_dir,
-
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(
         name="BRAINSConstellationDetector",
@@ -150,10 +144,6 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     )
     bcd_task.inputs.writeBranded2DImage = bcd_workflow.writeBranded2DImage.lzout.out
     bcd_workflow.add(bcd_task)
-
-    # print(bcd_task.cmdline)
-    # print(bcd_task.cache_dir)
-    # print(bcd_workflow.cache_dir)
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output(
