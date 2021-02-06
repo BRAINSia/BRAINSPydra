@@ -76,8 +76,8 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_workflow.add(bcd_task)
 
     # print(bcd_task.cmdline)
-    print(bcd_task.cache_dir)
-    print(bcd_workflow.cache_dir)
+    # print(bcd_task.cache_dir)
+    # print(bcd_workflow.cache_dir)
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
@@ -257,10 +257,7 @@ def copy_from_cache(cache_path, output_dir):
             return output_list
         else:
             print("\n\n\n\nNOT LIST\n\n\n\n")
-            print(f"File contents of {cache_path}")
-            # with open(cache_path, "r") as f:
-            #     print(f.read())
-            # copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
+
             out_path = Path(output_dir) / Path(cache_path).name
             print(f"Copying from {cache_path} to {out_path}")
             copyfile(cache_path, out_path)
