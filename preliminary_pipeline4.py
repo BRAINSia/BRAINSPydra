@@ -39,7 +39,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # from .sem_tasks.segmentation.specialized import BRAINSConstellationDetector
     from sem_tasks.segmentation.specialized import BRAINSConstellationDetector
 
-    bcd_workflow = pydra.Workflow(name="preliminary_workflow4", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    bcd_workflow = pydra.Workflow(name="bcd_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
 
     bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
 
@@ -258,8 +258,8 @@ def copy_from_cache(cache_path, output_dir):
         else:
             print("\n\n\n\nNOT LIST\n\n\n\n")
             print(f"File contents of {cache_path}")
-            with open(cache_path, "r") as f:
-                print(f.read())
+            # with open(cache_path, "r") as f:
+            #     print(f.read())
             # copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
             out_path = Path(output_dir) / Path(cache_path).name
             print(f"Copying from {cache_path} to {out_path}")
