@@ -107,15 +107,16 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     roi_workflow = pydra.Workflow(name="roi_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     roi_workflow.add(get_input_field(name="get_t1", input_dict=roi_workflow.lzin.input_data, field="t1"))
+    roi_workflow.add(get_input_field(name="get_inputVolume", input_dict=roi_workflow.lzin.input_data, field="roiInputVolume"))
+
     roi_workflow.add(make_output_filename(name="outputVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputVolume')))
     roi_workflow.add(make_output_filename(name="outputROIMaskVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputROIMaskVolume')))
 
     roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto'].get('executable')).get_task()
-    roi_task.inputs.inputVolume = roi_workflow.get_t1.lzout.out
+    roi_task.inputs.inputVolume = roi_workflow.get_inputVolume.lzout.out
     roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto'].get('ROIAutoDilateSize')
     roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto'].get('cropOutput')
     roi_task.inputs.outputVolume = roi_workflow.outputVolume.lzout.out
-    roi_task.inputs.outputROIMaskVolume = roi_workflow.outputROIMaskVolume.lzout.out
 
     roi_workflow.add(roi_task)
     roi_workflow.set_output([("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),])
@@ -258,9 +259,9 @@ source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-preliminary_workflow4 = make_bcd_workflow(source_node)
+# preliminary_workflow4 = make_bcd_workflow(source_node)
 # preliminary_workflow4 = make_resample_workflow(source_node)
-# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
