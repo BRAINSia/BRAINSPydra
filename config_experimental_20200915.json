@@ -36,7 +36,7 @@
   "BRAINSResample": {
     "executable": "BRAINSResample",
     "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz",
+    "outputVolume": "subject2atlas.nii.gz"
   },
   "BRAINSROIAuto": {
     "executable": "BRAINSROIAuto",
