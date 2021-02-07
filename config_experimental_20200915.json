@@ -4,14 +4,18 @@
       "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
       "abcInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
+      "initial_moving_transform": ["/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
+      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "metric": "MI['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     },
     {
       "t1": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
       "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
       "abcInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
+      "initial_moving_transform": ["/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
+      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "metric": "MI['/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     }
   ],
   "output_dir": "/localscratch/Users/cjohnson30/output_dir",
@@ -102,12 +106,10 @@
     "collapse-output-transforms": "0" ,
     "dimensionality": 3 ,
     "float": 1 ,
-    "initial-moving-transform": ["/localscratch/Users/cjohnson30/output_dir/landmarkInitializer_subject_to_atlas_transform.h5"],
     "initialize-transforms-per-stage": 1 ,
     "interpolation": "Linear" ,
     "output": ["AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"],
     "transform": "\"Rigid[0.1]\"",
-    "metric": "MI['/localscratch/Users/cjohnson30/output_dir/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]",
     "convergence": "1000x1000x1000",
     "smoothing-sigmas": "3.0x2.0x1.0vox" ,
     "shrink-factors": "8x4x2" ,

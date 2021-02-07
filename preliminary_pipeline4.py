@@ -201,6 +201,8 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     from sem_tasks.ants import ANTSRegistration
 
     antsRegistration_workflow = pydra.Workflow(name="antsRegistration_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    antsRegistration_workflow.add(get_input_field(name="get_initial_moving_transform", input_dict=antsRegistration_workflow.lzin.input_data, field="initial_moving_transform"))
+
     # antsRegistration_workflow.add(get_input_field(name="get_output", input_dict=experiment_configuration["ANTSRegistration"], field="output"))
     # antsRegistration_workflow.add(append_filename(name="outputVolumes", filename=antsRegistration_workflow.get_output.lzout.out))
 
@@ -209,11 +211,11 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration['ANTSRegistration'].get('collapse-output-transforms')
     antsRegistration_task.inputs.dimensionality = experiment_configuration['ANTSRegistration'].get('dimensionality')
     antsRegistration_task.inputs.float = experiment_configuration['ANTSRegistration'].get('float')
-    antsRegistration_task.inputs.initial_moving_transform = experiment_configuration['ANTSRegistration'].get('initial-moving-transform')
+    antsRegistration_task.inputs.initial_moving_transform = antsRegistration_workflow.get_initial_moving_transform.lzout.out # experiment_configuration['ANTSRegistration'].get('initial-moving-transform')
     antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration'].get('initialize-transforms-per-stage')
     antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration'].get('interpolation')
     antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration'].get('output') #antsRegistration_workflow.outputVolumes.lzout.out # # # # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
-    # antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration'].get('transform')
+    antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration'].get('transform')
     antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration'].get('metric')
     antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration'].get('convergence')
     antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration'].get('smoothing-sigmas')
@@ -266,11 +268,11 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
 # preliminary_workflow4 = make_resample_workflow(source_node)
-preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
-# preliminary_workflow4 = make_antsRegistration_workflow(source_node)
+preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=preliminary_workflow4.lzout.all_, input_data=preliminary_workflow4.lzin.input_data)
