@@ -62,7 +62,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_task.inputs.inputTemplateModel = experiment_configuration['BRAINSConstellationDetector'].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode = experiment_configuration['BRAINSConstellationDetector'].get('interpolationMode')
     # bcd_task.inputs.resultsDir = bcd_task.cache_dir
-    bcd_task.inputs.outputLandmarksInInputSpace =       bcd_workflow.outputLandmarksInInputSpace.lzout.out
+    # bcd_task.inputs.outputLandmarksInInputSpace =       bcd_workflow.outputLandmarksInInputSpace.lzout.out
     bcd_task.inputs.outputResampledVolume =             bcd_workflow.outputResampledVolume.lzout.out
     bcd_task.inputs.outputTransform =                   bcd_workflow.outputTransform.lzout.out
     bcd_task.inputs.outputLandmarksInACPCAlignedSpace = bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
@@ -71,7 +71,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
-        ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+        # ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
         ("outputResampledVolume", bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
         ("outputTransform", bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
         ("outputLandmarksInACPCAlignedSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
@@ -116,11 +116,15 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto'].get('executable')).get_task()
     roi_task.inputs.inputVolume = roi_workflow.get_inputVolume.lzout.out
     roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto'].get('ROIAutoDilateSize')
-    roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto'].get('cropOutput')
-    roi_task.inputs.outputVolume = roi_workflow.outputVolume.lzout.out
+    # roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto'].get('cropOutput')
+    # roi_task.inputs.outputVolume = roi_workflow.outputVolume.lzout.out
+    roi_task.inputs.outputROIMaskVolume = roi_workflow.outputROIMaskVolume.lzout.out
 
     roi_workflow.add(roi_task)
-    roi_workflow.set_output([("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),])
+    roi_workflow.set_output([
+                            # ("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),
+                            ("outputROIMaskVolume", roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume),
+    ])
 
     return roi_workflow
 
@@ -261,8 +265,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
-preliminary_workflow4 = make_resample_workflow(source_node)
-# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+# preliminary_workflow4 = make_resample_workflow(source_node)
+preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
