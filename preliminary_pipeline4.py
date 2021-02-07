@@ -134,9 +134,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
         "BRAINSConstellationDetector"
     ].get("interpolationMode")
     # bcd_task.inputs.resultsDir = bcd_task.cache_dir
-    bcd_task.inputs.outputLandmarksInInputSpace = (
-        bcd_workflow.outputLandmarksInInputSpace.lzout.out
-    )
+    # bcd_task.inputs.outputLandmarksInInputSpace =       bcd_workflow.outputLandmarksInInputSpace.lzout.out
     bcd_task.inputs.outputResampledVolume = bcd_workflow.outputResampledVolume.lzout.out
     bcd_task.inputs.outputTransform = bcd_workflow.outputTransform.lzout.out
     bcd_task.inputs.outputLandmarksInACPCAlignedSpace = (
@@ -148,10 +146,7 @@ def make_bcd_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output(
         [
-            (
-                "outputLandmarksInInputSpace",
-                bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace,
-            ),
+            # ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
             (
                 "outputResampledVolume",
                 bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume,
@@ -187,6 +182,13 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
             name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"
         )
     )
+    resample_workflow.add(
+        get_input_field(
+            name="get_warpTransform",
+            input_dict=resample_workflow.lzin.input_data,
+            field="warpTransform",
+        )
+    )
     # Set the filename of the output of Resample
     resample_workflow.add(
         make_output_filename(
@@ -210,9 +212,7 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     resample_task.inputs.referenceVolume = experiment_configuration[
         "BRAINSResample"
     ].get("referenceVolume")
-    resample_task.inputs.warpTransform = experiment_configuration["BRAINSResample"].get(
-        "warpTransform"
-    )
+    resample_task.inputs.warpTransform = resample_workflow.get_warpTransform.lzout.out
     resample_task.inputs.outputVolume = (
         resample_workflow.resampledOutputVolume.lzout.out
     )
@@ -239,6 +239,14 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
         )
     )
     roi_workflow.add(
+        get_input_field(
+            name="get_inputVolume",
+            input_dict=roi_workflow.lzin.input_data,
+            field="roiInputVolume",
+        )
+    )
+
+    roi_workflow.add(
         make_output_filename(
             name="outputVolume",
             filename=experiment_configuration["BRAINSROIAuto"].get("outputVolume"),
@@ -257,7 +265,7 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
         "BRAINSROIAuto",
         executable=experiment_configuration["BRAINSROIAuto"].get("executable"),
     ).get_task()
-    roi_task.inputs.inputVolume = roi_workflow.get_t1.lzout.out
+    roi_task.inputs.inputVolume = roi_workflow.get_inputVolume.lzout.out
     roi_task.inputs.ROIAutoDilateSize = experiment_configuration["BRAINSROIAuto"].get(
         "ROIAutoDilateSize"
     )
@@ -265,12 +273,13 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
         "cropOutput"
     )
     roi_task.inputs.outputVolume = roi_workflow.outputVolume.lzout.out
-    roi_task.inputs.outputROIMaskVolume = roi_workflow.outputROIMaskVolume.lzout.out
+    # roi_task.inputs.outputROIMaskVolume = roi_workflow.outputROIMaskVolume.lzout.out
 
     roi_workflow.add(roi_task)
     roi_workflow.set_output(
         [
             ("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),
+            # ("outputROIMaskVolume", roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume),
         ]
     )
 
@@ -289,13 +298,13 @@ def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.W
         get_input_field(
             name="get_movingLandmark",
             input_dict=landmark_initializer_workflow.lzin.input_data,
-            field="inputMovingLandmarkFilename",
+            field="inputFixedLandmarkFilename2",
         )
     )
     landmark_initializer_workflow.add(
         make_output_filename(
             name="outputTransformFilename",
-            filename=experiment_configuration["BRAINSLandmarkInitializer"].get(
+            filename=experiment_configuration["BRAINSLandmarkInitializer2"].get(
                 "outputTransformFilename"
             ),
         )
@@ -303,20 +312,20 @@ def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.W
 
     landmark_initializer_task = BRAINSLandmarkInitializer(
         name="BRAINSLandmarkInitializer",
-        executable=experiment_configuration["BRAINSLandmarkInitializer"].get(
+        executable=experiment_configuration["BRAINSLandmarkInitializer2"].get(
             "executable"
         ),
     ).get_task()
     landmark_initializer_task.inputs.inputFixedLandmarkFilename = (
-        experiment_configuration["BRAINSLandmarkInitializer"].get(
-            "inputFixedLandmarkFilename"
-        )
-    )
-    landmark_initializer_task.inputs.inputMovingLandmarkFilename = (
         landmark_initializer_workflow.get_movingLandmark.lzout.out
     )
+    landmark_initializer_task.inputs.inputMovingLandmarkFilename = (
+        experiment_configuration["BRAINSLandmarkInitializer2"].get(
+            "inputMovingLandmarkFilename2"
+        )
+    )
     landmark_initializer_task.inputs.inputWeightFilename = experiment_configuration[
-        "BRAINSLandmarkInitializer"
+        "BRAINSLandmarkInitializer2"
     ].get("inputWeightFilename")
     landmark_initializer_task.inputs.outputTransformFilename = (
         landmark_initializer_workflow.outputTransformFilename.lzout.out
@@ -475,6 +484,20 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
         input_spec=["input_data"],
         input_data=my_source_node.lzin.input_data,
     )
+    antsRegistration_workflow.add(
+        get_input_field(
+            name="get_initial_moving_transform",
+            input_dict=antsRegistration_workflow.lzin.input_data,
+            field="initial_moving_transform",
+        )
+    )
+    antsRegistration_workflow.add(
+        get_input_field(
+            name="get_metric",
+            input_dict=antsRegistration_workflow.lzin.input_data,
+            field="metric",
+        )
+    )
     # antsRegistration_workflow.add(get_input_field(name="get_output", input_dict=experiment_configuration["ANTSRegistration"], field="output"))
     # antsRegistration_workflow.add(append_filename(name="outputVolumes", filename=antsRegistration_workflow.get_output.lzout.out))
 
@@ -494,9 +517,9 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.float = experiment_configuration[
         "ANTSRegistration"
     ].get("float")
-    antsRegistration_task.inputs.initial_moving_transform = experiment_configuration[
-        "ANTSRegistration"
-    ].get("initial-moving-transform")
+    antsRegistration_task.inputs.initial_moving_transform = (
+        antsRegistration_workflow.get_initial_moving_transform.lzout.out
+    )  # experiment_configuration['ANTSRegistration'].get('initial-moving-transform')
     antsRegistration_task.inputs.initialize_transforms_per_stage = (
         experiment_configuration["ANTSRegistration"].get(
             "initialize-transforms-per-stage"
@@ -510,10 +533,12 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     ].get(
         "output"
     )  # antsRegistration_workflow.outputVolumes.lzout.out # # # # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
-    # antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration'].get('transform')
-    antsRegistration_task.inputs.metric = experiment_configuration[
+    antsRegistration_task.inputs.transform = experiment_configuration[
         "ANTSRegistration"
-    ].get("metric")
+    ].get("transform")
+    antsRegistration_task.inputs.metric = (
+        antsRegistration_workflow.get_metric.lzout.out
+    )  # experiment_configuration['ANTSRegistration'].get('metric')
     antsRegistration_task.inputs.convergence = experiment_configuration[
         "ANTSRegistration"
     ].get("convergence")
@@ -541,7 +566,7 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
         "ANTSRegistration"
     ].get("write-composite-transform")
 
-    print(antsRegistration_task.cmdline)
+    # print(antsRegistration_task.cmdline)
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output(
         [("output", antsRegistration_workflow.ANTSRegistration.lzout.output)]
@@ -589,8 +614,8 @@ source_node.split(
 
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
-preliminary_workflow4 = make_resample_workflow(source_node)
-# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+# preliminary_workflow4 = make_resample_workflow(source_node)
+preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
