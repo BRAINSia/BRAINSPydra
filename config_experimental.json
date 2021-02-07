@@ -2,11 +2,13 @@
   "input_data": [
     { "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt",
       "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
+      "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
     },
     {
       "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt",
       "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
+      "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
     }
   ],

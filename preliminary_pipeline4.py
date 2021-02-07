@@ -85,6 +85,7 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     resample_workflow = pydra.Workflow(name="resample_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     # Get the t1 image for the subject in the input data
     resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
+    resample_workflow.add(get_input_field(name="get_warpTransform", input_dict=resample_workflow.lzin.input_data, field="warpTransform"))
     # Set the filename of the output of Resample
     resample_workflow.add(make_output_filename(name="resampledOutputVolume", filename=experiment_configuration["BRAINSResample"]["outputVolume"]))
 
@@ -94,7 +95,7 @@ def make_resample_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     resample_task.inputs.interpolationMode = experiment_configuration["BRAINSResample"].get("interpolationMode")
     resample_task.inputs.pixelType = experiment_configuration["BRAINSResample"].get("pixelType")
     resample_task.inputs.referenceVolume = experiment_configuration["BRAINSResample"].get("referenceVolume")
-    resample_task.inputs.warpTransform = experiment_configuration["BRAINSResample"].get("warpTransform")
+    resample_task.inputs.warpTransform = resample_workflow.get_warpTransform.lzout.out
     resample_task.inputs.outputVolume = resample_workflow.resampledOutputVolume.lzout.out
 
     resample_workflow.add(resample_task)
@@ -260,9 +261,9 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
-# preliminary_workflow4 = make_resample_workflow(source_node)
+preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
-preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
+# preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
