@@ -557,25 +557,24 @@ def get_processed_outputs(processed_dict: dict):
 
 # If on same mount point use hard link instead of copy (not windows - look into this)
 @pydra.mark.task
-def copy_from_cache(cache_path, output_dir):
+def copy_from_cache(cache_path, output_dir, input_data):
+    input_filename = Path(input_data.get("t1")).with_suffix("").with_suffix("").name
+    file_output_dir = Path(output_dir) / Path(input_filename)
+    file_output_dir.mkdir(parents=True, exist_ok=True)
     if cache_path is None:
         print(f"cache_path: {cache_path}")
         return ""  # Don't return a cache_path if it is None
     else:
         if type(cache_path) is list:
-            print("\n\n\n\nLIST\n\n\n\n")
             output_list = []
             for path in cache_path:
-                # copyfile(path, Path(output_dir) / Path(path).name)
-                out_path = Path(output_dir) / Path(path).name
+                out_path = Path(file_output_dir) / Path(path).name
                 print(f"Copying from {path} to {out_path}")
                 copyfile(path, out_path)
                 output_list.append(out_path)
             return output_list
         else:
-            print("\n\n\n\nNOT LIST\n\n\n\n")
-
-            out_path = Path(output_dir) / Path(cache_path).name
+            out_path = Path(file_output_dir) / Path(cache_path).name
             print(f"Copying from {cache_path} to {out_path}")
             copyfile(cache_path, out_path)
             return cache_path
@@ -589,8 +588,8 @@ source_node.split(
 )  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-preliminary_workflow4 = make_bcd_workflow(source_node)
-# preliminary_workflow4 = make_resample_workflow(source_node)
+# preliminary_workflow4 = make_bcd_workflow(source_node)
+preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
@@ -600,8 +599,9 @@ preliminary_workflow4 = make_bcd_workflow(source_node)
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(
     name="sink_node",
-    input_spec=["processed_files"],
+    input_spec=["processed_files", "input_data"],
     processed_files=preliminary_workflow4.lzout.all_,
+    input_data=preliminary_workflow4.lzin.input_data,
 )
 sink_node.add(
     get_processed_outputs(
@@ -613,6 +613,7 @@ sink_node.add(
         name="copy_from_cache",
         output_dir=experiment_configuration["output_dir"],
         cache_path=sink_node.get_processed_outputs.lzout.out,
+        input_data=sink_node.lzin.input_data,
     ).split("cache_path")
 )
 sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
