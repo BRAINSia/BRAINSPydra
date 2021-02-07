@@ -202,7 +202,7 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
 
     antsRegistration_workflow = pydra.Workflow(name="antsRegistration_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     antsRegistration_workflow.add(get_input_field(name="get_initial_moving_transform", input_dict=antsRegistration_workflow.lzin.input_data, field="initial_moving_transform"))
-
+    antsRegistration_workflow.add(get_input_field(name="get_metric", input_dict=antsRegistration_workflow.lzin.input_data, field="metric"))
     # antsRegistration_workflow.add(get_input_field(name="get_output", input_dict=experiment_configuration["ANTSRegistration"], field="output"))
     # antsRegistration_workflow.add(append_filename(name="outputVolumes", filename=antsRegistration_workflow.get_output.lzout.out))
 
@@ -216,7 +216,7 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration'].get('interpolation')
     antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration'].get('output') #antsRegistration_workflow.outputVolumes.lzout.out # # # # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
     antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration'].get('transform')
-    antsRegistration_task.inputs.metric = experiment_configuration['ANTSRegistration'].get('metric')
+    antsRegistration_task.inputs.metric = antsRegistration_workflow.get_metric.lzout.out #experiment_configuration['ANTSRegistration'].get('metric')
     antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration'].get('convergence')
     antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration'].get('smoothing-sigmas')
     antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration'].get('shrink-factors')
@@ -226,7 +226,7 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration'].get('winsorize-image-intensities')
     antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration'].get('write-composite-transform')
 
-    print(antsRegistration_task.cmdline)
+    # print(antsRegistration_task.cmdline)
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([("output", antsRegistration_workflow.ANTSRegistration.lzout.output)])
 
