@@ -133,12 +133,12 @@ def make_LandmarkInitializer_workflow(my_source_node: pydra.Workflow) -> pydra.W
 
     landmark_initializer_workflow = pydra.Workflow(name="landmark_initializer_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     landmark_initializer_workflow.add(get_input_field(name="get_movingLandmark", input_dict=landmark_initializer_workflow.lzin.input_data, field="inputFixedLandmarkFilename2"))
-    landmark_initializer_workflow.add(make_output_filename(name="outputTransformFilename", filename=experiment_configuration['BRAINSLandmarkInitializer'].get('outputTransformFilename')))
+    landmark_initializer_workflow.add(make_output_filename(name="outputTransformFilename", filename=experiment_configuration['BRAINSLandmarkInitializer2'].get('outputTransformFilename')))
 
-    landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration['BRAINSLandmarkInitializer'].get('executable')).get_task()
+    landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration['BRAINSLandmarkInitializer2'].get('executable')).get_task()
     landmark_initializer_task.inputs.inputFixedLandmarkFilename = landmark_initializer_workflow.get_movingLandmark.lzout.out
-    landmark_initializer_task.inputs.inputMovingLandmarkFilename = experiment_configuration['BRAINSLandmarkInitializer'].get('inputMovingLandmarkFilename2')
-    landmark_initializer_task.inputs.inputWeightFilename = experiment_configuration['BRAINSLandmarkInitializer'].get('inputWeightFilename')
+    landmark_initializer_task.inputs.inputMovingLandmarkFilename = experiment_configuration['BRAINSLandmarkInitializer2'].get('inputMovingLandmarkFilename2')
+    landmark_initializer_task.inputs.inputWeightFilename = experiment_configuration['BRAINSLandmarkInitializer2'].get('inputWeightFilename')
     landmark_initializer_task.inputs.outputTransformFilename = landmark_initializer_workflow.outputTransformFilename.lzout.out
 
     landmark_initializer_workflow.add(landmark_initializer_task)
