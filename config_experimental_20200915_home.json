@@ -1,13 +1,21 @@
 {
   "input_data": [
     { "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz",
-      "inputLandmarksEMSP": "/Users/cjohnson30/wf_ref/sub-052823_ses-43817_run-002_T1w.fcsv",
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
+      "roiInputVolume": "Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
+      "abcInputVolume": "Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
+      "warpTransform": "Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
+      "initial_moving_transform": ["Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
+      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "metric": "MI['Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     },
     {
       "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
-      "inputLandmarksEMSP": "/Users/cjohnson30/wf_ref/sub-273625_ses-47445_run-002_T1w.fcsv",
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
+      "roiInputVolume": "Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
+      "abcInputVolume": "Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
+      "warpTransform": "Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
+      "initial_moving_transform": ["Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
+      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "metric": "MI['Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     }
   ],
   "output_dir": "/Users/cjohnson30/output_dir",
