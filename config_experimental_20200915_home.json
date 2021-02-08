@@ -5,7 +5,8 @@
       "abcInputVolume": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "initial_moving_transform": ["/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "inputMovingLandmarkFilename1": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "inputFixedLandmarkFilename2": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC_Landmarks.fcsv",
       "metric": "MI['/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     },
     {
@@ -14,7 +15,8 @@
       "abcInputVolume": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "initial_moving_transform": ["/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "inputMovingLandmarkFilename1": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+      "inputFixedLandmarkFilename2": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC_Landmarks.fcsv",
       "metric": "MI['/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     }
   ],
@@ -48,12 +50,17 @@
     "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
-  "BRAINSLandmarkInitializer": {
+  "BRAINSLandmarkInitializer1": {
     "executable": "BRAINSLandmarkInitializer",
-    "inputFixedLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv ",
-    "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+    "inputMovingLandmarkFilename1": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
     "inputWeightFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
+  },
+    "BRAINSLandmarkInitializer2": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename2": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
+    "inputWeightFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_atlas_to_subject_transform.h5"
   },
   "BRAINSABC": {
     "executable": "BRAINSABC",
