@@ -122,8 +122,8 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     roi_workflow.add(roi_task)
     roi_workflow.set_output([
-                            # ("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),
-                            ("outputROIMaskVolume", roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume),
+                            ("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),
+                            # ("outputROIMaskVolume", roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume),
     ])
 
     return roi_workflow
