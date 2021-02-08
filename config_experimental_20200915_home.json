@@ -45,7 +45,8 @@
     "executable": "BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
-    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
+    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
+    "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "BRAINSLandmarkInitializer": {
     "executable": "BRAINSLandmarkInitializer",
