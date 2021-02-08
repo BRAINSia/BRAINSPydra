@@ -108,14 +108,14 @@ def make_ROIAuto_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     roi_workflow = pydra.Workflow(name="roi_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
     roi_workflow.add(get_input_field(name="get_t1", input_dict=roi_workflow.lzin.input_data, field="t1"))
-    roi_workflow.add(get_input_field(name="get_inputVolume", input_dict=roi_workflow.lzin.input_data, field="roiInputVolume"))
+    roi_workflow.add(get_input_field(name="get_inputVolume", input_dict=roi_workflow.lzin.input_data, field="roiInputVolume2"))
 
-    roi_workflow.add(make_output_filename(name="outputVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputVolume')))
-    roi_workflow.add(make_output_filename(name="outputROIMaskVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputROIMaskVolume')))
+    roi_workflow.add(make_output_filename(name="outputVolume", filename=experiment_configuration['BRAINSROIAuto2'].get('outputVolume')))
+    roi_workflow.add(make_output_filename(name="outputROIMaskVolume", filename=experiment_configuration['BRAINSROIAuto2'].get('outputROIMaskVolume')))
 
-    roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto'].get('executable')).get_task()
+    roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto2'].get('executable')).get_task()
     roi_task.inputs.inputVolume = roi_workflow.get_inputVolume.lzout.out
-    roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto'].get('ROIAutoDilateSize')
+    roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto2'].get('ROIAutoDilateSize')
     # roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto'].get('cropOutput')
     # roi_task.inputs.outputVolume = roi_workflow.outputVolume.lzout.out
     roi_task.inputs.outputROIMaskVolume = roi_workflow.outputROIMaskVolume.lzout.out

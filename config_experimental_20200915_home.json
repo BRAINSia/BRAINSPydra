@@ -2,6 +2,7 @@
   "input_data": [
     { "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz",
       "roiInputVolume": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
+      "roiInputVolume2": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "abcInputVolume": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "initial_moving_transform": ["/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
@@ -12,6 +13,7 @@
     {
       "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
       "roiInputVolume": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
+      "roiInputVolume2": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "abcInputVolume": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "initial_moving_transform": ["/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
@@ -48,6 +50,11 @@
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
     "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
+    "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
+  },
+  "BRAINSROIAuto2": {
+    "executable": "BRAINSROIAuto",
+    "ROIAutoDilateSize": 15.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "BRAINSLandmarkInitializer1": {
