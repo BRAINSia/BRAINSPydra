@@ -16,12 +16,20 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
     if filename is None:
         return None
     else:
-        # If an extension is not specified and the filename has an extension, use the filename's extension
-        if extension == "":
-            extension = "".join(Path(filename).suffixes)
-        new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+        if type(filename) is list:
+            new_filename = []
+            for f in filename:
+                if extension == "":
+                    extension = "".join(Path(f).suffixes)
+                new_filename.append(f"{Path(Path(directory) / Path(before_str + Path(f).with_suffix('').with_suffix('').name))}{append_str}{extension}")
+        else:
+            # If an extension is not specified and the filename has an extension, use the filename's extension
+            if extension == "":
+                extension = "".join(Path(filename).suffixes)
+            new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
         # Path(new_filename).touch()
         # print(f"touching {new_filename}")
+        print(f"filename: {filename}")
         return new_filename
 
 
@@ -204,29 +212,50 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_workflow.add(get_input_field(name="get_initial_moving_transform", input_dict=antsRegistration_workflow.lzin.input_data, field="initial_moving_transform"))
     antsRegistration_workflow.add(get_input_field(name="get_metric", input_dict=antsRegistration_workflow.lzin.input_data, field="metric"))
     # antsRegistration_workflow.add(get_input_field(name="get_output", input_dict=experiment_configuration["ANTSRegistration"], field="output"))
-    # antsRegistration_workflow.add(append_filename(name="outputVolumes", filename=antsRegistration_workflow.get_output.lzout.out))
+    antsRegistration_workflow.add(make_output_filename(name="outputVolumes", filename=experiment_configuration["ANTSRegistration"].get("output"))) #antsRegistration_workflow.get_output.lzout.out))
 
-    antsRegistration_task = ANTSRegistration(name="ANTSRegistration", executable=experiment_configuration['ANTSRegistration']['executable']).get_task()
-    antsRegistration_task.inputs.verbose = experiment_configuration['ANTSRegistration'].get('verbose')
-    antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration['ANTSRegistration'].get('collapse-output-transforms')
-    antsRegistration_task.inputs.dimensionality = experiment_configuration['ANTSRegistration'].get('dimensionality')
-    antsRegistration_task.inputs.float = experiment_configuration['ANTSRegistration'].get('float')
-    antsRegistration_task.inputs.initial_moving_transform = antsRegistration_workflow.get_initial_moving_transform.lzout.out # experiment_configuration['ANTSRegistration'].get('initial-moving-transform')
-    antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration['ANTSRegistration'].get('initialize-transforms-per-stage')
-    antsRegistration_task.inputs.interpolation = experiment_configuration['ANTSRegistration'].get('interpolation')
-    antsRegistration_task.inputs.output = experiment_configuration['ANTSRegistration'].get('output') #antsRegistration_workflow.outputVolumes.lzout.out # # # # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
-    antsRegistration_task.inputs.transform = experiment_configuration['ANTSRegistration'].get('transform')
-    antsRegistration_task.inputs.metric = antsRegistration_workflow.get_metric.lzout.out #experiment_configuration['ANTSRegistration'].get('metric')
-    antsRegistration_task.inputs.convergence = experiment_configuration['ANTSRegistration'].get('convergence')
-    antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration['ANTSRegistration'].get('smoothing-sigmas')
-    antsRegistration_task.inputs.shrink_factors = experiment_configuration['ANTSRegistration'].get('shrink-factors')
-    antsRegistration_task.inputs.use_estimate_learning_rate_once = experiment_configuration['ANTSRegistration'].get('use-estimate-learning-rate-once')
-    antsRegistration_task.inputs.use_histogram_matching = experiment_configuration['ANTSRegistration'].get('use-histogram-matching')
-    antsRegistration_task.inputs.masks = experiment_configuration['ANTSRegistration'].get('masks')
-    antsRegistration_task.inputs.winsorize_image_intensities = experiment_configuration['ANTSRegistration'].get('winsorize-image-intensities')
-    antsRegistration_task.inputs.write_composite_transform = experiment_configuration['ANTSRegistration'].get('write-composite-transform')
+    antsRegistration_task =                                         ANTSRegistration(name="ANTSRegistration", executable=experiment_configuration['ANTSRegistration']['executable']).get_task()
+    antsRegistration_task.inputs.verbose =                          experiment_configuration['ANTSRegistration'].get('verbose')
+    antsRegistration_task.inputs.collapse_output_transforms =       experiment_configuration['ANTSRegistration'].get('collapse-output-transforms')
+    antsRegistration_task.inputs.dimensionality =                   experiment_configuration['ANTSRegistration'].get('dimensionality')
+    antsRegistration_task.inputs.float =                            experiment_configuration['ANTSRegistration'].get('float')
+    antsRegistration_task.inputs.initial_moving_transform =         experiment_configuration['ANTSRegistration'].get('initial-moving-transform') #antsRegistration_workflow.get_initial_moving_transform.lzout.out # experiment_configuration['ANTSRegistration'].get('initial-moving-transform')
+    antsRegistration_task.inputs.initialize_transforms_per_stage =  experiment_configuration['ANTSRegistration'].get('initialize-transforms-per-stage')
+    antsRegistration_task.inputs.interpolation =                    experiment_configuration['ANTSRegistration'].get('interpolation')
+    antsRegistration_task.inputs.output =                           [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] #antsRegistration_workflow.outputVolumes.lzout.out #experiment_configuration['ANTSRegistration'].get('output') # # # # # [ "AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"] ,
 
-    # print(antsRegistration_task.cmdline)
+    antsRegistration_task.inputs.transform1 =                        experiment_configuration['ANTSRegistration'].get('transform')
+    antsRegistration_task.inputs.metric1 =                           experiment_configuration['ANTSRegistration'].get('metric') #antsRegistration_workflow.get_metric.lzout.out #experiment_configuration['ANTSRegistration'].get('metric')
+    antsRegistration_task.inputs.convergence1 =                      experiment_configuration['ANTSRegistration'].get('convergence')
+    antsRegistration_task.inputs.smoothing_sigmas1 =                 experiment_configuration['ANTSRegistration'].get('smoothing-sigmas')
+    antsRegistration_task.inputs.shrink_factors1 =                   experiment_configuration['ANTSRegistration'].get('shrink-factors')
+    antsRegistration_task.inputs.use_estimate_learning_rate_once1 =  experiment_configuration['ANTSRegistration'].get('use-estimate-learning-rate-once')
+    antsRegistration_task.inputs.use_histogram_matching1 =           experiment_configuration['ANTSRegistration'].get('use-histogram-matching')
+    antsRegistration_task.inputs.masks1 =                            experiment_configuration['ANTSRegistration'].get('masks')
+
+    antsRegistration_task.inputs.transform2 =                        experiment_configuration['ANTSRegistration'].get('transform')
+    antsRegistration_task.inputs.metric2 =                           experiment_configuration['ANTSRegistration'].get('metric') #antsRegistration_workflow.get_metric.lzout.out #experiment_configuration['ANTSRegistration'].get('metric')
+    antsRegistration_task.inputs.convergence2 =                      experiment_configuration['ANTSRegistration'].get('convergence')
+    antsRegistration_task.inputs.smoothing_sigmas2 =                 experiment_configuration['ANTSRegistration'].get('smoothing-sigmas')
+    antsRegistration_task.inputs.shrink_factors2 =                   experiment_configuration['ANTSRegistration'].get('shrink-factors')
+    antsRegistration_task.inputs.use_estimate_learning_rate_once2 =  experiment_configuration['ANTSRegistration'].get('use-estimate-learning-rate-once')
+    antsRegistration_task.inputs.use_histogram_matching2 =           experiment_configuration['ANTSRegistration'].get('use-histogram-matching')
+    antsRegistration_task.inputs.masks2 =                            experiment_configuration['ANTSRegistration'].get('masks')
+
+    antsRegistration_task.inputs.transform3 =                        experiment_configuration['ANTSRegistration'].get('transform')
+    antsRegistration_task.inputs.metric3 =                           experiment_configuration['ANTSRegistration'].get('metric') #antsRegistration_workflow.get_metric.lzout.out #experiment_configuration['ANTSRegistration'].get('metric')
+    antsRegistration_task.inputs.convergence3 =                      experiment_configuration['ANTSRegistration'].get('convergence')
+    antsRegistration_task.inputs.smoothing_sigmas3 =                 experiment_configuration['ANTSRegistration'].get('smoothing-sigmas')
+    antsRegistration_task.inputs.shrink_factors3 =                   experiment_configuration['ANTSRegistration'].get('shrink-factors')
+    antsRegistration_task.inputs.use_estimate_learning_rate_once3 =  experiment_configuration['ANTSRegistration'].get('use-estimate-learning-rate-once')
+    antsRegistration_task.inputs.use_histogram_matching3 =           experiment_configuration['ANTSRegistration'].get('use-histogram-matching')
+    antsRegistration_task.inputs.masks3 =                            experiment_configuration['ANTSRegistration'].get('masks')
+
+
+    antsRegistration_task.inputs.winsorize_image_intensities =      experiment_configuration['ANTSRegistration'].get('winsorize-image-intensities')
+    antsRegistration_task.inputs.write_composite_transform =        experiment_configuration['ANTSRegistration'].get('write-composite-transform')
+
+    print(antsRegistration_task.cmdline)
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([("output", antsRegistration_workflow.ANTSRegistration.lzout.output)])
 
@@ -268,11 +297,11 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # Get the processing workflow defined in a separate function
 # preliminary_workflow4 = make_bcd_workflow(source_node)
 # preliminary_workflow4 = make_resample_workflow(source_node)
-preliminary_workflow4 = make_ROIAuto_workflow(source_node)
+# preliminary_workflow4 = make_ROIAuto_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
-# preliminary_workflow4 = make_antsRegistration_workflow(source_node)
+preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=preliminary_workflow4.lzout.all_, input_data=preliminary_workflow4.lzin.input_data)
