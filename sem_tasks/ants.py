@@ -116,14 +116,14 @@ class ANTSRegistration:
                 attr.ib(
                     type=MultiInputFile,
                     metadata={
-                        "argstr": "--output",
-                        "sep": ",",
+                        "argstr": "--output ",
+                        "sep": ", ",
                         "help_string": "",
                     },
                 ),
             ),
             (
-                "transform",
+                "transform1",
                 attr.ib(
                     type=str,
                     metadata={
@@ -133,18 +133,18 @@ class ANTSRegistration:
                 ),
             ),
             (
-                "metric",
+                "metric1",
                 attr.ib(
                     type=str,
                     metadata={
-                        "argstr": "--metric ...",
+                        "argstr": "--metric ",
                         "sep": ",",
                         "help_string": "",
                     },
                 ),
             ),
             (
-                "convergence",
+                "convergence1",
                 attr.ib(
                     type=list,
                     metadata={
@@ -155,7 +155,7 @@ class ANTSRegistration:
                 ),
             ),
             (
-                "smoothing_sigmas",
+                "smoothing_sigmas1",
                 attr.ib(
                     type=str,
                     metadata={
@@ -165,7 +165,7 @@ class ANTSRegistration:
                 ),
             ),
             (
-                "shrink_factors",
+                "shrink_factors1",
                 attr.ib(
                     type=str,
                     metadata={
@@ -175,7 +175,7 @@ class ANTSRegistration:
                 ),
             ),
             (
-                "use_estimate_learning_rate_once",
+                "use_estimate_learning_rate_once1",
                 attr.ib(
                     type=int,
                     metadata={
@@ -185,7 +185,7 @@ class ANTSRegistration:
                 ),
             ),
             (
-                "use_histogram_matching",
+                "use_histogram_matching1",
                 attr.ib(
                     type=int,
                     metadata={
@@ -195,7 +195,174 @@ class ANTSRegistration:
                 ),
             ),
             (
-                "masks",
+                "masks1",
+                attr.ib(
+                    type=MultiInputFile,
+                    metadata={
+                        "argstr": "--masks ",
+                        "sep": ",",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "transform2",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--transform ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "metric2",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--metric ",
+                        "sep": ",",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "convergence2",
+                attr.ib(
+                    type=list,
+                    metadata={
+                        "argstr": "--convergence ",
+                        "sep": ",",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "smoothing_sigmas2",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--smoothing-sigmas ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "shrink_factors2",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--shrink-factors ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_estimate_learning_rate_once2",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-estimate-learning-rate-once ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_histogram_matching2",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-histogram-matching ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "masks2",
+                attr.ib(
+                    type=MultiInputFile,
+                    metadata={
+                        "argstr": "--masks ",
+                        "sep": ",",
+                        "help_string": "",
+                    },
+                ),
+            ),
+
+            (
+                "transform3",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--transform ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "metric3",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--metric ",
+                        "sep": ",",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "convergence3",
+                attr.ib(
+                    type=list,
+                    metadata={
+                        "argstr": "--convergence ",
+                        "sep": ",",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "smoothing_sigmas3",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--smoothing-sigmas ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "shrink_factors3",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "argstr": "--shrink-factors ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_estimate_learning_rate_once3",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-estimate-learning-rate-once ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "use_histogram_matching3",
+                attr.ib(
+                    type=int,
+                    metadata={
+                        "argstr": "--use-histogram-matching ",
+                        "help_string": "",
+                    },
+                ),
+            ),
+            (
+                "masks3",
                 attr.ib(
                     type=MultiInputFile,
                     metadata={
