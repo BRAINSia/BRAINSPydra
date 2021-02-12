@@ -4,7 +4,7 @@
       "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
       "abcInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform": ["/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
+      "initial_moving_transform": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
       "metric": "MI['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     },
@@ -13,7 +13,7 @@
       "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
       "abcInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform": ["/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
+      "initial_moving_transform": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
       "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
       "metric": "MI['/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
     }
@@ -101,40 +101,46 @@
     "inclusionThreshold": 0.0
   },
   "ANTSRegistration": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/ANTSRegistration4.sh",
-    "verbose": " ",
-    "collapse-output-transforms": "0" ,
+    "executable": "/mnt/c/2020_Grad_School/Research/install/bin/antsRegistration",
+    "verbose": true,
+    "collapse-output-transforms": false ,
     "dimensionality": 3 ,
-    "float": 1 ,
-    "initial-moving-transform": "[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BLI/landmarkInitializer_atlas_to_subject_transform.h5, 0 ]" ,
-    "initialize-transforms-per-stage": 1 ,
+    "float": true ,
+
+
+    "initialize-transforms-per-stage": true ,
     "interpolation": "Linear" ,
     "output": ["AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"],
     "transform1": "\"Rigid[ 0.1 ]\"" ,
-    "metric1": "\"MI[/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz,/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ]\"" ,
+    "metric1": "\"MI[/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz,/mnt/c/2020_Grad_School/Research/wf_ref/template_t1_denoised_gaussian.nii.gz, 1, 32,Regular, 0.5 ]\"" ,
     "convergence1": "[ 1000x1000x1000, 5e-08, 12 ]" ,
     "smoothing-sigmas1": "3.0x2.0x1.0vox" ,
     "shrink-factors1": "8x4x2" ,
     "use-estimate-learning-rate-once1": "0" ,
     "use-histogram-matching1": 1 ,
-    "masks1": "[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz]" ,
+    "masks1": "[ /mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz, /mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz]",
+    "winsorize-image-intensities": [ 0.01, 0.99 ]  ,
+    "write-composite-transform": 1
+  },
+  "not-used-ants": {
+
+
     "transform2": "\"Rigid[ 0.1 ]\"" ,
-    "metric2": "\"MI[/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz,/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ]\"" ,
+    "metric2": "\"MI[/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz,/mnt/c/2020_Grad_School/Research/wf_ref/template_t1_denoised_gaussian.nii.gz, 1, 32,Regular, 0.5 ]\"" ,
     "convergence2": "[ 1000x1000x1000, 5e-08, 12 ]" ,
     "smoothing-sigmas2": "3.0x2.0x1.0vox" ,
     "shrink-factors2": "8x4x2" ,
     "use-estimate-learning-rate-once2": "0" ,
     "use-histogram-matching2": 1 ,
-    "masks2": "[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz]" ,
+    "masks2": "[ /mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz, /mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz]" ,
     "transform3": "\"Rigid[ 0.1 ]\"" ,
-    "metric3": "\"MI[/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BROIAuto_cropped/Cropped_BCD_ACPC_Aligned.nii.gz,/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz, 1, 32, Regular, 0.5 ]\"" ,
+    "metric3": "\"MI[/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz,/mnt/c/2020_Grad_School/Research/wf_ref/template_t1_denoised_gaussian.nii.gz, 1, 32,Regular, 0.5 ]\"" ,
     "convergence3": "[ 1000x1000x1000, 5e-08, 12 ]" ,
     "smoothing-sigmas3": "3.0x2.0x1.0vox" ,
     "shrink-factors3": "8x4x2" ,
     "use-estimate-learning-rate-once3": "0" ,
     "use-histogram-matching3": 1 ,
-    "masks3": "[ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/fixedImageROIAUTOMask/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz]" ,
-    "winsorize-image-intensities3": [ 0.01, 0.99 ]  ,
-    "write-composite-transform3": 1
+    "masks3": "[ /mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz, /mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz]"
+
   }
 }

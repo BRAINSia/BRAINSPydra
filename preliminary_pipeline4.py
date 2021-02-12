@@ -232,12 +232,12 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.transforms = ['Rigid', 'Affine', 'Affine']
     antsRegistration_task.inputs.transform_parameters = [(0.1,), (0.1,), (0.1,)]
     antsRegistration_task.inputs.number_of_iterations = [[1000, 1000, 1000], [1000, 1000, 500], [500, 500]]
-    antsRegistration_task.inputs.dimension = 3
+    antsRegistration_task.inputs.dimension =                        experiment_configuration['ANTSRegistration'].get('dimensionality')
     antsRegistration_task.inputs.write_composite_transform = True
-    antsRegistration_task.inputs.collapse_output_transforms = False
-    antsRegistration_task.inputs.verbose = True
-    antsRegistration_task.inputs.initialize_transforms_per_stage = True
-    antsRegistration_task.inputs.float = True
+    antsRegistration_task.inputs.collapse_output_transforms =       experiment_configuration['ANTSRegistration'].get('collapse-output-transforms')
+    antsRegistration_task.inputs.verbose =                          experiment_configuration['ANTSRegistration'].get('verbose')
+    antsRegistration_task.inputs.initialize_transforms_per_stage =  experiment_configuration['ANTSRegistration'].get('initialize-transforms-per-stage')
+    antsRegistration_task.inputs.float =                            experiment_configuration['ANTSRegistration'].get('float')
     antsRegistration_task.inputs.metric = ['MI'] * 3
     antsRegistration_task.inputs.metric_weight = [1] * 3  # Default (value ignored currently by ANTs)
     antsRegistration_task.inputs.radius_or_number_of_bins = [32] * 3
@@ -256,13 +256,19 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.winsorize_upper_quantile = .99
 
     antsRegistration_workflow.add(antsRegistration_task)
-    antsRegistration_workflow.set_output([("output", antsRegistration_task.lzout.composite_transform)])
+    antsRegistration_workflow.set_output([
+        ("composite_transform", antsRegistration_task.lzout.composite_transform),
+        ("inverse_composite_transform", antsRegistration_task.lzout.inverse_composite_transform),
+        ("warped_image", antsRegistration_task.lzout.warped_image),
+        ("inverse_warped_image", antsRegistration_task.lzout.inverse_warped_image),
+    ])
 
     # antsRegistration_task =                                         ANTSRegistration(name="ANTSRegistration", executable=experiment_configuration['ANTSRegistration']['executable']).get_task()
     # antsRegistration_task.inputs.verbose =                          experiment_configuration['ANTSRegistration'].get('verbose')
     # antsRegistration_task.inputs.collapse_output_transforms =       experiment_configuration['ANTSRegistration'].get('collapse-output-transforms')
     # antsRegistration_task.inputs.dimensionality =                   experiment_configuration['ANTSRegistration'].get('dimensionality')
     # antsRegistration_task.inputs.float =                            experiment_configuration['ANTSRegistration'].get('float')
+
     # antsRegistration_task.inputs.initial_moving_transform =         experiment_configuration['ANTSRegistration'].get('initial-moving-transform') #antsRegistration_workflow.get_initial_moving_transform.lzout.out # experiment_configuration['ANTSRegistration'].get('initial-moving-transform')
     # antsRegistration_task.inputs.initialize_transforms_per_stage =  experiment_configuration['ANTSRegistration'].get('initialize-transforms-per-stage')
     # antsRegistration_task.inputs.interpolation =                    experiment_configuration['ANTSRegistration'].get('interpolation')
@@ -336,7 +342,7 @@ def copy_from_cache(cache_path, output_dir, input_data):
             return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
-source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])
+source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir="/tmp/tmprooz1zv8/")
 source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
