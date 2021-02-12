@@ -278,21 +278,21 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.initialize_transforms_per_stage =      experiment_configuration['ANTSRegistration'].get('initialize_transforms_per_stage')
     antsRegistration_task.inputs.float =                                experiment_configuration['ANTSRegistration'].get('float')
     antsRegistration_task.inputs.metric =                               experiment_configuration['ANTSRegistration'].get('metric') * experiment_configuration['ANTSRegistration'].get('dimensionality')
-    antsRegistration_task.inputs.metric_weight = [1] * 3  # Default (value ignored currently by ANTs)
-    antsRegistration_task.inputs.radius_or_number_of_bins = [32] * 3
-    antsRegistration_task.inputs.sampling_strategy = ['Regular', 'Regular', 'Regular']
-    antsRegistration_task.inputs.sampling_percentage = [0.5, 0.5, 0.5]
-    antsRegistration_task.inputs.convergence_threshold = [5.e-8, 5.e-8, 5.e-7]
-    antsRegistration_task.inputs.convergence_window_size = [12] * 3
-    antsRegistration_task.inputs.smoothing_sigmas = [[3, 2, 1], [3, 2, 1], [1, 0]]
-    antsRegistration_task.inputs.sigma_units = ['vox'] * 3
-    antsRegistration_task.inputs.shrink_factors = [[8, 4, 2], [8, 4, 2], [2, 1]]
-    antsRegistration_task.inputs.use_estimate_learning_rate_once = [False, False, False]
-    antsRegistration_task.inputs.use_histogram_matching = [True, True, True]  # This is the default
-    antsRegistration_task.inputs.output_warped_image = 'atlas2subjectRigid.nii.gz'
-    antsRegistration_task.inputs.output_inverse_warped_image = 'subject2atlasRigid.nii.gz'
-    antsRegistration_task.inputs.winsorize_lower_quantile = .01
-    antsRegistration_task.inputs.winsorize_upper_quantile = .99
+    antsRegistration_task.inputs.metric_weight =                        experiment_configuration['ANTSRegistration'].get('metric_weight') * experiment_configuration['ANTSRegistration'].get('dimensionality')
+    antsRegistration_task.inputs.radius_or_number_of_bins =             experiment_configuration['ANTSRegistration'].get('radius_or_number_of_bins') * experiment_configuration['ANTSRegistration'].get('dimensionality')
+    antsRegistration_task.inputs.sampling_strategy =                    experiment_configuration['ANTSRegistration'].get('sampling_strategy')
+    antsRegistration_task.inputs.sampling_percentage =                  experiment_configuration['ANTSRegistration'].get('sampling_percentage')
+    antsRegistration_task.inputs.convergence_threshold =                experiment_configuration['ANTSRegistration'].get('convergence_threshold')
+    antsRegistration_task.inputs.convergence_window_size =              experiment_configuration['ANTSRegistration'].get('convergence_window_size') * experiment_configuration['ANTSRegistration'].get('dimensionality')
+    antsRegistration_task.inputs.smoothing_sigmas =                     experiment_configuration['ANTSRegistration'].get('smoothing_sigmas')
+    antsRegistration_task.inputs.sigma_units =                          experiment_configuration['ANTSRegistration'].get('sigma_units') * experiment_configuration['ANTSRegistration'].get('dimensionality')
+    antsRegistration_task.inputs.shrink_factors =                       experiment_configuration['ANTSRegistration'].get('shrink_factors')
+    antsRegistration_task.inputs.use_estimate_learning_rate_once =      experiment_configuration['ANTSRegistration'].get('use_estimate_learning_rate_once')
+    antsRegistration_task.inputs.use_histogram_matching =               experiment_configuration['ANTSRegistration'].get('use_histogram_matching')
+    antsRegistration_task.inputs.output_warped_image =                  experiment_configuration['ANTSRegistration'].get('output_warped_image')
+    antsRegistration_task.inputs.output_inverse_warped_image =          experiment_configuration['ANTSRegistration'].get('output_inverse_warped_image')
+    antsRegistration_task.inputs.winsorize_lower_quantile =             experiment_configuration['ANTSRegistration'].get('winsorize_lower_quantile')
+    antsRegistration_task.inputs.winsorize_upper_quantile =             experiment_configuration['ANTSRegistration'].get('winsorize_upper_quantile')
 
 
     antsRegistration_workflow.add(antsRegistration_task)
