@@ -216,6 +216,45 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_workflow.add(get_input_field(name="get_metric", input_dict=antsRegistration_workflow.lzin.input_data, field="metric"))
     antsRegistration_workflow.add(make_output_filename(name="outputVolumes", filename=experiment_configuration["ANTSRegistration"].get("output"))) #antsRegistration_workflow.get_output.lzout.out))
 
+    # antsRegistration_task = Nipype1Task(Registration())
+    # antsRegistration_task.inputs.fixed_image = '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
+    # antsRegistration_task.inputs.moving_image = '/mnt/c/2020_Grad_School/Research/wf_ref/template_t1_denoised_gaussian.nii.gz'
+    # antsRegistration_task.inputs.fixed_image_masks = [
+    #     '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz',
+    #     '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz',
+    #     '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz']
+    # antsRegistration_task.inputs.moving_image_masks = [
+    #     '/mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz',
+    #     '/mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz',
+    #     '/mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz']
+    # antsRegistration_task.inputs.output_transform_prefix = "AtlasToSubjectPreBABC_Rigid"
+    # antsRegistration_task.inputs.initial_moving_transform = '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5'
+    # antsRegistration_task.inputs.transforms = ['Rigid', 'Affine', 'Affine']
+    # antsRegistration_task.inputs.transform_parameters = [(0.1,), (0.1,), (0.1,)]
+    # antsRegistration_task.inputs.number_of_iterations = [[1000, 1000, 1000], [1000, 1000, 500], [500, 500]]
+    # antsRegistration_task.inputs.dimension = 3
+    # antsRegistration_task.inputs.write_composite_transform = True
+    # antsRegistration_task.inputs.collapse_output_transforms = False
+    # antsRegistration_task.inputs.verbose = True
+    # antsRegistration_task.inputs.initialize_transforms_per_stage = True
+    # antsRegistration_task.inputs.float = True
+    # antsRegistration_task.inputs.metric = ['MI'] * 3
+    # antsRegistration_task.inputs.metric_weight = [1] * 3  # Default (value ignored currently by ANTs)
+    # antsRegistration_task.inputs.radius_or_number_of_bins = [32] * 3
+    # antsRegistration_task.inputs.sampling_strategy = ['Regular', 'Regular', 'Regular']
+    # antsRegistration_task.inputs.sampling_percentage = [0.5, 0.5, 0.5]
+    # antsRegistration_task.inputs.convergence_threshold = [5.e-8, 5.e-8, 5.e-7]
+    # antsRegistration_task.inputs.convergence_window_size = [12] * 3
+    # antsRegistration_task.inputs.smoothing_sigmas = [[3, 2, 1], [3, 2, 1], [1, 0]]
+    # antsRegistration_task.inputs.sigma_units = ['vox'] * 3
+    # antsRegistration_task.inputs.shrink_factors = [[8, 4, 2], [8, 4, 2], [2, 1]]
+    # antsRegistration_task.inputs.use_estimate_learning_rate_once = [False, False, False]
+    # antsRegistration_task.inputs.use_histogram_matching = [True, True, True]  # This is the default
+    # antsRegistration_task.inputs.output_warped_image = 'atlas2subjectRigid.nii.gz'
+    # antsRegistration_task.inputs.output_inverse_warped_image = 'subject2atlasRigid.nii.gz'
+    # antsRegistration_task.inputs.winsorize_lower_quantile = .01
+    # antsRegistration_task.inputs.winsorize_upper_quantile = .99
+
     antsRegistration_task = Nipype1Task(Registration())
     antsRegistration_task.inputs.fixed_image =                          '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
     antsRegistration_task.inputs.moving_image =                         '/mnt/c/2020_Grad_School/Research/wf_ref/template_t1_denoised_gaussian.nii.gz'
@@ -229,31 +268,32 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
                                                                         '/mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz']
     antsRegistration_task.inputs.output_transform_prefix =              "AtlasToSubjectPreBABC_Rigid"
     antsRegistration_task.inputs.initial_moving_transform =             '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5'
-    antsRegistration_task.inputs.transforms =                           ['Rigid', 'Affine', 'Affine']
-    antsRegistration_task.inputs.transform_parameters =                 [(0.1,), (0.1,), (0.1,)]
-    antsRegistration_task.inputs.number_of_iterations =                 [[1000, 1000, 1000], [1000, 1000, 500], [500, 500]]
+    antsRegistration_task.inputs.transforms =                           experiment_configuration['ANTSRegistration'].get('transforms')
+    antsRegistration_task.inputs.transform_parameters =                 experiment_configuration['ANTSRegistration'].get('transform_parameters')
+    antsRegistration_task.inputs.number_of_iterations =                 experiment_configuration['ANTSRegistration'].get('number_of_iterations')
     antsRegistration_task.inputs.dimension =                            experiment_configuration['ANTSRegistration'].get('dimensionality')
-    antsRegistration_task.inputs.write_composite_transform =            True
+    antsRegistration_task.inputs.write_composite_transform =            experiment_configuration['ANTSRegistration'].get('write_composite_transform')
     antsRegistration_task.inputs.collapse_output_transforms =           experiment_configuration['ANTSRegistration'].get('collapse_output_transforms')
     antsRegistration_task.inputs.verbose =                              experiment_configuration['ANTSRegistration'].get('verbose')
     antsRegistration_task.inputs.initialize_transforms_per_stage =      experiment_configuration['ANTSRegistration'].get('initialize_transforms_per_stage')
     antsRegistration_task.inputs.float =                                experiment_configuration['ANTSRegistration'].get('float')
-    antsRegistration_task.inputs.metric =                               ['MI'] * 3
-    antsRegistration_task.inputs.metric_weight =                        [1] * 3  # Default (value ignored currently by ANTs)
-    antsRegistration_task.inputs.radius_or_number_of_bins =             [32] * 3
-    antsRegistration_task.inputs.sampling_strategy =                    ['Regular', 'Regular', 'Regular']
-    antsRegistration_task.inputs.sampling_percentage =                  [0.5, 0.5, 0.5]
-    antsRegistration_task.inputs.convergence_threshold =                [5.e-8, 5.e-8, 5.e-7]
-    antsRegistration_task.inputs.convergence_window_size =              [12] * 3
-    antsRegistration_task.inputs.smoothing_sigmas =                     [[3, 2, 1], [3, 2, 1], [1, 0]]
-    antsRegistration_task.inputs.sigma_units =                          ['vox'] * 3
-    antsRegistration_task.inputs.shrink_factors =                       [[8, 4, 2], [8, 4, 2], [2, 1]]
-    antsRegistration_task.inputs.use_estimate_learning_rate_once =      [False, False, False]
-    antsRegistration_task.inputs.use_histogram_matching =               [True, True, True]  # This is the default
-    antsRegistration_task.inputs.output_warped_image =                  'atlas2subjectRigid.nii.gz'
-    antsRegistration_task.inputs.output_inverse_warped_image =          'subject2atlasRigid.nii.gz'
-    antsRegistration_task.inputs.winsorize_lower_quantile =             .01
-    antsRegistration_task.inputs.winsorize_upper_quantile =             .99
+    antsRegistration_task.inputs.metric =                               experiment_configuration['ANTSRegistration'].get('metric') * experiment_configuration['ANTSRegistration'].get('dimensionality')
+    antsRegistration_task.inputs.metric_weight = [1] * 3  # Default (value ignored currently by ANTs)
+    antsRegistration_task.inputs.radius_or_number_of_bins = [32] * 3
+    antsRegistration_task.inputs.sampling_strategy = ['Regular', 'Regular', 'Regular']
+    antsRegistration_task.inputs.sampling_percentage = [0.5, 0.5, 0.5]
+    antsRegistration_task.inputs.convergence_threshold = [5.e-8, 5.e-8, 5.e-7]
+    antsRegistration_task.inputs.convergence_window_size = [12] * 3
+    antsRegistration_task.inputs.smoothing_sigmas = [[3, 2, 1], [3, 2, 1], [1, 0]]
+    antsRegistration_task.inputs.sigma_units = ['vox'] * 3
+    antsRegistration_task.inputs.shrink_factors = [[8, 4, 2], [8, 4, 2], [2, 1]]
+    antsRegistration_task.inputs.use_estimate_learning_rate_once = [False, False, False]
+    antsRegistration_task.inputs.use_histogram_matching = [True, True, True]  # This is the default
+    antsRegistration_task.inputs.output_warped_image = 'atlas2subjectRigid.nii.gz'
+    antsRegistration_task.inputs.output_inverse_warped_image = 'subject2atlasRigid.nii.gz'
+    antsRegistration_task.inputs.winsorize_lower_quantile = .01
+    antsRegistration_task.inputs.winsorize_upper_quantile = .99
+
 
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([
