@@ -22,7 +22,7 @@ do
     --interpolation) interpolation="$2" ; shift 2 ;;
     --output) set -f
               IFS=','
-              outputs=($2)
+              outputs+=($2)
               shift 2 ;;
     --transform) transform="$2" ; shift 2 ;;
     --metric) metric="$2" ; shift 2 ;;
@@ -45,7 +45,8 @@ do
 ## Append "resampled" to outputVolume
 #echo "ants_registration" >> "$output"
 
-
+#outputs=(test1 test2)
+echo "${outputs}"
 for i in "${outputs[@]}"; do
   echo "touching ${i}"
   touch "${i}"
