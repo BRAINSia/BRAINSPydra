@@ -119,7 +119,7 @@
     "collapse-output-transforms": "0" ,
     "dimensionality": 3 ,
     "float": 1 ,
-    "initial-moving-transform": "\"[ /Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5, 0 ]\"" ,
+    "initial-moving-transform": "[ /Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5, 0 ]" ,
     "initialize-transforms-per-stage": 1 ,
     "interpolation": "Linear" ,
     "output": ["AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"],
@@ -131,7 +131,12 @@
     "use-estimate-learning-rate-once1": "0" ,
     "use-histogram-matching1": 1 ,
     "masks1": "\"[ /Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz]\"" ,
-    "transform2": "\"Affine[0.1]\"" ,
+    "winsorize-image-intensities": "\"[ 0.01, 0.99 ]\""  ,
+    "write-composite-transform": 1
+  },
+
+  "2ndand3rdLevelOfANTSRegistration": {
+        "transform2": "\"Affine[0.1]\"" ,
     "metric2": "\"MI[/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz,/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz,1,32,Regular,0.5 ]\"" ,
     "convergence2": "\"[ 1000x1000x500, 5e-08, 12 ]\"" ,
     "smoothing-sigmas2": "3.0x2.0x1.0vox" ,
@@ -146,8 +151,6 @@
     "shrink-factors3": "2x1" ,
     "use-estimate-learning-rate-once3": "0" ,
     "use-histogram-matching3": 1 ,
-    "masks3": "\"[ /Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ]\"" ,
-    "winsorize-image-intensities": "\"[ 0.01, 0.99 ]\""  ,
-    "write-composite-transform": 1
+    "masks3": "\"[ /Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz, /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz ]\""
   }
 }
