@@ -214,20 +214,22 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_workflow = pydra.Workflow(name="antsRegistration_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
 
     # Get inputs specific to the subject
-    # antsRegistration_workflow.add(get_input_field(name="get_fixed_image", input_dict=antsRegistration_workflow.lzin.input_data, field="abcInputVolume"))
-    # antsRegistration_workflow.add(get_input_field(name="get_initial_moving_transform", input_dict=antsRegistration_workflow.lzin.input_data, field="initial_moving_transform"))
-    # antsRegistration_workflow.add(get_input_field(name="get_initial_moving_transform", input_dict=antsRegistration_workflow.lzin.input_data, field="initial_moving_transform"))
+    antsRegistration_workflow.add(get_input_field(name="get_fixed_image", input_dict=antsRegistration_workflow.lzin.input_data, field="abcInputVolume"))
+    antsRegistration_workflow.add(get_input_field(name="get_fixed_image_masks", input_dict=antsRegistration_workflow.lzin.input_data, field="initial_moving_transform"))
+    antsRegistration_workflow.add(get_input_field(name="get_initial_moving_transform", input_dict=antsRegistration_workflow.lzin.input_data, field="initial_moving_transform"))
     #
     #
     # antsRegistration_workflow.add(make_output_filename(name="outputVolumes", filename=experiment_configuration["ANTSRegistration"].get("output"))) #antsRegistration_workflow.get_output.lzout.out))
 
     antsRegistration_task = Nipype1Task(Registration())
-    antsRegistration_task.inputs.fixed_image =                          '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
-    antsRegistration_task.inputs.fixed_image_masks =                    ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz']*3
-    antsRegistration_task.inputs.initial_moving_transform =             '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5'
+
+    # Set subject-specific files
+    antsRegistration_task.inputs.fixed_image =                          antsRegistration_workflow.get_fixed_image.lzout.out #'/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
+    antsRegistration_task.inputs.fixed_image_masks =                    antsRegistration_workflow.get_fixed_image_masks.lzout.out #['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz']*3
+    antsRegistration_task.inputs.initial_moving_transform =             antsRegistration_workflow.get_initial_moving_transform.lzout.out #'/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5'
+
     antsRegistration_task.inputs.moving_image =                         experiment_configuration['ANTSRegistration'].get('moving_image')
     antsRegistration_task.inputs.moving_image_masks =                   experiment_configuration['ANTSRegistration'].get('moving_image_masks')
-    antsRegistration_task.inputs.output_transform_prefix =              experiment_configuration['ANTSRegistration'].get('output_transform_prefix')
     antsRegistration_task.inputs.transforms =                           experiment_configuration['ANTSRegistration'].get('transforms')
     antsRegistration_task.inputs.transform_parameters =                 experiment_configuration['ANTSRegistration'].get('transform_parameters')
     antsRegistration_task.inputs.number_of_iterations =                 experiment_configuration['ANTSRegistration'].get('number_of_iterations')
@@ -249,10 +251,13 @@ def make_antsRegistration_workflow(my_source_node: pydra.Workflow) -> pydra.Work
     antsRegistration_task.inputs.shrink_factors =                       experiment_configuration['ANTSRegistration'].get('shrink_factors')
     antsRegistration_task.inputs.use_estimate_learning_rate_once =      experiment_configuration['ANTSRegistration'].get('use_estimate_learning_rate_once')
     antsRegistration_task.inputs.use_histogram_matching =               experiment_configuration['ANTSRegistration'].get('use_histogram_matching')
-    antsRegistration_task.inputs.output_warped_image =                  experiment_configuration['ANTSRegistration'].get('output_warped_image')
-    antsRegistration_task.inputs.output_inverse_warped_image =          experiment_configuration['ANTSRegistration'].get('output_inverse_warped_image')
     antsRegistration_task.inputs.winsorize_lower_quantile =             experiment_configuration['ANTSRegistration'].get('winsorize_lower_quantile')
     antsRegistration_task.inputs.winsorize_upper_quantile =             experiment_configuration['ANTSRegistration'].get('winsorize_upper_quantile')
+
+    # Set the variables that set output file names
+    antsRegistration_task.inputs.output_transform_prefix =              experiment_configuration['ANTSRegistration'].get('output_transform_prefix')
+    antsRegistration_task.inputs.output_warped_image =                  experiment_configuration['ANTSRegistration'].get('output_warped_image')
+    antsRegistration_task.inputs.output_inverse_warped_image =          experiment_configuration['ANTSRegistration'].get('output_inverse_warped_image')
 
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([
@@ -293,7 +298,7 @@ def copy_from_cache(cache_path, output_dir, input_data):
             return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
-source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir="/tmp/tmprooz1zv8/")
+source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])
 source_node.inputs.input_data = experiment_configuration["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
