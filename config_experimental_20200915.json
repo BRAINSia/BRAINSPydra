@@ -21,7 +21,7 @@
       "initial_moving_transform2": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/AtlasToSubjectPreBABC_RigidComposite.h5"
     }
   ],
-  "output_dir": "/localscratch/Users/cjohnson30/output_dir",
+  "output_dir": "/Users/cjohnson30/output_dir",
   "BRAINSConstellationDetector": {
     "executable": "BRAINSConstellationDetector",
     "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
