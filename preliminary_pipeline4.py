@@ -368,8 +368,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
 # preliminary_workflow4 = make_ABC_workflow(source_node)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
-preliminary_workflow4 = make_antsRegistration_workflow(source_node)
-# preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
+# preliminary_workflow4 = make_antsRegistration_workflow(source_node)
+preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=preliminary_workflow4.lzout.all_, input_data=preliminary_workflow4.lzin.input_data)
