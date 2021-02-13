@@ -1,64 +1,121 @@
 {
-  "input_data": [
-    { "t1": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz",
-      "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
-      "abcInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform": ["/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-      "metric": "MI['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
-    },
-    {
-      "t1": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
-      "roiInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
-      "abcInputVolume": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "warpTransform": "/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform": ["/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
-      "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-      "metric": "MI['/localscratch/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
-    }
-  ],
   "output_dir": "/localscratch/Users/cjohnson30/output_dir",
-  "BRAINSConstellationDetector": {
+  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir",
+  "graph_dir": "/localscratch/Users/cjohnson30/graph_dir",
+  "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
-    "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+    "LLSModel": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
     "acLowerBound": 80.000000 ,
-    "atlasLandmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-    "atlasLandmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "atlasLandmarkWeights": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts ",
+    "atlasLandmarks": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "houghEyeDetectorMode": 1,
-    "inputLandmarksEMSP": "/localscratch/Users/cjohnson30/bcd_ref/sub-697343_ses-50028_run-002_T1w.fcsv",
-    "inputTemplateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+    "inputTemplateModel": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/T1_50Lmks.mdl",
     "interpolationMode": "Linear",
     "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv",
     "outputLandmarksInInputSpace": "BCD_Original.fcsv",
     "outputResampledVolume": "BCD_ACPC.nii.gz",
     "outputTransform": "BCD_Original2ACPC_transform.h5",
-    "writeBranded2DImage": "BCD_Branded2DQCimage.png",
-    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz"
-    },
-
-  "BRAINSResample": {
+    "writeBranded2DImage": "BCD_Branded2DQCimage.png"
+  },
+  "BRAINSROIAuto1": {
+    "executable": "BRAINSROIAuto",
+    "ROIAutoDilateSize": 10.000000,
+    "cropOutput": " ",
+    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
+  },
+  "BRAINSLandmarkInitializer1": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputFixedLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
+  },
+  "BRAINSLandmarkInitializer2": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_atlas_to_subject_transform.h5"
+  },
+  "BRAINSResample1": {
     "executable": "BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz"
   },
-  "BRAINSROIAuto": {
+    "BRAINSROIAuto2": {
     "executable": "BRAINSROIAuto",
-    "ROIAutoDilateSize": 10.000000,
-    "cropOutput": " ",
-    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
+    "ROIAutoDilateSize": 15.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
-  "BRAINSLandmarkInitializer": {
-    "executable": "BRAINSLandmarkInitializer",
-    "inputFixedLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv ",
-    "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-    "inputWeightFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-    "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
+  "ANTSRegistration1": {
+    "executable": "/mnt/c/2020_Grad_School/Research/install/bin/antsRegistration",
+    "moving_image": "/localscratch/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz",
+
+    "moving_image_masks": ["/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
+    "output_transform_prefix": "AtlasToSubjectPreBABC_Rigid",
+    "verbose": true,
+    "collapse_output_transforms": false ,
+    "dimensionality": 3 ,
+    "float": true ,
+    "initialize_transforms_per_stage": true ,
+    "transforms": ["Rigid", "Affine", "Affine"],
+    "transform_parameters": [[0.1], [0.1], [0.1]],
+    "number_of_iterations": [[1000, 1000, 1000], [1000, 1000, 500], [500, 500]],
+    "write_composite_transform": true,
+    "metric": ["MI", "MI", "MI"],
+    "metric_weight": [1, 1, 1],
+    "radius_or_number_of_bins": [32, 32, 32],
+    "sampling_strategy": ["Regular", "Regular", "Regular"],
+    "sampling_percentage": [0.5, 0.5, 0.5],
+    "convergence_threshold": [0.00000005, 0.00000005, 0.0000005],
+    "convergence_window_size": [12, 12, 12],
+    "smoothing_sigmas": [[3, 2, 1], [3, 2, 1], [1, 0]],
+    "sigma_units": ["vox", "vox", "vox"],
+    "shrink_factors": [[8, 4, 2], [8, 4, 2], [2, 1]],
+    "use_estimate_learning_rate_once": [false, false, false],
+    "use_histogram_matching": [true, true, true],
+    "output_warped_image": "atlas2subjectRigid.nii.gz",
+    "output_inverse_warped_image": "subject2atlasRigid.nii.gz",
+    "winsorize_lower_quantile": 0.01,
+    "winsorize_upper_quantile": 0.99
   },
-  "BRAINSABC": {
+  "ANTSRegistration2": {
+    "executable": "antsRegistration",
+    "moving_image": "/localscratch/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz",
+    "moving_image_masks": ["/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
+    "output_transform_prefix": "AtlasToSubjectPreBABC_SyN",
+    "save_state": "SavedInternalSyNState.h5",
+    "verbose": true,
+    "collapse_output_transforms": false ,
+    "dimensionality": 3 ,
+    "float": true ,
+    "initialize_transforms_per_stage": true ,
+    "transforms": ["SyN", "SyN", "SyN"],
+    "transform_parameters": [[0.1, 3.0, 0.0], [0.1, 3.0, 0.0], [0.1, 3.0, 0.0]],
+    "number_of_iterations": [[1000, 250], [140], [25]],
+    "write_composite_transform": true,
+    "metric": ["CC", "CC", "CC"],
+    "metric_weight": [1, 1, 1],
+    "radius_or_number_of_bins": [4, 4, 4],
+    "sampling_strategy": ["None", "None", "None"],
+    "sampling_percentage": [1, 1, 1],
+    "convergence_threshold": [0.0000005, 0.000005, 0.00005],
+    "convergence_window_size": [12, 12, 12],
+    "smoothing_sigmas": [[3, 2], [1], [0]],
+    "sigma_units": ["vox", "vox", "vox"],
+    "shrink_factors": [[8, 4], [2], [1]],
+    "use_estimate_learning_rate_once": [false, false, false],
+    "use_histogram_matching": [true, true, true],
+    "output_warped_image": "atlas2subject.nii.gz",
+    "output_inverse_warped_image": "subject2atlas.nii.gz",
+    "winsorize_lower_quantile": 0.01,
+    "winsorize_upper_quantile": 0.99
+  },
+  "BRAINSABC1": {
     "executable": "BRAINSABC",
-    "atlasDefinition": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml",
+    "atlasDefinition": "/localscratch/Users/cjohnson30/wf_ref/ExtendedAtlasDefinition.xml",
     "atlasToSubjectTransform": "atlas_to_subject.h5",
     "atlasToSubjectTransformType": "SyN",
     "debuglevel": "0",
@@ -72,15 +129,64 @@
     "outputDirtyLabels": "volume_label_seg.nii.gz",
     "outputFormat": "NIFTI",
     "outputLabels": "brain_label_seg.nii.gz",
-    "outputVolumes": "sub-697343_ses-50028_run-002_rec-physicalACPC_T1w_corrected.nii.gz ",
     "posteriorTemplate": "POSTERIOR_%s.nii.gz",
+    "posteriors": ["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz", "POST_CRBLWM.nii.gz", "POST_CSF.nii.gz", "POST_GLOBUS.nii.gz", "POST_HIPPOCAMPUS.nii.gz", "POST_NOTCSF.nii.gz", "POST_NOTGM.nii.gz", "POST_NOTVB.nii.gz", "POST_NOTWM.nii.gz", "POST_SURFGM.nii.gz", "POST_THALAMUS.nii.gz", "POST_VB.nii.gz", "POST_WM.nii.gz"],
+    "t1_average": "t1_average_BRAINSABC.nii.gz",
     "purePlugsThreshold": 0.100000,
-    "restoreState": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/AtlasToSubjectANTsPreABC_SyN/SavedInternalSyNState.h5",
     "saveState": "SavedBABCInternalSyNState.h5",
     "useKNN": " "
   },
+    "BRAINSResample2": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
+    "interpolationMode": "Linear",
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
+  },
+    "BRAINSResample3": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/hncma-atlas.nii.gz",
+    "interpolationMode": "NearestNeighbor",
+    "outputVolume": "hncma_atlas.nii.gz",
+    "pixelType": "short"
+  },
+    "BRAINSResample4": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_rightHemisphere.nii.gz",
+    "interpolationMode": "Linear",
+    "outputVolume": "template_rightHemisphere.nii.gz",
+    "pixelType": "binary"
+  },
+    "BRAINSResample5": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_nac_labels.nii.gz",
+    "interpolationMode": "NearestNeighbor",
+    "outputVolume": "template_nac_labels.nii.gz",
+    "pixelType": "short"
+  },
+    "BRAINSResample6": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_ventricles.nii.gz",
+    "interpolationMode": "Linear",
+    "outputVolume": "template_ventricles.nii.gz",
+    "pixelType": "binary"
+  },
+    "BRAINSResample7": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_WMPM2_labels.nii.gz",
+    "interpolationMode": "NearestNeighbor",
+    "outputVolume": "template_WMPM2_labels.nii.gz",
+    "pixelType": "short"
+  },
+    "BRAINSResample8": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+    "interpolationMode": "Linear",
+    "outputVolume": "template_headregion.nii.gz",
+    "pixelType": "binary"
+  },
   "BRAINSCreateLabelMapFromProbabilityMaps": {
-    "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
     "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
     "dirtyLabelVolume": "fixed_headlabels_seg.nii.gz",
     "foregroundPriors": [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
@@ -99,24 +205,5 @@
     "nonAirRegionMask": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/NonAirMask.nii.gz",
     "priorLabelCodes": [1,2,21,23,24,25,11,12,4,5,6,7,8,9,0],
     "inclusionThreshold": 0.0
-  },
-  "ANTSRegistration": {
-    "executable": "antsRegistration",
-    "verbose": " ",
-    "collapse-output-transforms": "0" ,
-    "dimensionality": 3 ,
-    "float": 1 ,
-    "initialize-transforms-per-stage": 1 ,
-    "interpolation": "Linear" ,
-    "output": ["AtlasToSubjectPreBABC_Rigid", "atlas2subjectRigid.nii.gz", "subject2atlasRigid.nii.gz"],
-    "transform": "\"Rigid[0.1]\"",
-    "convergence": "1000x1000x1000",
-    "smoothing-sigmas": "3.0x2.0x1.0vox" ,
-    "shrink-factors": "8x4x2" ,
-    "use-estimate-learning-rate-once": "0" ,
-    "use-histogram-matching": 1 ,
-    "masks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz",
-    "winsorize-image-intensities": [0.01,0.99],
-    "write-composite-transform": 1
   }
 }

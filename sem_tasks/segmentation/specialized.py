@@ -38,9 +38,9 @@ class BRAINSABC:
             (
                 "inputVolumes",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=File,
                     metadata={
-                        "argstr": "--inputVolumes ...",
+                        "argstr": "--inputVolumes ",
                         "help_string": "The list of input image files to be segmented.",
                     },
                 ),
@@ -139,9 +139,9 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=MultiOutputFile,
+                    type=File,
                     metadata={
-                        "argstr": "--outputVolumes ...",
+                        "argstr": "--outputVolumes ",
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
                     },
                 ),
@@ -319,10 +319,11 @@ class BRAINSABC:
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=MultiOutputFile,
+                    type=MultiInputFile,
                     metadata={
-                        "argstr": "--implicitOutputs ...",
+                        "argstr": "--implicitOutputs ",
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
+                        "sep": ",",
                     },
                 ),
             ),
@@ -356,6 +357,15 @@ class BRAINSABC:
                     },
                 ),
             ),
+            # (
+            #     "t1_average",
+            #     attr.ib(
+            #         type=traits.String,
+            #         metadata={
+            #             "help_string": "Explicitly specify the maximum number of threads to use.",
+            #         },
+            #     ),
+            # ),
         ]
         output_fields = [
             (
@@ -401,7 +411,7 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=pydra.specs.MultiOutputFile,
+                    type=pydra.specs.File,
                     metadata={
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
                         "output_file_template": "{outputVolumes}",
@@ -438,6 +448,16 @@ class BRAINSABC:
                     },
                 ),
             ),
+            # (
+            #     "t1_average",
+            #     attr.ib(
+            #         type=pydra.specs.File,
+            #         metadata={
+            #             "help_string": "Resulting deformed image",
+            #             "output_file_template": "t1_average_BRAINSABC.nii.gz",
+            #         },
+            #     ),
+            # )
         ]
 
         input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
@@ -1019,9 +1039,9 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "inputProbabilityVolume",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=File,
                     metadata={
-                        "argstr": "--inputProbabilityVolume ...",
+                        "argstr": "--inputProbabilityVolume ",
                         "help_string": "The list of proobabilityimages.",
                     },
                 ),
