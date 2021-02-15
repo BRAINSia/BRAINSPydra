@@ -1,6 +1,8 @@
 {
   "input_data": [
     { "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-002_T1w.nii.gz",
+      "inputLandmarksEMSP": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-002_T1w.fcsv",
+
       "roiInputVolume": "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
       "abcInputVolume": "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
@@ -12,6 +14,8 @@
     },
     {
       "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T1w.nii.gz",
+      "inputLandmarksEMSP": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T1w.fcsv",
+
       "roiInputVolume": "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
       "abcInputVolume": "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
       "warpTransform": "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
@@ -22,15 +26,15 @@
     }
   ],
   "output_dir": "/mnt/c/2020_Grad_School/Research/output_dir",
+  "cache_dir": "/mnt/c/2020_Grad_School/Research/cache_dir",
   "BRAINSConstellationDetector": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSConstellationDetector3.sh",
-    "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5 ",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSConstellationDetector",
+    "LLSModel": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
     "acLowerBound": 80.000000 ,
-    "atlasLandmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts ",
-    "atlasLandmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "atlasLandmarkWeights": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/template_weights_50Lmks.wts ",
+    "atlasLandmarks": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "houghEyeDetectorMode": 1,
-    "inputLandmarksEMSP": "/localscratch/Users/cjohnson30/bcd_ref/sub-697343_ses-50028_run-002_T1w.fcsv",
-    "inputTemplateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+    "inputTemplateModel": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/T1_50Lmks.mdl",
     "interpolationMode": "Linear",
     "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv",
     "outputLandmarksInInputSpace": "BCD_Original.fcsv",
@@ -39,14 +43,14 @@
     "writeBranded2DImage": "BCD_Branded2DQCimage.png"
   },
   "BRAINSResample": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSResample3.sh",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz",
-    "referenceVolume": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/t1_average_BRAINSABC.nii.gz",
+    "referenceVolume": "/mnt/c/2020_Grad_School/Research/wf_ref/t1_average_BRAINSABC.nii.gz",
     "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
   },
   "BRAINSROIAuto": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSROIAuto4.sh",
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
     "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
