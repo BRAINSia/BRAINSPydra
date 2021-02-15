@@ -27,7 +27,7 @@
   ],
   "output_dir": "/mnt/c/2020_Grad_School/Research/output_dir",
   "cache_dir": "/mnt/c/2020_Grad_School/Research/cache_dir",
-  "BRAINSConstellationDetector": {
+  "BRAINSConstellationDetector1": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSConstellationDetector",
     "LLSModel": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
     "acLowerBound": 80.000000 ,
@@ -42,13 +42,6 @@
     "outputTransform": "BCD_Original2ACPC_transform.h5",
     "writeBranded2DImage": "BCD_Branded2DQCimage.png"
   },
-  "BRAINSResample": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSResample",
-    "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz",
-    "referenceVolume": "/mnt/c/2020_Grad_School/Research/wf_ref/t1_average_BRAINSABC.nii.gz",
-    "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
-  },
   "BRAINSROIAuto": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
@@ -56,12 +49,24 @@
     "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
-  "BRAINSLandmarkInitializer": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSLandmarkInitializer4.sh",
-    "inputFixedLandmarkFilename": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/template_landmarks_50Lmks.fcsv",
-    "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-    "inputWeightFilename": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/20141004_BCD/template_weights_50Lmks.wts",
+  "BRAINSLandmarkInitializer1": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSLandmarkInitializer",
+    "inputFixedLandmarkFilename": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
+  },
+  "BRAINSLandmarkInitializer2": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_atlas_to_subject_transform.h5"
+  },
+  "BRAINSResample": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSResample",
+    "interpolationMode": "Linear",
+    "outputVolume": "subject2atlas.nii.gz",
+    "referenceVolume": "/mnt/c/2020_Grad_School/Research/wf_ref/t1_average_BRAINSABC.nii.gz",
+    "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
   },
   "BRAINSABC": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSABC4.sh",
