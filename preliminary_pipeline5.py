@@ -61,13 +61,6 @@ def make_bcd_workflow1(my_source_node: pydra.Workflow) -> pydra.Workflow:
     bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
     bcd_workflow.add(get_input_field(name="get_inputLandmarksEMSP", input_dict=bcd_workflow.lzin.input_data, field="inputLandmarksEMSP"))
 
-    # Set the filenames for the output of the BRAINSConstellationDetector task
-    # bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace",       filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInInputSpace']))
-    # bcd_workflow.add(make_output_filename(name="outputResampledVolume",             filename=experiment_configuration['BRAINSConstellationDetector']['outputResampledVolume']))
-    # bcd_workflow.add(make_output_filename(name="outputTransform",                   filename=experiment_configuration['BRAINSConstellationDetector']['outputTransform']))
-    # bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration['BRAINSConstellationDetector']['outputLandmarksInACPCAlignedSpace']))
-    # bcd_workflow.add(make_output_filename(name="writeBranded2DImage",               filename=experiment_configuration['BRAINSConstellationDetector']['writeBranded2DImage']))
-
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration['BRAINSConstellationDetector']['executable']).get_task()
     bcd_task.inputs.inputVolume = bcd_workflow.get_t1.lzout.out
@@ -96,19 +89,14 @@ def make_bcd_workflow1(my_source_node: pydra.Workflow) -> pydra.Workflow:
     ])
     return bcd_workflow
 
-def make_ROIAuto_workflow1(my_source_node: pydra.Workflow, inputVolume) -> pydra.Workflow:
+def make_ROIAuto_workflow1(inputVolume) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSROIAuto
     print("Making ROIAuto_workflow1")
 
     roi_workflow = pydra.Workflow(name="roi_workflow", input_spec=["inputVolume"], inputVolume=inputVolume)
-    # roi_workflow.add(get_input_field(name="get_t1", input_dict=roi_workflow.lzin.input_data, field="t1"))
-    # roi_workflow.add(get_input_field(name="get_inputVolume", input_dict=roi_workflow.lzin.input_data, field="roiInputVolume"))
-
-    # roi_workflow.add(make_output_filename(name="outputVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputVolume')))
-    # roi_workflow.add(make_output_filename(name="outputROIMaskVolume", filename=experiment_configuration['BRAINSROIAuto'].get('outputROIMaskVolume')))
 
     roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration['BRAINSROIAuto'].get('executable')).get_task()
-    roi_task.inputs.inputVolume = roi_workflow.lzin.inputVolume #inputVolume #my_source_node.bcd_workflow.lzout.outputResampledVolume #roi_workflow.get_inputVolume.lzout.out
+    roi_task.inputs.inputVolume = roi_workflow.lzin.inputVolume
     roi_task.inputs.ROIAutoDilateSize = experiment_configuration['BRAINSROIAuto'].get('ROIAutoDilateSize')
     roi_task.inputs.cropOutput = experiment_configuration['BRAINSROIAuto'].get('cropOutput')
     roi_task.inputs.outputVolume = experiment_configuration['BRAINSROIAuto'].get('outputVolume') #roi_workflow.outputVolume.lzout.out
@@ -373,8 +361,8 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 # Get the processing workflow defined in a separate function
 bcd_workflow1 = make_bcd_workflow1(source_node)
 source_node.add(bcd_workflow1)
-roi_workflow = make_ROIAuto_workflow1(source_node, inputVolume=bcd_workflow1.lzout.outputResampledVolume)
-source_node.add(roi_workflow)
+roi_workflow1 = make_ROIAuto_workflow1(source_node, inputVolume=bcd_workflow1.lzout.outputResampledVolume)
+source_node.add(roi_workflow1)
 
 
 # preliminary_workflow4 = make_resample_workflow(source_node)
@@ -383,9 +371,7 @@ source_node.add(roi_workflow)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
-# final_processing_workflow = bcd_workflow1
-final_processing_workflow = roi_workflow
-# final_processing_workflow = get_outputResampledVolumeTask
+final_processing_workflow = roi_workflow1
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
@@ -395,15 +381,10 @@ sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_conf
 sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 
-# Add the processing workflow and sink_node to the source_node to be included in running the pipeline
-# source_node.add(bcd_workflow1)
-
 source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-# source_node.set_output([("output_files", source_node.preliminary_workflow4.lzout.all_),])
-
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
