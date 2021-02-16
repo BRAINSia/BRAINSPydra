@@ -175,18 +175,18 @@ def make_landmarkInitializer_workflow2(inputFixedLandmarkFilename) -> pydra.Work
 
     return landmark_initializer_workflow
 
-def make_resample_workflow1(my_source_node, warpTransform) -> pydra.Workflow:
+def make_resample_workflow1(inputVolume, warpTransform) -> pydra.Workflow:
     from sem_tasks.registration import BRAINSResample
     workflow_name = "resample_workflow1"
     configkey='BRAINSResample1'
     print(f"Making task {workflow_name}")
 
-    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["input_data", "warpTransform"], input_data=my_source_node.lzin.input_data, warpTransform=warpTransform)
-    resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
+    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "warpTransform"], inputVolume=inputVolume, warpTransform=warpTransform)
+    # resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
 
     # Set the inputs of Resample
     resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
-    resample_task.inputs.inputVolume =          resample_workflow.get_t1.lzout.out
+    resample_task.inputs.inputVolume =          resample_workflow.lzin.inputVolume
     resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
     resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
     resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
@@ -412,7 +412,7 @@ source_node.add(make_bcd_workflow1(inputVolume=source_node.inputs_workflow.lzout
 source_node.add(make_roi_workflow1(inputVolume=source_node.bcd_workflow1.lzout.outputResampledVolume))
 source_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
 source_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-source_node.add(make_resample_workflow1(source_node, source_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
+source_node.add(make_resample_workflow1(inputVolume=source_node.inputs_workflow.lzout.inputVolume, warpTransform=source_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
 
 
 # preliminary_workflow4 = make_resample_workflow(source_node)
@@ -421,7 +421,7 @@ source_node.add(make_resample_workflow1(source_node, source_node.landmarkInitial
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
-final_processing_workflow = source_node.roi_workflow1
+final_processing_workflow = source_node.resample_workflow1
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
