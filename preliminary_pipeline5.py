@@ -196,6 +196,25 @@ def make_resample_workflow1(inputVolume, warpTransform) -> pydra.Workflow:
 
     return resample_workflow
 
+def make_roi_workflow2(inputVolume) -> pydra.Workflow:
+    from sem_tasks.segmentation.specialized import BRAINSROIAuto
+    workflow_name = "roi_workflow2"
+    configkey='BRAINSROIAuto2'
+    print(f"Making task {workflow_name}")
+
+    roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
+
+    roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
+    roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
+    roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
+    roi_task.inputs.outputROIMaskVolume =   experiment_configuration[configkey].get('outputROIMaskVolume')
+
+    roi_workflow.add(roi_task)
+    roi_workflow.set_output([
+        ("outputROIMaskVolume", roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume),
+    ])
+
+    return roi_workflow
 
 
 
@@ -413,6 +432,7 @@ source_node.add(make_roi_workflow1(inputVolume=source_node.bcd_workflow1.lzout.o
 source_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
 source_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 source_node.add(make_resample_workflow1(inputVolume=source_node.inputs_workflow.lzout.inputVolume, warpTransform=source_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
+source_node.add(make_roi_workflow2(inputVolume=source_node.roi_workflow1.lzout.outputVolume))
 
 
 # preliminary_workflow4 = make_resample_workflow(source_node)

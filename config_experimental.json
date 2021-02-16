@@ -46,8 +46,7 @@
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
-    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
-    "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
+    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
   },
   "BRAINSLandmarkInitializer1": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSLandmarkInitializer",
@@ -67,6 +66,12 @@
     "outputVolume": "subject2atlas.nii.gz",
     "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
   },
+    "BRAINSROIAuto2": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSROIAuto",
+    "ROIAutoDilateSize": 15.000000,
+    "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
+  },
+
   "BRAINSABC": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSABC4.sh",
     "atlasDefinition": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml",
