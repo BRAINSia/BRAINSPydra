@@ -67,29 +67,29 @@ def make_bcd_workflow1(my_source_node: pydra.Workflow) -> pydra.Workflow:
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration[configkey]['executable']).get_task()
-    bcd_task.inputs.inputVolume = bcd_workflow.get_t1.lzout.out
-    bcd_task.inputs.LLSModel = experiment_configuration[configkey].get('LLSModel')
-    bcd_task.inputs.acLowerBound = experiment_configuration[configkey].get('acLowerBound')
-    bcd_task.inputs.atlasLandmarkWeights = experiment_configuration[configkey].get('atlasLandmarkWeights')
-    bcd_task.inputs.atlasLandmarks = experiment_configuration[configkey].get('atlasLandmarks')
-    bcd_task.inputs.houghEyeDetectorMode = experiment_configuration[configkey].get('houghEyeDetectorMode')
-    bcd_task.inputs.inputLandmarksEMSP = bcd_workflow.get_inputLandmarksEMSP.lzout.out
-    bcd_task.inputs.inputTemplateModel = experiment_configuration[configkey].get('inputTemplateModel')
-    bcd_task.inputs.interpolationMode = experiment_configuration[configkey].get('interpolationMode')
-    bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey]['outputLandmarksInInputSpace']      #bcd_workflow.outputLandmarksInInputSpace.lzout.out
-    bcd_task.inputs.outputResampledVolume =             experiment_configuration[configkey]['outputResampledVolume']            #bcd_workflow.outputResampledVolume.lzout.out
-    bcd_task.inputs.outputTransform =                   experiment_configuration[configkey]['outputTransform']                  #bcd_workflow.outputTransform.lzout.out
-    bcd_task.inputs.outputLandmarksInACPCAlignedSpace = experiment_configuration[configkey]['outputLandmarksInACPCAlignedSpace']#bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
-    bcd_task.inputs.writeBranded2DImage =               experiment_configuration[configkey]['writeBranded2DImage']              #bcd_workflow.writeBranded2DImage.lzout.out
+    bcd_task.inputs.inputVolume =                       bcd_workflow.get_t1.lzout.out
+    bcd_task.inputs.LLSModel =                          experiment_configuration[configkey].get('LLSModel')
+    bcd_task.inputs.acLowerBound =                      experiment_configuration[configkey].get('acLowerBound')
+    bcd_task.inputs.atlasLandmarkWeights =              experiment_configuration[configkey].get('atlasLandmarkWeights')
+    bcd_task.inputs.atlasLandmarks =                    experiment_configuration[configkey].get('atlasLandmarks')
+    bcd_task.inputs.houghEyeDetectorMode =              experiment_configuration[configkey].get('houghEyeDetectorMode')
+    bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.get_inputLandmarksEMSP.lzout.out
+    bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
+    bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
+    bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey].get('outputLandmarksInInputSpace')      #bcd_workflow.outputLandmarksInInputSpace.lzout.out
+    bcd_task.inputs.outputResampledVolume =             experiment_configuration[configkey].get('outputResampledVolume')            #bcd_workflow.outputResampledVolume.lzout.out
+    bcd_task.inputs.outputTransform =                   experiment_configuration[configkey].get('outputTransform')                  #bcd_workflow.outputTransform.lzout.out
+    bcd_task.inputs.outputLandmarksInACPCAlignedSpace = experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')#bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
+    bcd_task.inputs.writeBranded2DImage =               experiment_configuration[configkey].get('writeBranded2DImage')              #bcd_workflow.writeBranded2DImage.lzout.out
     bcd_workflow.add(bcd_task)
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
-        ("outputLandmarksInInputSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
-        ("outputResampledVolume", bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
-        ("outputTransform", bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
-        ("outputLandmarksInACPCAlignedSpace", bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
-        ("writeBranded2DImage", bcd_workflow.BRAINSConstellationDetector.lzout.writeBranded2DImage)
+        ("outputLandmarksInInputSpace",         bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInInputSpace),
+        ("outputResampledVolume",               bcd_workflow.BRAINSConstellationDetector.lzout.outputResampledVolume),
+        ("outputTransform",                     bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
+        ("outputLandmarksInACPCAlignedSpace",   bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
+        ("writeBranded2DImage",                 bcd_workflow.BRAINSConstellationDetector.lzout.writeBranded2DImage)
     ])
     return bcd_workflow
 
@@ -102,16 +102,16 @@ def make_roi_workflow1(inputVolume) -> pydra.Workflow:
     roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
 
     roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
-    roi_task.inputs.inputVolume = roi_workflow.lzin.inputVolume
-    roi_task.inputs.ROIAutoDilateSize = experiment_configuration[configkey].get('ROIAutoDilateSize')
-    roi_task.inputs.cropOutput = experiment_configuration[configkey].get('cropOutput')
-    roi_task.inputs.outputVolume = experiment_configuration[configkey].get('outputVolume') #roi_workflow.outputVolume.lzout.out
+    roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
+    roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
+    roi_task.inputs.cropOutput =            experiment_configuration[configkey].get('cropOutput')
+    roi_task.inputs.outputVolume =          experiment_configuration[configkey].get('outputVolume') #roi_workflow.outputVolume.lzout.out
     # roi_task.inputs.outputROIMaskVolume = roi_workflow.outputROIMaskVolume.lzout.out
 
     roi_workflow.add(roi_task)
     roi_workflow.set_output([
-                            ("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),
-                            # ("outputROIMaskVolume", roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume),
+        ("outputVolume", roi_workflow.BRAINSROIAuto.lzout.outputVolume),
+        # ("outputROIMaskVolume", roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume),
     ])
 
     return roi_workflow
@@ -125,14 +125,15 @@ def make_landmarkInitializer_workflow1(inputMovingLandmarkFilename) -> pydra.Wor
     landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputMovingLandmarkFilename"], inputMovingLandmarkFilename=inputMovingLandmarkFilename)
 
     landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
-    landmark_initializer_task.inputs.inputFixedLandmarkFilename = experiment_configuration[configkey].get('inputFixedLandmarkFilename')
-    landmark_initializer_task.inputs.inputMovingLandmarkFilename = landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
-    landmark_initializer_task.inputs.inputWeightFilename = experiment_configuration[configkey].get('inputWeightFilename')
-    landmark_initializer_task.inputs.outputTransformFilename = experiment_configuration[configkey].get('outputTransformFilename') #landmark_initializer_workflow.outputTransformFilename.lzout.out
+    landmark_initializer_task.inputs.inputFixedLandmarkFilename =   experiment_configuration[configkey].get('inputFixedLandmarkFilename')
+    landmark_initializer_task.inputs.inputMovingLandmarkFilename =  landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
+    landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
+    landmark_initializer_task.inputs.outputTransformFilename =      experiment_configuration[configkey].get('outputTransformFilename') #landmark_initializer_workflow.outputTransformFilename.lzout.out
 
     landmark_initializer_workflow.add(landmark_initializer_task)
-    landmark_initializer_workflow.set_output(([("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)]))
-
+    landmark_initializer_workflow.set_output([
+        ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)
+    ])
     return landmark_initializer_workflow
 
 def make_landmarkInitializer_workflow2(inputFixedLandmarkFilename) -> pydra.Workflow:
@@ -150,7 +151,9 @@ def make_landmarkInitializer_workflow2(inputFixedLandmarkFilename) -> pydra.Work
     landmark_initializer_task.inputs.outputTransformFilename =      experiment_configuration[configkey].get('outputTransformFilename')
 
     landmark_initializer_workflow.add(landmark_initializer_task)
-    landmark_initializer_workflow.set_output(([("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)]))
+    landmark_initializer_workflow.set_output([
+        ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)
+    ])
 
     return landmark_initializer_workflow
 
