@@ -42,7 +42,7 @@
     "outputTransform": "BCD_Original2ACPC_transform.h5",
     "writeBranded2DImage": "BCD_Branded2DQCimage.png"
   },
-  "BRAINSROIAuto": {
+  "BRAINSROIAuto1": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
@@ -61,11 +61,10 @@
     "inputWeightFilename": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_atlas_to_subject_transform.h5"
   },
-  "BRAINSResample": {
+  "BRAINSResample1": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz",
-    "referenceVolume": "/mnt/c/2020_Grad_School/Research/wf_ref/t1_average_BRAINSABC.nii.gz",
     "warpTransform": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/reference_files/atlas_to_subject.h5"
   },
   "BRAINSABC": {

@@ -51,7 +51,20 @@ def get_input_field(input_dict: dict, field):
     print(f"Found: {input_dict[field]}")
     return input_dict[field]
 
-def make_bcd_workflow1(my_source_node: pydra.Workflow) -> pydra.Workflow:
+def get_inputs_workflow(my_source_node):
+
+    get_inputs_workflow = pydra.Workflow(name="inputs_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    get_inputs_workflow.add(get_input_field(name="get_inputVolume", input_dict=get_inputs_workflow.lzin.input_data, field="t1"))
+    get_inputs_workflow.add(get_input_field(name="get_inputLandmarksEMSP", input_dict=get_inputs_workflow.lzin.input_data, field="inputLandmarksEMSP"))
+
+    get_inputs_workflow.set_output([
+        ("inputVolume", get_inputs_workflow.get_inputVolume.lzout.out),
+        ("inputLandmarksEMSP", get_inputs_workflow.get_inputLandmarksEMSP.lzout.out)
+    ])
+    return get_inputs_workflow
+
+
+def make_bcd_workflow1(inputVolume, inputLandmarksEMSP) -> pydra.Workflow:
     # from .sem_tasks.segmentation.specialized import BRAINSConstellationDetector
     from sem_tasks.segmentation.specialized import BRAINSConstellationDetector
 
@@ -60,20 +73,22 @@ def make_bcd_workflow1(my_source_node: pydra.Workflow) -> pydra.Workflow:
     print(f"Making task {workflow_name}")
 
 
-    bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    # bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    #
+    # bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
+    # bcd_workflow.add(get_input_field(name="get_inputLandmarksEMSP", input_dict=bcd_workflow.lzin.input_data, field="inputLandmarksEMSP"))
 
-    bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
-    bcd_workflow.add(get_input_field(name="get_inputLandmarksEMSP", input_dict=bcd_workflow.lzin.input_data, field="inputLandmarksEMSP"))
+    bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "inputLandmarksEMSP"], inputVolume=inputVolume, inputLandmarksEMSP=inputLandmarksEMSP)
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration[configkey]['executable']).get_task()
-    bcd_task.inputs.inputVolume =                       bcd_workflow.get_t1.lzout.out
+    bcd_task.inputs.inputVolume =                       bcd_workflow.lzin.inputVolume
     bcd_task.inputs.LLSModel =                          experiment_configuration[configkey].get('LLSModel')
     bcd_task.inputs.acLowerBound =                      experiment_configuration[configkey].get('acLowerBound')
     bcd_task.inputs.atlasLandmarkWeights =              experiment_configuration[configkey].get('atlasLandmarkWeights')
     bcd_task.inputs.atlasLandmarks =                    experiment_configuration[configkey].get('atlasLandmarks')
     bcd_task.inputs.houghEyeDetectorMode =              experiment_configuration[configkey].get('houghEyeDetectorMode')
-    bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.get_inputLandmarksEMSP.lzout.out
+    bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
     bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
     bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey].get('outputLandmarksInInputSpace')      #bcd_workflow.outputLandmarksInInputSpace.lzout.out
@@ -96,7 +111,7 @@ def make_bcd_workflow1(my_source_node: pydra.Workflow) -> pydra.Workflow:
 def make_roi_workflow1(inputVolume) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSROIAuto
     workflow_name = "roi_workflow1"
-    configkey='BRAINSLandmarkInitializer1'
+    configkey='BRAINSROIAuto1'
     print(f"Making task {workflow_name}")
 
 
@@ -165,9 +180,6 @@ def make_resample_workflow1(my_source_node, warpTransform) -> pydra.Workflow:
     workflow_name = "resample_workflow1"
     configkey='BRAINSResample1'
     print(f"Making task {workflow_name}")
-
-    # bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
-    # bcd_workflow.add(get_input_field(name="get_t1", input_dict=bcd_workflow.lzin.input_data, field="t1"))
 
     resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["input_data", "warpTransform"], input_data=my_source_node.lzin.input_data, warpTransform=warpTransform)
     resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
@@ -394,7 +406,9 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 
 # Get the processing workflow defined in a separate function
 # bcd_workflow1 =
-source_node.add(make_bcd_workflow1(source_node))
+source_node.add(get_inputs_workflow(my_source_node=source_node))
+
+source_node.add(make_bcd_workflow1(inputVolume=source_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=source_node.inputs_workflow.lzout.inputLandmarksEMSP))
 source_node.add(make_roi_workflow1(inputVolume=source_node.bcd_workflow1.lzout.outputResampledVolume))
 source_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
 source_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
@@ -407,7 +421,7 @@ source_node.add(make_resample_workflow1(source_node, source_node.landmarkInitial
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
-final_processing_workflow = source_node.resample_workflow1
+final_processing_workflow = source_node.roi_workflow1
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
