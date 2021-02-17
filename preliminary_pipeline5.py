@@ -441,8 +441,8 @@ processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilenam
 processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, warpTransform=processing_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
 processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
 processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
-ants_workflow2 = make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform)
-processing_node.add(ants_workflow2)
+processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
+
 
 # preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
@@ -450,8 +450,8 @@ processing_node.add(ants_workflow2)
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
-final_processing_workflow = ants_workflow2
-processing_node.set_output([("out", ants_workflow2.lzout.all_)])
+# final_processing_workflow = ants_workflow2
+processing_node.set_output([("out", processing_node.antsRegistration_workflow2.lzout.all_)])
 
 source_node.add(processing_node)
 # The sink converts the cached files to output_dir, a location on the local machine
