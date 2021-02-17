@@ -430,16 +430,19 @@ source_node.split("input_data")  # Create an iterable for each t1 input file (fo
 
 # Get the processing workflow defined in a separate function
 # bcd_workflow1 =
-source_node.add(get_inputs_workflow(my_source_node=source_node))
+processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
+processing_node.add(get_inputs_workflow(my_source_node=processing_node))
 
-source_node.add(make_bcd_workflow1(inputVolume=source_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=source_node.inputs_workflow.lzout.inputLandmarksEMSP))
-source_node.add(make_roi_workflow1(inputVolume=source_node.bcd_workflow1.lzout.outputResampledVolume))
-source_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
-source_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=source_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-source_node.add(make_resample_workflow1(inputVolume=source_node.inputs_workflow.lzout.inputVolume, warpTransform=source_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
-source_node.add(make_roi_workflow2(inputVolume=source_node.roi_workflow1.lzout.outputVolume))
-source_node.add(make_antsRegistration_workflow1(fixed_image=source_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=source_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=source_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
-source_node.add(make_antsRegistration_workflow2(fixed_image=source_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=source_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=source_node.antsRegistration_workflow1.lzout.composite_transform))
+
+processing_node.add(make_bcd_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=processing_node.inputs_workflow.lzout.inputLandmarksEMSP))
+processing_node.add(make_roi_workflow1(inputVolume=processing_node.bcd_workflow1.lzout.outputResampledVolume))
+processing_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
+processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, warpTransform=processing_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
+processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
+processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
+ants_workflow2 = make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform)
+processing_node.add(ants_workflow2)
 
 # preliminary_workflow4 = make_resample_workflow(source_node)
 # preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
@@ -447,11 +450,12 @@ source_node.add(make_antsRegistration_workflow2(fixed_image=source_node.roi_work
 # preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
-final_processing_workflow = source_node.antsRegistration_workflow2
+final_processing_workflow = ants_workflow2
+processing_node.set_output([("out", ants_workflow2.lzout.all_)])
 
-
+source_node.add(processing_node)
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=final_processing_workflow.lzout.all_, input_data=source_node.lzin.input_data)
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
 sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
 sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
 sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
@@ -459,8 +463,14 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(sink_node)
 
+# graph = source_node.graph
+# dotfile = graph.create_dotfile_nested(outdir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
+graph = processing_node.graph
+dotfile2 = graph.create_dotfile_nested(outdir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
+
 # Set the output of the source node to the same as the output of the sink_node
 source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
