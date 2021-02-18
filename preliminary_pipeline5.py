@@ -455,13 +455,13 @@ processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.
 processing_node.set_output([("out", processing_node.antsRegistration_workflow2.lzout.all_)])
 
 
-source_node.add(processing_node)
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
 sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
 sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
 sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
+source_node.add(processing_node)
 
 source_node.add(sink_node)
 
@@ -478,6 +478,10 @@ with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
 
 graph_dir = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
+source_node.graph.create_dotfile_simple(outdir=graph_dir, name="source_simple")
+(source_dot,) = pydot.graph_from_dot_file(graph_dir / Path("source_simple.dot"))
+source_dot.write_png(graph_dir / Path("source_simple.png"))
+
 source_node.graph.create_dotfile_nested(outdir=graph_dir, name="source")
 (source_dot,) = pydot.graph_from_dot_file(graph_dir / Path("source.dot"))
 source_dot.write_png(graph_dir / Path("source.png"))
@@ -485,6 +489,11 @@ source_dot.write_png(graph_dir / Path("source.png"))
 processing_node.graph.create_dotfile_simple(outdir=graph_dir, name="processing")
 (processing_dot,) = pydot.graph_from_dot_file(graph_dir / Path("processing.dot"))
 processing_dot.write_png(graph_dir / Path("processing.png"))
+
+processing_node.create_dotfile(
+        type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed")
+    )
+
 
 result = source_node.result()
 print(result)
