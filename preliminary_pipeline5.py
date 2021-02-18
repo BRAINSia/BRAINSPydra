@@ -478,22 +478,8 @@ with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
 
 graph_dir = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
-source_node.graph.create_dotfile_simple(outdir=graph_dir, name="source_simple")
-(source_dot,) = pydot.graph_from_dot_file(graph_dir / Path("source_simple.dot"))
-source_dot.write_png(graph_dir / Path("source_simple.png"))
-
-source_node.graph.create_dotfile_nested(outdir=graph_dir, name="source")
-(source_dot,) = pydot.graph_from_dot_file(graph_dir / Path("source.dot"))
-source_dot.write_png(graph_dir / Path("source.png"))
-
-processing_node.graph.create_dotfile_simple(outdir=graph_dir, name="processing")
-(processing_dot,) = pydot.graph_from_dot_file(graph_dir / Path("processing.dot"))
-processing_dot.write_png(graph_dir / Path("processing.png"))
-
-processing_node.create_dotfile(
-        type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed")
-    )
-
+processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
+print("Created the pipeline graph visual")
 
 result = source_node.result()
 print(result)
