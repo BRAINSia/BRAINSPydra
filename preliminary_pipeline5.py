@@ -3,6 +3,7 @@ from pathlib import Path
 from shutil import copyfile
 import json
 import argparse
+import pydot
 
 parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
 parser.add_argument('config_experimental', type=str, help='The path to the top level of the BIDS directory')
@@ -453,6 +454,7 @@ processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.
 # final_processing_workflow = ants_workflow2
 processing_node.set_output([("out", processing_node.antsRegistration_workflow2.lzout.all_)])
 
+
 source_node.add(processing_node)
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
@@ -465,8 +467,7 @@ source_node.add(sink_node)
 
 # graph = source_node.graph
 # dotfile = graph.create_dotfile_nested(outdir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
-graph = processing_node.graph
-dotfile2 = graph.create_dotfile_nested(outdir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
+
 
 # Set the output of the source node to the same as the output of the sink_node
 source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
@@ -475,5 +476,16 @@ source_node.set_output([("output_files", source_node.sink_node.lzout.output_file
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
+
+graph_dir = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
+source_node.graph.create_dotfile_nested(outdir=graph_dir, name="source")
+(source_dot,) = pydot.graph_from_dot_file(graph_dir / Path("source.dot"))
+source_dot.write_png(graph_dir / Path("source.png"))
+
+processing_node.graph.create_dotfile_simple(outdir=graph_dir, name="processing")
+(processing_dot,) = pydot.graph_from_dot_file(graph_dir / Path("processing.dot"))
+processing_dot.write_png(graph_dir / Path("processing.png"))
+
 result = source_node.result()
 print(result)
+
