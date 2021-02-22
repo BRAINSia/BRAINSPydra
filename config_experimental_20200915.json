@@ -1,114 +1,56 @@
 {
-  "input_data": [
-    { "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-002_T1w.nii.gz",
-      "roiInputVolume": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
-      "abcInputVolume": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "warpTransform":  "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform1": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "inputMovingLandmarkFilename": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_Original.fcsv",
-      "fixed_image_masks": ["/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz", "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz", "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz"],
-      "initial_moving_transform2": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_RigidComposite.h5"
-
-    },
-    {
-      "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T1w.nii.gz",
-      "roiInputVolume": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
-      "abcInputVolume": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "warpTransform": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform1": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "inputMovingLandmarkFilename": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_Original.fcsv",
-      "fixed_image_masks": ["/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/fixedImageROIAutoMask.nii.gz", "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/fixedImageROIAutoMask.nii.gz", "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/fixedImageROIAutoMask.nii.gz"],
-      "initial_moving_transform2": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/AtlasToSubjectPreBABC_RigidComposite.h5"
-    }
-  ],
-  "output_dir": "/Users/cjohnson30/output_dir",
-  "BRAINSConstellationDetector": {
+  "output_dir": "/localscratch/Users/cjohnson30/output_dir",
+  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir",
+  "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
-    "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
+    "LLSModel": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
     "acLowerBound": 80.000000 ,
-    "atlasLandmarkWeights": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-    "atlasLandmarks": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "atlasLandmarkWeights": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts ",
+    "atlasLandmarks": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "houghEyeDetectorMode": 1,
-    "inputLandmarksEMSP": "/localscratch/Users/cjohnson30/bcd_ref/sub-697343_ses-50028_run-002_T1w.fcsv",
-    "inputTemplateModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/T1_50Lmks.mdl",
+    "inputTemplateModel": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/T1_50Lmks.mdl",
     "interpolationMode": "Linear",
     "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv",
     "outputLandmarksInInputSpace": "BCD_Original.fcsv",
     "outputResampledVolume": "BCD_ACPC.nii.gz",
     "outputTransform": "BCD_Original2ACPC_transform.h5",
-    "writeBranded2DImage": "BCD_Branded2DQCimage.png",
-    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz"
-    },
-
-  "BRAINSResample": {
+    "writeBranded2DImage": "BCD_Branded2DQCimage.png"
+  },
+  "BRAINSROIAuto1": {
+    "executable": "BRAINSROIAuto",
+    "ROIAutoDilateSize": 10.000000,
+    "cropOutput": " ",
+    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
+  },
+  "BRAINSLandmarkInitializer1": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputFixedLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
+  },
+  "BRAINSLandmarkInitializer2": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_atlas_to_subject_transform.h5"
+  },
+  "BRAINSResample1": {
     "executable": "BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz"
   },
-  "BRAINSROIAuto": {
+    "BRAINSROIAuto2": {
     "executable": "BRAINSROIAuto",
-    "ROIAutoDilateSize": 10.000000,
-    "cropOutput": " ",
-    "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz",
+    "ROIAutoDilateSize": 15.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
-  "BRAINSLandmarkInitializer": {
-    "executable": "BRAINSLandmarkInitializer",
-    "inputFixedLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv ",
-    "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-    "inputWeightFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts",
-    "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
-  },
-  "BRAINSABC": {
-    "executable": "BRAINSABC",
-    "atlasDefinition": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml",
-    "atlasToSubjectTransform": "atlas_to_subject.h5",
-    "atlasToSubjectTransformType": "SyN",
-    "debuglevel": "0",
-    "filterIteration": 3,
-    "filterMethod": "None",
-    "inputVolumeTypes": "T1",
-    "interpolationMode": "Linear",
-    "maxBiasDegree": "0",
-    "maxIterations": 2,
-    "outputDir": "./",
-    "outputDirtyLabels": "volume_label_seg.nii.gz",
-    "outputFormat": "NIFTI",
-    "outputLabels": "brain_label_seg.nii.gz",
-    "outputVolumes": "sub-697343_ses-50028_run-002_rec-physicalACPC_T1w_corrected.nii.gz ",
-    "posteriorTemplate": "POSTERIOR_%s.nii.gz",
-    "purePlugsThreshold": 0.100000,
-    "restoreState": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/AtlasToSubjectANTsPreABC_SyN/SavedInternalSyNState.h5",
-    "saveState": "SavedBABCInternalSyNState.h5",
-    "useKNN": " "
-  },
-  "BRAINSCreateLabelMapFromProbabilityMaps": {
-    "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
-    "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
-    "dirtyLabelVolume": "fixed_headlabels_seg.nii.gz",
-    "foregroundPriors": [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
-    "inputProbabilityVolume": ["/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_WM.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_SURFGM.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_BASAL.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_GLOBUS.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_THALAMUS.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_HIPPOCAMPUS.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_CRBLGM.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_CRBLWM.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_CSF.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_VB.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_NOTCSF.nii.gz",
-                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_NOTGM.nii.gz"],
-    "nonAirRegionMask": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/NonAirMask.nii.gz",
-    "priorLabelCodes": [1,2,21,23,24,25,11,12,4,5,6,7,8,9,0],
-    "inclusionThreshold": 0.0
-  },
   "ANTSRegistration1": {
-    "executable": "antsRegistration",
-    "moving_image": "/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz",
-    "moving_image_masks": ["/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
-                           "/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
-                           "/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
+    "executable": "/mnt/c/2020_Grad_School/Research/install/bin/antsRegistration",
+    "moving_image": "/localscratch/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz",
+
+    "moving_image_masks": ["/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
     "output_transform_prefix": "AtlasToSubjectPreBABC_Rigid",
     "verbose": true,
     "collapse_output_transforms": false ,
@@ -138,10 +80,10 @@
   },
   "ANTSRegistration2": {
     "executable": "antsRegistration",
-    "moving_image": "/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz",
-    "moving_image_masks": ["/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
-                           "/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
-                           "/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
+    "moving_image": "/localscratch/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz",
+    "moving_image_masks": ["/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
+                           "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
     "output_transform_prefix": "AtlasToSubjectPreBABC_SyN",
     "save_state": "SavedInternalSyNState.h5",
     "verbose": true,
@@ -169,5 +111,48 @@
     "output_inverse_warped_image": "subject2atlas.nii.gz",
     "winsorize_lower_quantile": 0.01,
     "winsorize_upper_quantile": 0.99
+  },
+  "BRAINSABC1": {
+    "executable": "BRAINSABC",
+    "atlasDefinition": "/localscratch/Users/cjohnson30/wf_ref/ExtendedAtlasDefinition.xml",
+    "atlasToSubjectTransform": "atlas_to_subject.h5",
+    "atlasToSubjectTransformType": "SyN",
+    "debuglevel": "0",
+    "filterIteration": 3,
+    "filterMethod": "None",
+    "inputVolumeTypes": "T1",
+    "interpolationMode": "Linear",
+    "maxBiasDegree": "0",
+    "maxIterations": 2,
+    "outputDir": "./",
+    "outputDirtyLabels": "volume_label_seg.nii.gz",
+    "outputFormat": "NIFTI",
+    "outputLabels": "brain_label_seg.nii.gz",
+    "posteriorTemplate": "POSTERIOR_%s.nii.gz",
+    "purePlugsThreshold": 0.100000,
+    "restoreState": "SavedInternalSyNState.h5",
+    "saveState": "SavedBABCInternalSyNState.h5",
+    "useKNN": " "
+  },
+  "BRAINSCreateLabelMapFromProbabilityMaps": {
+    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
+    "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
+    "dirtyLabelVolume": "fixed_headlabels_seg.nii.gz",
+    "foregroundPriors": [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+    "inputProbabilityVolume": ["/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_WM.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_SURFGM.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_BASAL.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_GLOBUS.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_THALAMUS.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_HIPPOCAMPUS.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_CRBLGM.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_CRBLWM.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_CSF.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_VB.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_NOTCSF.nii.gz",
+                               "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/GENERATED_NOTGM.nii.gz"],
+    "nonAirRegionMask": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/NonAirMask.nii.gz",
+    "priorLabelCodes": [1,2,21,23,24,25,11,12,4,5,6,7,8,9,0],
+    "inclusionThreshold": 0.0
   }
 }
