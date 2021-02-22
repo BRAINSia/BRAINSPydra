@@ -1,6 +1,7 @@
 {
   "output_dir": "/localscratch/Users/cjohnson30/output_dir",
   "cache_dir": "/localscratch/Users/cjohnson30/cache_dir",
+  "graph_dir": "/localscratch/Users/cjohnson30/graph_dir",
   "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
     "LLSModel": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
