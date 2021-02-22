@@ -61,6 +61,13 @@ def make_bcd_workflow1(inputVolume, inputLandmarksEMSP) -> pydra.Workflow:
 
     bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "inputLandmarksEMSP"], inputVolume=inputVolume, inputLandmarksEMSP=inputLandmarksEMSP)
 
+    # bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration[configkey].get('outputLandmarksInInputSpace')))
+    # bcd_workflow.add(make_output_filename(name="outputResampledVolume", filename=experiment_configuration[configkey].get('outputResampledVolume')))
+    # bcd_workflow.add(make_output_filename(name="outputTransform", filename=experiment_configuration[configkey].get('outputTransform')))
+    # bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')))
+    # bcd_workflow.add(make_output_filename(name="writeBranded2DImage", filename=experiment_configuration[configkey].get('writeBranded2DImage')))
+
+
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration[configkey]['executable']).get_task()
     bcd_task.inputs.inputVolume =                       bcd_workflow.lzin.inputVolume
@@ -72,6 +79,7 @@ def make_bcd_workflow1(inputVolume, inputLandmarksEMSP) -> pydra.Workflow:
     bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
     bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
+
     bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey].get('outputLandmarksInInputSpace')      #bcd_workflow.outputLandmarksInInputSpace.lzout.out
     bcd_task.inputs.outputResampledVolume =             experiment_configuration[configkey].get('outputResampledVolume')            #bcd_workflow.outputResampledVolume.lzout.out
     bcd_task.inputs.outputTransform =                   experiment_configuration[configkey].get('outputTransform')                  #bcd_workflow.outputTransform.lzout.out
