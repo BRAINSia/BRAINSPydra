@@ -403,7 +403,7 @@ def copy_from_cache(cache_path, output_dir, input_data):
             return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
-source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])#, cache_dir=experiment_configuration["cache_dir"])
+source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"])
 source_node.inputs.input_data = input_data_dictionary["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
@@ -436,25 +436,25 @@ processing_node.set_output([("out", processing_node.bcd_workflow1.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
-# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
+sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
-# source_node.add(sink_node)
+source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
 
 # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
-graph_dir = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/graphs")
+graph_dir = Path(experiment_configuration['graph_dir'])
 processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
 processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
 processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
