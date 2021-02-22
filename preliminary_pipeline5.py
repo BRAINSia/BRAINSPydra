@@ -330,7 +330,7 @@ def make_abc_workflow1(inputVolumes, inputT1) -> pydra.Workflow:
     print(f"Making task {workflow_name}")
 
     # Create the workflow
-    abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1"], inputVolumes=inputVolumes, inputT1=inputT1, cache_dir=Path(experiment_configuration["cache_dir"]) / Path("abc"))
+    abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1"], inputVolumes=inputVolumes, inputT1=inputT1)
     abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
 
 
@@ -411,7 +411,7 @@ def copy_from_cache(cache_path, output_dir, input_data):
             return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
-source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"])
+source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])#, cache_dir=experiment_configuration["cache_dir"])
 source_node.inputs.input_data = input_data_dictionary["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
