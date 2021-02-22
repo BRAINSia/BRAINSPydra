@@ -288,7 +288,6 @@ class ANTSRegistration:
                     },
                 ),
             ),
-
             (
                 "transform3",
                 attr.ib(

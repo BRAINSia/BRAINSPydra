@@ -32,6 +32,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
                 extension = "".join(Path(filename).suffixes)
             new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
         print(f"filename: {filename}")
+        print(f"new_filename: {new_filename}")
         return new_filename
 
 @pydra.mark.task
@@ -312,38 +313,44 @@ def make_antsRegistration_workflow2(fixed_image, fixed_image_masks, initial_movi
 
     return antsRegistration_workflow
 
-def make_ABC_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
+
+def make_abc_workflow1(inputVolumes, inputT1) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSABC
 
-    abc_workflow = pydra.Workflow(name="abc_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
-    abc_workflow.add(get_input_field(name="get_inputVolumes", input_dict=abc_workflow.lzin.input_data, field="t1"))
-    # abc_workflow.add(make_output_filename(name="outputDirtyLabels", filename=experiment_configuration['BRAINSABC'].get('outputDirtyLabels')))
-    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.get_inputVolumes.lzout.out, append_str="_corrected", extension=".txt"))
+    workflow_name = "abc_workflow1"
+    configkey='BRAINSABC1'
+    print(f"Making task {workflow_name}")
+
+    # Create the workflow
+    abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1"], inputVolumes=inputVolumes, inputT1=inputT1, cache_dir=Path(experiment_configuration["cache_dir"]) / Path("abc"))
+    abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
 
 
-    abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration['BRAINSABC']['executable']).get_task()
-    abc_task.inputs.atlasDefinition = experiment_configuration['BRAINSABC'].get('atlasDefinition')
-    abc_task.inputs.atlasToSubjectTransform = experiment_configuration['BRAINSABC'].get('atlasToSubjectTransform')
-    abc_task.inputs.atlasToSubjectTransformType = experiment_configuration['BRAINSABC'].get('atlasToSubjectTransformType')
-    abc_task.inputs.debuglevel = experiment_configuration['BRAINSABC'].get('debuglevel')
-    abc_task.inputs.filterIteration = experiment_configuration['BRAINSABC'].get('filterIteration')
-    abc_task.inputs.filterMethod = experiment_configuration['BRAINSABC'].get('filterMethod')
-    abc_task.inputs.inputVolumeTypes = experiment_configuration['BRAINSABC'].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes = abc_workflow.get_inputVolumes.lzout.out
-    abc_task.inputs.interpolationMode = experiment_configuration['BRAINSABC'].get('interpolationMode')
-    abc_task.inputs.maxBiasDegree = experiment_configuration['BRAINSABC'].get('maxBiasDegree')
-    abc_task.inputs.maxIterations = experiment_configuration['BRAINSABC'].get('maxIterations')
-    abc_task.inputs.outputFormat = experiment_configuration['BRAINSABC'].get('outputFormat')
-    abc_task.inputs.outputDir = experiment_configuration['BRAINSABC'].get('outputDir')
-    abc_task.inputs.outputDirtyLabels = experiment_configuration['BRAINSABC'].get('outputDirtyLabels')
-    abc_task.inputs.outputLabels = experiment_configuration['BRAINSABC'].get('outputLabels')
-    abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
+    abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration[configkey]['executable']).get_task()
+    abc_task.inputs.atlasDefinition =               experiment_configuration[configkey].get('atlasDefinition')
+    abc_task.inputs.atlasToSubjectTransform =       experiment_configuration[configkey].get('atlasToSubjectTransform')
+    abc_task.inputs.atlasToSubjectTransformType =   experiment_configuration[configkey].get('atlasToSubjectTransformType')
+    abc_task.inputs.debuglevel =                    experiment_configuration[configkey].get('debuglevel')
+    abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
+    abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
+    abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
+    abc_task.inputs.inputVolumes =                  abc_workflow.lzin.inputVolumes
+    abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
+    abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
+    abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
+    abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
+    abc_task.inputs.outputDir =                     experiment_configuration[configkey].get('outputDir')
+    abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
+    abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
+    abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out
 
     # print(abc_task.cmdline)
     abc_workflow.add(abc_task)
     abc_workflow.set_output([("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes)])
 
     return abc_workflow
+
+
 
 def make_CreateLabelMapFromProbabilityMaps_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
@@ -414,6 +421,8 @@ processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_w
 processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
 processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
 processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
+# processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume))
+
 
 
 # preliminary_workflow4 = make_resample_workflow(source_node)
@@ -427,18 +436,18 @@ processing_node.set_output([("out", processing_node.antsRegistration_workflow2.l
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
-sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
+# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
-source_node.add(sink_node)
+# source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
