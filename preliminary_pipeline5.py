@@ -76,7 +76,7 @@ def make_bcd_workflow1(inputVolume, inputLandmarksEMSP) -> pydra.Workflow:
     bcd_task.inputs.atlasLandmarkWeights =              experiment_configuration[configkey].get('atlasLandmarkWeights')
     bcd_task.inputs.atlasLandmarks =                    experiment_configuration[configkey].get('atlasLandmarks')
     bcd_task.inputs.houghEyeDetectorMode =              experiment_configuration[configkey].get('houghEyeDetectorMode')
-    bcd_task.inputs.inputLandmarksEMSP =                "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.fcsv" #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.fcsv" #bcd_workflow.lzin.inputLandmarksEMSP
+    bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.fcsv" #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.fcsv" #bcd_workflow.lzin.inputLandmarksEMSP
     bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
 
@@ -413,7 +413,7 @@ def copy_from_cache(cache_path, output_dir, input_data):
             return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
-source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])#, cache_dir=experiment_configuration["cache_dir"])
+source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"])
 source_node.inputs.input_data = input_data_dictionary["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
