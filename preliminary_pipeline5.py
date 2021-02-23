@@ -185,6 +185,7 @@ def make_resample_workflow1(inputVolume, warpTransform) -> pydra.Workflow:
     return resample_workflow
 
 def make_roi_workflow2(inputVolume) -> pydra.Workflow:
+    from pydra.tasks.nipype1.utils import Nipype1Task
     from sem_tasks.segmentation.specialized import BRAINSROIAuto
     workflow_name = "roi_workflow2"
     configkey='BRAINSROIAuto2'
@@ -192,7 +193,7 @@ def make_roi_workflow2(inputVolume) -> pydra.Workflow:
 
     roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
 
-    roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
+    roi_task = Nipype1Task(BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task())
     roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
     roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
     roi_task.inputs.outputROIMaskVolume =   experiment_configuration[configkey].get('outputROIMaskVolume')
@@ -315,6 +316,7 @@ def make_antsRegistration_workflow2(fixed_image, fixed_image_masks, initial_movi
 
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([
+        ("save_state", antsRegistration_task.lzout.save_state),
         ("composite_transform", antsRegistration_task.lzout.composite_transform),
         ("inverse_composite_transform", antsRegistration_task.lzout.inverse_composite_transform),
         ("warped_image", antsRegistration_task.lzout.warped_image),
@@ -324,7 +326,7 @@ def make_antsRegistration_workflow2(fixed_image, fixed_image_masks, initial_movi
     return antsRegistration_workflow
 
 
-def make_abc_workflow1(inputVolumes, inputT1) -> pydra.Workflow:
+def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSABC
 
     workflow_name = "abc_workflow1"
@@ -332,7 +334,7 @@ def make_abc_workflow1(inputVolumes, inputT1) -> pydra.Workflow:
     print(f"Making task {workflow_name}")
 
     # Create the workflow
-    abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1"], inputVolumes=inputVolumes, inputT1=inputT1)
+    abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1", "restoreState"], inputVolumes=inputVolumes, inputT1=inputT1, restoreState=restoreState)
     abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
 
 
@@ -344,10 +346,15 @@ def make_abc_workflow1(inputVolumes, inputT1) -> pydra.Workflow:
     abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
     abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
     abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes =                  abc_workflow.lzin.inputVolumes
+    abc_task.inputs.inputVolumes =                  input_data_dictionary["input_data"].get("t1") #abc_workflow.lzin.inputVolumes
     abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
     abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
     abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
+    abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
+    abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
+    abc_task.inputs.restoreState =                  abc_workflow.lzin.restoreState
+    abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
+    abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
     abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
     abc_task.inputs.outputDir =                     experiment_configuration[configkey].get('outputDir')
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
@@ -431,7 +438,7 @@ processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_w
 processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
 processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
 processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
-# processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume))
+processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
 
 
 
@@ -442,7 +449,7 @@ processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
 # final_processing_workflow = ants_workflow2
-processing_node.set_output([("out", processing_node.antsRegistration_workflow2.lzout.all_)])
+processing_node.set_output([("out", processing_node.abc_workflow1.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
