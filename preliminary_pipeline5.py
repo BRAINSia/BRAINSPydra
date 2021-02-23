@@ -424,9 +424,9 @@ processing_node.add(get_inputs_workflow(my_source_node=processing_node))
 
 
 processing_node.add(make_bcd_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=processing_node.inputs_workflow.lzout.inputLandmarksEMSP))
-# processing_node.add(make_roi_workflow1(inputVolume=processing_node.bcd_workflow1.lzout.outputResampledVolume))
-# processing_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
-# processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_roi_workflow1(inputVolume=processing_node.bcd_workflow1.lzout.outputResampledVolume))
+processing_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
+processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 # processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, warpTransform=processing_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
 # processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
 # processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
@@ -442,7 +442,7 @@ processing_node.add(make_bcd_workflow1(inputVolume=processing_node.inputs_workfl
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
 # final_processing_workflow = ants_workflow2
-processing_node.set_output([("out", processing_node.bcd_workflow1.lzout.all_)])
+processing_node.set_output([("out", processing_node.landmarkInitializer_workflow2.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
