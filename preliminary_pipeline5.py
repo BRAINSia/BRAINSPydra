@@ -76,7 +76,7 @@ def make_bcd_workflow1(inputVolume, inputLandmarksEMSP) -> pydra.Workflow:
     bcd_task.inputs.atlasLandmarkWeights =              experiment_configuration[configkey].get('atlasLandmarkWeights')
     bcd_task.inputs.atlasLandmarks =                    experiment_configuration[configkey].get('atlasLandmarks')
     bcd_task.inputs.houghEyeDetectorMode =              experiment_configuration[configkey].get('houghEyeDetectorMode')
-    bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
+    # bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
     bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
 
