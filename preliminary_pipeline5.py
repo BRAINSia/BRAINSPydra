@@ -61,31 +61,33 @@ def make_bcd_workflow1(inputVolume, inputLandmarksEMSP) -> pydra.Workflow:
 
     bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "inputLandmarksEMSP"], inputVolume=inputVolume, inputLandmarksEMSP=inputLandmarksEMSP)
 
-    bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration[configkey].get('outputLandmarksInInputSpace')))
-    bcd_workflow.add(make_output_filename(name="outputResampledVolume", filename=experiment_configuration[configkey].get('outputResampledVolume')))
-    bcd_workflow.add(make_output_filename(name="outputTransform", filename=experiment_configuration[configkey].get('outputTransform')))
-    bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')))
-    bcd_workflow.add(make_output_filename(name="writeBranded2DImage", filename=experiment_configuration[configkey].get('writeBranded2DImage')))
+    # bcd_workflow.add(make_output_filename(name="outputLandmarksInInputSpace", filename=experiment_configuration[configkey].get('outputLandmarksInInputSpace')))
+    # bcd_workflow.add(make_output_filename(name="outputResampledVolume", filename=experiment_configuration[configkey].get('outputResampledVolume')))
+    # bcd_workflow.add(make_output_filename(name="outputTransform", filename=experiment_configuration[configkey].get('outputTransform')))
+    # bcd_workflow.add(make_output_filename(name="outputLandmarksInACPCAlignedSpace", filename=experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')))
+    # bcd_workflow.add(make_output_filename(name="writeBranded2DImage", filename=experiment_configuration[configkey].get('writeBranded2DImage')))
 
 
     # Create and fill a task to run a dummy BRAINSConstellationDetector script that runs touch for all the output files
     bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration[configkey]['executable']).get_task()
-    bcd_task.inputs.inputVolume =                       bcd_workflow.lzin.inputVolume
+    bcd_task.inputs.inputVolume =                       bcd_workflow.lzin.inputVolume    #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz" #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz" #bcd_workflow.lzin.inputVolume
     bcd_task.inputs.LLSModel =                          experiment_configuration[configkey].get('LLSModel')
     bcd_task.inputs.acLowerBound =                      experiment_configuration[configkey].get('acLowerBound')
     bcd_task.inputs.atlasLandmarkWeights =              experiment_configuration[configkey].get('atlasLandmarkWeights')
     bcd_task.inputs.atlasLandmarks =                    experiment_configuration[configkey].get('atlasLandmarks')
     bcd_task.inputs.houghEyeDetectorMode =              experiment_configuration[configkey].get('houghEyeDetectorMode')
-    # bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
+    bcd_task.inputs.inputLandmarksEMSP =                "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.fcsv" #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.fcsv" #bcd_workflow.lzin.inputLandmarksEMSP
     bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
     bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
 
-    bcd_task.inputs.outputLandmarksInInputSpace =       bcd_workflow.outputLandmarksInInputSpace.lzout.out        #experiment_configuration[configkey].get('outputLandmarksInInputSpace')      #bcd_workflow.outputLandmarksInInputSpace.lzout.out
-    bcd_task.inputs.outputResampledVolume =             bcd_workflow.outputResampledVolume.lzout.out              #experiment_configuration[configkey].get('outputResampledVolume')            #bcd_workflow.outputResampledVolume.lzout.out
-    bcd_task.inputs.outputTransform =                   bcd_workflow.outputTransform.lzout.out                    #experiment_configuration[configkey].get('outputTransform')                  #bcd_workflow.outputTransform.lzout.out
-    bcd_task.inputs.outputLandmarksInACPCAlignedSpace = bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out  #experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')#bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
-    bcd_task.inputs.writeBranded2DImage =               bcd_workflow.writeBranded2DImage.lzout.out                #experiment_configuration[configkey].get('writeBranded2DImage')              #bcd_workflow.writeBranded2DImage.lzout.out
+    bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey].get('outputLandmarksInInputSpace')      #bcd_workflow.outputLandmarksInInputSpace.lzout.out
+    bcd_task.inputs.outputResampledVolume =             experiment_configuration[configkey].get('outputResampledVolume')            #bcd_workflow.outputResampledVolume.lzout.out
+    bcd_task.inputs.outputTransform =                   experiment_configuration[configkey].get('outputTransform')                  #bcd_workflow.outputTransform.lzout.out
+    bcd_task.inputs.outputLandmarksInACPCAlignedSpace = experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')#bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
+    bcd_task.inputs.writeBranded2DImage =               experiment_configuration[configkey].get('writeBranded2DImage')              #bcd_workflow.writeBranded2DImage.lzout.out
     bcd_workflow.add(bcd_task)
+
+    # print(bcd_task.cmdline)
 
     # Set the outputs of the processing node and the source node so they are output to the sink node
     bcd_workflow.set_output([
