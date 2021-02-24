@@ -185,7 +185,6 @@ def make_resample_workflow1(inputVolume, warpTransform) -> pydra.Workflow:
     return resample_workflow
 
 def make_roi_workflow2(inputVolume) -> pydra.Workflow:
-    from pydra.tasks.nipype1.utils import Nipype1Task
     from sem_tasks.segmentation.specialized import BRAINSROIAuto
     workflow_name = "roi_workflow2"
     configkey='BRAINSROIAuto2'
@@ -193,7 +192,7 @@ def make_roi_workflow2(inputVolume) -> pydra.Workflow:
 
     roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
 
-    roi_task = Nipype1Task(BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task())
+    roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
     roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
     roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
     roi_task.inputs.outputROIMaskVolume =   experiment_configuration[configkey].get('outputROIMaskVolume')
