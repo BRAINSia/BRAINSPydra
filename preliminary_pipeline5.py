@@ -345,7 +345,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
     abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
     abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes =                  input_data_dictionary["input_data"].get("t1") #abc_workflow.lzin.inputVolumes
+    abc_task.inputs.inputVolumes =                  input_data_dictionary["input_data"][0].get("t1") #abc_workflow.lzin.inputVolumes
     abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
     abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
     abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
