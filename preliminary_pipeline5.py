@@ -373,8 +373,8 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
 
     # print(abc_task.cmdline)
     # abc_workflow.add(abc_task)
-    abc_workflow.set_output([("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes)])
-    # abc_workflow.set_output([("out", abc_workflow.get_self.lzout.out)])
+    # abc_workflow.set_output([("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes)])
+    abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
 
     return abc_workflow
 
@@ -460,7 +460,7 @@ processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow
 # preliminary_workflow4 = make_antsRegistration_workflow(source_node)
 # preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
 # final_processing_workflow = ants_workflow2
-processing_node.set_output([("out", processing_node.abc_workflow1.lzout.all_)])
+processing_node.set_output([("out", processing_node.landmarkInitializer_workflow1.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
