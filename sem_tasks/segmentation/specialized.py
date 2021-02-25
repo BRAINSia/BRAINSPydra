@@ -19,6 +19,7 @@ from pydra.engine.specs import (
     MultiOutputFile,
     MultiInputObj,
 )
+from pydra.utils.messenger import *
 import pydra
 
 
@@ -42,6 +43,7 @@ class BRAINSABC:
                     metadata={
                         "argstr": "--inputVolumes ",
                         "help_string": "The list of input image files to be segmented.",
+                        "sep": ",",
                     },
                 ),
             ),
@@ -995,6 +997,7 @@ class BRAINSConstellationDetector:
             executable=self.executable,
             input_spec=input_spec,
             output_spec=output_spec,
+            messengers=[PrintMessenger]
         )
         return task
 
