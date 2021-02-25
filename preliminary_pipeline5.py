@@ -19,7 +19,8 @@ with open(args.input_data_dictionary) as f:
 
 @pydra.mark.task
 def get_self(x):
-    print(x)
+    print(f"abc_workflow.lzin.inputVolumes: |{x}|")
+
 
 @pydra.mark.task
 def make_output_filename(filename="", before_str="", append_str="", extension="", directory="", unused=""):
@@ -344,34 +345,34 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1", "restoreState"], inputVolumes=inputVolumes, inputT1=inputT1, restoreState=restoreState)
     abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
 
-    abc_workflow.add(get_self(name="get_self", x=abc_workflow.outputVolumes.lzout.out))
+    # abc_workflow.add(get_self(name="get_self", x=abc_workflow.outputVolumes.lzout.out))
     abc_workflow.add(get_self(name="get_self2", x=abc_workflow.lzin.inputVolumes))
 
-    abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration[configkey]['executable']).get_task()
-    abc_task.inputs.atlasDefinition =               experiment_configuration[configkey].get('atlasDefinition')
-    abc_task.inputs.atlasToSubjectTransform =       experiment_configuration[configkey].get('atlasToSubjectTransform')
-    abc_task.inputs.atlasToSubjectTransformType =   experiment_configuration[configkey].get('atlasToSubjectTransformType')
-    abc_task.inputs.debuglevel =                    experiment_configuration[configkey].get('debuglevel')
-    abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
-    abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
-    abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #abc_workflow.lzin.inputVolumes #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # #abc_workflow.lzin.inputVolumes
-    abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
-    abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
-    abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
-    abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
-    abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
-    abc_task.inputs.restoreState =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #abc_workflow.lzin.restoreState #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" # abc_workflow.lzin.restoreState
-    abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
-    abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
-    abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
-    abc_task.inputs.outputDir =                     experiment_configuration[configkey].get('outputDir')
-    abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
-    abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
-    abc_task.inputs.outputVolumes =                 "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out
+    # abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration[configkey]['executable']).get_task()
+    # abc_task.inputs.atlasDefinition =               experiment_configuration[configkey].get('atlasDefinition')
+    # abc_task.inputs.atlasToSubjectTransform =       experiment_configuration[configkey].get('atlasToSubjectTransform')
+    # abc_task.inputs.atlasToSubjectTransformType =   experiment_configuration[configkey].get('atlasToSubjectTransformType')
+    # abc_task.inputs.debuglevel =                    experiment_configuration[configkey].get('debuglevel')
+    # abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
+    # abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
+    # abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
+    # abc_task.inputs.inputVolumes =                  abc_workflow.lzin.inputVolumes #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # #abc_workflow.lzin.inputVolumes
+    # abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
+    # abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
+    # abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
+    # abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
+    # abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
+    # abc_task.inputs.restoreState =                  abc_workflow.lzin.restoreState #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" # abc_workflow.lzin.restoreState
+    # abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
+    # abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
+    # abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
+    # abc_task.inputs.outputDir =                     experiment_configuration[configkey].get('outputDir')
+    # abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
+    # abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
+    # abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out
 
-    print(abc_task.cmdline)
-    abc_workflow.add(abc_task)
+    # print(abc_task.cmdline)
+    # abc_workflow.add(abc_task)
     abc_workflow.set_output([("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes)])
     # abc_workflow.set_output([("out", abc_workflow.get_self.lzout.out)])
 
