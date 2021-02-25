@@ -39,7 +39,7 @@ class BRAINSABC:
             (
                 "inputVolumes",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=File,
                     metadata={
                         "argstr": "--inputVolumes ",
                         "help_string": "The list of input image files to be segmented.",
@@ -80,7 +80,7 @@ class BRAINSABC:
             (
                 "inputVolumeTypes",
                 attr.ib(
-                    type=MultiInputObj,
+                    type=traits.String,
                     metadata={
                         "argstr": "--inputVolumeTypes ",
                         "help_string": "The list of input image types corresponding to the inputVolumes.",
