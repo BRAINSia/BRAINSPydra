@@ -19,7 +19,6 @@ from pydra.engine.specs import (
     MultiOutputFile,
     MultiInputObj,
 )
-from pydra.utils.messenger import *
 import pydra
 
 
@@ -43,7 +42,6 @@ class BRAINSABC:
                     metadata={
                         "argstr": "--inputVolumes ",
                         "help_string": "The list of input image files to be segmented.",
-                        "sep": ",",
                     },
                 ),
             ),
@@ -80,7 +78,7 @@ class BRAINSABC:
             (
                 "inputVolumeTypes",
                 attr.ib(
-                    type=traits.String,
+                    type=MultiInputObj,
                     metadata={
                         "argstr": "--inputVolumeTypes ",
                         "help_string": "The list of input image types corresponding to the inputVolumes.",
@@ -141,7 +139,7 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=MultiOutputFile,
+                    type=File,
                     metadata={
                         "argstr": "--outputVolumes ",
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
@@ -321,7 +319,7 @@ class BRAINSABC:
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=MultiOutputFile,
+                    type=File,
                     metadata={
                         "argstr": "--implicitOutputs ",
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
@@ -403,7 +401,7 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=pydra.specs.MultiOutputFile,
+                    type=pydra.specs.File,
                     metadata={
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
                         "output_file_template": "{outputVolumes}",
@@ -433,7 +431,7 @@ class BRAINSABC:
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=pydra.specs.MultiOutputFile,
+                    type=pydra.specs.File,
                     metadata={
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
                         "output_file_template": "{implicitOutputs}",
@@ -997,7 +995,6 @@ class BRAINSConstellationDetector:
             executable=self.executable,
             input_spec=input_spec,
             output_spec=output_spec,
-            messengers=[PrintMessenger]
         )
         return task
 
@@ -1022,7 +1019,7 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "inputProbabilityVolume",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=File,
                     metadata={
                         "argstr": "--inputProbabilityVolume ",
                         "help_string": "The list of proobabilityimages.",
