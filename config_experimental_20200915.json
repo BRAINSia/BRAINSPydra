@@ -135,6 +135,43 @@
     "saveState": "SavedBABCInternalSyNState.h5",
     "useKNN": " "
   },
+    "BRAINSResample2": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
+    "interpolationMode": "Linear",
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
+  },
+    "BRAINSResample3": {
+    "executable": "BRAINSResample",
+    "interpolationMode": "Linear",
+    "outputVolume": "subject2atlas.nii.gz"
+  },
+    "BRAINSResample4": {
+    "executable": "BRAINSResample",
+    "interpolationMode": "Linear",
+    "outputVolume": "subject2atlas.nii.gz"
+  },
+    "BRAINSResample5": {
+    "executable": "BRAINSResample",
+    "interpolationMode": "Linear",
+    "outputVolume": "subject2atlas.nii.gz"
+  },
+    "BRAINSResample6": {
+    "executable": "BRAINSResample",
+    "interpolationMode": "Linear",
+    "outputVolume": "subject2atlas.nii.gz"
+  },
+    "BRAINSResample7": {
+    "executable": "BRAINSResample",
+    "interpolationMode": "Linear",
+    "outputVolume": "subject2atlas.nii.gz"
+  },
+    "BRAINSResample8": {
+    "executable": "BRAINSResample",
+    "interpolationMode": "Linear",
+    "outputVolume": "subject2atlas.nii.gz"
+  },
   "BRAINSCreateLabelMapFromProbabilityMaps": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
     "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
