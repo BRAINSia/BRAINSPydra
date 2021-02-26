@@ -392,21 +392,33 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     configkey='BRAINSResample2'
     print(f"Making task {workflow_name}")
 
-    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
+    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "warpTransform"], inputVolume=referenceVolume, warpTransform=warpTransform)
+    # resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
 
     # Set the inputs of Resample
-    resample_task = BRAINSResample("BRAINSResample2", executable=experiment_configuration[configkey]['executable']).get_task()
-    resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
+    resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+    resample_task.inputs.inputVolume =          resample_workflow.lzin.inputVolume
     resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
     resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
-    resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-    resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
     resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
     resample_workflow.add(resample_task)
-    resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample2.lzout.outputVolume)])
+    resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
 
     return resample_workflow
+    # # Set the inputs of Resample
+    # resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+    # resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
+    # resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
+    # resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
+    # resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
+    # resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
+    # resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
+    #
+    # resample_workflow.add(resample_task)
+    # resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
+    #
+    # return resample_workflow
 
 def make_CreateLabelMapFromProbabilityMaps_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
@@ -480,15 +492,7 @@ processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.
 processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
 processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.antsRegistration_workflow2.lzout.warped_image))
 
-
-# preliminary_workflow4 = make_resample_workflow(source_node)
-# preliminary_workflow4 = make_LandmarkInitializer_workflow(source_node)
-# preliminary_workflow4 = make_ABC_workflow(source_node)
-# preliminary_workflow4 = make_CreateLabelMapFromProbabilityMaps_workflow(source_node)
-# preliminary_workflow4 = make_antsRegistration_workflow(source_node)
-# preliminary_workflow4 = make_antsRegistration_workflow2(source_node)
-# final_processing_workflow = ants_workflow2
-processing_node.set_output([("out", processing_node.resample_workflow2.lzout.all_)])
+processing_node.set_output([("out", processing_node.abc_workflow1.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
