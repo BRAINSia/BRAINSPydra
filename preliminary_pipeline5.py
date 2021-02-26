@@ -395,7 +395,7 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
     # Set the inputs of Resample
-    resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+    resample_task = BRAINSResample("BRAINSResample2", executable=experiment_configuration[configkey]['executable']).get_task()
     resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
     resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
     resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
@@ -404,7 +404,7 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
     resample_workflow.add(resample_task)
-    resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
+    resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample2.lzout.outputVolume)])
 
     return resample_workflow
 
