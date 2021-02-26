@@ -392,7 +392,7 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     configkey='BRAINSResample2'
     print(f"Making task {workflow_name}")
 
-    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "warpTransform"], inputVolume=referenceVolume, warpTransform=warpTransform)
+    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
     # Set the inputs of Resample
     resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
