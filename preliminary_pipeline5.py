@@ -404,7 +404,7 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
     resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
-    print(resample_task.cmdline)
+    # print(resample_task.cmdline)
     resample_workflow.add(resample_task)
     resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
 
