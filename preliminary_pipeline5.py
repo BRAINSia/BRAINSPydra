@@ -403,6 +403,7 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     resample_task.inputs.referenceVolume =      "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz" #resample_workflow.lzin.referenceVolume
     resample_task.inputs.warpTransform =        "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/atlas2subject.nii.gz " #resample_workflow.lzin.warpTransform
 
+    print(resample_task.cmdline)
     resample_workflow.add(resample_task)
     resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
 
