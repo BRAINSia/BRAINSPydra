@@ -380,6 +380,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes),
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
+        ("atlasToSubjectTransform", abc_workflow.BRAINSABC.lzout.atlasToSubjectTransform),
         ("implicitOutputs", abc_workflow.BRAINSABC.lzout.implicitOutputs),
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
@@ -400,8 +401,8 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
     resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
     resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-    resample_task.inputs.referenceVolume =      "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz" #resample_workflow.lzin.referenceVolume
-    resample_task.inputs.warpTransform =        "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/atlas2subject.nii.gz " #resample_workflow.lzin.warpTransform
+    resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
+    resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
     print(resample_task.cmdline)
     resample_workflow.add(resample_task)
@@ -480,7 +481,7 @@ processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1
 processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
 processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
 processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
-processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.antsRegistration_workflow2.lzout.warped_image))
+processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 
 processing_node.set_output([("out", processing_node.resample_workflow2.lzout.all_)])
 
