@@ -371,6 +371,8 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out
+    abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
+
 
     # print(abc_task.cmdline)
     abc_workflow.add(abc_task)
@@ -378,7 +380,6 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes),
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
-        # ("all", abc_workflow.lzout.all_)
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
 
