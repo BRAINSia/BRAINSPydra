@@ -393,32 +393,21 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     print(f"Making task {workflow_name}")
 
     resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "warpTransform"], inputVolume=referenceVolume, warpTransform=warpTransform)
-    # resample_workflow.add(get_input_field(name="get_t1", input_dict=resample_workflow.lzin.input_data, field="t1"))
 
     # Set the inputs of Resample
     resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
-    resample_task.inputs.inputVolume =          resample_workflow.lzin.inputVolume
+    resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
     resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
     resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
+    resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
+    resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
     resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
     resample_workflow.add(resample_task)
     resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
 
     return resample_workflow
-    # # Set the inputs of Resample
-    # resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
-    # resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
-    # resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
-    # resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
-    # resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-    # resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-    # resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
-    #
-    # resample_workflow.add(resample_task)
-    # resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
-    #
-    # return resample_workflow
+
 
 def make_CreateLabelMapFromProbabilityMaps_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
