@@ -378,7 +378,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes),
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
-        ("t1_average_BRAINSABC", abc_workflow.BRAINSABC.lzout.t1_average_BRAINSABC)
+        ("all", abc_workflow.lzout.all_)
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
 
