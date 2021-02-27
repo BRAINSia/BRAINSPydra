@@ -165,9 +165,9 @@
   },
     "BRAINSResample6": {
     "executable": "BRAINSResample",
-    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_ventricles.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "template_leftHemisphere.nii.gz",
+    "outputVolume": "template_ventricles.nii.gz",
     "pixelType": "binary"
   },
     "BRAINSResample76": {

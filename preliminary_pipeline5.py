@@ -475,6 +475,28 @@ def make_resample_workflow5(referenceVolume, warpTransform) -> pydra.Workflow:
 
     return resample_workflow
 
+def make_resample_workflow6(referenceVolume, warpTransform) -> pydra.Workflow:
+    from sem_tasks.registration import BRAINSResample
+    workflow_name = "resample_workflow6"
+    configkey='BRAINSResample6'
+    print(f"Making task {workflow_name}")
+
+    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
+
+    # Set the inputs of Resample
+    resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+    resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
+    resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
+    resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
+    resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
+    resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
+    resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
+
+    resample_workflow.add(resample_task)
+    resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
+
+    return resample_workflow
+
 def make_CreateLabelMapFromProbabilityMaps_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
 
@@ -549,6 +571,7 @@ processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 
 processing_node.set_output([("out", processing_node.resample_workflow5.lzout.all_)])
 
