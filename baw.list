@@ -157,6 +157,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
+[x]
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/hncma-atlas.nii.gz \
 --interpolationMode NearestNeighbor \
@@ -165,6 +166,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
+[x]
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_rightHemisphere.nii.gz \
 --interpolationMode Linear \
@@ -173,6 +175,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
+[x]
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_nac_labels.nii.gz \
 --interpolationMode NearestNeighbor \
@@ -181,6 +184,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
+[x]
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_ventricles.nii.gz \
 --interpolationMode Linear \
@@ -189,6 +193,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
+[x]
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_WMPM2_labels.nii.gz \
 --interpolationMode NearestNeighbor \
@@ -197,6 +202,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
+[x]
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz \
 --interpolationMode Linear \
