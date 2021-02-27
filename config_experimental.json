@@ -135,6 +135,13 @@
     "saveState": "SavedBABCInternalSyNState.h5",
     "useKNN": " "
   },
+    "BRAINSResample2": {
+    "executable": "BRAINSResample",
+    "inputVolume": "/mnt/c/2020_Grad_School/Research/wf_ref/template_leftHemisphere.nii.gz",
+    "interpolationMode": "Linear",
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
+  },
   "BRAINSCreateLabelMapFromProbabilityMaps": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
     "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
