@@ -151,9 +151,9 @@
   },
     "BRAINSResample4": {
     "executable": "BRAINSResample",
-    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_rightHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "template_leftHemisphere.nii.gz",
+    "outputVolume": "template_rightHemisphere.nii.gz",
     "pixelType": "binary"
   },
     "BRAINSResample5": {
