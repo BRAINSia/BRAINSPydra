@@ -404,7 +404,28 @@ def make_resample_workflow2(referenceVolume, warpTransform) -> pydra.Workflow:
     resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
     resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
-    # print(resample_task.cmdline)
+    resample_workflow.add(resample_task)
+    resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
+
+    return resample_workflow
+
+def make_resample_workflow3(referenceVolume, warpTransform) -> pydra.Workflow:
+    from sem_tasks.registration import BRAINSResample
+    workflow_name = "resample_workflow3"
+    configkey='BRAINSResample3'
+    print(f"Making task {workflow_name}")
+
+    resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
+
+    # Set the inputs of Resample
+    resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+    resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
+    resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
+    resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
+    resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
+    resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
+    resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
+
     resample_workflow.add(resample_task)
     resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
 
@@ -482,8 +503,9 @@ processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.
 processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
 processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
 processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 
-processing_node.set_output([("out", processing_node.resample_workflow2.lzout.all_)])
+processing_node.set_output([("out", processing_node.resample_workflow3.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
