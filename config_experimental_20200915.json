@@ -158,10 +158,10 @@
   },
     "BRAINSResample5": {
     "executable": "BRAINSResample",
-    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
-    "interpolationMode": "Linear",
-    "outputVolume": "template_leftHemisphere.nii.gz",
-    "pixelType": "binary"
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_nac_labels.nii.gz",
+    "interpolationMode": "NearestNeighbor",
+    "outputVolume": "template_nac_labels.nii.gz",
+    "pixelType": "short"
   },
     "BRAINSResample6": {
     "executable": "BRAINSResample",
