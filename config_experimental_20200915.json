@@ -144,33 +144,45 @@
   },
     "BRAINSResample3": {
     "executable": "BRAINSResample",
-    "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz"
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/hncma-atlas.nii.gz",
+    "interpolationMode": "NearestNeighbor",
+    "outputVolume": "hncma_atlas.nii.gz",
+    "pixelType": "short"
   },
     "BRAINSResample4": {
     "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz"
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
   },
     "BRAINSResample5": {
     "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz"
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
   },
     "BRAINSResample6": {
     "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz"
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
   },
-    "BRAINSResample7": {
+    "BRAINSResample76": {
     "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz"
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
   },
     "BRAINSResample8": {
     "executable": "BRAINSResample",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "subject2atlas.nii.gz"
+    "outputVolume": "template_leftHemisphere.nii.gz",
+    "pixelType": "binary"
   },
   "BRAINSCreateLabelMapFromProbabilityMaps": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
