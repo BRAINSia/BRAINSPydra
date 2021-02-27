@@ -179,9 +179,9 @@
   },
     "BRAINSResample8": {
     "executable": "BRAINSResample",
-    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_leftHemisphere.nii.gz",
+    "inputVolume": "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "template_leftHemisphere.nii.gz",
+    "outputVolume": "template_headregion.nii.gz",
     "pixelType": "binary"
   },
   "BRAINSCreateLabelMapFromProbabilityMaps": {
