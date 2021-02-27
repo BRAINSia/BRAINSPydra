@@ -573,7 +573,7 @@ processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 
-processing_node.set_output([("out", processing_node.resample_workflow5.lzout.all_)])
+processing_node.set_output([("out", processing_node.resample_workflow6.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
