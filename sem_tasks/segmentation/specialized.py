@@ -357,6 +357,15 @@ class BRAINSABC:
                     },
                 ),
             ),
+            (
+                "t1_average",
+                attr.ib(
+                    type=traits.String,
+                    metadata={
+                        "help_string": "Explicitly specify the maximum number of threads to use.",
+                    },
+                ),
+            ),
         ]
         output_fields = [
             (
