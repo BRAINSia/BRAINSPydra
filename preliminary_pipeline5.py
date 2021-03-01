@@ -1236,13 +1236,48 @@ processing_node.add(
         restoreState=processing_node.antsRegistration_workflow2.lzout.save_state,
     )
 )
-# processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(
+    make_resample_workflow2(
+        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    )
+)
+processing_node.add(
+    make_resample_workflow3(
+        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    )
+)
+processing_node.add(
+    make_resample_workflow4(
+        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    )
+)
+processing_node.add(
+    make_resample_workflow5(
+        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    )
+)
+processing_node.add(
+    make_resample_workflow6(
+        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    )
+)
+processing_node.add(
+    make_resample_workflow7(
+        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    )
+)
+processing_node.add(
+    make_resample_workflow8(
+        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    )
+)
 
 
 processing_node.set_output([("out", processing_node.abc_workflow1.lzout.all_)])
