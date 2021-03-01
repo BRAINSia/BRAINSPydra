@@ -338,6 +338,15 @@ def make_antsRegistration_workflow2(fixed_image, fixed_image_masks, initial_movi
 
     return antsRegistration_workflow
 
+@pydra.mark.task
+def get_t1_average(outputs):
+    return outputs[0]
+
+@pydra.mark.task
+def get_posteriors(outputs):
+    return outputs[1:]
+
+
 
 def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSABC
@@ -383,12 +392,15 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
 
     print(abc_task.cmdline)
     abc_workflow.add(abc_task)
+    abc_workflow.add(get_t1_average(name="get_t1_average", outputs=abc_task.lzout.implicitOutputs))
+    abc_workflow.add(get_posteriors(name="get_posteriors", outputs=abc_task.lzout.implicitOutputs))
     abc_workflow.set_output([
         ("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes),
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
         ("atlasToSubjectTransform", abc_workflow.BRAINSABC.lzout.atlasToSubjectTransform),
-        ("posteriors", abc_workflow.BRAINSABC.lzout.implicitOutputs),
+        ("t1_average", abc_workflow.get_t1_average.lzout.out),
+        ("posteriors", abc_workflow.get_posteriors.lzout.out),
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
 
