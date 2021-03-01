@@ -361,13 +361,13 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
     abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
     abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes =                  "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #abc_workflow.lzin.inputVolumes
+    abc_task.inputs.inputVolumes =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #abc_workflow.lzin.inputVolumes
     abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
     abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
     abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
     abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
     abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
-    abc_task.inputs.restoreState =                  "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #abc_workflow.lzin.restoreState
+    abc_task.inputs.restoreState =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #abc_workflow.lzin.restoreState
     abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
     abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
     abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
