@@ -431,7 +431,7 @@ class BRAINSABC:
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=pydra.specs.File,
+                    type=pydra.specs.MultiOutputFile,
                     metadata={
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
                         "output_file_template": "{implicitOutputs}",
