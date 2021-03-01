@@ -385,7 +385,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out
-    abc_task.inputs.implicitOutputs =               list(experiment_configuration[configkey].get('t1_average')) + list(experiment_configuration[configkey].get('posteriors'))
+    abc_task.inputs.implicitOutputs =               [experiment_configuration[configkey].get('t1_average')] + experiment_configuration[configkey].get('posteriors')
 
 
 
