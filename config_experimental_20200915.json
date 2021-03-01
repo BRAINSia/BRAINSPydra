@@ -131,6 +131,7 @@
     "outputLabels": "brain_label_seg.nii.gz",
     "posteriorTemplate": "POSTERIOR_%s.nii.gz",
     "posteriors": ["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz", "POSTERIOR_CRBLWM.nii.gz", "POSTERIOR_CSF.nii.gz", "POSTERIOR_GLOBUS.nii.gz", "POSTERIOR_HIPPOCAMPUS.nii.gz", "POSTERIOR_NOTCSF.nii.gz", "POSTERIOR_NOTGM.nii.gz", "POSTERIOR_NOTVB.nii.gz", "POSTERIOR_NOTWM.nii.gz", "POSTERIOR_SURFGM.nii.gz", "POSTERIOR_THALAMUS.nii.gz", "POSTERIOR_VB.nii.gz", "POSTERIOR_WM.nii.gz", "NonAirMask.nii.gz"],
+    "t1_average": "t1_average_BRAINSABC.nii.gz",
     "purePlugsThreshold": 0.100000,
     "saveState": "SavedBABCInternalSyNState.h5",
     "useKNN": " "
