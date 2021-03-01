@@ -354,6 +354,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     # abc_workflow.add(get_self(name="get_self2", x=abc_workflow.lzin.inputVolumes))
 
     abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration[configkey]['executable']).get_task()
+
     abc_task.inputs.atlasDefinition =               experiment_configuration[configkey].get('atlasDefinition')
     abc_task.inputs.atlasToSubjectTransform =       experiment_configuration[configkey].get('atlasToSubjectTransform')
     abc_task.inputs.atlasToSubjectTransformType =   experiment_configuration[configkey].get('atlasToSubjectTransformType')
@@ -375,27 +376,9 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out
-    abc_task.inputs.implicitOutputs =               experiment_configuration[configkey].get('posteriors')#["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz"] #implicitOutputsString
-    abc_task.input_spec.fields.append((
-                "t1_average",
-                attr.ib(
-                    type=str,
-                    metadata={
-                        "help_string": "Explicitly specify the maximum number of threads to use.",
-                    },
-                ),
-            ),)
-    abc_task.output_spec.fields.append((
-                "t1_average",
-                attr.ib(
-                    type=pydra.specs.File,
-                    metadata={
-                        "help_string": "Resulting deformed image",
-                        "output_file_template": "t1_average_BRAINSABC.nii.gz",
-                    },
-                ),
-            ))
-    abc_task.inputs.t1_average =                    "t1_average_BRAINSABC.nii.gz"
+    abc_task.inputs.implicitOutputs =               list(experiment_configuration[configkey].get('t1_average')) + list(experiment_configuration[configkey].get('posteriors'))
+
+
 
 
     print(abc_task.cmdline)
@@ -405,7 +388,6 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
         ("atlasToSubjectTransform", abc_workflow.BRAINSABC.lzout.atlasToSubjectTransform),
-        ("t1_average", abc_workflow.BRAINSABC.lzout.t1_average),
         ("posteriors", abc_workflow.BRAINSABC.lzout.implicitOutputs),
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
