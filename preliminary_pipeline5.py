@@ -361,24 +361,28 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
     abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
     abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes =                  abc_workflow.lzin.inputVolumes
+    abc_task.inputs.inputVolumes =                  "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #abc_workflow.lzin.inputVolumes
     abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
     abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
     abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
     abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
     abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
-    abc_task.inputs.restoreState =                  abc_workflow.lzin.restoreState
+    abc_task.inputs.restoreState =                  "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #abc_workflow.lzin.restoreState
     abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
     abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
     abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
     abc_task.inputs.outputDir =                     experiment_configuration[configkey].get('outputDir')
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
-    abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out
-    # abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
-    abc_task.inputs.implicitOutputs =               ["POST_AIR.nii.gz", "POST_BASAL.nii.gz"]
+    abc_task.inputs.outputVolumes =                 "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out
 
-    # print(abc_task.cmdline)
+    # implicitOutputsString = "\""
+    # for file in ["POST_AIR.nii.gz", "POST_BASAL.nii.gz"]:
+    #     implicitOutputsString += f"{file} "
+    # implicitOutputsString += "\""
+    abc_task.inputs.implicitOutputs =               ["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz"] #implicitOutputsString
+
+    print(abc_task.cmdline)
     abc_workflow.add(abc_task)
     abc_workflow.set_output([
         ("outputVolumes", abc_workflow.BRAINSABC.lzout.outputVolumes),
@@ -628,18 +632,18 @@ processing_node.set_output([("out", processing_node.abc_workflow1.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
-sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.out, input_data=source_node.lzin.input_data)
+# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
-source_node.add(sink_node)
+# source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
