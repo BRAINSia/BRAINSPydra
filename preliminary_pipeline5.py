@@ -376,7 +376,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out
     # abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
-    abc_task.input_spec.fields.append((
+    abc_task.input_spec.fields += (
                 "t1_average",
                 attr.ib(
                     type=File,
@@ -385,8 +385,8 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
                         "help_string": "The list of input image files to be segmented.",
                     },
                 ),
-            ))
-    abc_task.output_spec.fields.append((
+            )
+    abc_task.output_spec.fields += (
                 "t1_average",
                 attr.ib(
                     type=pydra.specs.File,
@@ -395,7 +395,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
                         "output_file_template": "{t1_average}",
                     },
                 ),
-            ),)
+            )
     abc_task.inputs.t1_average =                         "t1_average_BRAINSABC.nii.gz"
 
     # print(abc_task.cmdline)
