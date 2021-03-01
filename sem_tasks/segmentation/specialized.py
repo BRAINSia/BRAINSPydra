@@ -319,7 +319,7 @@ class BRAINSABC:
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=File,
+                    type=MultiInputFile,
                     metadata={
                         "argstr": "--implicitOutputs ...",
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
