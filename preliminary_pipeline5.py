@@ -376,7 +376,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out
     # abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
-    abc_task.inputs.implicitOutputs =               ["POST_AIR.nii.gz"]#, "POST_BASAL.nii.gz"]
+    abc_task.inputs.implicitOutputs =               ["POST_AIR.nii.gz", "POST_BASAL.nii.gz"]
 
     # print(abc_task.cmdline)
     abc_workflow.add(abc_task)
