@@ -376,25 +376,25 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out
     abc_task.inputs.implicitOutputs =               experiment_configuration[configkey].get('posteriors')#["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz"] #implicitOutputsString
-    # abc_task.input_spec.fields.append((
-    #             "t1_average",
-    #             attr.ib(
-    #                 type=str,
-    #                 metadata={
-    #                     "help_string": "Explicitly specify the maximum number of threads to use.",
-    #                 },
-    #             ),
-    #         ),)
-    # abc_task.output_spec.fields.append((
-    #             "t1_average",
-    #             attr.ib(
-    #                 type=pydra.specs.File,
-    #                 metadata={
-    #                     "help_string": "Resulting deformed image",
-    #                     "output_file_template": "t1_average_BRAINSABC.nii.gz",
-    #                 },
-    #             ),
-    #         ))
+    abc_task.input_spec.fields.append((
+                "t1_average",
+                attr.ib(
+                    type=str,
+                    metadata={
+                        "help_string": "Explicitly specify the maximum number of threads to use.",
+                    },
+                ),
+            ),)
+    abc_task.output_spec.fields.append((
+                "t1_average",
+                attr.ib(
+                    type=pydra.specs.File,
+                    metadata={
+                        "help_string": "Resulting deformed image",
+                        "output_file_template": "t1_average_BRAINSABC.nii.gz",
+                    },
+                ),
+            ))
     abc_task.inputs.t1_average =                    "t1_average_BRAINSABC.nii.gz"
 
 
