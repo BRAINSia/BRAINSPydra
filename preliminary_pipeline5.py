@@ -361,13 +361,13 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
     abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
     abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #abc_workflow.lzin.inputVolumes
+    abc_task.inputs.inputVolumes =                  "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #abc_workflow.lzin.inputVolumes
     abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
     abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
     abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
     abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
     abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
-    abc_task.inputs.restoreState =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #abc_workflow.lzin.restoreState
+    abc_task.inputs.restoreState =                  "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #abc_workflow.lzin.restoreState
     abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
     abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
     abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
@@ -375,8 +375,17 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #abc_workflow.outputVolumes.lzout.out
-
     abc_task.inputs.implicitOutputs =               experiment_configuration[configkey].get('posteriors')#["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz"] #implicitOutputsString
+    abc_task.output_spec.fields.append((
+                "t1_average",
+                attr.ib(
+                    type=pydra.specs.File,
+                    metadata={
+                        "help_string": "Resulting deformed image",
+                        "output_file_template": "t1_average_BRAINSABC.nii.gz",
+                    },
+                ),
+            ),)
 
     print(abc_task.cmdline)
     abc_workflow.add(abc_task)
@@ -385,6 +394,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
         ("atlasToSubjectTransform", abc_workflow.BRAINSABC.lzout.atlasToSubjectTransform),
+        ("t1_average", abc_workflow.BRAINSABC.lzout.t1_average),
         ("posteriors", abc_workflow.BRAINSABC.lzout.implicitOutputs),
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
