@@ -319,11 +319,10 @@ class BRAINSABC:
             (
                 "implicitOutputs",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=MultiOutputFile,
                     metadata={
-                        "argstr": "--implicitOutputs ",
+                        "argstr": "--implicitOutputs ...",
                         "help_string": "Outputs to be made available to NiPype. Needed because not all BRAINSABC outputs have command line arguments.",
-                        "sep": ",",
                     },
                 ),
             ),
@@ -357,15 +356,6 @@ class BRAINSABC:
                     },
                 ),
             ),
-            # (
-            #     "t1_average",
-            #     attr.ib(
-            #         type=traits.String,
-            #         metadata={
-            #             "help_string": "Explicitly specify the maximum number of threads to use.",
-            #         },
-            #     ),
-            # ),
         ]
         output_fields = [
             (
@@ -448,16 +438,6 @@ class BRAINSABC:
                     },
                 ),
             ),
-            # (
-            #     "t1_average",
-            #     attr.ib(
-            #         type=pydra.specs.File,
-            #         metadata={
-            #             "help_string": "Resulting deformed image",
-            #             "output_file_template": "t1_average_BRAINSABC.nii.gz",
-            #         },
-            #     ),
-            # )
         ]
 
         input_spec = SpecInfo(name="Input", fields=input_fields, bases=(ShellSpec,))
@@ -1039,9 +1019,9 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "inputProbabilityVolume",
                 attr.ib(
-                    type=File,
+                    type=list,
                     metadata={
-                        "argstr": "--inputProbabilityVolume ",
+                        "argstr": "--inputProbabilityVolume ...",
                         "help_string": "The list of proobabilityimages.",
                     },
                 ),

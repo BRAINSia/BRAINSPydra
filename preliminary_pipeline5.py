@@ -30,35 +30,55 @@ with open(args.input_data_dictionary) as f:
 
 @pydra.mark.task
 def get_self(x):
-    print(f"abc_workflow.lzin.inputVolumes: |{x}|")
-    return x
+    print(f"type of self: {type(x)}")
+    print(f"self: {x}")
+    print(f"x[0]: {x[0]}")
+    list = []
+    for index, ele in enumerate(x):
+        list.append(str(ele))
+    print(f"list: {list}")
+    return list
 
 
 @pydra.mark.task
 def make_output_filename(
-    filename="", before_str="", append_str="", extension="", directory="", unused=""
+    filename="",
+    before_str="",
+    append_str="",
+    extension="",
+    directory="",
+    parent_dir="",
+    unused="",
 ):
     print("Making output filename")
     if filename is None:
         print("filename is none")
         return None
     else:
+        # If we want to set the parent id for a subject, the following if statement converts as follows:
+        # "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/t1_average_BRAINSABC_GaussianDenoised.nii.gz" -> "91300"
         if type(filename) is list:
             new_filename = []
             for f in filename:
                 if extension == "":
                     extension = "".join(Path(f).suffixes)
                 new_filename.append(
-                    f"{Path(Path(directory) / Path(before_str + Path(f).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+                    f"{Path(Path(directory) / Path(parent_dir) / Path(before_str + Path(f).with_suffix('').with_suffix('').name))}{append_str}{extension}"
                 )
         else:
             # If an extension is not specified and the filename has an extension, use the filename's extension
             if extension == "":
                 extension = "".join(Path(filename).suffixes)
-            new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+            new_filename = f"{Path(Path(directory) / Path(parent_dir) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
         print(f"filename: {filename}")
+        print(f"parent_dir: {parent_dir}")
         print(f"new_filename: {new_filename}")
         return new_filename
+
+
+@pydra.mark.task
+def get_parent_directory(filepath):
+    return Path(filepath).parent.name
 
 
 @pydra.mark.task
@@ -676,6 +696,8 @@ def get_t1_average(outputs):
 
 @pydra.mark.task
 def get_posteriors(outputs):
+    # print(type(outputs[1:]))
+    # print(outputs[1:])
     return outputs[1:]
 
 
@@ -731,7 +753,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     )
     abc_task.inputs.inputVolumes = (
         abc_workflow.lzin.inputVolumes
-    )  # "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #  #abc_workflow.lzin.inputVolumes
+    )  # "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # # # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #  #abc_workflow.lzin.inputVolumes
     abc_task.inputs.interpolationMode = experiment_configuration[configkey].get(
         "interpolationMode"
     )
@@ -749,7 +771,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     )
     abc_task.inputs.restoreState = (
         abc_workflow.lzin.restoreState
-    )  # "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #
+    )  # "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #
     abc_task.inputs.saveState = experiment_configuration[configkey].get("saveState")
     abc_task.inputs.useKNN = experiment_configuration[configkey].get("useKNN")
     abc_task.inputs.outputFormat = experiment_configuration[configkey].get(
@@ -764,7 +786,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     )
     abc_task.inputs.outputVolumes = (
         abc_workflow.outputVolumes.lzout.out
-    )  # "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #
+    )  # "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" # #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #
     abc_task.inputs.implicitOutputs = [
         experiment_configuration[configkey].get("t1_average")
     ] + experiment_configuration[configkey].get("posteriors")
@@ -787,6 +809,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
             ),
             ("t1_average", abc_workflow.get_t1_average.lzout.out),
             ("posteriors", abc_workflow.get_posteriors.lzout.out),
+            # ("posteriors", abc_workflow.BRAINSABC.lzout.implicitOutputs),
         ]
     )
 
@@ -1080,43 +1103,47 @@ def make_resample_workflow8(referenceVolume, warpTransform) -> pydra.Workflow:
     return resample_workflow
 
 
-def make_CreateLabelMapFromProbabilityMaps_workflow(
-    my_source_node: pydra.Workflow,
+def make_createLabelMapFromProbabilityMaps_workflow1(
+    inputProbabilityVolume, nonAirRegionMask
 ) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import (
         BRAINSCreateLabelMapFromProbabilityMaps,
     )
 
+    workflow_name = "createLabelMapFromProbabilityMaps_workflow1"
+    configkey = "BRAINSCreateLabelMapFromProbabilityMaps1"
+    print(f"Making task {workflow_name}")
+
     label_map_workflow = pydra.Workflow(
-        name="label_map_workflow",
-        input_spec=["input_data"],
-        input_data=my_source_node.lzin.input_data,
+        name=workflow_name,
+        input_spec=["inputProbabilityVolume", "nonAirRegionMask"],
+        inputProbabilityVolume=inputProbabilityVolume,
+        nonAirRegionMask=nonAirRegionMask,
     )
 
     label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(
         name="BRAINSCreateLabelMapFromProbabilityMaps",
-        executable=experiment_configuration["BRAINSCreateLabelMapFromProbabilityMaps"][
-            "executable"
-        ],
+        executable=experiment_configuration[configkey]["executable"],
     ).get_task()
-    label_map_task.inputs.cleanLabelVolume = experiment_configuration[
-        "BRAINSCreateLabelMapFromProbabilityMaps"
-    ].get("cleanLabelVolume")
-    label_map_task.inputs.dirtyLabelVolume = experiment_configuration[
-        "BRAINSCreateLabelMapFromProbabilityMaps"
-    ].get("dirtyLabelVolume")
-    label_map_task.inputs.foregroundPriors = experiment_configuration[
-        "BRAINSCreateLabelMapFromProbabilityMaps"
-    ].get("foregroundPriors")
-    label_map_task.inputs.inputProbabilityVolume = experiment_configuration[
-        "BRAINSCreateLabelMapFromProbabilityMaps"
-    ].get("inputProbabilityVolume")
-    label_map_task.inputs.priorLabelCodes = experiment_configuration[
-        "BRAINSCreateLabelMapFromProbabilityMaps"
-    ].get("priorLabelCodes")
-    label_map_task.inputs.inclusionThreshold = experiment_configuration[
-        "BRAINSCreateLabelMapFromProbabilityMaps"
-    ].get("inclusionThreshold")
+    label_map_task.inputs.cleanLabelVolume = experiment_configuration[configkey].get(
+        "cleanLabelVolume"
+    )
+    label_map_task.inputs.dirtyLabelVolume = experiment_configuration[configkey].get(
+        "dirtyLabelVolume"
+    )
+    label_map_task.inputs.foregroundPriors = experiment_configuration[configkey].get(
+        "foregroundPriors"
+    )
+    label_map_task.inputs.inputProbabilityVolume = (
+        label_map_workflow.lzin.inputProbabilityVolume
+    )  # experiment_configuration[configkey].get('inputProbabilityVolume') #label_map_workflow.get_self.lzout.out # #label_map_workflow.get_self.lzout.out #label_map_workflow.lzin.inputProbabilityVolume #  # #label_map_workflow.lzin.inputProbabilityVolume # #inputProbabilityVolumes #label_map_workflow.lzin.inputProbabilityVolume # # #
+    label_map_task.inputs.priorLabelCodes = experiment_configuration[configkey].get(
+        "priorLabelCodes"
+    )
+    label_map_task.inputs.inclusionThreshold = experiment_configuration[configkey].get(
+        "inclusionThreshold"
+    )
+    label_map_task.inputs.nonAirRegionMask = label_map_workflow.lzin.nonAirRegionMask
 
     label_map_workflow.add(label_map_task)
     label_map_workflow.set_output(
@@ -1134,34 +1161,423 @@ def make_CreateLabelMapFromProbabilityMaps_workflow(
     return label_map_workflow
 
 
+def make_landmarkInitializer_workflow3(
+    inputFixedLandmarkFilename, inputMovingLandmarkFilename
+) -> pydra.Workflow:
+    from sem_tasks.utilities.brains import BRAINSLandmarkInitializer
+
+    workflow_name = f"landmarkInitializer_workflow3"
+    configkey = f"BRAINSLandmarkInitializer3"
+    print(f"Making task {workflow_name}")
+
+    landmark_initializer_workflow = pydra.Workflow(
+        name=workflow_name,
+        input_spec=["inputFixedLandmarkFilename", "inputMovingLandmarkFilename"],
+        inputFixedLandmarkFilename=inputFixedLandmarkFilename,
+        inputMovingLandmarkFilename=inputMovingLandmarkFilename,
+    )
+    landmark_initializer_workflow.add(
+        get_parent_directory(
+            name="get_parent_directory",
+            filepath=landmark_initializer_workflow.lzin.inputMovingLandmarkFilename,
+        )
+    )
+    landmark_initializer_workflow.add(
+        make_output_filename(
+            name="outputTransformFilename",
+            before_str="landmarkInitializer_",
+            filename=landmark_initializer_workflow.get_parent_directory.lzout.out,
+            append_str="_to_subject_transform",
+            extension=".h5",
+        )
+    )
+
+    landmark_initializer_task = BRAINSLandmarkInitializer(
+        name="BRAINSLandmarkInitializer",
+        executable=experiment_configuration[configkey].get("executable"),
+    ).get_task()
+    landmark_initializer_task.inputs.inputFixedLandmarkFilename = (
+        landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
+    )
+    landmark_initializer_task.inputs.inputMovingLandmarkFilename = (
+        landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
+    )
+    landmark_initializer_task.inputs.inputWeightFilename = experiment_configuration[
+        configkey
+    ].get("inputWeightFilename")
+    landmark_initializer_task.inputs.outputTransformFilename = (
+        landmark_initializer_workflow.outputTransformFilename.lzout.out
+    )  # experiment_configuration[configkey].get('outputTransformFilename')
+
+    landmark_initializer_workflow.add(landmark_initializer_task)
+    landmark_initializer_workflow.set_output(
+        [
+            (
+                "outputTransformFilename",
+                landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename,
+            ),
+            # ("outputTransformFilename2", landmark_initializer_workflow.outputTransformFilename.lzout.out)
+            ("atlas_id", landmark_initializer_workflow.get_parent_directory.lzout.out),
+        ]
+    )
+
+    return landmark_initializer_workflow
+
+
+def make_roi_workflow3(inputVolume) -> pydra.Workflow:
+    from sem_tasks.segmentation.specialized import BRAINSROIAuto
+
+    workflow_name = "roi_workflow2"
+    configkey = "BRAINSROIAuto2"
+    print(f"Making task {workflow_name}")
+
+    roi_workflow = pydra.Workflow(
+        name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume
+    )
+
+    roi_task = BRAINSROIAuto(
+        "BRAINSROIAuto",
+        executable=experiment_configuration[configkey].get("executable"),
+    ).get_task()
+    roi_task.inputs.inputVolume = roi_workflow.lzin.inputVolume
+    roi_task.inputs.ROIAutoDilateSize = experiment_configuration[configkey].get(
+        "ROIAutoDilateSize"
+    )
+    roi_task.inputs.outputROIMaskVolume = experiment_configuration[configkey].get(
+        "outputROIMaskVolume"
+    )
+
+    roi_workflow.add(roi_task)
+    roi_workflow.set_output(
+        [
+            (
+                "outputROIMaskVolume",
+                roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume,
+            ),
+        ]
+    )
+
+    return roi_workflow
+
+
+def make_antsRegistration_workflow3(
+    fixed_image, fixed_image_masks, initial_moving_transform, atlas_id
+) -> pydra.Workflow:
+    from pydra.tasks.nipype1.utils import Nipype1Task
+    from nipype.interfaces.ants import Registration
+
+    workflow_name = "antsRegistration_workflow3"
+    configkey = "ANTSRegistration3"
+    print(f"Making task {workflow_name}")
+
+    # Create the workflow
+    antsRegistration_workflow = pydra.Workflow(
+        name=workflow_name,
+        input_spec=[
+            "fixed_image",
+            "fixed_image_masks",
+            "initial_moving_transform",
+            "atlas_id",
+        ],
+        fixed_image=fixed_image,
+        fixed_image_masks=fixed_image_masks,
+        initial_moving_transform=initial_moving_transform,
+        atlas_id=atlas_id,
+    )
+    antsRegistration_workflow.add(
+        make_output_filename(
+            name="make_moving_image",
+            directory=experiment_configuration[configkey].get("moving_image_dir"),
+            parent_dir=antsRegistration_workflow.lzin.atlas_id,
+            filename=experiment_configuration[configkey].get("moving_image_filename"),
+        )
+    )
+    antsRegistration_workflow.add(
+        make_output_filename(
+            name="make_moving_image_masks",
+            directory=experiment_configuration[configkey].get("moving_image_dir"),
+            parent_dir=antsRegistration_workflow.lzin.atlas_id,
+            filename=experiment_configuration[configkey].get(
+                "moving_image_masks_filename"
+            ),
+        )
+    )
+    antsRegistration_workflow.add(
+        make_output_filename(
+            name="make_output_transform_prefix",
+            before_str=antsRegistration_workflow.lzin.atlas_id,
+            filename=experiment_configuration[configkey].get(
+                "output_transform_prefix_suffix"
+            ),
+        )
+    )
+    antsRegistration_workflow.add(
+        make_output_filename(
+            name="make_output_warped_image",
+            before_str=antsRegistration_workflow.lzin.atlas_id,
+            filename=experiment_configuration[configkey].get(
+                "output_warped_image_suffix"
+            ),
+        )
+    )
+
+    antsRegistration_task = Nipype1Task(Registration())
+
+    antsRegistration_task.inputs.fixed_image = (
+        antsRegistration_workflow.lzin.fixed_image
+    )
+    antsRegistration_task.inputs.fixed_image_masks = (
+        antsRegistration_workflow.lzin.fixed_image_masks
+    )
+    antsRegistration_task.inputs.initial_moving_transform = (
+        antsRegistration_workflow.lzin.initial_moving_transform
+    )
+    antsRegistration_task.inputs.moving_image = (
+        antsRegistration_workflow.make_moving_image.lzout.out
+    )
+    antsRegistration_task.inputs.moving_image_masks = (
+        antsRegistration_workflow.make_moving_image_masks.lzout.out
+    )
+
+    antsRegistration_task.inputs.save_state = experiment_configuration[configkey].get(
+        "save_state"
+    )
+    antsRegistration_task.inputs.transforms = experiment_configuration[configkey].get(
+        "transforms"
+    )
+    antsRegistration_task.inputs.transform_parameters = experiment_configuration[
+        configkey
+    ].get("transform_parameters")
+    antsRegistration_task.inputs.number_of_iterations = experiment_configuration[
+        configkey
+    ].get("number_of_iterations")
+    antsRegistration_task.inputs.dimension = experiment_configuration[configkey].get(
+        "dimensionality"
+    )
+    antsRegistration_task.inputs.write_composite_transform = experiment_configuration[
+        configkey
+    ].get("write_composite_transform")
+    antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration[
+        configkey
+    ].get("collapse_output_transforms")
+    antsRegistration_task.inputs.verbose = experiment_configuration[configkey].get(
+        "verbose"
+    )
+    antsRegistration_task.inputs.initialize_transforms_per_stage = (
+        experiment_configuration[configkey].get("initialize_transforms_per_stage")
+    )
+    antsRegistration_task.inputs.float = experiment_configuration[configkey].get(
+        "float"
+    )
+    antsRegistration_task.inputs.metric = experiment_configuration[configkey].get(
+        "metric"
+    )
+    antsRegistration_task.inputs.metric_weight = experiment_configuration[
+        configkey
+    ].get("metric_weight")
+    antsRegistration_task.inputs.radius_or_number_of_bins = experiment_configuration[
+        configkey
+    ].get("radius_or_number_of_bins")
+    antsRegistration_task.inputs.sampling_strategy = experiment_configuration[
+        configkey
+    ].get("sampling_strategy")
+    antsRegistration_task.inputs.sampling_percentage = experiment_configuration[
+        configkey
+    ].get("sampling_percentage")
+    antsRegistration_task.inputs.convergence_threshold = experiment_configuration[
+        configkey
+    ].get("convergence_threshold")
+    antsRegistration_task.inputs.convergence_window_size = experiment_configuration[
+        configkey
+    ].get("convergence_window_size")
+    antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration[
+        configkey
+    ].get("smoothing_sigmas")
+    antsRegistration_task.inputs.sigma_units = experiment_configuration[configkey].get(
+        "sigma_units"
+    )
+    antsRegistration_task.inputs.shrink_factors = experiment_configuration[
+        configkey
+    ].get("shrink_factors")
+    antsRegistration_task.inputs.use_estimate_learning_rate_once = (
+        experiment_configuration[configkey].get("use_estimate_learning_rate_once")
+    )
+    antsRegistration_task.inputs.use_histogram_matching = experiment_configuration[
+        configkey
+    ].get("use_histogram_matching")
+    antsRegistration_task.inputs.winsorize_lower_quantile = experiment_configuration[
+        configkey
+    ].get("winsorize_lower_quantile")
+    antsRegistration_task.inputs.winsorize_upper_quantile = experiment_configuration[
+        configkey
+    ].get("winsorize_upper_quantile")
+
+    # Set the variables that set output file names
+    antsRegistration_task.inputs.output_transform_prefix = (
+        antsRegistration_workflow.make_output_transform_prefix.lzout.out
+    )
+    antsRegistration_task.inputs.output_warped_image = (
+        antsRegistration_workflow.make_output_warped_image.lzout.out
+    )  # experiment_configuration[configkey].get('output_warped_image')
+    # antsRegistration_task.inputs.output_inverse_warped_image =      False #    experiment_configuration[configkey].get('output_inverse_warped_image')
+
+    antsRegistration_workflow.add(antsRegistration_task)
+    antsRegistration_workflow.set_output(
+        [
+            ("save_state", antsRegistration_task.lzout.save_state),
+            ("composite_transform", antsRegistration_task.lzout.composite_transform),
+            (
+                "inverse_composite_transform",
+                antsRegistration_task.lzout.inverse_composite_transform,
+            ),
+            ("warped_image", antsRegistration_task.lzout.warped_image),
+            ("inverse_warped_image", antsRegistration_task.lzout.inverse_warped_image),
+        ]
+    )
+
+    return antsRegistration_workflow
+
+
+def make_roi_workflow3(inputVolume) -> pydra.Workflow:
+    from sem_tasks.segmentation.specialized import BRAINSROIAuto
+
+    workflow_name = "roi_workflow3"
+    configkey = "BRAINSROIAuto3"
+    print(f"Making task {workflow_name}")
+
+    roi_workflow = pydra.Workflow(
+        name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume
+    )
+
+    roi_task = BRAINSROIAuto(
+        "BRAINSROIAuto",
+        executable=experiment_configuration[configkey].get("executable"),
+    ).get_task()
+    roi_task.inputs.inputVolume = roi_workflow.lzin.inputVolume
+    roi_task.inputs.ROIAutoDilateSize = experiment_configuration[configkey].get(
+        "ROIAutoDilateSize"
+    )
+    roi_task.inputs.outputROIMaskVolume = experiment_configuration[configkey].get(
+        "outputROIMaskVolume"
+    )
+
+    roi_workflow.add(roi_task)
+    roi_workflow.set_output(
+        [
+            (
+                "outputROIMaskVolume",
+                roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume,
+            ),
+        ]
+    )
+
+    return roi_workflow
+
+
+def make_antsApplyTransforms_workflow1(atlas_id):
+    from pydra.tasks.nipype1.utils import Nipype1Task
+    from nipype.interfaces.ants import ApplyTransforms
+
+    workflow_name = "antsApplyTransforms_workflow1"
+    configkey = "ANTSApplyTransforms1"
+    print(f"Making task {workflow_name}")
+
+    # Create the workflow
+    # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
+    antsRegistration_workflow = pydra.Workflow(
+        name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id
+    )
+
+    antsRegistration_workflow.add(
+        make_output_filename(
+            name="input_image",
+            directory=experiment_configuration[configkey].get("input_image_dir"),
+            parent_dir=antsRegistration_workflow.lzin.atlas_id,
+            filename=experiment_configuration[configkey].get("input_image_filename"),
+        )
+    )
+
+    antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
+
+    antsApplyTransforms_task.inputs.dimension = 3
+    antsApplyTransforms_task.inputs.float = False
+    antsApplyTransforms_task.inputs.input_image = (
+        antsRegistration_workflow.input_image.lzout.out
+    )  # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
+    antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
+    antsApplyTransforms_task.inputs.output_image = "91300fswm_2_subj_lbl.nii.gz"
+    antsApplyTransforms_task.inputs.reference_image = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
+    antsApplyTransforms_task.inputs.transforms = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
+
+    antsRegistration_workflow.add(antsApplyTransforms_task)
+    antsRegistration_workflow.set_output(
+        [
+            ("output_image", antsApplyTransforms_task.lzout.output_image),
+        ]
+    )
+
+    return antsRegistration_workflow
+
+
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
     return list(processed_dict.values())
 
 
+def copy(cache_path, output_dir):
+    if Path(cache_path).is_file():
+        out_path = Path(output_dir) / Path(cache_path).name
+        print(f"Copying from {cache_path} to {out_path}")
+        copyfile(cache_path, out_path)
+    else:
+        print(f"{cache_path} is not a file")
+        out_path = cache_path
+
+    return out_path
+
+
 # If on same mount point use hard link instead of copy (not windows - look into this)
 @pydra.mark.task
 def copy_from_cache(cache_path, output_dir, input_data):
+    print(cache_path)
     input_filename = Path(input_data.get("t1")).with_suffix("").with_suffix("").name
     file_output_dir = Path(output_dir) / Path(input_filename)
     file_output_dir.mkdir(parents=True, exist_ok=True)
     if cache_path is None:
-        print(f"cache_path: {cache_path}")
         return ""  # Don't return a cache_path if it is None
     else:
+        # If the files to be copied locally are nested in a dictionary, put the values of the dictionary in a list
+        if type(cache_path) is dict:
+            cache_path_elements = list(cache_path.values())
+            cache_path = []
+            for cache_path_element in cache_path_elements:
+                cache_path.append(cache_path_element)
+        # If the files to be copied are in a list, copy each element of the list
         if type(cache_path) is list:
             output_list = []
             for path in cache_path:
-                out_path = Path(file_output_dir) / Path(path).name
-                print(f"Copying from {path} to {out_path}")
-                copyfile(path, out_path)
-                output_list.append(out_path)
+                # If the files to be copied are in a dictionary, copy each value of the dictionary
+                if type(path) is dict:
+                    for nested_path in list(path.values()):
+                        # out_path = Path(file_output_dir) / Path(nested_path).name
+                        # print(f"Copying from {nested_path} to {out_path}")
+                        # copyfile(nested_path, out_path)
+                        out_path = copy(nested_path, file_output_dir)
+                        output_list.append(out_path)
+                else:
+                    # print(f"not nested: {path}")
+                    # out_path = Path(file_output_dir) / Path(path).name
+                    # print(f"Copying from {path} to {out_path}")
+                    # copyfile(path, out_path)
+                    out_path = copy(path, file_output_dir)
+                    output_list.append(out_path)
             return output_list
         else:
-            out_path = Path(file_output_dir) / Path(cache_path).name
-            print(f"Copying from {cache_path} to {out_path}")
-            copyfile(cache_path, out_path)
-            return cache_path
+            # out_path = Path(file_output_dir) / Path(cache_path).name
+            # print(f"Copying from {cache_path} to {out_path}")
+            # copyfile(cache_path, out_path)
+            cache_path = copy(cache_path, file_output_dir)
+    return cache_path
 
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
@@ -1238,56 +1654,96 @@ processing_node.add(
 )
 processing_node.add(
     make_resample_workflow2(
-        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        referenceVolume=processing_node.abc_workflow1.lzout.t1_average,
         warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
     )
 )
 processing_node.add(
     make_resample_workflow3(
-        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        referenceVolume=processing_node.abc_workflow1.lzout.t1_average,
         warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
     )
 )
 processing_node.add(
     make_resample_workflow4(
-        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        referenceVolume=processing_node.abc_workflow1.lzout.t1_average,
         warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
     )
 )
 processing_node.add(
     make_resample_workflow5(
-        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        referenceVolume=processing_node.abc_workflow1.lzout.t1_average,
         warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
     )
 )
 processing_node.add(
     make_resample_workflow6(
-        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        referenceVolume=processing_node.abc_workflow1.lzout.t1_average,
         warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
     )
 )
 processing_node.add(
     make_resample_workflow7(
-        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        referenceVolume=processing_node.abc_workflow1.lzout.t1_average,
         warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
     )
 )
 processing_node.add(
     make_resample_workflow8(
-        referenceVolume=processing_node.abc_workflow1.lzout.implicitOutputs,
+        referenceVolume=processing_node.abc_workflow1.lzout.t1_average,
         warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform,
     )
 )
+processing_node.add(
+    make_createLabelMapFromProbabilityMaps_workflow1(
+        inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors,
+        nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume,
+    )
+)
+processing_node.add(
+    make_landmarkInitializer_workflow3(
+        inputMovingLandmarkFilename=experiment_configuration[
+            "BRAINSLandmarkInitializer3"
+        ].get("inputMovingLandmarkFilename"),
+        inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+    ).split("inputMovingLandmarkFilename")
+)
+processing_node.add(
+    make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average)
+)
+processing_node.add(
+    make_antsRegistration_workflow3(
+        fixed_image=processing_node.abc_workflow1.lzout.t1_average,
+        fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume,
+        initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+        atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id,
+    )
+)
+# processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename')).split("atlas_id")) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
-
-processing_node.set_output([("out", processing_node.abc_workflow1.lzout.all_)])
+processing_node.set_output(
+    [
+        # ("out", processing_node.antsRegistration_workflow3.lzout.all_),
+        ("save_state", processing_node.antsRegistration_workflow3.lzout.save_state),
+        (
+            "composite_transform",
+            processing_node.antsRegistration_workflow3.lzout.composite_transform,
+        ),
+        (
+            "inverse_composite_transform",
+            processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform,
+        ),
+        ("warped_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
+        # ("inverse_warped_image", processing_node.antsRegistration_workflow3.lzout.inverse_warped_image),
+    ]
+)
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(
     name="sink_node",
     input_spec=["processed_files", "input_data"],
-    processed_files=processing_node.lzout.out,
+    processed_files=processing_node.lzout.all_,
     input_data=source_node.lzin.input_data,
 )
 sink_node.add(
@@ -1316,6 +1772,8 @@ source_node.set_output(
     ]
 )
 # source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
+
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:

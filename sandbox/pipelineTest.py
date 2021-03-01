@@ -41,14 +41,70 @@ def make_cache_dir(input_sub):
 def make_output_filename(
     filename="", before_str="", append_str="", extension="", directory="", unused=""
 ):
+    print("Making output filename")
     if filename is None:
+        print("filename is none")
         return None
     else:
-        # If an extension is not specified and the filename has an extension, use the filename's extension
-        if extension == "":
-            extension = "".join(Path(filename).suffixes)
-        new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+        if type(filename) is list:
+            new_filename = []
+            for f in filename:
+                if extension == "":
+                    extension = "".join(Path(f).suffixes)
+                new_filename.append(
+                    f"{Path(Path(directory) / Path(before_str + Path(f).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+                )
+                # Path(new_filename[-1]).touch()
+        else:
+            # If an extension is not specified and the filename has an extension, use the filename's extension
+            if extension == "":
+                extension = "".join(Path(filename).suffixes)
+            new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+            # Path(new_filename).touch()
+        print(f"filename: {filename}")
+        print(f"new_filename: {new_filename}")
         return new_filename
+
+
+@pydra.mark.task
+def get_self(x):
+    return x
+
+
+@pydra.mark.task
+def get_None():
+    x = 4
+
+    return x
+
+
+@pydra.mark.task
+def get_processed_outputs(processed_dict: dict):
+    return list(processed_dict.values())
+
+
+@pydra.mark.task
+def copy_from_cache(cache_path, output_dir, input_data):
+    input_filename = Path(input_data.get("t1")).with_suffix("").with_suffix("").name
+    file_output_dir = Path(output_dir) / Path(input_filename)
+    file_output_dir.mkdir(parents=True, exist_ok=True)
+    if cache_path is None:
+        print(f"cache_path: {cache_path}")
+        return ""  # Don't return a cache_path if it is None
+    else:
+        if type(cache_path) is list:
+            output_list = []
+            for path in cache_path:
+                out_path = Path(file_output_dir) / Path(path).name
+                print(f"Copying from {path} to {out_path}")
+                copyfile(path, out_path)
+                output_list.append(out_path)
+            return output_list
+        else:
+            out_path = Path(file_output_dir) / Path(cache_path).name
+            print(f"Copying from {cache_path} to {out_path}")
+            copyfile(cache_path, out_path)
+            return cache_path
 
 
 file = "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/test.sh"
@@ -75,22 +131,11 @@ my_input_spec = SpecInfo(
     name="Input",
     fields=[
         (
-            "input",
+            "createFiles",
             attr.ib(
-                type=MultiInputFile,
+                type=MultiOutputFile,
                 metadata={
-                    "argstr": "--input",
-                    "sep": ",",
-                    "help_string": "list of name indices",
-                },
-            ),
-        ),
-        (
-            "default",
-            attr.ib(
-                type=MultiInputFile,
-                metadata={
-                    "argstr": "--default",
+                    "argstr": "--createFiles ",
                     "sep": ",",
                     "help_string": "list of name indices",
                 },
@@ -101,7 +146,17 @@ my_input_spec = SpecInfo(
             attr.ib(
                 type=File,
                 metadata={
-                    "argstr": "--output",
+                    "argstr": "--output ",
+                    "help_string": "list of name indices",
+                },
+            ),
+        ),
+        (
+            "contents",
+            attr.ib(
+                type=list,
+                metadata={
+                    "argstr": "--contents ",
                     "sep": ",",
                     "help_string": "list of name indices",
                 },
@@ -115,7 +170,17 @@ my_output_spec = SpecInfo(
     name="Output",
     fields=[
         (
-            "new_files",
+            "createFiles",
+            attr.ib(
+                type=pydra.specs.MultiOutputFile,
+                metadata={
+                    "output_file_template": "{createFiles}",
+                    "help_string": "output file",
+                },
+            ),
+        ),
+        (
+            "output",
             attr.ib(
                 type=pydra.specs.File,
                 metadata={
@@ -123,7 +188,7 @@ my_output_spec = SpecInfo(
                     "help_string": "output file",
                 },
             ),
-        )
+        ),
     ],
     bases=(ShellOutSpec,),
 )
@@ -135,12 +200,26 @@ shelly_workflow = pydra.Workflow(
 )
 
 
-shelly = ShellCommandTask(
-    name="shelly",
+shelly_createFiles = ShellCommandTask(
+    name="shelly_createFiles",
     executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/test.sh",
     input_spec=my_input_spec,
     output_spec=my_output_spec,
 )
+shelly_createFiles.inputs.createFiles = ["test1", "test2"]
+
+shelly_writeOutput = ShellCommandTask(
+    name="shelly_writeOutput",
+    executable="/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/test.sh",
+    input_spec=my_input_spec,
+    output_spec=my_output_spec,
+)
+
+# @pydra.mark.task
+# def get_self(x):
+#     print(x)
+#     return x
+
 shelly_workflow.add(
     get_input_field(
         name="get_t1", input_dict=shelly_workflow.lzin.input_data, field="t1"
@@ -151,90 +230,57 @@ shelly_workflow.add(
         name="output",
         filename=shelly_workflow.get_t1.lzout.out,
         append_str="_corrected",
-        extension=".nii.gz",
+        extension=".txt",
     )
 )
-shelly_workflow.add(shelly)
-# new_output = ["file1.txt", "file2.txt"]
-# new_output = "file1.txt"
+shelly_workflow.add(get_None(name="get_None"))
 
-# shelly.inputs.input = shelly_workflow.lzin.input_data
-shelly.inputs.input = shelly_workflow.get_t1.lzout.out
-shelly.inputs.output = shelly_workflow.output.lzout.out
+shelly_workflow.add(shelly_createFiles)
+# shelly_workflow.add(get_self(name="get_self", x=shelly_workflow.shelly_createFiles.lzout.createFiles))
+shelly_writeOutput.inputs.contents = (
+    shelly_workflow.shelly_createFiles.lzout.createFiles
+)
+shelly_writeOutput.inputs.output = shelly_workflow.output.lzout.out
+shelly_workflow.add(shelly_writeOutput)
 
-shelly.inputs.default = "%s_corrected_%d.nii.gz"
-shelly_workflow.set_output([("out", shelly_workflow.shelly.lzout.new_files)])
-
-
-@pydra.mark.task
-def get_self(x):
-    return x
-
-
-@pydra.mark.task
-def get_processed_outputs(processed_dict: dict):
-    to_return = None
-    # print(list(processed_dict.values()))
-    # if type(list(processed_dict.values())[0]) is list:
-    #     print("its a list")
-    #     to_return = list(processed_dict.values())
-    # else:
-    #     print("not a list")
-    #     to_return = [list(processed_dict.values())]
-    to_return = list(processed_dict.values())
-    # print(to_return)
-    return to_return
-
-
-@pydra.mark.task
-def copy_from_cache(cache_path, output_dir):
-    pass
-    # print("in copy_from_cache")
-    # print(cache_path)
-    # if cache_path is None:
-    #     return "" # Don't return a cache_path if it is None
-    # else:
-    #     if type(cache_path) is list:
-    #         output_list = []
-    #         for path in cache_path:
-    #             copyfile(path, Path(output_dir) / Path(path).name)
-    #             out_path = Path(output_dir) / Path(path).name
-    #             copyfile(path, out_path)
-    #             output_list.append(out_path)
-    #         return output_list
-    #     else:
-    #         copyfile(cache_path, Path(output_dir) / Path(cache_path).name)
-    #         out_path = Path(output_dir) / Path(cache_path).name
-    #         copyfile(cache_path, out_path)
-    #         return cache_path
-    # return "test"
+shelly_workflow.set_output(
+    [
+        ("out", shelly_workflow.shelly_writeOutput.lzout.output),
+        ("out2", shelly_workflow.get_None.lzout.out),
+    ]
+)
 
 
 sink_node = pydra.Workflow(
     name="sink_node",
-    input_spec=["processed_files"],
+    input_spec=["processed_files", "input_data"],
     processed_files=shelly_workflow.lzout.all_,
+    input_data=source_node.lzin.input_data,
 )
 sink_node.add(
     get_processed_outputs(
         name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files
     )
 )
-# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.get_processed_outputs.lzout.out).split("cache_path"))
-# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
-sink_node.set_output([("output_files", sink_node.get_processed_outputs.lzout.out)])
+sink_node.add(
+    copy_from_cache(
+        name="copy_from_cache",
+        output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir",
+        cache_path=sink_node.get_processed_outputs.lzout.out,
+        input_data=sink_node.lzin.input_data,
+    ).split("cache_path")
+)
+sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+# sink_node.set_output([("output_files", sink_node.get_processed_outputs.lzout.out)])
 
 
 source_node.add(shelly_workflow)
-# source_node.add(sink_node)
-# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files)])
-source_node.set_output([("output_files", source_node.shelly_workflow.lzout.out)])
+source_node.add(sink_node)
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files)])
+# source_node.set_output([("output_files", source_node.shelly_workflow.lzout.out)])
 
-
-# print(shelly.cmdline)
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
-# result = source_node.result(return_inputs=True)
 result = source_node.result()
 print(result)
