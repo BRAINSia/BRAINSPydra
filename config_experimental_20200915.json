@@ -131,7 +131,6 @@
     "outputLabels": "brain_label_seg.nii.gz",
     "posteriorTemplate": "POSTERIOR_%s.nii.gz",
     "purePlugsThreshold": 0.100000,
-    "restoreState": "SavedInternalSyNState.h5",
     "saveState": "SavedBABCInternalSyNState.h5",
     "useKNN": " "
   },
