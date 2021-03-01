@@ -390,7 +390,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
 
 
 
-    print(abc_task.cmdline)
+    # print(abc_task.cmdline)
     abc_workflow.add(abc_task)
     abc_workflow.add(get_t1_average(name="get_t1_average", outputs=abc_task.lzout.implicitOutputs))
     abc_workflow.add(get_posteriors(name="get_posteriors", outputs=abc_task.lzout.implicitOutputs))
