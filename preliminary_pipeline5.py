@@ -395,7 +395,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     #                 },
     #             ),
     #         ))
-    # abc_task.inputs.t1_average =                    "t1_average_BRAINSABC.nii.gz"
+    abc_task.inputs.t1_average =                    "t1_average_BRAINSABC.nii.gz"
 
 
     print(abc_task.cmdline)
