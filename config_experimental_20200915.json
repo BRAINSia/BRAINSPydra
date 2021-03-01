@@ -130,7 +130,7 @@
     "outputFormat": "NIFTI",
     "outputLabels": "brain_label_seg.nii.gz",
     "posteriorTemplate": "POSTERIOR_%s.nii.gz",
-    "posteriors": ["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz", "POST_CRBLWM.nii.gz", "POST_CSF.nii.gz", "POST_GLOBUS.nii.gz", "POST_HIPPOCAMPUS.nii.gz", "POST_NOTCSF.nii.gz", "POST_NOTGM.nii.gz", "POST_NOTVB.nii.gz", "POST_NOTWM.nii.gz", "POST_SURFGM.nii.gz", "POST_THALAMUS.nii.gz", "POST_VB.nii.gz", "POST_WM.nii.gz", "NonAirMask.nii.gz"],
+    "posteriors": ["POST_AIR.nii.gz", "POST_BASAL.nii.gz", "POST_CRBLGM.nii.gz", "POST_CRBLWM.nii.gz", "POST_CSF.nii.gz", "POST_GLOBUS.nii.gz", "POST_HIPPOCAMPUS.nii.gz", "POST_NOTCSF.nii.gz", "POST_NOTGM.nii.gz", "POST_NOTVB.nii.gz", "POST_NOTWM.nii.gz", "POST_SURFGM.nii.gz", "POST_THALAMUS.nii.gz", "POST_VB.nii.gz", "POST_WM.nii.gz"],
     "t1_average": "t1_average_BRAINSABC.nii.gz",
     "purePlugsThreshold": 0.100000,
     "saveState": "SavedBABCInternalSyNState.h5",
