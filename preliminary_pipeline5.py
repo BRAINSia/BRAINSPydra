@@ -3,6 +3,7 @@ from pathlib import Path
 from shutil import copyfile
 import json
 import argparse
+import attr
 
 
 parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
@@ -371,8 +372,17 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out
-    abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
-
+    # abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
+    abc_task.output_spec.fields.append((
+                "t1_average",
+                attr.ib(
+                    type=pydra.specs.File,
+                    metadata={
+                        "help_string": "(optional) Filename to which save the final state of the registration",
+                        "output_file_template": "t1_average_BRAINSABC.nii.gz",
+                    },
+                ),
+            ),)
 
     # print(abc_task.cmdline)
     abc_workflow.add(abc_task)
@@ -381,7 +391,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
         ("atlasToSubjectTransform", abc_workflow.BRAINSABC.lzout.atlasToSubjectTransform),
-        ("implicitOutputs", abc_workflow.BRAINSABC.lzout.implicitOutputs),
+        ("t1_average", abc_workflow.BRAINSABC.lzout.t1_average),
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
 
