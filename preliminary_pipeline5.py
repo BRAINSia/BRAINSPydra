@@ -375,28 +375,9 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
     abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out
-    # abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
-    abc_task.input_spec.fields += (
-                "t1_average",
-                attr.ib(
-                    type=File,
-                    metadata={
-                        "argstr": "--inputVolumes ",
-                        "help_string": "The list of input image files to be segmented.",
-                    },
-                ),
-            )
-    abc_task.output_spec.fields += (
-                "t1_average",
-                attr.ib(
-                    type=pydra.specs.File,
-                    metadata={
-                        "help_string": "(optional) Filename to which save the final state of the registration",
-                        "output_file_template": "{t1_average}",
-                    },
-                ),
-            )
-    abc_task.inputs.t1_average =                         "t1_average_BRAINSABC.nii.gz"
+    abc_task.inputs.implicitOutputs =               "t1_average_BRAINSABC.nii.gz"
+
+    # abc_task.inputs.t1_average =                         "t1_average_BRAINSABC.nii.gz"
 
     # print(abc_task.cmdline)
     abc_workflow.add(abc_task)
@@ -405,7 +386,7 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputDirtyLabels", abc_workflow.BRAINSABC.lzout.outputDirtyLabels),
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
         ("atlasToSubjectTransform", abc_workflow.BRAINSABC.lzout.atlasToSubjectTransform),
-        ("implicitOutputs", abc_workflow.BRAINSABC.lzout.t1_average),
+        ("implicitOutputs", abc_workflow.BRAINSABC.lzout.implicitOutputs),
     ])
     # abc_workflow.set_output([("out", abc_workflow.get_self2.lzout.out)])
 
