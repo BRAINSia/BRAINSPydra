@@ -38,11 +38,11 @@ class BRAINSABC:
             (
                 "inputVolumes",
                 attr.ib(
-                    type=MultiInputFile,
+                    type=File,
                     metadata={
                         "argstr": "--inputVolumes ",
                         "help_string": "The list of input image files to be segmented.",
-                        "sep": ",",
+                        # "sep": ",",
                     },
                 ),
             ),
@@ -140,11 +140,11 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=MultiOutputFile,
+                    type=File,
                     metadata={
                         "argstr": "--outputVolumes ",
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
-                        "sep": ",",
+                        # "sep": ",",
                     },
                 ),
             ),
@@ -404,7 +404,7 @@ class BRAINSABC:
             (
                 "outputVolumes",
                 attr.ib(
-                    type=pydra.specs.MultiOutputFile,
+                    type=pydra.specs.File,
                     metadata={
                         "help_string": "Corrected Output Images: should specify the same number of images as inputVolume, if only one element is given, then it is used as a file pattern where %s is replaced by the imageVolumeType, and %d by the index list location.",
                         "sep": ",",
