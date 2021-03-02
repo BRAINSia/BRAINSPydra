@@ -371,25 +371,24 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
     abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
     abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
     abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-    abc_task.inputs.inputVolumes =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #abc_workflow.lzin.inputVolumes # # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #  #abc_workflow.lzin.inputVolumes
+    abc_task.inputs.inputVolumes =                  abc_workflow.lzin.inputVolumes #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # # # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #  #abc_workflow.lzin.inputVolumes
     abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
     abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
     abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
     abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
     abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
-    abc_task.inputs.restoreState =                  "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #abc_workflow.lzin.restoreState #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #
+    abc_task.inputs.restoreState =                  abc_workflow.lzin.restoreState #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #
     abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
     abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
     abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
     abc_task.inputs.outputDir =                     experiment_configuration[configkey].get('outputDir')
     abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
     abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
-    abc_task.inputs.outputVolumes =                 "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" # abc_workflow.outputVolumes.lzout.out#"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #
-    abc_task.inputs.implicitOutputs =               [experiment_configuration[configkey].get('t1_average')] + experiment_configuration[configkey].get('posteriors')
+    abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" # #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #
+    abc_task.inputs.implicitOutputs =               [experiment_configuration[configkey].get('t1_average')] + ["NonAirMask.nii.gz"] + experiment_configuration[configkey].get('posteriors')
 
 
 
-    print(abc_task.cmdline)
     abc_workflow.add(abc_task)
     abc_workflow.add(get_t1_average(name="get_t1_average", outputs=abc_task.lzout.implicitOutputs))
     abc_workflow.add(get_posteriors(name="get_posteriors", outputs=abc_task.lzout.implicitOutputs))
@@ -628,16 +627,16 @@ processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1
 processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
 processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
 processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
-# processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-# processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 
 
-processing_node.set_output([("out", processing_node.abc_workflow1.lzout.all_)])
+processing_node.set_output([("out", processing_node.resample_workflow8.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
