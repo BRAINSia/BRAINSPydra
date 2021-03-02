@@ -557,19 +557,23 @@ def make_resample_workflow8(referenceVolume, warpTransform) -> pydra.Workflow:
 
     return resample_workflow
 
-def make_CreateLabelMapFromProbabilityMaps_workflow(my_source_node: pydra.Workflow) -> pydra.Workflow:
+def make_CreateLabelMapFromProbabilityMaps_workflow1() -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
+    workflow_name = "CreateLabelMapFromProbabilityMaps_workflow1"
+    configkey='BRAINSCreateLabelMapFromProbabilityMaps1'
+    print(f"Making task {workflow_name}")
 
-    label_map_workflow = pydra.Workflow(name="label_map_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+    label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbababilityVolume"])
 
-    label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps']['executable']).get_task()
-    label_map_task.inputs.cleanLabelVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('cleanLabelVolume')
-    label_map_task.inputs.dirtyLabelVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('dirtyLabelVolume')
-    label_map_task.inputs.foregroundPriors = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('foregroundPriors')
-    label_map_task.inputs.inputProbabilityVolume = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('inputProbabilityVolume')
-    label_map_task.inputs.priorLabelCodes = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('priorLabelCodes')
-    label_map_task.inputs.inclusionThreshold = experiment_configuration['BRAINSCreateLabelMapFromProbabilityMaps'].get('inclusionThreshold')
+    label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
+    label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
+    label_map_task.inputs.dirtyLabelVolume =            experiment_configuration[configkey].get('dirtyLabelVolume')
+    label_map_task.inputs.foregroundPriors =            experiment_configuration[configkey].get('foregroundPriors')
+    label_map_task.inputs.inputProbabilityVolume =      experiment_configuration[configkey].get('inputProbabilityVolume')
+    label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
+    label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
 
+    print(label_map_task.cmdline)
     label_map_workflow.add(label_map_task)
     label_map_workflow.set_output([("cleanLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.cleanLabelVolume),
                                    ("dirtyLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.dirtyLabelVolume)])
@@ -618,25 +622,25 @@ processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data
 processing_node.add(get_inputs_workflow(my_source_node=processing_node))
 
 
-processing_node.add(make_bcd_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=processing_node.inputs_workflow.lzout.inputLandmarksEMSP))
-processing_node.add(make_roi_workflow1(inputVolume=processing_node.bcd_workflow1.lzout.outputResampledVolume))
-processing_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
-processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, warpTransform=processing_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
-processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
-processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
-processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
-processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
-processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_bcd_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=processing_node.inputs_workflow.lzout.inputLandmarksEMSP))
+# processing_node.add(make_roi_workflow1(inputVolume=processing_node.bcd_workflow1.lzout.outputResampledVolume))
+# processing_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
+# processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, warpTransform=processing_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
+# processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
+# processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
+# processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
+# processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
+# processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1())
 
-
-processing_node.set_output([("out", processing_node.resample_workflow8.lzout.all_)])
+processing_node.set_output([("out", processing_node.CreateLabelMapFromProbabilityMaps_workflow1.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
