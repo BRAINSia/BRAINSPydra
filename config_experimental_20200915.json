@@ -185,8 +185,8 @@
     "outputVolume": "template_headregion.nii.gz",
     "pixelType": "binary"
   },
-  "BRAINSCreateLabelMapFromProbabilityMaps": {
-    "executable": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/BRAINSCreateLabelMapFromProbabilityMaps4.sh",
+  "BRAINSCreateLabelMapFromProbabilityMaps1": {
+    "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
     "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
     "dirtyLabelVolume": "fixed_headlabels_seg.nii.gz",
     "foregroundPriors": [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
