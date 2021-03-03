@@ -1021,10 +1021,10 @@ class BRAINSCreateLabelMapFromProbabilityMaps:
             (
                 "inputProbabilityVolume",
                 attr.ib(
-                    type=MultiInputObj,
+                    type=MultiInputFile,
                     metadata={
-                        "argstr": "--inputProbabilityVolume ...",
-                        "help_string": "The list of proobabilityimages.",
+                        "argstr": "-i ...",
+                        "help_string": "The list of probabilityimages.",
                     },
                 ),
             ),
