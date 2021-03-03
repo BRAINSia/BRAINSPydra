@@ -23,7 +23,7 @@ with open(args.input_data_dictionary) as f:
 
 @pydra.mark.task
 def get_self(x):
-    print(f"abc_workflow.lzin.inputVolumes: |{x}|")
+    print(f"self: |{x}|")
     return x
 
 
@@ -564,6 +564,8 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     print(f"Making task {workflow_name}")
 
     label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
+
+    get_self(label_map_workflow.lzin.inputProbabilityVolume)
 
     label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
     label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
