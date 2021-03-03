@@ -557,21 +557,22 @@ def make_resample_workflow8(referenceVolume, warpTransform) -> pydra.Workflow:
 
     return resample_workflow
 
-def make_CreateLabelMapFromProbabilityMaps_workflow1() -> pydra.Workflow:
+def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, nonAirRegionMask) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
     workflow_name = "CreateLabelMapFromProbabilityMaps_workflow1"
     configkey='BRAINSCreateLabelMapFromProbabilityMaps1'
     print(f"Making task {workflow_name}")
 
-    label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbababilityVolume"])
+    label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
 
     label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
     label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
     label_map_task.inputs.dirtyLabelVolume =            experiment_configuration[configkey].get('dirtyLabelVolume')
     label_map_task.inputs.foregroundPriors =            experiment_configuration[configkey].get('foregroundPriors')
-    label_map_task.inputs.inputProbabilityVolume =      experiment_configuration[configkey].get('inputProbabilityVolume')
+    label_map_task.inputs.inputProbabilityVolume =      experiment_configuration[configkey].get('inputProbabilityVolume') #label_map_workflow.lzin.inputProbabilityVolume #
     label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
     label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
+    label_map_workflow.inputs.nonAirRegionMask =        experiment_configuration[configkey].get('nonAirRegionMask') #label_map_workflow.lzin.nonAirRegionMask
 
     print(label_map_task.cmdline)
     label_map_workflow.add(label_map_task)
@@ -638,7 +639,7 @@ processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1())
+processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 
 processing_node.set_output([("out", processing_node.CreateLabelMapFromProbabilityMaps_workflow1.lzout.all_)])
 
