@@ -565,7 +565,7 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
 
     label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
 
-    get_self(label_map_workflow.lzin.inputProbabilityVolume)
+    label_map_workflow.add(get_self(name="get_self", x=label_map_workflow.lzin.inputProbabilityVolume))
 
     label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
     label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
