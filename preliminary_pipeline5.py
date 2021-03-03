@@ -572,7 +572,7 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
     label_map_task.inputs.dirtyLabelVolume =            experiment_configuration[configkey].get('dirtyLabelVolume')
     label_map_task.inputs.foregroundPriors =            experiment_configuration[configkey].get('foregroundPriors')
-    label_map_task.inputs.inputProbabilityVolume =      experiment_configuration[configkey].get('inputProbabilityVolume') # #label_map_workflow.lzin.inputProbabilityVolume
+    label_map_task.inputs.inputProbabilityVolume =      label_map_workflow.lzin.inputProbabilityVolume #experiment_configuration[configkey].get('inputProbabilityVolume') # #
     label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
     label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
     # label_map_workflow.inputs.nonAirRegionMask =        label_map_workflow.lzin.nonAirRegionMask #experiment_configuration[configkey].get('nonAirRegionMask') #label_map_workflow.lzin.nonAirRegionMask
