@@ -640,7 +640,7 @@ processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1())
 
-processing_node.set_output([("out", processing_node.CreateLabelMapFromProbabilityMaps_workflow1.lzout.all_)])
+processing_node.set_output([("out", processing_node.CreateLabelMapFromProbabilityMaps_workflow1:wq.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
