@@ -566,21 +566,21 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
 
     label_map_workflow.add(get_self(name="get_self", x=label_map_workflow.lzin.inputProbabilityVolume))
-    label_map_workflow.set_output([("get_self", label_map_workflow.get_self.lzout.out)])
+    # label_map_workflow.set_output([("get_self", label_map_workflow.get_self.lzout.out)])
 
-    # label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
-    # label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
-    # label_map_task.inputs.dirtyLabelVolume =            experiment_configuration[configkey].get('dirtyLabelVolume')
-    # label_map_task.inputs.foregroundPriors =            experiment_configuration[configkey].get('foregroundPriors')
-    # label_map_task.inputs.inputProbabilityVolume =      label_map_workflow.lzin.inputProbabilityVolume #experiment_configuration[configkey].get('inputProbabilityVolume') # #
-    # label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
-    # label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
+    label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
+    label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
+    label_map_task.inputs.dirtyLabelVolume =            experiment_configuration[configkey].get('dirtyLabelVolume')
+    label_map_task.inputs.foregroundPriors =            experiment_configuration[configkey].get('foregroundPriors')
+    label_map_task.inputs.inputProbabilityVolume =      experiment_configuration[configkey].get('inputProbabilityVolume') # #label_map_workflow.lzin.inputProbabilityVolume
+    label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
+    label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
     # label_map_workflow.inputs.nonAirRegionMask =        label_map_workflow.lzin.nonAirRegionMask #experiment_configuration[configkey].get('nonAirRegionMask') #label_map_workflow.lzin.nonAirRegionMask
-    #
-    # # print(label_map_task.cmdline)
-    # label_map_workflow.add(label_map_task)
-    # label_map_workflow.set_output([("cleanLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.cleanLabelVolume),
-    #                                ("dirtyLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.dirtyLabelVolume)])
+
+    # print(label_map_task.cmdline)
+    label_map_workflow.add(label_map_task)
+    label_map_workflow.set_output([("cleanLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.cleanLabelVolume),
+                                   ("dirtyLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.dirtyLabelVolume)])
     return label_map_workflow
 
 
