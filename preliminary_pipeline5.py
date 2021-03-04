@@ -23,6 +23,7 @@ with open(args.input_data_dictionary) as f:
 
 @pydra.mark.task
 def get_self(x):
+    print(f"type of self: {type(x)}")
     print(f"self: |{x}|")
     return x
 
@@ -567,14 +568,14 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
 
     label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
 
-    # label_map_workflow.add(get_self(name="get_self", x=label_map_workflow.lzin.inputProbabilityVolume))
+    label_map_workflow.add(get_self(name="get_self", x=label_map_workflow.lzin.inputProbabilityVolume))
     # label_map_workflow.set_output([("get_self", label_map_workflow.get_self.lzout.out)])
 
     label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
     label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
     label_map_task.inputs.dirtyLabelVolume =            experiment_configuration[configkey].get('dirtyLabelVolume')
     label_map_task.inputs.foregroundPriors =            experiment_configuration[configkey].get('foregroundPriors')
-    label_map_task.inputs.inputProbabilityVolume =      label_map_workflow.lzin.inputProbabilityVolume # experiment_configuration[configkey].get('inputProbabilityVolume') #label_map_workflow.get_self.lzout.out #label_map_workflow.lzin.inputProbabilityVolume # #inputProbabilityVolumes #label_map_workflow.lzin.inputProbabilityVolume # # #
+    label_map_task.inputs.inputProbabilityVolume =      label_map_workflow.get_self.lzout.out #label_map_workflow.lzin.inputProbabilityVolume # experiment_configuration[configkey].get('inputProbabilityVolume') #label_map_workflow.get_self.lzout.out #label_map_workflow.lzin.inputProbabilityVolume # #inputProbabilityVolumes #label_map_workflow.lzin.inputProbabilityVolume # # #
     label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
     label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
     label_map_task.inputs.nonAirRegionMask =            label_map_workflow.lzin.nonAirRegionMask #experiment_configuration[configkey].get('nonAirRegionMask') #label_map_workflow.lzin.nonAirRegionMask
