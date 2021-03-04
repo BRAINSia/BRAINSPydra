@@ -574,9 +574,6 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     print(f"Making task {workflow_name}")
 
     label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
-    # abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
-    # label_map_workflow.add(get_self(name="get_self", x=label_map_workflow.lzin.inputProbabilityVolume))
-    # label_map_workflow.set_output([("get_self", label_map_workflow.get_self.lzout.out)])
 
     label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
     label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
@@ -585,14 +582,12 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     label_map_task.inputs.inputProbabilityVolume =      experiment_configuration[configkey].get('inputProbabilityVolume') #label_map_workflow.get_self.lzout.out # #label_map_workflow.get_self.lzout.out #label_map_workflow.lzin.inputProbabilityVolume #  # #label_map_workflow.lzin.inputProbabilityVolume # #inputProbabilityVolumes #label_map_workflow.lzin.inputProbabilityVolume # # #
     label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
     label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
-    label_map_task.inputs.nonAirRegionMask =            label_map_workflow.lzin.nonAirRegionMask #experiment_configuration[configkey].get('nonAirRegionMask') #label_map_workflow.lzin.nonAirRegionMask
+    label_map_task.inputs.nonAirRegionMask =            label_map_workflow.lzin.nonAirRegionMask
 
-    # print(label_map_task.cmdline)
     label_map_workflow.add(label_map_task)
     label_map_workflow.set_output([
         ("cleanLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.cleanLabelVolume),
         ("dirtyLabelVolume", label_map_workflow.BRAINSCreateLabelMapFromProbabilityMaps.lzout.dirtyLabelVolume),
-        # ("get_self", label_map_workflow.get_self.lzout.out)
     ])
     return label_map_workflow
 
@@ -657,7 +652,7 @@ processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 
-processing_node.set_output([("out", processing_node.antsRegistration_workflow1.lzout.all_)])
+processing_node.set_output([("out", processing_node.CreateLabelMapFromProbabilityMaps_workflow1.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
