@@ -24,8 +24,9 @@ with open(args.input_data_dictionary) as f:
 @pydra.mark.task
 def get_self(x):
     print(f"type of self: {type(x)}")
-    print(f"self: |{x}|")
-    return list(x)
+    print(f"self: {x}")
+    print(f"x[0]: {x[0]}")
+    return x[0]
 
 
 @pydra.mark.task
