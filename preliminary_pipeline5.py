@@ -28,7 +28,7 @@ def get_self(x):
     print(f"x[0]: {x[0]}")
     list = []
     for index, ele in enumerate(x):
-        list.append(ele.name)
+        list.append(str(ele))
     print(f"list: {list}")
     return list
 
