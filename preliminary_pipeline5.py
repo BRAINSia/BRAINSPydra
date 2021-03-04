@@ -405,7 +405,9 @@ def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         ("outputLabels", abc_workflow.BRAINSABC.lzout.outputLabels),
         ("atlasToSubjectTransform", abc_workflow.BRAINSABC.lzout.atlasToSubjectTransform),
         ("t1_average", abc_workflow.get_t1_average.lzout.out),
-        ("posteriors", abc_workflow.get_posteriors.lzout.out),
+        # ("posteriors", abc_workflow.get_posteriors.lzout.out),
+        ("posteriors", abc_workflow.BRAINSABC.lzout.implicitOutputs),
+
     ])
 
     return abc_workflow
