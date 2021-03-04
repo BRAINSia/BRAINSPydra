@@ -26,7 +26,10 @@ def get_self(x):
     print(f"type of self: {type(x)}")
     print(f"self: {x}")
     print(f"x[0]: {x[0]}")
-    return x[0]
+    list = []
+    for ele in x:
+        list.append(ele)
+    return list
 
 
 @pydra.mark.task
