@@ -28,8 +28,8 @@ def get_self(x):
     print(f"x[0]: {x[0]}")
     list = []
     for index, ele in enumerate(x):
-        if index > 5:
-            list.append(ele)
+        list.append(ele.name)
+    print(f"list: {list}")
     return list
 
 
@@ -575,7 +575,7 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
 
     label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
     # abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
-    label_map_workflow.add(get_self(name="get_self", x=experiment_configuration[configkey].get('inputProbabilityVolume')))
+    label_map_workflow.add(get_self(name="get_self", x=label_map_workflow.lzin.inputProbabilityVolume))
     # label_map_workflow.set_output([("get_self", label_map_workflow.get_self.lzout.out)])
 
     label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
