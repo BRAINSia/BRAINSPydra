@@ -25,7 +25,7 @@ with open(args.input_data_dictionary) as f:
 def get_self(x):
     print(f"type of self: {type(x)}")
     print(f"self: |{x}|")
-    return x
+    return list(x)
 
 
 @pydra.mark.task
@@ -567,7 +567,7 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     print(f"Making task {workflow_name}")
 
     label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
-
+    # abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
     label_map_workflow.add(get_self(name="get_self", x=label_map_workflow.lzin.inputProbabilityVolume))
     # label_map_workflow.set_output([("get_self", label_map_workflow.get_self.lzout.out)])
 
