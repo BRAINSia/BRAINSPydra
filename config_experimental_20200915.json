@@ -224,32 +224,118 @@
 
   "BRAINSLandmarkInitializer5": {
     "executable": "BRAINSLandmarkInitializer",
-    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91626/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
-    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+    "outputTransformFilename": "landmarkInitializer_91626_to_subject_transform.h5"
   },
   "BRAINSLandmarkInitializer6": {
     "executable": "BRAINSLandmarkInitializer",
-    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/93075/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
-    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+    "outputTransformFilename": "landmarkInitializer_93075_to_subject_transform.h5"
   },
+
   "BRAINSLandmarkInitializer7": {
     "executable": "BRAINSLandmarkInitializer",
-    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/53657/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
-    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+    "outputTransformFilename": "landmarkInitializer_53657_to_subject_transform.h5"
   },
   "BRAINSLandmarkInitializer8": {
     "executable": "BRAINSLandmarkInitializer",
-    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/75094/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_75094_to_subject_transform.h5"
+  },
+
+  "BRAINSLandmarkInitializer9": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/75909/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_75909_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer10": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/55648/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_55648_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer11": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/27612/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_27612_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer12": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/49543/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_49543_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer13": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/58446/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_58446_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer14": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/52712/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_52712_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer15": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/68653/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_68653_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer16": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/37960/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_37960_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer17": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/_/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
   },
-  "BRAINSLandmarkInitializer9": {
+  "BRAINSLandmarkInitializer18": {
     "executable": "BRAINSLandmarkInitializer",
-    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/35888/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
-    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
-  }
+    "outputTransformFilename": "landmarkInitializer_35888_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer19": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/23687/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_23687_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer20": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/14165/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_14165_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer21": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/13512/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_13512_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer22": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/23163/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_23163_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer23": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/21003/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_21003_to_subject_transform.h5"
+  },
 }

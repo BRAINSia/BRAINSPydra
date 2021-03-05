@@ -673,17 +673,49 @@ processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_
 processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 processing_node.add(make_landmarkInitializer_workflow_by_index(index=4, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=5, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=6, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=7, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=8, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=9, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=10, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=11, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=12, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=13, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=14, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=15, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=16, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=17, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=18, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=19, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=20, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=21, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=22, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=23, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 
-
-processing_node.set_output([("out", processing_node.landmarkInitializer_workflow4.lzout.all_)])
+processing_node.set_output([
+    ("out", processing_node.landmarkInitializer_workflow3.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow4.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow5.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow6.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow7.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow8.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow9.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow10.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow11.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow12.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow13.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow14.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow15.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow16.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow17.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow18.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow19.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow20.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow21.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow22.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow23.lzout.all_),
+])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
