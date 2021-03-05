@@ -215,7 +215,7 @@ antsRegistration \
 --cleanLabelVolume fixed_brainlabels_seg.nii.gz \
 --dirtyLabelVolume fixed_headlabels_seg.nii.gz \
 --foregroundPriors 0,1,1,1,1,1,1,0,0,0,0,1,1,1,1 \
---inputProbabilityVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_AIR.nii.gzPOSTERIOR_AIR.nii.gz \
+--inputProbabilityVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_AIR.nii.gz \
 --inputProbabilityVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_BASAL.nii.gz \
 --inputProbabilityVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_CRBLGM.nii.gz \
 --inputProbabilityVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/POSTERIOR_CRBLWM.nii.gz \
