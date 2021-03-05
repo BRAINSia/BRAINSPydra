@@ -337,5 +337,5 @@
     "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/21003/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_21003_to_subject_transform.h5"
-  },
+  }
 }
