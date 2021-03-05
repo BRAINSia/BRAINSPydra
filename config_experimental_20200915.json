@@ -208,5 +208,11 @@
     "nonAirRegionMask": "/localscratch/Users/cjohnson30/output_dir/fixedImageROIAutoMask.nii.gz",
     "priorLabelCodes": [1,2,21,23,24,25,11,12,4,5,6,7,8,9,0],
     "inclusionThreshold": 0.0
+  },
+  "BRAINSLandmarkInitializer3": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
   }
 }

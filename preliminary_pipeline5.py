@@ -591,7 +591,27 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     ])
     return label_map_workflow
 
+def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename) -> pydra.Workflow:
+    from sem_tasks.utilities.brains import BRAINSLandmarkInitializer
+    workflow_name = "landmarkInitializer_workflow3"
+    configkey='BRAINSLandmarkInitializer3'
+    print(f"Making task {workflow_name}")
 
+
+    landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputFixedLandmarkFilename"], inputFixedLandmarkFilename=inputFixedLandmarkFilename)
+
+    landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
+    landmark_initializer_task.inputs.inputFixedLandmarkFilename =   landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
+    landmark_initializer_task.inputs.inputMovingLandmarkFilename =  experiment_configuration[configkey].get('inputMovingLandmarkFilename')
+    landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
+    landmark_initializer_task.inputs.outputTransformFilename =      experiment_configuration[configkey].get('outputTransformFilename')
+
+    landmark_initializer_workflow.add(landmark_initializer_task)
+    landmark_initializer_workflow.set_output([
+        ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)
+    ])
+
+    return landmark_initializer_workflow
 
 
 
@@ -651,8 +671,9 @@ processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
+processing_node.add(make_landmarkInitializer_workflow3(inputFixedLandmarkFilename=processing_node.bcd_workflow3.lzout.outputLandmarksInACPCAlignedSpace))
 
-processing_node.set_output([("out", processing_node.CreateLabelMapFromProbabilityMaps_workflow1.lzout.all_)])
+processing_node.set_output([("out", processing_node.landmarkInitializer_workflow3.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
