@@ -691,7 +691,6 @@ processing_node.add(make_landmarkInitializer_workflow_by_index(index=19, inputFi
 processing_node.add(make_landmarkInitializer_workflow_by_index(index=20, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 processing_node.add(make_landmarkInitializer_workflow_by_index(index=21, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 processing_node.add(make_landmarkInitializer_workflow_by_index(index=22, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-processing_node.add(make_landmarkInitializer_workflow_by_index(index=23, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 
 processing_node.set_output([
     ("out", processing_node.landmarkInitializer_workflow3.lzout.all_),
@@ -714,7 +713,6 @@ processing_node.set_output([
     ("out", processing_node.landmarkInitializer_workflow20.lzout.all_),
     ("out", processing_node.landmarkInitializer_workflow21.lzout.all_),
     ("out", processing_node.landmarkInitializer_workflow22.lzout.all_),
-    ("out", processing_node.landmarkInitializer_workflow23.lzout.all_),
 ])
 
 
