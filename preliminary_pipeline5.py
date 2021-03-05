@@ -56,6 +56,10 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         return new_filename
 
 @pydra.mark.task
+def get_parent_directory(filepath):
+    return Path(filepath).parent.name
+
+@pydra.mark.task
 def get_input_field(input_dict: dict, field):
     return input_dict[field]
 
@@ -599,13 +603,15 @@ def make_landmarkInitializer_workflow_by_index(index, inputFixedLandmarkFilename
 
 
     landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputFixedLandmarkFilename", "inputMovingLandmarkFilename"], inputFixedLandmarkFilename=inputFixedLandmarkFilename, inputMovingLandmarkFilename=inputMovingLandmarkFilename)
+    landmark_initializer_workflow.add(get_parent_directory(name="get_parent_directory", filepath=landmark_initializer_workflow.lzin.inputMovingLandmarkFilename))
+    landmark_initializer_workflow.add(make_output_filename(name="outputTransformFilename", before_str="landmarkInitializer_", filename=landmark_initializer_workflow.get_parent_directory.lzout.out, append_str="_to_subject_transform", extension=".h5"))
 
     landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
     landmark_initializer_task.inputs.inputFixedLandmarkFilename =   landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
     landmark_initializer_task.inputs.inputMovingLandmarkFilename =   landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
     # landmark_initializer_task.inputs.inputMovingLandmarkFilename =  experiment_configuration[configkey].get('inputMovingLandmarkFilename')
     landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
-    landmark_initializer_task.inputs.outputTransformFilename =      experiment_configuration[configkey].get('outputTransformFilename')
+    landmark_initializer_task.inputs.outputTransformFilename =      landmark_initializer_workflow.outputTransformFilename.lzout.out #experiment_configuration[configkey].get('outputTransformFilename')
 
     landmark_initializer_workflow.add(landmark_initializer_task)
     landmark_initializer_workflow.set_output([
