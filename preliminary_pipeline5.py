@@ -700,7 +700,7 @@ processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbab
 # processing_node.add(make_landmarkInitializer_workflow_by_index(index=20, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 # processing_node.add(make_landmarkInitializer_workflow_by_index(index=21, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 # processing_node.add(make_landmarkInitializer_workflow_by_index(index=22, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-processing_node.add(make_landmarkInitializer_workflow_by_index(index=23, inputMovingLandmarkFilename=experiment_configuration[configkey].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=23, inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer23"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 
 processing_node.set_output([
     # ("out3", processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename),
