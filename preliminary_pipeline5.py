@@ -701,9 +701,9 @@ processing_node.add(make_landmarkInitializer_workflow_by_index(index=21, inputFi
 processing_node.add(make_landmarkInitializer_workflow_by_index(index=22, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 
 processing_node.set_output([
-    # ("out3", processing_node.landmarkInitializer_workflow3.lzout.all_),
-    # ("out4", processing_node.landmarkInitializer_workflow4.lzout.all_),
-    ("out5", processing_node.landmarkInitializer_workflow5.lzout.all_),
+    ("out3", processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename),
+    # ("out4", processing_node.landmarkInitializer_workflow4.lzout.outputTransformFilename),
+    # ("out5", processing_node.landmarkInitializer_workflow5.lzout.outputTransformFilename),
     # ("out6", processing_node.landmarkInitializer_workflow6.lzout.all_),
     # ("out7", processing_node.landmarkInitializer_workflow7.lzout.all_),
     # ("out8", processing_node.landmarkInitializer_workflow8.lzout.all_),
