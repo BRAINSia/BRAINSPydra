@@ -591,18 +591,19 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     ])
     return label_map_workflow
 
-def make_landmarkInitializer_workflow_by_index(index, inputFixedLandmarkFilename) -> pydra.Workflow:
+def make_landmarkInitializer_workflow_by_index(index, inputFixedLandmarkFilename, inputMovingLandmarkFilename) -> pydra.Workflow:
     from sem_tasks.utilities.brains import BRAINSLandmarkInitializer
     workflow_name = f"landmarkInitializer_workflow{index}"
     configkey = f'BRAINSLandmarkInitializer{index}'
     print(f"Making task {workflow_name}")
 
 
-    landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputFixedLandmarkFilename"], inputFixedLandmarkFilename=inputFixedLandmarkFilename)
+    landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputFixedLandmarkFilename", "inputMovingLandmarkFilename"], inputFixedLandmarkFilename=inputFixedLandmarkFilename, inputMovingLandmarkFilename=inputMovingLandmarkFilename)
 
     landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
     landmark_initializer_task.inputs.inputFixedLandmarkFilename =   landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
-    landmark_initializer_task.inputs.inputMovingLandmarkFilename =  experiment_configuration[configkey].get('inputMovingLandmarkFilename')
+    landmark_initializer_task.inputs.inputMovingLandmarkFilename =   landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
+    # landmark_initializer_task.inputs.inputMovingLandmarkFilename =  experiment_configuration[configkey].get('inputMovingLandmarkFilename')
     landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
     landmark_initializer_task.inputs.outputTransformFilename =      experiment_configuration[configkey].get('outputTransformFilename')
 
@@ -699,7 +700,7 @@ processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbab
 # processing_node.add(make_landmarkInitializer_workflow_by_index(index=20, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 # processing_node.add(make_landmarkInitializer_workflow_by_index(index=21, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 # processing_node.add(make_landmarkInitializer_workflow_by_index(index=22, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-processing_node.add(make_landmarkInitializer_workflow_by_index(index=23, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=23, inputMovingLandmarkFilename=experiment_configuration[configkey].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 
 processing_node.set_output([
     # ("out3", processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename),
