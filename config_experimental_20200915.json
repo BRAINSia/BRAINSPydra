@@ -211,7 +211,7 @@
   },
   "BRAINSLandmarkInitializer3": {
     "executable": "BRAINSLandmarkInitializer",
-    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
   }
