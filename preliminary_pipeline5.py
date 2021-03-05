@@ -591,10 +591,10 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     ])
     return label_map_workflow
 
-def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename) -> pydra.Workflow:
+def make_landmarkInitializer_workflow_by_index(index, inputFixedLandmarkFilename) -> pydra.Workflow:
     from sem_tasks.utilities.brains import BRAINSLandmarkInitializer
-    workflow_name = "landmarkInitializer_workflow3"
-    configkey='BRAINSLandmarkInitializer3'
+    workflow_name = f"landmarkInitializer_workflow{index}"
+    configkey = f'BRAINSLandmarkInitializer{index}'
     print(f"Making task {workflow_name}")
 
 
@@ -671,9 +671,19 @@ processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
-processing_node.add(make_landmarkInitializer_workflow3(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+processing_node.add(make_landmarkInitializer_workflow_by_index(index=4, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
 
-processing_node.set_output([("out", processing_node.landmarkInitializer_workflow3.lzout.all_)])
+
+processing_node.set_output([("out", processing_node.landmarkInitializer_workflow4.lzout.all_)])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine

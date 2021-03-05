@@ -214,5 +214,42 @@
     "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer4": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_91300_to_subject_transform.h5"
+  },
+
+  "BRAINSLandmarkInitializer5": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer6": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer7": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer8": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
+  },
+  "BRAINSLandmarkInitializer9": {
+    "executable": "BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
+    "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
+    "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
   }
 }
