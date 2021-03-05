@@ -620,7 +620,8 @@ def get_processed_outputs(processed_dict: dict):
     processed_outputs = []
     for ele in processed_dict:
         if type(ele) == dict:
-            processed_outputs.append(ele.values())
+            for inner_ele in ele.values():
+                processed_outputs.append(inner_ele)
         else:
             processed_outputs.append(ele)
     # return list(processed_dict.values())
