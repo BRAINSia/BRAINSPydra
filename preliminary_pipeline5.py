@@ -571,9 +571,9 @@ def make_resample_workflow8(referenceVolume, warpTransform) -> pydra.Workflow:
 
     return resample_workflow
 
-def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, nonAirRegionMask) -> pydra.Workflow:
+def make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, nonAirRegionMask) -> pydra.Workflow:
     from sem_tasks.segmentation.specialized import BRAINSCreateLabelMapFromProbabilityMaps
-    workflow_name = "CreateLabelMapFromProbabilityMaps_workflow1"
+    workflow_name = "createLabelMapFromProbabilityMaps_workflow1"
     configkey='BRAINSCreateLabelMapFromProbabilityMaps1'
     print(f"Making task {workflow_name}")
 
@@ -595,10 +595,10 @@ def make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume, non
     ])
     return label_map_workflow
 
-def make_landmarkInitializer_workflow_by_index(index, inputFixedLandmarkFilename, inputMovingLandmarkFilename) -> pydra.Workflow:
+def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename, inputMovingLandmarkFilename) -> pydra.Workflow:
     from sem_tasks.utilities.brains import BRAINSLandmarkInitializer
-    workflow_name = f"landmarkInitializer_workflow{index}"
-    configkey = f'BRAINSLandmarkInitializer{index}'
+    workflow_name = f"landmarkInitializer_workflow3"
+    configkey = f'BRAINSLandmarkInitializer3'
     print(f"Making task {workflow_name}")
 
 
@@ -685,51 +685,11 @@ processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_CreateLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=3, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=4, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=5, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=6, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=7, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=8, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=9, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=10, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=11, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=12, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=13, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=14, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=15, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=16, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=17, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=18, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=19, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=20, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=21, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-# processing_node.add(make_landmarkInitializer_workflow_by_index(index=22, inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-processing_node.add(make_landmarkInitializer_workflow_by_index(index=23, inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer23"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
+processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
+processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer23"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 
 processing_node.set_output([
-    # ("out3", processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename),
-    # ("out4", processing_node.landmarkInitializer_workflow4.lzout.outputTransformFilename),
-    # ("out5", processing_node.landmarkInitializer_workflow5.lzout.outputTransformFilename),
-    # ("out6", processing_node.landmarkInitializer_workflow6.lzout.outputTransformFilename),
-    # ("out7", processing_node.landmarkInitializer_workflow7.lzout.outputTransformFilename),
-    # ("out8", processing_node.landmarkInitializer_workflow8.lzout.outputTransformFilename),
-    # ("out9", processing_node.landmarkInitializer_workflow9.lzout.outputTransformFilename),
-    # ("out10", processing_node.landmarkInitializer_workflow10.lzout.outputTransformFilename),
-    # ("out11", processing_node.landmarkInitializer_workflow11.lzout.outputTransformFilename),
-    # ("out12", processing_node.landmarkInitializer_workflow12.lzout.outputTransformFilename),
-    # ("out13", processing_node.landmarkInitializer_workflow13.lzout.outputTransformFilename),
-    # ("out14", processing_node.landmarkInitializer_workflow14.lzout.outputTransformFilename),
-    # ("out15", processing_node.landmarkInitializer_workflow15.lzout.outputTransformFilename),
-    # ("out16", processing_node.landmarkInitializer_workflow16.lzout.outputTransformFilename),
-    # ("out17", processing_node.landmarkInitializer_workflow17.lzout.outputTransformFilename),
-    # ("out18", processing_node.landmarkInitializer_workflow18.lzout.outputTransformFilename),
-    # ("out19", processing_node.landmarkInitializer_workflow19.lzout.outputTransformFilename),
-    # ("out20", processing_node.landmarkInitializer_workflow20.lzout.outputTransformFilename),
-    # ("out21", processing_node.landmarkInitializer_workflow21.lzout.outputTransformFilename),
-    # ("out22", processing_node.landmarkInitializer_workflow22.lzout.outputTransformFilename),
-    ("out23", processing_node.landmarkInitializer_workflow23.lzout.outputTransformFilename),
+    ("out", processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename),
 ])
 
 
