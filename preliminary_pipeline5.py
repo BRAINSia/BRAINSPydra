@@ -617,7 +617,14 @@ def make_landmarkInitializer_workflow_by_index(index, inputFixedLandmarkFilename
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
-    return list(processed_dict.values())
+    processed_outputs = []
+    for ele in processed_dict:
+        if type(ele) == dict:
+            processed_outputs.append(ele.values())
+        else:
+            processed_outputs.append(ele)
+    # return list(processed_dict.values())
+    return processed_outputs
 
 # If on same mount point use hard link instead of copy (not windows - look into this)
 @pydra.mark.task
