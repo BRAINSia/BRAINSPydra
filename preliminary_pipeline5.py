@@ -35,7 +35,7 @@ def get_self(x):
 
 
 @pydra.mark.task
-def make_output_filename(filename="", before_str="", append_str="", extension="", directory="", subject_id_parent_dir="", unused=""):
+def make_output_filename(filename="", before_str="", append_str="", extension="", directory="", parent_dir="", unused=""):
     print("Making output filename")
     if filename is None:
         print("filename is none")
@@ -43,22 +43,19 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
     else:
         # If we want to set the parent id for a subject, the following if statement converts as follows:
         # "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/t1_average_BRAINSABC_GaussianDenoised.nii.gz" -> "91300"
-        if subject_id_parent_dir != "":
-            print(f"subject_id_parent_dir before: {subject_id_parent_dir}")
-            subject_id_parent_dir = re.findall(r'\d+', Path(subject_id_parent_dir).parent.name)[-1]
         if type(filename) is list:
             new_filename = []
             for f in filename:
                 if extension == "":
                     extension = "".join(Path(f).suffixes)
-                new_filename.append(f"{Path(Path(directory) / Path(subject_id_parent_dir) / Path(before_str + Path(f).with_suffix('').with_suffix('').name))}{append_str}{extension}")
+                new_filename.append(f"{Path(Path(directory) / Path(parent_dir) / Path(before_str + Path(f).with_suffix('').with_suffix('').name))}{append_str}{extension}")
         else:
             # If an extension is not specified and the filename has an extension, use the filename's extension
             if extension == "":
                 extension = "".join(Path(filename).suffixes)
-            new_filename = f"{Path(Path(directory) / Path(subject_id_parent_dir) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
+            new_filename = f"{Path(Path(directory) / Path(parent_dir) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
         print(f"filename: {filename}")
-        print(f"subject_id_parent_dir: {subject_id_parent_dir}")
+        print(f"parent_dir: {parent_dir}")
         print(f"new_filename: {new_filename}")
         return new_filename
 
@@ -648,7 +645,7 @@ def make_roi_workflow3(inputVolume) -> pydra.Workflow:
 
     return roi_workflow
 
-def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_moving_transform) -> pydra.Workflow:
+def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_moving_transform, inputMovingLandmarkFilename) -> pydra.Workflow:
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import Registration
 
@@ -657,17 +654,11 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     print(f"Making task {workflow_name}")
 
     # Create the workflow
-    antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
-    antsRegistration_workflow.add(get_parent_directory(name="get_parent_directory", filepath=antsRegistration_workflow.lzin.initial_moving_transform))
-    antsRegistration_workflow.add(make_output_filename(name="make_moving_image", directory=experiment_configuration[configkey].get('moving_image_dir'), subject_id_parent_dir=antsRegistration_workflow.lzin.initial_moving_transform, filename=experiment_configuration[configkey].get('moving_image_filename')))
-    antsRegistration_workflow.add(make_output_filename(name="make_moving_image_masks",
-                                                       directory=experiment_configuration[configkey].get(
-                                                           'moving_image_dir'),
-                                                       subject_id_parent_dir=antsRegistration_workflow.lzin.initial_moving_transform,
-                                                       filename=experiment_configuration[configkey].get(
-                                                           'moving_image_filename')))
-    antsRegistration_workflow.add(get_parent_directory(name="get_atlas_id", filepath=antsRegistration_workflow.make_moving_image))
-    antsRegistration_workflow.add(make_output_filename(name="make_output_transform_prefix", before_str=antsRegistration_workflow.get_atlas_id.lzout.out, filename=experiment_configuration[configkey].get('output_transform_prefix_suffix')))
+    antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform", "inputMovingLandmarkFilename"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform, inputMovingLandmarkFilename=inputMovingLandmarkFilename)
+    antsRegistration_workflow.add(get_parent_directory(name="get_parent_directory", filepath=antsRegistration_workflow.lzin.inputMovingLandmarkFilename))
+    antsRegistration_workflow.add(make_output_filename(name="make_moving_image", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.get_parent_directory.lzout.out, filename=experiment_configuration[configkey].get('moving_image_filename')))
+    antsRegistration_workflow.add(make_output_filename(name="make_moving_image_masks", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.get_parent_directory.lzout.out, filename=experiment_configuration[configkey].get('moving_image_masks_filename')))
+    antsRegistration_workflow.add(make_output_filename(name="make_output_transform_prefix", before_str=antsRegistration_workflow.get_parent_directory.lzout.out, filename=experiment_configuration[configkey].get('output_transform_prefix_suffix')))
 
     antsRegistration_task = Nipype1Task(Registration())
     # antsRegistration_task.inputs.fixed_image = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"  # antsRegistration_workflow.lzin.fixed_image
@@ -708,6 +699,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
 
     # Set the variables that set output file names
     # antsRegistration_task.inputs.output_transform_prefix =          experiment_configuration[configkey].get('output_transform_prefix')
+    antsRegistration_task.inputs.output_transform_prefix =          antsRegistration_workflow.make_output_transform_prefix.lzout.out
     antsRegistration_task.inputs.output_warped_image =              experiment_configuration[configkey].get('output_warped_image')
     antsRegistration_task.inputs.output_inverse_warped_image =      experiment_configuration[configkey].get('output_inverse_warped_image')
     # print(antsRegistration_task.cmdline)
@@ -780,7 +772,7 @@ processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
-processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
+processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename')).split("inputMovingLandmarkFilename"))
 
 
 processing_node.set_output([
