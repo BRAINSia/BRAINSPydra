@@ -57,6 +57,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
                 extension = "".join(Path(filename).suffixes)
             new_filename = f"{Path(Path(directory) / Path(subject_id_parent_dir) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
         print(f"filename: {filename}")
+        print(f"subject_id_parent_dir: {subject_id_parent_dir}")
         print(f"new_filename: {new_filename}")
         return new_filename
 
