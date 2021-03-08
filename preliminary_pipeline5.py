@@ -741,10 +741,12 @@ def copy_from_cache(cache_path, output_dir, input_data):
             for cache_path_element in cache_path_elements:
                 if type(cache_path_element) is dict:
                     cache_path.join(list(cache_path_element.values()))
+
                 else:
                     cache_path.append(cache_path_element)
             print(f"\n\ncache_path updated: {cache_path}\n\n")
         if type(cache_path) is list:
+            print("\n\n\ncache_path is list\n\n\n")
             output_list = []
             for path in cache_path:
                 out_path = Path(file_output_dir) / Path(path).name
