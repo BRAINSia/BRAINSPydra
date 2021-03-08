@@ -797,7 +797,7 @@ processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilena
 
 
 processing_node.set_output([
-    ("out", processing_node.antsRegistration_workflow3.lzout.all_),
+    ("out", processing_node.landmarkInitializer_workflow3.lzout.all_),
 ])
 
 
