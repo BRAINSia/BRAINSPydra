@@ -749,11 +749,13 @@ def copy_from_cache(cache_path, output_dir, input_data):
                     for nested_path in list(path.values()):
                         print(f"\n\n nested path is: {nested_path}")
                         out_path = Path(file_output_dir) / Path(nested_path).name
+                        print(f"Copying from {nested_path} to {out_path}")
                         copyfile(nested_path, out_path)
                         output_list.append(out_path)
                 else:
                     print(f"not nested: {path}")
                     out_path = Path(file_output_dir) / Path(path).name
+                    print(f"Copying from {path} to {out_path}")
                     copyfile(path, out_path)
                     output_list.append(out_path)
             return output_list
