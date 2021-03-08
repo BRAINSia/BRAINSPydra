@@ -44,6 +44,7 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
         # If we want to set the parent id for a subject, the following if statement converts as follows:
         # "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/t1_average_BRAINSABC_GaussianDenoised.nii.gz" -> "91300"
         if subject_id_parent_dir != "":
+            print(f"subject_id_parent_dir before: {subject_id_parent_dir}")
             subject_id_parent_dir = re.findall(r'\d+', Path(subject_id_parent_dir).parent.name)[-1]
         if type(filename) is list:
             new_filename = []
