@@ -616,7 +616,7 @@ def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename, inputMovingLa
     landmark_initializer_workflow.add(landmark_initializer_task)
     landmark_initializer_workflow.set_output([
         ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename),
-        ("atlas_id", landmark_initializer_workflow.get_parent_directory.lzout.out)
+        # ("atlas_id", landmark_initializer_workflow.get_parent_directory.lzout.out)
     ])
 
     return landmark_initializer_workflow
@@ -736,7 +736,8 @@ def copy(cache_path, output_dir):
 
 # If on same mount point use hard link instead of copy (not windows - look into this)
 @pydra.mark.task
-def copy_from_cache(cache_path, output_dir, input_data):
+def copy_from_cache(processed_dict, cache_path, output_dir, input_data):
+    cache_path = list(processed_dict.values())
     print(cache_path)
     input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
     file_output_dir = Path(output_dir) / Path(input_filename)
@@ -806,18 +807,18 @@ processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
-# processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
+processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
 
 
 processing_node.set_output([
-    ("out", processing_node.landmarkInitializer_workflow3.lzout.all_),
+    ("out", processing_node.antsRegistration_workflow3.lzout.all_),
 ])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
 sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
-sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], processed_dict=sink_node.lzin.processed_files, input_data=sink_node.lzin.input_data).split("processed_dict"))
 sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
