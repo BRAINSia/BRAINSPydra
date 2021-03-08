@@ -620,7 +620,7 @@ def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename, inputMovingLa
     landmark_initializer_workflow.add(landmark_initializer_task)
     landmark_initializer_workflow.set_output([
         ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename),
-        ("atlas_subject", landmark_initializer_workflow.get_parent_directory.lzout.out)
+        ("atlas_id", landmark_initializer_workflow.get_parent_directory.lzout.out)
     ])
 
     return landmark_initializer_workflow
@@ -646,7 +646,7 @@ def make_roi_workflow3(inputVolume) -> pydra.Workflow:
 
     return roi_workflow
 
-def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_moving_transform, inputMovingLandmarkFilename) -> pydra.Workflow:
+def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_moving_transform, atlas_id) -> pydra.Workflow:
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import Registration
 
@@ -655,11 +655,10 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     print(f"Making task {workflow_name}")
 
     # Create the workflow
-    antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform", "inputMovingLandmarkFilename"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform, inputMovingLandmarkFilename=inputMovingLandmarkFilename)
-    antsRegistration_workflow.add(get_parent_directory(name="get_parent_directory", filepath=antsRegistration_workflow.lzin.inputMovingLandmarkFilename))
-    antsRegistration_workflow.add(make_output_filename(name="make_moving_image", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.get_parent_directory.lzout.out, filename=experiment_configuration[configkey].get('moving_image_filename')))
-    antsRegistration_workflow.add(make_output_filename(name="make_moving_image_masks", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.get_parent_directory.lzout.out, filename=experiment_configuration[configkey].get('moving_image_masks_filename')))
-    antsRegistration_workflow.add(make_output_filename(name="make_output_transform_prefix", before_str=antsRegistration_workflow.get_parent_directory.lzout.out, filename=experiment_configuration[configkey].get('output_transform_prefix_suffix')))
+    antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform", "atlas_id"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform, atlas_id=atlas_id)
+    antsRegistration_workflow.add(make_output_filename(name="make_moving_image", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_parent_dir, filename=experiment_configuration[configkey].get('moving_image_filename')))
+    antsRegistration_workflow.add(make_output_filename(name="make_moving_image_masks", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_parent_dir, filename=experiment_configuration[configkey].get('moving_image_masks_filename')))
+    antsRegistration_workflow.add(make_output_filename(name="make_output_transform_prefix", before_str=antsRegistration_workflow.lzin.atlas_parent_dir, filename=experiment_configuration[configkey].get('output_transform_prefix_suffix')))
 
     antsRegistration_task = Nipype1Task(Registration())
     # antsRegistration_task.inputs.fixed_image = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"  # antsRegistration_workflow.lzin.fixed_image
@@ -773,7 +772,7 @@ processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
-# processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename')))
+processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
 # processing_node.add(make_antsRegistration_workflow3(fixed_image="test", fixed_image_masks="test", initial_moving_transform="test", inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename')))
 
 
