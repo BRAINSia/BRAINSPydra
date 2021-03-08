@@ -729,6 +729,8 @@ def copy_from_cache(cache_path, output_dir, input_data):
         print(f"cache_path: {cache_path}")
         return "" # Don't return a cache_path if it is None
     else:
+        if type(cache_path) is dict:
+            cache_path = list(cache_path.values())
         if type(cache_path) is list:
             output_list = []
             for path in cache_path:
@@ -772,7 +774,7 @@ processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
-processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
+processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id="91300")) #, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
 # processing_node.add(make_antsRegistration_workflow3(fixed_image="test", fixed_image_masks="test", initial_moving_transform="test", inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename')))
 
 
@@ -782,18 +784,20 @@ processing_node.set_output([
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
-# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
+sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
 # sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+
 
 source_node.add(processing_node)
 
-# source_node.add(sink_node)
+source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
