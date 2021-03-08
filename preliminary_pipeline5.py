@@ -792,7 +792,7 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
-# source_node.add(sink_node)
+source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
