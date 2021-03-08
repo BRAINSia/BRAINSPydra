@@ -615,7 +615,7 @@ def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename, inputMovingLa
     landmark_initializer_workflow.add(landmark_initializer_task)
     landmark_initializer_workflow.set_output([
         ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename),
-        ("outputTransformFilename2", landmark_initializer_workflow.outputTransformFilename.lzout.out)
+        # ("outputTransformFilename2", landmark_initializer_workflow.outputTransformFilename.lzout.out)
         # ("atlas_id", landmark_initializer_workflow.get_parent_directory.lzout.out)
     ])
 
