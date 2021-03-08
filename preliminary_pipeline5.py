@@ -609,13 +609,13 @@ def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename, inputMovingLa
     landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
     landmark_initializer_task.inputs.inputFixedLandmarkFilename =   landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
     landmark_initializer_task.inputs.inputMovingLandmarkFilename =   landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
-    # landmark_initializer_task.inputs.inputMovingLandmarkFilename =  experiment_configuration[configkey].get('inputMovingLandmarkFilename')
     landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
     landmark_initializer_task.inputs.outputTransformFilename =      landmark_initializer_workflow.outputTransformFilename.lzout.out #experiment_configuration[configkey].get('outputTransformFilename')
 
     landmark_initializer_workflow.add(landmark_initializer_task)
     landmark_initializer_workflow.set_output([
         ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename),
+        ("outputTransformFilename2", landmark_initializer_workflow.outputTransformFilename.lzout.out)
         # ("atlas_id", landmark_initializer_workflow.get_parent_directory.lzout.out)
     ])
 
