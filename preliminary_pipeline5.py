@@ -727,9 +727,9 @@ def get_processed_outputs(processed_dict: dict):
 @pydra.mark.task
 def copy_from_cache(cache_path, output_dir, input_data):
     print(cache_path)
-    # input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
-    # file_output_dir = Path(output_dir) / Path(input_filename)
-    # file_output_dir.mkdir(parents=True, exist_ok=True)
+    input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
+    file_output_dir = Path(output_dir) / Path(input_filename)
+    file_output_dir.mkdir(parents=True, exist_ok=True)
     if cache_path is None:
         print(f"cache_path: {cache_path}")
         return "" # Don't return a cache_path if it is None
@@ -741,19 +741,21 @@ def copy_from_cache(cache_path, output_dir, input_data):
             for cache_path_element in cache_path_elements:
                 if type(cache_path_element) is dict:
                     cache_path.join(list(cache_path_element.values()))
+                else:
+                    cache_path.append(cache_path_element)
             print(f"\n\ncache_path updated: {cache_path}\n\n")
-        # if type(cache_path) is list:
-        #     output_list = []
-        #     for path in cache_path:
-        #         out_path = Path(file_output_dir) / Path(path).name
-        #         print(f"Copying from {path} to {out_path}")
-        #         copyfile(path, out_path)
-        #         output_list.append(out_path)
-        #     return output_list
-        # else:
-        #     out_path = Path(file_output_dir) / Path(cache_path).name
-        #     print(f"Copying from {cache_path} to {out_path}")
-        #     copyfile(cache_path, out_path)
+        if type(cache_path) is list:
+            output_list = []
+            for path in cache_path:
+                out_path = Path(file_output_dir) / Path(path).name
+                print(f"Copying from {path} to {out_path}")
+                copyfile(path, out_path)
+                output_list.append(out_path)
+            return output_list
+        else:
+            out_path = Path(file_output_dir) / Path(cache_path).name
+            print(f"Copying from {cache_path} to {out_path}")
+            copyfile(cache_path, out_path)
     return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
