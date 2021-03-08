@@ -714,7 +714,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     # ])
     antsRegistration_workflow.set_output([
         # "out", fixed_image
-        # "moving_image", antsRegistration_workflow.make_moving_image.lzout.out,
+        "moving_image", antsRegistration_workflow.make_moving_image.lzout.out,
         # "moving_image_masks", antsRegistration_workflow.make_moving_image_masks.lzout.out,
         # "make_output_transform_prefix", antsRegistration_workflow.make_output_transform_prefix.lzout.out
     ])
@@ -783,7 +783,7 @@ processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.
 
 
 processing_node.set_output([
-    ("out", processing_node.landmarkInitializer_workflow3.lzout.all_),
+    ("out", processing_node.antsRegistration_workflow3.lzout.all_),
 ])
 
 
