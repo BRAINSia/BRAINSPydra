@@ -739,20 +739,23 @@ def copy_from_cache(cache_path, output_dir, input_data):
             cache_path_elements = list(cache_path.values())
             cache_path = []
             for cache_path_element in cache_path_elements:
-                if type(cache_path_element) is dict:
-                    cache_path.join(list(cache_path_element.values()))
-
-                else:
                     cache_path.append(cache_path_element)
             print(f"\n\ncache_path updated: {cache_path}\n\n")
         if type(cache_path) is list:
             print("\n\n\ncache_path is list\n\n\n")
             output_list = []
             for path in cache_path:
-                out_path = Path(file_output_dir) / Path(path).name
-                print(f"Copying from {path} to {out_path}")
-                copyfile(path, out_path)
-                output_list.append(out_path)
+                if type(cache_path) is dict:
+                    for nested_path in list(cache_path.values()):
+                        print(f"\n\n nested path is: {nested_path}")
+                        out_path = Path(file_output_dir) / Path(nested_path).name
+                        copyfile(nested_path, out_path)
+                        output_list.append(out_path)
+                else:
+                    print(f"not nested: {path}")
+                    out_path = Path(file_output_dir) / Path(path).name
+                    copyfile(path, out_path)
+                    output_list.append(out_path)
             return output_list
         else:
             out_path = Path(file_output_dir) / Path(cache_path).name
