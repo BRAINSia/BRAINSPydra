@@ -785,18 +785,18 @@ processing_node.set_output([
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
-# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
+sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
 # source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
