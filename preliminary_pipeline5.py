@@ -745,8 +745,8 @@ def copy_from_cache(cache_path, output_dir, input_data):
             print("\n\n\ncache_path is list\n\n\n")
             output_list = []
             for path in cache_path:
-                if type(cache_path) is dict:
-                    for nested_path in list(cache_path.values()):
+                if type(path) is dict:
+                    for nested_path in list(path.values()):
                         print(f"\n\n nested path is: {nested_path}")
                         out_path = Path(file_output_dir) / Path(nested_path).name
                         copyfile(nested_path, out_path)
