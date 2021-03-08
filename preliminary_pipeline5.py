@@ -615,7 +615,8 @@ def make_landmarkInitializer_workflow3(inputFixedLandmarkFilename, inputMovingLa
 
     landmark_initializer_workflow.add(landmark_initializer_task)
     landmark_initializer_workflow.set_output([
-        ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename)
+        ("outputTransformFilename", landmark_initializer_workflow.BRAINSLandmarkInitializer.lzout.outputTransformFilename),
+        ("atlas_id", landmark_initializer_workflow.get_parent_directory.lzout.out)
     ])
 
     return landmark_initializer_workflow
@@ -731,23 +732,21 @@ def copy_from_cache(cache_path, output_dir, input_data):
     file_output_dir = Path(output_dir) / Path(input_filename)
     file_output_dir.mkdir(parents=True, exist_ok=True)
     if cache_path is None:
-        print(f"cache_path: {cache_path}")
         return "" # Don't return a cache_path if it is None
     else:
+        # If the files to be copied locally are nested in a dictionary, put the values of the dictionary in a list
         if type(cache_path) is dict:
-            print(f"\n\n\n\ncache_path: {cache_path}")
             cache_path_elements = list(cache_path.values())
             cache_path = []
             for cache_path_element in cache_path_elements:
                     cache_path.append(cache_path_element)
-            print(f"\n\ncache_path updated: {cache_path}\n\n")
+        # If the files to be copied are in a list, copy each element of the list
         if type(cache_path) is list:
-            print("\n\n\ncache_path is list\n\n\n")
             output_list = []
             for path in cache_path:
+                # If the files to be copied are in a dictionary, copy each value of the dictionary
                 if type(path) is dict:
                     for nested_path in list(path.values()):
-                        print(f"\n\n nested path is: {nested_path}")
                         out_path = Path(file_output_dir) / Path(nested_path).name
                         print(f"Copying from {nested_path} to {out_path}")
                         copyfile(nested_path, out_path)
