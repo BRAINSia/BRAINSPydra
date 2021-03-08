@@ -734,11 +734,13 @@ def copy_from_cache(cache_path, output_dir, input_data):
         return "" # Don't return a cache_path if it is None
     else:
         if type(cache_path) is dict:
-            cache_path = []
+            print(f"cache_path: {cache_path}")
             cache_path_elements = list(cache_path.values())
+            cache_path = []
             for cache_path_element in cache_path_elements:
                 if type(cache_path_element) is dict:
                     cache_path.join(list(cache_path_element.values()))
+            print(f"cache_path updated: {cache_path}")
         if type(cache_path) is list:
             output_list = []
             for path in cache_path:
