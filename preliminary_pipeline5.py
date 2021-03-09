@@ -661,16 +661,12 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     antsRegistration_workflow.add(make_output_filename(name="make_output_warped_image", before_str=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_warped_image_suffix')))
 
     antsRegistration_task = Nipype1Task(Registration())
-    # antsRegistration_task.inputs.fixed_image = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"  # antsRegistration_workflow.lzin.fixed_image
-    # antsRegistration_task.inputs.fixed_image_masks = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz"  # antsRegistration_workflow.lzin.fixed_image_masks
-    # antsRegistration_task.inputs.initial_moving_transform = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_91300_to_subject_transform.h5"  # antsRegistration_workflow.lzin.initial_moving_transform
 
     antsRegistration_task.inputs.fixed_image =                      antsRegistration_workflow.lzin.fixed_image
     antsRegistration_task.inputs.fixed_image_masks =                antsRegistration_workflow.lzin.fixed_image_masks
     antsRegistration_task.inputs.initial_moving_transform =         antsRegistration_workflow.lzin.initial_moving_transform
     antsRegistration_task.inputs.moving_image =                     antsRegistration_workflow.make_moving_image.lzout.out
     antsRegistration_task.inputs.moving_image_masks =               antsRegistration_workflow.make_moving_image_masks.lzout.out
-    # antsRegistration_task.inputs.moving_image_masks =               experiment_configuration[configkey].get('moving_image_masks')
 
     antsRegistration_task.inputs.save_state =                       experiment_configuration[configkey].get('save_state')
     antsRegistration_task.inputs.transforms =                       experiment_configuration[configkey].get('transforms')
@@ -698,11 +694,9 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     antsRegistration_task.inputs.winsorize_upper_quantile =         experiment_configuration[configkey].get('winsorize_upper_quantile')
 
     # Set the variables that set output file names
-    # antsRegistration_task.inputs.output_transform_prefix =          experiment_configuration[configkey].get('output_transform_prefix')
     antsRegistration_task.inputs.output_transform_prefix =          antsRegistration_workflow.make_output_transform_prefix.lzout.out
     antsRegistration_task.inputs.output_warped_image =              antsRegistration_workflow.make_output_warped_image.lzout.out #experiment_configuration[configkey].get('output_warped_image')
     # antsRegistration_task.inputs.output_inverse_warped_image =      False #    experiment_configuration[configkey].get('output_inverse_warped_image')
-    # print(antsRegistration_task.cmdline)
 
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([
