@@ -1,29 +1,8 @@
 {
-  "input_data": [
-    { "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz",
-      "roiInputVolume": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC.nii.gz",
-      "roiInputVolume2": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "abcInputVolume": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "warpTransform": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform": ["/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
-      "inputMovingLandmarkFilename1": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-      "inputFixedLandmarkFilename2": "/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/BCD_ACPC_Landmarks.fcsv",
-      "metric": "MI['/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
-    },
-    {
-      "t1": "/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
-      "roiInputVolume": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC.nii.gz",
-      "roiInputVolume2": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "abcInputVolume": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz",
-      "warpTransform": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5",
-      "initial_moving_transform": ["/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/landmarkInitializer_subject_to_atlas_transform.h5"],
-      "inputMovingLandmarkFilename1": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv",
-      "inputFixedLandmarkFilename2": "/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/BCD_ACPC_Landmarks.fcsv",
-      "metric": "MI['/Users/cjohnson30/output_dir/sub-273625_ses-47445_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz','/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_t1_denoised_gaussian.nii.gz',1,32,'Regular',0.5]"
-    }
-  ],
   "output_dir": "/Users/cjohnson30/output_dir",
-  "BRAINSConstellationDetector": {
+  "cache_dir": "/Users/cjohnson30/cache_dir",
+  "graph_dir": "/Users/cjohnson30/graph_dir",
+  "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
     "LLSModel": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/LLSModel_50Lmks.h5",
     "acLowerBound": 80.000000 ,
