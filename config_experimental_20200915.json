@@ -236,6 +236,11 @@
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
   },
+  "BRAINSROIAuto3": {
+    "executable": "BRAINSROIAuto",
+    "ROIAutoDilateSize": 10.000000,
+    "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
+  },
   "ANTSRegistration3": {
     "executable": "antsRegistration",
     "moving_image_filename": "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
