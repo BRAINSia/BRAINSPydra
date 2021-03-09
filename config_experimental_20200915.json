@@ -253,8 +253,7 @@
                            "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
                            "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
                            "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/registrationMask.nii.gz"],
-    "output_transform_prefix": "91300_ToSubjectPreJointFusion_SyN",
-    "save_state": "SavedInternalSyNState.h5",
+    "save_state": "SavedAtlasState.h5",
     "verbose": true,
     "collapse_output_transforms": false ,
     "dimensionality": 3 ,
@@ -276,8 +275,7 @@
     "shrink_factors": [[8, 4, 2], [2, 1], [8, 4], [2], [1]],
     "use_estimate_learning_rate_once": [false, false, false, false, false],
     "use_histogram_matching": [true, true, true, true, true],
-    "output_warped_image": "atlas2subject.nii.gz",
-    "output_inverse_warped_image": "subject2atlas.nii.gz",
+    "output_warped_image_suffix": "_2subject.nii.gz",
     "winsorize_lower_quantile": 0.01,
     "winsorize_upper_quantile": 0.99
   }

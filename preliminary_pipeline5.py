@@ -672,7 +672,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     antsRegistration_task.inputs.moving_image_masks =               antsRegistration_workflow.make_moving_image_masks.lzout.out
     # antsRegistration_task.inputs.moving_image_masks =               experiment_configuration[configkey].get('moving_image_masks')
 
-    # antsRegistration_task.inputs.save_state =                       experiment_configuration[configkey].get('save_state')
+    antsRegistration_task.inputs.save_state =                       experiment_configuration[configkey].get('save_state')
     antsRegistration_task.inputs.transforms =                       experiment_configuration[configkey].get('transforms')
     antsRegistration_task.inputs.transform_parameters =             experiment_configuration[configkey].get('transform_parameters')
     antsRegistration_task.inputs.number_of_iterations =             experiment_configuration[configkey].get('number_of_iterations')
@@ -801,11 +801,11 @@ processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_
 processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
 processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
-# processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
+processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
 
 
 processing_node.set_output([
-    ("out", processing_node.landmarkInitializer_workflow3.lzout.all_),
+    ("out", processing_node.antsRegistration_workflow3.lzout.all_),
 ])
 
 
