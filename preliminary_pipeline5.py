@@ -817,7 +817,7 @@ processing_node.set_output([
 
 source_node.add(processing_node)
 
-source_node.add(sink_node)
+# source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 # source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
