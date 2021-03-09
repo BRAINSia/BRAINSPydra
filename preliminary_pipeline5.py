@@ -700,7 +700,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     # Set the variables that set output file names
     # antsRegistration_task.inputs.output_transform_prefix =          experiment_configuration[configkey].get('output_transform_prefix')
     antsRegistration_task.inputs.output_transform_prefix =          antsRegistration_workflow.make_output_transform_prefix.lzout.out
-    antsRegistration_task.inputs.output_warped_image =              experiment_configuration[configkey].get('output_warped_image')
+    antsRegistration_task.inputs.output_warped_image =              antsRegistration_workflow.make_output_warped_image.lzout.out #experiment_configuration[configkey].get('output_warped_image')
     # antsRegistration_task.inputs.output_inverse_warped_image =      experiment_configuration[configkey].get('output_inverse_warped_image')
     # print(antsRegistration_task.cmdline)
 
