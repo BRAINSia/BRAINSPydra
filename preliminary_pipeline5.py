@@ -32,6 +32,10 @@ def get_self(x):
     print(f"list: {list}")
     return list
 
+@pydra.mark.task
+def get_atlas_id(atlas_id):
+    return atlas_id
+
 
 @pydra.mark.task
 def make_output_filename(filename="", before_str="", append_str="", extension="", directory="", parent_dir="", unused=""):
@@ -743,7 +747,7 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
 
     antsRegistration_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
     antsRegistration_workflow.add(make_output_filename(name="output_image", before_str=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_image_end')))
-
+    antsRegistration_workflow.add(get_atlas_id(name="get_atlas_id", atlas_id=antsRegistration_workflow.lzin.atlas_id))
 
     antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
@@ -758,7 +762,7 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
     antsRegistration_workflow.add(antsApplyTransforms_task)
     antsRegistration_workflow.set_output([
         ("output_image", antsApplyTransforms_task.lzout.output_image),
-        ("atlas_id", antsRegistration_workflow.lzin.atlas_id)
+        ("atlas_id", antsRegistration_workflow.get_atlas_id.lzout.out)
     ])
 
     return antsRegistration_workflow
