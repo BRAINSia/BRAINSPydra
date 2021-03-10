@@ -4,6 +4,7 @@ from shutil import copyfile
 import json
 import argparse
 import attr
+import traits
 from nipype.interfaces.base import (
     File,
 )
@@ -767,7 +768,7 @@ def get_processed_outputs(processed_dict: dict):
 def copy(cache_path, output_dir):
     print(cache_path)
     print(type(cache_path))
-    if cache_path is not None and Path(cache_path).is_file():
+    if not isinstance(cache_path, traits.trait_base._Undefined) and cache_path is not None and Path(cache_path).is_file():
 
         out_path = Path(output_dir) / Path(cache_path).name
         print(f"Copying from {cache_path} to {out_path}")
