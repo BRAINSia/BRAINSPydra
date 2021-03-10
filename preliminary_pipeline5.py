@@ -742,6 +742,8 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
     # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id)
 
     antsRegistration_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
+    antsRegistration_workflow.add(make_output_filename(name="output_image", before_str=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_image_end')))
+
 
     antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
@@ -749,7 +751,7 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
     antsApplyTransforms_task.inputs.float = False
     antsApplyTransforms_task.inputs.input_image = antsRegistration_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
     antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
-    antsApplyTransforms_task.inputs.output_image = "91300fswm_2_subj_lbl.nii.gz"
+    antsApplyTransforms_task.inputs.output_image = antsRegistration_workflow.output_image.lzout.out #"91300fswm_2_subj_lbl.nii.gz"
     antsApplyTransforms_task.inputs.reference_image = antsRegistration_workflow.lzin.reference_image #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
     antsApplyTransforms_task.inputs.transforms = antsRegistration_workflow.lzin.transform #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
 
