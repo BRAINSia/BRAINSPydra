@@ -277,5 +277,9 @@
     "output_inverse_warped_image": "subject2atlas.nii.gz",
     "winsorize_lower_quantile": 0.01,
     "winsorize_upper_quantile": 0.99
+  },
+  "ANTSApplyTransforms1": {
+    "input_image_dir": "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/",
+    "input_image_filename": "wholeBrain_label.nii.gz"
   }
 }
