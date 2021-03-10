@@ -758,6 +758,7 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
     antsRegistration_workflow.add(antsApplyTransforms_task)
     antsRegistration_workflow.set_output([
         ("output_image", antsApplyTransforms_task.lzout.output_image),
+        ("atlas_id", antsRegistration_workflow.lzin.atlas_id)
     ])
 
     return antsRegistration_workflow
