@@ -766,7 +766,9 @@ def get_processed_outputs(processed_dict: dict):
 
 def copy(cache_path, output_dir):
     print(cache_path)
+    print(type(cache_path))
     if cache_path is not None and Path(cache_path).is_file():
+
         out_path = Path(output_dir) / Path(cache_path).name
         print(f"Copying from {cache_path} to {out_path}")
         copyfile(cache_path, out_path)
