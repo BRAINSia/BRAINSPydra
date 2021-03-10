@@ -212,7 +212,7 @@
   "BRAINSLandmarkInitializer3": {
     "executable": "BRAINSLandmarkInitializer",
     "inputMovingLandmarkFilename": [
-      "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/BCD_ACPC_Landmarks.fcsv",
+      "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/BCD_ACPC_Landmarks.fcsv"
     ],
     "inputWeightFilename": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
@@ -265,9 +265,4 @@
     "winsorize_lower_quantile": 0.01,
     "winsorize_upper_quantile": 0.99
   },
-  "BRAINSROIAuto2": {
-    "executable": "BRAINSROIAuto",
-    "ROIAutoDilateSize": 15.000000,
-    "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
-  }
 }
