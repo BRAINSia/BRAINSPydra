@@ -852,11 +852,7 @@ processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.
 processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 processing_node.set_output([
-    # ("out", processing_node.antsRegistration_workflow3.lzout.all_),
-    ("save_state", processing_node.antsRegistration_workflow3.lzout.save_state),
-    ("composite_transform", processing_node.antsRegistration_workflow3.lzout.composite_transform),
-    ("inverse_composite_transform", processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform),
-    ("warped_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
+    ("out", processing_node.ANTSApplyTransforms1.lzout.all_),
 ])
 
 
