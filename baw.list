@@ -124,7 +124,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
-[x]
+[x] Segment the image: The subject image is already in the atlas space. Now identify the structures of the brain:
  BRAINSABC  \
 --atlasDefinition /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/ExtendedAtlasDefinition.xml \
 --atlasToSubjectTransform atlas_to_subject.h5 \
@@ -148,7 +148,7 @@ antsRegistration \
 --saveState SavedBABCInternalSyNState.h5 \
 --useKNN 
 
-[x]
+[x] Transform the atlas left Hemisphere: Put the left hemisphere of the atlas average in the space of the subject
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_leftHemisphere.nii.gz \
 --interpolationMode Linear \
@@ -157,7 +157,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
-[x]
+[x] Transform the hncma atlas: Put the hncma atlas in the space of the subject
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/hncma-atlas.nii.gz \
 --interpolationMode NearestNeighbor \
@@ -166,7 +166,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
-[x]
+[x] Transform the atlas right Hemisphere: Put the right hemisphere of the atlas average in the space of the subject
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_rightHemisphere.nii.gz \
 --interpolationMode Linear \
@@ -175,7 +175,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
-[x]
+[x] Transform the nac labels: Put the nac labels in the subject space
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_nac_labels.nii.gz \
 --interpolationMode NearestNeighbor \
@@ -184,7 +184,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
-[x]
+[x] Transform the atlas ventricles: Put the ventricles of the atlas in the subject space
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_ventricles.nii.gz \
 --interpolationMode Linear \
@@ -193,7 +193,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
-[x]
+[x] Transform the WMPM2 labels: Put the WMPM2 labels of the atlas in the subject space
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_WMPM2_labels.nii.gz \
 --interpolationMode NearestNeighbor \
@@ -202,7 +202,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
-[x]
+[x] Transform the atlas headregion: Put the atlas headregion mask in the subject space
  BRAINSResample  \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/template_headregion.nii.gz \
 --interpolationMode Linear \
@@ -211,6 +211,7 @@ antsRegistration \
 --referenceVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --warpTransform /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/atlas_to_subject.h5
 
+[x] Make a label map: Combine the different probability maps of structures in the brain to create a single probability map of where structures of the brain are for the subject
  BRAINSCreateLabelMapFromProbabilityMaps  \
 --cleanLabelVolume fixed_brainlabels_seg.nii.gz \
 --dirtyLabelVolume fixed_headlabels_seg.nii.gz \
@@ -233,126 +234,147 @@ antsRegistration \
 --nonAirRegionMask /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/fix_wm_partitioning_sub-697343_ses-50028/NonAirMask.nii.gz \
 --priorLabelCodes 0,21,11,12,4,23,25,6,7,9,8,2,24,5,1
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_99056_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_91300_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91626/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_91626_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/93075/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_93075_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/53657/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_53657_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/75094/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_75094_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/75909/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_75909_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/55648/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_55648_to_subject_transform.h5
 
+[x]
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/27612/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_27612_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/49543/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_49543_to_subject_transform.h5
 
+[x]
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/58446/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_58446_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/52712/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_52712_to_subject_transform.h5
 
+[x]
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/68653/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_68653_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/37960/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_37960_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/35888/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_35888_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/23687/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_23687_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/14165/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_14165_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/13512/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_13512_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/23163/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_23163_to_subject_transform.h5
 
+[x] Create a transformation to go from one particular atlas to the subject
  BRAINSLandmarkInitializer  \
 --inputFixedLandmarkFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_ACPC_Landmarks.fcsv \
 --inputMovingLandmarkFilename /Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/21003/BCD_ACPC_Landmarks.fcsv \
 --inputWeightFilename /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/Atlas/20141004_BCD/template_weights_50Lmks.wts \
 --outputTransformFilename landmarkInitializer_21003_to_subject_transform.h5
 
+[X] Crop the average longitudinal image for the subject
  BRAINSROIAuto  \
 --ROIAutoDilateSize 10.000000 \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
