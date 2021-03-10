@@ -53,6 +53,13 @@ def get_self(x):
 
 
 @pydra.mark.task
+def get_None():
+    x = 4
+
+    return x
+
+
+@pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
     return list(processed_dict.values())
 
@@ -187,13 +194,17 @@ shelly_writeOutput = ShellCommandTask(
 
 shelly_workflow.add(get_input_field(name="get_t1", input_dict=shelly_workflow.lzin.input_data, field="t1"))
 shelly_workflow.add(make_output_filename(name="output", filename=shelly_workflow.get_t1.lzout.out, append_str="_corrected", extension=".txt"))
+shelly_workflow.add(get_None(name="get_None"))
+
 shelly_workflow.add(shelly_createFiles)
 # shelly_workflow.add(get_self(name="get_self", x=shelly_workflow.shelly_createFiles.lzout.createFiles))
 shelly_writeOutput.inputs.contents = shelly_workflow.shelly_createFiles.lzout.createFiles
 shelly_writeOutput.inputs.output = shelly_workflow.output.lzout.out
 shelly_workflow.add(shelly_writeOutput)
 
-shelly_workflow.set_output([("out", shelly_workflow.shelly_writeOutput.lzout.output)])
+shelly_workflow.set_output([("out", shelly_workflow.shelly_writeOutput.lzout.output),
+                            ("out2", shelly_workflow.get_None.lzout.out),
+                            ])
 
 
 
