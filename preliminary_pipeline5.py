@@ -704,7 +704,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
         ("composite_transform", antsRegistration_task.lzout.composite_transform),
         ("inverse_composite_transform", antsRegistration_task.lzout.inverse_composite_transform),
         ("warped_image", antsRegistration_task.lzout.warped_image),
-        # ("inverse_warped_image", antsRegistration_task.lzout.inverse_warped_image),
+        ("inverse_warped_image", antsRegistration_task.lzout.inverse_warped_image),
     ])
 
     return antsRegistration_workflow
@@ -862,19 +862,19 @@ processing_node.set_output([
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
-# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
+sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
-# source_node.add(sink_node)
+source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
 # source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
-source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
 
 
 # Run the entire workflow
