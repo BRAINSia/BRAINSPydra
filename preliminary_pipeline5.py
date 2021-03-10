@@ -857,7 +857,6 @@ processing_node.set_output([
     ("composite_transform", processing_node.antsRegistration_workflow3.lzout.composite_transform),
     ("inverse_composite_transform", processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform),
     ("warped_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
-    # ("inverse_warped_image", processing_node.antsRegistration_workflow3.lzout.inverse_warped_image),
 ])
 
 
