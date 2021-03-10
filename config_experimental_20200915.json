@@ -285,7 +285,7 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSApplyTransforms1": {
-    "input_image_dir": "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/",
+    "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz"
   }
 }
