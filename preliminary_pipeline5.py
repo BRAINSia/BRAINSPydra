@@ -734,17 +734,14 @@ def get_processed_outputs(processed_dict: dict):
     return list(processed_dict.values())
 
 def copy(cache_path, output_dir):
-    out_path = None
-    try:
-        if Path(cache_path).is_file():
-            out_path = Path(output_dir) / Path(cache_path).name
-            print(f"Copying from {cache_path} to {out_path}")
-            copyfile(cache_path, out_path)
-        else:
-            print(f"{cache_path} is not a file")
-            out_path = cache_path
-    except:
-        print(f"Could copy {cache_path} to {output_dir}")
+    if Path(cache_path).is_file():
+        out_path = Path(output_dir) / Path(cache_path).name
+        print(f"Copying from {cache_path} to {out_path}")
+        copyfile(cache_path, out_path)
+    else:
+        print(f"{cache_path} is not a file")
+        out_path = cache_path
+
     return out_path
 
 # If on same mount point use hard link instead of copy (not windows - look into this)
