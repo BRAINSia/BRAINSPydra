@@ -663,6 +663,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     antsRegistration_workflow.add(make_output_filename(name="make_moving_image_masks", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('moving_image_masks_filename')))
     antsRegistration_workflow.add(make_output_filename(name="make_output_transform_prefix", before_str=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_transform_prefix_suffix')))
     antsRegistration_workflow.add(make_output_filename(name="make_output_warped_image", before_str=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_warped_image_suffix')))
+    antsRegistration_workflow.add(get_atlas_id(name="get_atlas_id", atlas_id=antsRegistration_workflow.lzin.atlas_id))
 
     antsRegistration_task = Nipype1Task(Registration())
 
@@ -708,7 +709,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
         ("composite_transform", antsRegistration_task.lzout.composite_transform),
         ("inverse_composite_transform", antsRegistration_task.lzout.inverse_composite_transform),
         ("warped_image", antsRegistration_task.lzout.warped_image),
-        ("inverse_warped_image", antsRegistration_task.lzout.inverse_warped_image),
+        ("atlas_id", antsRegistration_workflow.get_atlas_id.lzout.out)
     ])
 
     return antsRegistration_workflow
@@ -742,30 +743,28 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
     print(f"Making task {workflow_name}")
 
     # Create the workflow
-    antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
+    antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
     # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id)
 
-    antsRegistration_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
-    antsRegistration_workflow.add(make_output_filename(name="output_image", before_str=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_image_end')))
-    antsRegistration_workflow.add(get_atlas_id(name="get_atlas_id", atlas_id=antsRegistration_workflow.lzin.atlas_id))
+    antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
+    antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_image_end')))
 
     antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
     antsApplyTransforms_task.inputs.dimension = 3
     antsApplyTransforms_task.inputs.float = False
-    antsApplyTransforms_task.inputs.input_image = antsRegistration_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
+    antsApplyTransforms_task.inputs.input_image = antsApplyTransforms_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
     antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
-    antsApplyTransforms_task.inputs.output_image = antsRegistration_workflow.output_image.lzout.out #"91300fswm_2_subj_lbl.nii.gz"
-    antsApplyTransforms_task.inputs.reference_image = antsRegistration_workflow.lzin.reference_image #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
-    antsApplyTransforms_task.inputs.transforms = antsRegistration_workflow.lzin.transform #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
+    antsApplyTransforms_task.inputs.output_image = antsApplyTransforms_workflow.output_image.lzout.out #"91300fswm_2_subj_lbl.nii.gz"
+    antsApplyTransforms_task.inputs.reference_image = antsApplyTransforms_workflow.lzin.reference_image #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
+    antsApplyTransforms_task.inputs.transforms = antsApplyTransforms_workflow.lzin.transform #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
 
-    antsRegistration_workflow.add(antsApplyTransforms_task)
-    antsRegistration_workflow.set_output([
+    antsApplyTransforms_workflow.add(antsApplyTransforms_task)
+    antsApplyTransforms_workflow.set_output([
         ("output_image", antsApplyTransforms_task.lzout.output_image),
-        ("atlas_id", antsRegistration_workflow.get_atlas_id.lzout.out)
     ])
 
-    return antsRegistration_workflow
+    return antsApplyTransforms_workflow
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
@@ -856,7 +855,7 @@ processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbab
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
 processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
-processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 processing_node.set_output([
     ("out", processing_node.antsApplyTransforms_workflow1.lzout.all_),
