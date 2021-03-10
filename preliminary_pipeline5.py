@@ -696,7 +696,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     # Set the variables that set output file names
     antsRegistration_task.inputs.output_transform_prefix =          antsRegistration_workflow.make_output_transform_prefix.lzout.out
     antsRegistration_task.inputs.output_warped_image =              antsRegistration_workflow.make_output_warped_image.lzout.out #experiment_configuration[configkey].get('output_warped_image')
-    # antsRegistration_task.inputs.output_inverse_warped_image =      False #    experiment_configuration[configkey].get('output_inverse_warped_image')
+    antsRegistration_task.inputs.output_inverse_warped_image =      False #    experiment_configuration[configkey].get('output_inverse_warped_image')
 
     antsRegistration_workflow.add(antsRegistration_task)
     antsRegistration_workflow.set_output([
@@ -821,10 +821,10 @@ processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbab
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
 processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
-processing_node.add(get_self(name="get_self", x=processing_node.antsRegistration_workflow3.lzout.all_))
+# processing_node.add(get_self(name="get_self", x=processing_node.antsRegistration_workflow3.lzout.all_))
 
 processing_node.set_output([
-    ("out", processing_node.get_self.lzout.all_),
+    ("out", processing_node.antsRegistration_workflow3.lzout.all_),
 ])
 
 
