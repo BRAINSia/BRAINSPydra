@@ -264,5 +264,5 @@
     "output_warped_image_suffix": "_2subject.nii.gz",
     "winsorize_lower_quantile": 0.01,
     "winsorize_upper_quantile": 0.99
-  },
+  }
 }
