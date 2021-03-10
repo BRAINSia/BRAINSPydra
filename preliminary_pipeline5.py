@@ -733,32 +733,45 @@ def make_antsApplyTransforms_workflow1(atlas_id):
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import ApplyTransforms
 
-    workflow_name = "antsApplyTransforms_workflow1"
-    configkey='ANTSApplyTransforms1'
-    print(f"Making task {workflow_name}")
-
-    # Create the workflow
-    # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
-    antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id)
-
-    antsRegistration_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
-
+    # workflow_name = "antsApplyTransforms_workflow1"
+    # configkey='ANTSApplyTransforms1'
+    # print(f"Making task {workflow_name}")
+    #
+    # # Create the workflow
+    # # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
+    # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id)
+    #
+    # antsRegistration_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
+    #
+    # antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
+    #
+    # antsApplyTransforms_task.inputs.dimension = 3
+    # antsApplyTransforms_task.inputs.float = False
+    # antsApplyTransforms_task.inputs.input_image = antsRegistration_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
+    # antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
+    # antsApplyTransforms_task.inputs.output_image = "91300fswm_2_subj_lbl.nii.gz"
+    # antsApplyTransforms_task.inputs.reference_image = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
+    # antsApplyTransforms_task.inputs.transforms = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
+    #
+    # antsRegistration_workflow.add(antsApplyTransforms_task)
+    # antsRegistration_workflow.set_output([
+    #     ("output_image", antsApplyTransforms_task.lzout.output_image),
+    # ])
+    antsApplyTransforms_workflow = pydra.Workflow(name="ANTSApplyTransforms1", input_spec=["atlas_id"], atlas_id="91300")
     antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
     antsApplyTransforms_task.inputs.dimension = 3
     antsApplyTransforms_task.inputs.float = False
-    antsApplyTransforms_task.inputs.input_image = antsRegistration_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
+    antsApplyTransforms_task.inputs.input_image = "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
     antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
     antsApplyTransforms_task.inputs.output_image = "91300fswm_2_subj_lbl.nii.gz"
     antsApplyTransforms_task.inputs.reference_image = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
     antsApplyTransforms_task.inputs.transforms = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
 
-    antsRegistration_workflow.add(antsApplyTransforms_task)
-    antsRegistration_workflow.set_output([
-        ("output_image", antsApplyTransforms_task.lzout.output_image),
-    ])
+    antsApplyTransforms_workflow.add(antsApplyTransforms_task)
+    antsApplyTransforms_workflow.set_output([("output_image", antsApplyTransforms_task.lzout.output_image)])
 
-    return antsRegistration_workflow
+    return antsApplyTransforms_workflow
 
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
@@ -819,73 +832,88 @@ def copy_from_cache(cache_path, output_dir, input_data):
     return cache_path
 
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
-source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"])
-source_node.inputs.input_data = input_data_dictionary["input_data"]
-source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
+# source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], input_data=input_data_dictionary["input_data"], cache_dir=experiment_configuration["cache_dir"])
+source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])
+# source_node.inputs.input_data = input_data_dictionary["input_data"]
+# source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
 # bcd_workflow1 =
-processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
-processing_node.add(get_inputs_workflow(my_source_node=processing_node))
+# processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
+processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data="test")
+# processing_node.add(get_inputs_workflow(my_source_node=processing_node))
 
 
-processing_node.add(make_bcd_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=processing_node.inputs_workflow.lzout.inputLandmarksEMSP))
-processing_node.add(make_roi_workflow1(inputVolume=processing_node.bcd_workflow1.lzout.outputResampledVolume))
-processing_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
-processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, warpTransform=processing_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
-processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
-processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
-processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
-processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
-processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
-processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
-processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
-processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
-processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
-# processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename')).split("atlas_id")) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+# processing_node.add(make_bcd_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=processing_node.inputs_workflow.lzout.inputLandmarksEMSP))
+# processing_node.add(make_roi_workflow1(inputVolume=processing_node.bcd_workflow1.lzout.outputResampledVolume))
+# processing_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
+# processing_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+# processing_node.add(make_resample_workflow1(inputVolume=processing_node.inputs_workflow.lzout.inputVolume, warpTransform=processing_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
+# processing_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
+# processing_node.add(make_antsRegistration_workflow1(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
+# processing_node.add(make_antsRegistration_workflow2(fixed_image=processing_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=processing_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.antsRegistration_workflow1.lzout.composite_transform))
+# processing_node.add(make_abc_workflow1(inputVolumes=processing_node.roi_workflow1.lzout.outputVolume, inputT1=processing_node.inputs_workflow.lzout.inputVolume, restoreState=processing_node.antsRegistration_workflow2.lzout.save_state))
+# processing_node.add(make_resample_workflow2(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow3(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow4(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow5(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow6(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow7(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_resample_workflow8(referenceVolume=processing_node.abc_workflow1.lzout.t1_average, warpTransform=processing_node.abc_workflow1.lzout.atlasToSubjectTransform))
+# processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
+# processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
+# processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
+# processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
+antsApplyTransforms = make_antsApplyTransforms_workflow1(atlas_id="91300")
+processing_node.add(antsApplyTransforms) #experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename')).split("atlas_id")) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 processing_node.set_output([
-    # ("out", processing_node.antsRegistration_workflow3.lzout.all_),
-    ("save_state", processing_node.antsRegistration_workflow3.lzout.save_state),
-    ("composite_transform", processing_node.antsRegistration_workflow3.lzout.composite_transform),
-    ("inverse_composite_transform", processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform),
-    ("warped_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
+    ("out", processing_node.ANTSApplyTransforms1.lzout.all_),
 ])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
-sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
+# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
-source_node.add(sink_node)
+# source_node.add(sink_node)
+# source_node.add(antsApplyTransforms)
 
 # Set the output of the source node to the same as the output of the sink_node
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+# source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 # source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
-
+# source_node.set_output([("antsApplyTransformsOut", antsApplyTransforms.lzout.output_image)])
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
 
+# with pydra.Submitter(plugin="cf") as sub:
+#     sub(antsApplyTransforms)
+
+# with pydra.Submitter(plugin="cf") as sub:
+#     sub(processing_node)
+
 # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
-graph_dir = Path(experiment_configuration['graph_dir'])
-processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
-processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
-processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
-print("Created the processing pipeline graph visual")
+# graph_dir = Path(experiment_configuration['graph_dir'])
+# processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
+# processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
+# processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
+# print("Created the processing pipeline graph visual")
+
+result = antsApplyTransforms.result()
+print(result)
+
+result = processing_node.result()
+print(result)
 
 result = source_node.result()
 print(result)
+
+
+
