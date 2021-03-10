@@ -704,7 +704,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
         ("composite_transform", antsRegistration_task.lzout.composite_transform),
         ("inverse_composite_transform", antsRegistration_task.lzout.inverse_composite_transform),
         ("warped_image", antsRegistration_task.lzout.warped_image),
-        ("inverse_warped_image", antsRegistration_task.lzout.inverse_warped_image),
+        # ("inverse_warped_image", antsRegistration_task.lzout.inverse_warped_image),
     ])
 
     return antsRegistration_workflow
@@ -857,7 +857,7 @@ processing_node.set_output([
     ("composite_transform", processing_node.antsRegistration_workflow3.lzout.composite_transform),
     ("inverse_composite_transform", processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform),
     ("warped_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
-    ("inverse_warped_image", processing_node.antsRegistration_workflow3.lzout.inverse_warped_image),
+    # ("inverse_warped_image", processing_node.antsRegistration_workflow3.lzout.inverse_warped_image),
 ])
 
 
