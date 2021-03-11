@@ -849,7 +849,7 @@ processing_node.add(make_antsApplyTransforms_workflow1(workflow_id=2, atlas_id=p
 
 
 processing_node.set_output([
-    ("out", processing_node.antsApplyTransforms_workflow1.lzout.all_),
+    ("out", processing_node.antsApplyTransforms_workflow2.lzout.all_),
 ])
 
 
