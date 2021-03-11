@@ -1,7 +1,8 @@
 {
-  "output_dir": "/mnt/c/2020_Grad_School/Research/output_dir",
-  "cache_dir": "/mnt/c/2020_Grad_School/Research/cache_dir2",
+  "output_dir": "/mnt/c/2020_Grad_School/Research/output_dir_full_run_multithreaded",
+  "cache_dir": "/mnt/c/2020_Grad_School/Research/cache_dir_full_run_multithreaded",
   "graph_dir": "/mnt/c/2020_Grad_School/Research/graph_dir",
+  "num_threads": 24,
   "BRAINSConstellationDetector1": {
     "executable": "/mnt/c/2020_Grad_School/Research/BRAINSTools_build/BRAINSTools-Release-5.3.2/bin/BRAINSConstellationDetector",
     "LLSModel": "/mnt/c/2020_Grad_School/Research/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
@@ -279,7 +280,19 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSApplyTransforms1": {
+    "dimension": 3,
+    "float": false,
+    "interpolation": "MultiLabel",
     "input_image_dir": "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/",
-    "input_image_filename": "wholeBrain_label.nii.gz"
+    "input_image_filename": "wholeBrain_label.nii.gz",
+    "output_image_end": "fswm_2_subj_lbl.nii.gz"
+  },
+  "ANTSApplyTransforms2": {
+    "dimension": 3,
+    "float": false,
+    "interpolation": "MultiLabel",
+    "input_image_dir": "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/",
+    "input_image_filename": "wholeBrain_label.nii.gz",
+    "output_image_end": "_2_subj_lbl.nii.gz"
   }
 }

@@ -380,6 +380,7 @@ antsRegistration \
 --inputVolume /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --outputROIMaskVolume fixedImageROIAutoMask.nii.gz
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -432,6 +433,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -484,6 +486,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -536,6 +539,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -588,6 +592,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -640,6 +645,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -692,6 +698,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -744,6 +751,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -796,6 +804,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -848,6 +857,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -900,6 +910,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -952,6 +963,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1004,6 +1016,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1056,6 +1069,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1108,6 +1122,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1160,6 +1175,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1212,6 +1228,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1264,6 +1281,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1274,6 +1292,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_35888/35888_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1284,6 +1303,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_35888/35888_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1294,6 +1314,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_99056/99056_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1304,6 +1325,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_99056/99056_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1314,6 +1336,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_68653/68653_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1324,6 +1347,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_68653/68653_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1334,6 +1358,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_58446/58446_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1344,6 +1369,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_58446/58446_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1354,6 +1380,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_93075/93075_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1364,6 +1391,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_93075/93075_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1374,6 +1402,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_52712/52712_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1384,6 +1413,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_52712/52712_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1394,6 +1424,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_49543/49543_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1404,6 +1435,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_49543/49543_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1414,6 +1446,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_91626/91626_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1424,6 +1457,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_91626/91626_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1434,6 +1468,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_14165/14165_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1444,6 +1479,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_14165/14165_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1454,6 +1490,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_91300/91300_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1464,6 +1501,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_91300/91300_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1474,6 +1512,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_21003/21003_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1484,6 +1523,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_21003/21003_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1494,6 +1534,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_75909/75909_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1504,6 +1545,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_75909/75909_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1514,6 +1556,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_55648/55648_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1524,6 +1567,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_55648/55648_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1534,6 +1578,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_75094/75094_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1544,6 +1589,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_75094/75094_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1554,6 +1600,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_37960/37960_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1564,6 +1611,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_37960/37960_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1574,6 +1622,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_53657/53657_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1584,6 +1633,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_53657/53657_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1594,6 +1644,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_23163/23163_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1604,6 +1655,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_23163/23163_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1656,6 +1708,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1708,6 +1761,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsRegistration \
 --verbose \
 --collapse-output-transforms 0 \
@@ -1760,6 +1814,7 @@ antsRegistration \
 --winsorize-image-intensities [ 0.01, 0.99 ]  \
 --write-composite-transform 1
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1770,6 +1825,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_13512/13512_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1780,6 +1836,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_13512/13512_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1790,6 +1847,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_27612/27612_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1800,6 +1858,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_27612/27612_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \
@@ -1810,6 +1869,7 @@ antsApplyTransforms \
 --reference-image /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/TissueClassify/BABC/t1_average_BRAINSABC.nii.gz \
 --transform [ /Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/JointFusion/SyN_AtlasToSubjectANTsPreJointFusion_23687/23687_ToSubjectPreJointFusion_SyNComposite.h5, 0 ]
 
+[X]
 antsApplyTransforms \
 --default-value 0 \
 --dimensionality 3 \

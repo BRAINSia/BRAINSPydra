@@ -1,7 +1,8 @@
 {
-  "output_dir": "/localscratch/Users/cjohnson30/output_dir",
-  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir",
+  "output_dir": "/localscratch/Users/cjohnson30/output_dir_full_run_multithreaded",
+  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir_full_run_multithreaded",
   "graph_dir": "/localscratch/Users/cjohnson30/graph_dir",
+  "num_threads": 1,
   "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
     "LLSModel": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
@@ -53,7 +54,7 @@
                            "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz",
                            "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
     "output_transform_prefix": "AtlasToSubjectPreBABC_Rigid",
-    "verbose": true,
+    "verbose": true ,
     "collapse_output_transforms": false ,
     "dimensionality": 3 ,
     "float": true ,
@@ -87,7 +88,7 @@
                            "/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz"],
     "output_transform_prefix": "AtlasToSubjectPreBABC_SyN",
     "save_state": "SavedInternalSyNState.h5",
-    "verbose": true,
+    "verbose": true ,
     "collapse_output_transforms": false ,
     "dimensionality": 3 ,
     "float": true ,
@@ -95,7 +96,7 @@
     "transforms": ["SyN", "SyN", "SyN"],
     "transform_parameters": [[0.1, 3.0, 0.0], [0.1, 3.0, 0.0], [0.1, 3.0, 0.0]],
     "number_of_iterations": [[1000, 250], [140], [25]],
-    "write_composite_transform": true,
+    "write_composite_transform": true ,
     "metric": ["CC", "CC", "CC"],
     "metric_weight": [1, 1, 1],
     "radius_or_number_of_bins": [4, 4, 4],
@@ -272,7 +273,7 @@
     "metric_weight": [1, 1, 1, 1, 1],
     "radius_or_number_of_bins": [32, 32, 4, 4, 4],
     "sampling_strategy": ["Regular", "Regular", "None", "None", "None"],
-    "sampling_percentage": [0.03, 0.03, 0.03, 0.03, 0.03],
+    "sampling_percentage": [0.5, 0.5, 1, 1, 1],
     "convergence_threshold": [0.00000005, 0.0000005, 0.0000005, 0.000005, 0.00005],
     "convergence_window_size": [12, 12, 12, 12, 12],
     "smoothing_sigmas": [ [3, 2, 1], [1, 0], [3, 2], [1], [0]],
@@ -285,8 +286,19 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSApplyTransforms1": {
+    "dimension": 3,
+    "float": false,
+    "interpolation": "MultiLabel",
     "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz",
     "output_image_end": "fswm_2_subj_lbl.nii.gz"
+  },
+  "ANTSApplyTransforms2": {
+    "dimension": 3,
+    "float": false,
+    "interpolation": "MultiLabel",
+    "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
+    "input_image_filename": "wholeBrain_label.nii.gz",
+    "output_image_end": "_2_subj_lbl.nii.gz"
   }
 }

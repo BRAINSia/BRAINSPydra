@@ -94,12 +94,16 @@ BRAINSROIAuto
 }
 subgraph cluster_antsRegistration_workflow3 {
 label = antsRegistration_workflow3 
+atlas_id
 make_moving_image
 make_moving_image_masks
 make_output_transform_prefix
 make_output_warped_image
-get_atlas_id
 Registration
+atlas_id -> make_moving_image
+atlas_id -> make_moving_image_masks
+atlas_id -> make_output_transform_prefix
+atlas_id -> make_output_warped_image
 make_moving_image -> Registration
 make_moving_image_masks -> Registration
 make_output_transform_prefix -> Registration
@@ -157,9 +161,9 @@ get_posteriors -> BRAINSCreateLabelMapFromProbabilityMaps [ltail=cluster_abc_wor
 BRAINSROIAuto -> BRAINSCreateLabelMapFromProbabilityMaps [ltail=cluster_roi_workflow2, lhead=cluster_createLabelMapFromProbabilityMaps_workflow1]
 BRAINSConstellationDetector -> get_parent_directory [ltail=cluster_bcd_workflow1, lhead=cluster_landmarkInitializer_workflow3]
 get_posteriors -> BRAINSROIAuto [ltail=cluster_abc_workflow1, lhead=cluster_roi_workflow3]
-get_posteriors -> make_moving_image [ltail=cluster_abc_workflow1, lhead=cluster_antsRegistration_workflow3]
-BRAINSROIAuto -> make_moving_image [ltail=cluster_roi_workflow3, lhead=cluster_antsRegistration_workflow3]
-BRAINSLandmarkInitializer -> make_moving_image [ltail=cluster_landmarkInitializer_workflow3, lhead=cluster_antsRegistration_workflow3] [color=blue]
+get_posteriors -> atlas_id [ltail=cluster_abc_workflow1, lhead=cluster_antsRegistration_workflow3]
+BRAINSROIAuto -> atlas_id [ltail=cluster_roi_workflow3, lhead=cluster_antsRegistration_workflow3]
+BRAINSLandmarkInitializer -> atlas_id [ltail=cluster_landmarkInitializer_workflow3, lhead=cluster_antsRegistration_workflow3] [color=blue]
 get_posteriors -> atlas_id [ltail=cluster_abc_workflow1, lhead=cluster_antsApplyTransforms_workflow1]
 Registration -> atlas_id [ltail=cluster_antsRegistration_workflow3, lhead=cluster_antsApplyTransforms_workflow1] [color=blue]
 get_posteriors -> atlas_id [ltail=cluster_abc_workflow1, lhead=cluster_antsApplyTransforms_workflow2]
