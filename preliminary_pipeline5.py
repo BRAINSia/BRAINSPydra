@@ -734,12 +734,12 @@ def make_roi_workflow3(inputVolume) -> pydra.Workflow:
 
     return roi_workflow
 
-def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform, output_ending):
+def make_antsApplyTransforms_workflow1(workflow_id, atlas_id, reference_image, transform, output_ending):
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import ApplyTransforms
 
-    workflow_name = "antsApplyTransforms_workflow1"
-    configkey='ANTSApplyTransforms1'
+    workflow_name = f"antsApplyTransforms_workflow{workflow_id}"
+    configkey=f'ANTSApplyTransforms{workflow_id}'
     print(f"Making task {workflow_name}")
 
     # Create the workflow
@@ -844,8 +844,8 @@ processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbab
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
 processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
-processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform, output_ending=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'))) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
-processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform, output_ending=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'))) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+processing_node.add(make_antsApplyTransforms_workflow1(workflow_id=1, atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform, output_ending=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'))) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+processing_node.add(make_antsApplyTransforms_workflow1(workflow_id=2, atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform, output_ending=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'))) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 
 processing_node.set_output([
