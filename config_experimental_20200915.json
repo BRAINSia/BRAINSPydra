@@ -287,7 +287,7 @@
   "ANTSApplyTransforms1": {
     "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz",
-    "output_image_end": "fswm_2_subj_lbl.nii.gz"
+    "output_image_end": ["fswm_2_subj_lbl.nii.gz", "_2_subj_lbl.nii.gz"]
   },
   "ANTSApplyTransforms2": {
     "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
