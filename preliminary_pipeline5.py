@@ -804,23 +804,13 @@ def copy_from_cache(cache_path, output_dir, input_data):
                 # If the files to be copied are in a dictionary, copy each value of the dictionary
                 if type(path) is dict:
                     for nested_path in list(path.values()):
-                        # out_path = Path(file_output_dir) / Path(nested_path).name
-                        # print(f"Copying from {nested_path} to {out_path}")
-                        # copyfile(nested_path, out_path)
                         out_path = copy(nested_path, file_output_dir)
                         output_list.append(out_path)
                 else:
-                    # print(f"not nested: {path}")
-                    # out_path = Path(file_output_dir) / Path(path).name
-                    # print(f"Copying from {path} to {out_path}")
-                    # copyfile(path, out_path)
                     out_path = copy(path, file_output_dir)
                     output_list.append(out_path)
             return output_list
         else:
-            # out_path = Path(file_output_dir) / Path(cache_path).name
-            # print(f"Copying from {cache_path} to {out_path}")
-            # copyfile(cache_path, out_path)
             cache_path = copy(cache_path, file_output_dir)
     return cache_path
 
@@ -830,7 +820,6 @@ source_node.inputs.input_data = input_data_dictionary["input_data"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
-# bcd_workflow1 =
 processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
 processing_node.add(get_inputs_workflow(my_source_node=processing_node))
 
