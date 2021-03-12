@@ -30,34 +30,14 @@ input_image = ["/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91
 processing_node = pydra.Workflow(name="processing_node", input_spec=["input_image"], input_image=input_image)
 processing_node.split("input_image")
 
-# antsApplyTransforms_task = ApplyTransforms()
+antsApplyTransforms_workflow = pydra.Workflow(name="antsApplyTransforms_workflow1", input_spec=["input_image"], input_image=processing_node.lzin.input_image)
 antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
 
 antsApplyTransforms_task.inputs.dimension       = 3
 antsApplyTransforms_task.inputs.float           = False
-antsApplyTransforms_task.inputs.input_image     = processing_node.lzin.input_image
-    #["/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/99056/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91626/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/93075/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/53657/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/75094/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/75909/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/55648/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/27612/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/49543/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/58446/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/52712/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/68653/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/37960/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/35888/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/23687/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/14165/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/13512/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/23163/wholeBrain_label.nii.gz",
-                                                   # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/21003/wholeBrain_label.nii.gz"
-                                                   # ]
+antsApplyTransforms_task.inputs.input_image     = antsApplyTransforms_workflow.lzin.input_image
+
 
 
 antsApplyTransforms_task.inputs.interpolation   = "MultiLabel"
@@ -68,8 +48,11 @@ antsApplyTransforms_task.inputs.transforms      = ["/mnt/c/2020_Grad_School/Rese
                                                    "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"]
 antsApplyTransforms_task.split(("reference_image", "transforms"))
 
-processing_node.add(antsApplyTransforms_task)
-processing_node.set_output([("out", antsApplyTransforms_task.lzout.output_image)])
+antsApplyTransforms_workflow.add(antsApplyTransforms_task)
+antsApplyTransforms_workflow.set_output([("output_image", antsApplyTransforms_task.lzout.output_image)])
+
+processing_node.add(antsApplyTransforms_workflow)
+processing_node.set_output([("out", antsApplyTransforms_workflow.lzout.output_image)])
 
 with pydra.Submitter(plugin="cf") as sub:
     sub(processing_node)
