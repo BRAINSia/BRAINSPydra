@@ -928,10 +928,10 @@ processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.
 processing_node.set_output([
     # ("out", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
     # ("out", antsApplyTransforms_task.lzout.output_image),
-    ("save_state", processing_node.antsRegistration_task.lzout.save_state),
-    ("composite_transform", processing_node.antsRegistration_task.lzout.composite_transform),
-    ("inverse_composite_transform", processing_node.antsRegistration_task.lzout.inverse_composite_transform),
-    ("warped_image", processing_node.antsRegistration_task.lzout.warped_image),
+    ("save_state", processing_node.antsRegistration_workflow3.lzout.save_state),
+    ("composite_transform", processing_node.antsRegistration_workflow3.lzout.composite_transform),
+    ("inverse_composite_transform", processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform),
+    ("warped_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
     # ("atlas_id", processing_node.antsRegistration_workflow.get_atlas_id.lzout.out)
 ])
 
@@ -944,7 +944,7 @@ sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
-# source_node.add(sink_node)
+source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 # source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
