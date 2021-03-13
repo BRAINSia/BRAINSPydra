@@ -7,7 +7,9 @@ import attr
 from nipype.interfaces.base import (
     File,
 )
-
+from pydra.tasks.nipype1.utils import Nipype1Task
+import json
+from nipype.interfaces.ants import ApplyTransforms
 
 parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
 parser.add_argument('config_experimental', type=str, help='Path to the json file for configuring task parameters')
@@ -734,7 +736,8 @@ def make_roi_workflow3(inputVolume) -> pydra.Workflow:
 
     return roi_workflow
 
-def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
+# def make_antsApplyTransforms_workflow1(atlas_id="", reference_image="", transform=""):
+def make_antsApplyTransforms_workflow1(input_image):
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import ApplyTransforms
 
@@ -743,21 +746,56 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
     print(f"Making task {workflow_name}")
 
     # Create the workflow
-    antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
-    # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id)
-
-    antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
-    antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_image_end')))
-
+    # antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
+    antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["input_image"], input_image=input_image)
     antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
     antsApplyTransforms_task.inputs.dimension = 3
     antsApplyTransforms_task.inputs.float = False
-    antsApplyTransforms_task.inputs.input_image = antsApplyTransforms_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
+    antsApplyTransforms_task.inputs.input_image = [
+        "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz",
+        "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/99056/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91626/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/93075/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/53657/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/75094/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/75909/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/55648/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/27612/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/49543/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/58446/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/52712/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/68653/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/37960/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/35888/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/23687/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/14165/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/13512/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/23163/wholeBrain_label.nii.gz",
+        # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/21003/wholeBrain_label.nii.gz"
+        ]
+
     antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
-    antsApplyTransforms_task.inputs.output_image = antsApplyTransforms_workflow.output_image.lzout.out #"91300fswm_2_subj_lbl.nii.gz"
-    antsApplyTransforms_task.inputs.reference_image = antsApplyTransforms_workflow.lzin.reference_image #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
-    antsApplyTransforms_task.inputs.transforms = antsApplyTransforms_workflow.lzin.transform #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
+    antsApplyTransforms_task.inputs.output_image = "91300_2_subj_lbl.nii.gz"
+    antsApplyTransforms_task.inputs.reference_image = [
+        "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/t1_average_BRAINSABC.nii.gz",
+        "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/t1_average_BRAINSABC.nii.gz"]
+    antsApplyTransforms_task.inputs.transforms = [
+        "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5",
+        "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"]
+    antsApplyTransforms_task.split(["input_image", ("reference_image", "transforms")])
+    # antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
+    # antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_image_end')))
+    #
+    # antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
+    #
+    # antsApplyTransforms_task.inputs.dimension = 3
+    # antsApplyTransforms_task.inputs.float = False
+    # antsApplyTransforms_task.inputs.input_image = antsApplyTransforms_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
+    # antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
+    # antsApplyTransforms_task.inputs.output_image = antsApplyTransforms_workflow.output_image.lzout.out #"91300fswm_2_subj_lbl.nii.gz"
+    # antsApplyTransforms_task.inputs.reference_image = antsApplyTransforms_workflow.lzin.reference_image #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
+    # antsApplyTransforms_task.inputs.transforms = antsApplyTransforms_workflow.lzin.transform #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
 
     antsApplyTransforms_workflow.add(antsApplyTransforms_task)
     antsApplyTransforms_workflow.set_output([
@@ -817,6 +855,8 @@ def copy_from_cache(cache_path, output_dir, input_data):
 # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
 source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"])
 source_node.inputs.input_data = input_data_dictionary["input_data"]
+source_node.inputs.input_data = ["/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz",
+                                                   "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/99056/wholeBrain_label.nii.gz"]
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 # Get the processing workflow defined in a separate function
@@ -844,18 +884,63 @@ processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbab
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
 processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
-processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+# processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+# processing_node.add(make_antsApplyTransforms_workflow1(processing_node.lzin.input_data)) #atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
+# antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
+#
+# antsApplyTransforms_task.inputs.dimension = 3
+# antsApplyTransforms_task.inputs.float = False
+# antsApplyTransforms_task.inputs.input_image = [
+#     "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz",
+#     "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/99056/wholeBrain_label.nii.gz",
+#     "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91626/wholeBrain_label.nii.gz",
+#     "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/93075/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/53657/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/75094/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/75909/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/55648/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/27612/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/49543/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/58446/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/52712/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/68653/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/37960/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/35888/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/23687/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/14165/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/13512/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/23163/wholeBrain_label.nii.gz",
+#     # "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/21003/wholeBrain_label.nii.gz"
+# ]
+#
+# antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
+# antsApplyTransforms_task.inputs.output_image = "91300_2_subj_lbl.nii.gz"
+# antsApplyTransforms_task.inputs.reference_image = [
+#     "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/t1_average_BRAINSABC.nii.gz",
+#     "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/t1_average_BRAINSABC.nii.gz"]
+# antsApplyTransforms_task.inputs.transforms = [
+#     "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5",
+#     "/mnt/c/2020_Grad_School/Research/output_dir/sub-273625_ses-47445_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"]
+# antsApplyTransforms_task.split(["input_image", ("reference_image", "transforms")])
+
+# processing_node.add(antsApplyTransforms_task)
 processing_node.set_output([
-    ("out", processing_node.antsApplyTransforms_workflow1.lzout.all_),
+    # ("out", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
+    # ("out", antsApplyTransforms_task.lzout.output_image),
+    ("save_state", processing_node.antsRegistration_task.lzout.save_state),
+    ("composite_transform", processing_node.antsRegistration_task.lzout.composite_transform),
+    ("inverse_composite_transform", processing_node.antsRegistration_task.lzout.inverse_composite_transform),
+    ("warped_image", processing_node.antsRegistration_task.lzout.warped_image),
+    # ("atlas_id", processing_node.antsRegistration_workflow.get_atlas_id.lzout.out)
 ])
 
 
 # The sink converts the cached files to output_dir, a location on the local machine
-# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
-# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-# sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-# sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
+sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
 
 source_node.add(processing_node)
 
@@ -863,8 +948,8 @@ source_node.add(processing_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 # source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
-# source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
 
 
 

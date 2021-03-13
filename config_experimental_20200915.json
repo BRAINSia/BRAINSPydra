@@ -1,6 +1,6 @@
 {
   "output_dir": "/localscratch/Users/cjohnson30/output_dir",
-  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir",
+  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir_fresh_copy",
   "graph_dir": "/localscratch/Users/cjohnson30/graph_dir",
   "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
