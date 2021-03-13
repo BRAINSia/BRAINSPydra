@@ -1,6 +1,6 @@
 {
   "output_dir": "/localscratch/Users/cjohnson30/output_dir",
-  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir_fresh_copy",
+  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir",
   "graph_dir": "/localscratch/Users/cjohnson30/graph_dir",
   "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
@@ -287,11 +287,6 @@
   "ANTSApplyTransforms1": {
     "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz",
-    "output_image_end": "fswm_2_subj_ll.nii.gz"
-  },
-  "ANTSApplyTransforms2": {
-    "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
-    "input_image_filename": "wholeBrain_label.nii.gz",
-    "output_image_end": "_2_subj_lbl.nii.gz"
+    "output_image_end": "fswm_2_subj_lbl.nii.gz"
   }
 }
