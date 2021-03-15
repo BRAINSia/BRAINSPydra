@@ -739,7 +739,7 @@ def make_roi_workflow3(inputVolume) -> pydra.Workflow:
 
     return roi_workflow
 
-def make_antsApplyTransforms_workflow1(index, output_image_end, reference_image, transform):
+def make_antsApplyTransforms_workflow(index, output_image_end, reference_image, transform):
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import ApplyTransforms
 
@@ -749,27 +749,21 @@ def make_antsApplyTransforms_workflow1(index, output_image_end, reference_image,
 
     # Create the workflow
     antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform"], reference_image=reference_image, transform=transform)
-    # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id)
 
     antsApplyTransforms_workflow.add(get_atlas_id_from_transform(name="get_atlas_id1", transform=antsApplyTransforms_workflow.lzin.transform))
 
     antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.get_atlas_id1.lzout.out, filename=experiment_configuration[configkey].get('input_image_filename')))
     antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.get_atlas_id1.lzout.out, filename=output_image_end))
-    antsApplyTransforms_workflow.add(get_self(name="get_self1", x=antsApplyTransforms_workflow.input_image.lzout.out))
-    antsApplyTransforms_workflow.add(get_self(name="get_self2", x=antsApplyTransforms_workflow.output_image.lzout.out))
-    antsApplyTransforms_workflow.add(get_self(name="get_self3", x=antsApplyTransforms_workflow.lzin.reference_image))
-    antsApplyTransforms_workflow.add(get_self(name="get_self4", x=antsApplyTransforms_workflow.lzin.transform))
-    antsApplyTransforms_workflow.add(get_self(name="get_self5", x=antsApplyTransforms_workflow.get_atlas_id1.lzout.out))
 
     antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
-    antsApplyTransforms_task.inputs.dimension = 3
-    antsApplyTransforms_task.inputs.float = False
-    antsApplyTransforms_task.inputs.input_image = antsApplyTransforms_workflow.input_image.lzout.out #"/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/91300/wholeBrain_label.nii.gz"
-    antsApplyTransforms_task.inputs.interpolation = "MultiLabel"
-    antsApplyTransforms_task.inputs.output_image = antsApplyTransforms_workflow.output_image.lzout.out #"91300fswm_2_subj_lbl.nii.gz"
-    antsApplyTransforms_task.inputs.reference_image = antsApplyTransforms_workflow.lzin.reference_image #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"
-    antsApplyTransforms_task.inputs.transforms = antsApplyTransforms_workflow.lzin.transform #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/AtlasToSubjectPreBABC_SyNComposite.h5"
+    antsApplyTransforms_task.inputs.dimension = experiment_configuration[configkey].get('dimension')
+    antsApplyTransforms_task.inputs.float = experiment_configuration[configkey].get('float')
+    antsApplyTransforms_task.inputs.input_image = antsApplyTransforms_workflow.input_image.lzout.out
+    antsApplyTransforms_task.inputs.interpolation = experiment_configuration[configkey].get('interpolation')
+    antsApplyTransforms_task.inputs.output_image = antsApplyTransforms_workflow.output_image.lzout.out
+    antsApplyTransforms_task.inputs.reference_image = antsApplyTransforms_workflow.lzin.reference_image
+    antsApplyTransforms_task.inputs.transforms = antsApplyTransforms_workflow.lzin.transform
 
     antsApplyTransforms_workflow.add(antsApplyTransforms_task)
     antsApplyTransforms_workflow.set_output([

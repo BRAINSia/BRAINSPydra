@@ -285,11 +285,17 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSApplyTransforms1": {
+    "dimension": 3,
+    "float": false,
+    "interpolation": "MultiLabel",
     "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz",
     "output_image_end": "fswm_2_subj_lbl.nii.gz"
   },
   "ANTSApplyTransforms2": {
+    "dimension": 3,
+    "float": false,
+    "interpolation": "MultiLabel",
     "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz",
     "output_image_end": "_2_subj_lbl.nii.gz"
