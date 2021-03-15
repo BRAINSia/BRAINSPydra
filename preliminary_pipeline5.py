@@ -33,11 +33,6 @@ def get_self(x):
     return list
 
 @pydra.mark.task
-def print_self(x):
-    print(x)
-    return x
-
-@pydra.mark.task
 def get_atlas_id(atlas_id):
     return atlas_id
 
@@ -856,7 +851,7 @@ processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.
 processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 processing_node.set_output([
-    ("out", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
+    ("out", processing_node.antsRegistration_workflow3.lzout.warped_image),
 ])
 
 
