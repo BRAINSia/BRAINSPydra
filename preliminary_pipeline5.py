@@ -734,7 +734,7 @@ def make_roi_workflow3(inputVolume) -> pydra.Workflow:
 
     return roi_workflow
 
-def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
+def make_antsApplyTransforms_workflow1(reference_image, transform):
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import ApplyTransforms
 
@@ -743,11 +743,11 @@ def make_antsApplyTransforms_workflow1(atlas_id, reference_image, transform):
     print(f"Making task {workflow_name}")
 
     # Create the workflow
-    antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform", "atlas_id"], reference_image=reference_image, transform=transform, atlas_id=atlas_id)
+    antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform"], reference_image=reference_image, transform=transform)
     # antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_id"], atlas_id=atlas_id)
 
-    antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('input_image_filename')))
-    antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_image_end')))
+    antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir="91300", filename=experiment_configuration[configkey].get('input_image_filename')))
+    antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str="before", filename=experiment_configuration[configkey].get('output_image_end')))
     antsApplyTransforms_workflow.add(get_self(name="get_self1", x=antsApplyTransforms_workflow.input_image.lzout.out))
     antsApplyTransforms_workflow.add(get_self(name="get_self2", x=antsApplyTransforms_workflow.output_image.lzout.out))
     antsApplyTransforms_workflow.add(get_self(name="get_self3", x=antsApplyTransforms_workflow.lzin.reference_image))
@@ -848,7 +848,7 @@ processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbab
 processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
 processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
 processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
-processing_node.add(make_antsApplyTransforms_workflow1(atlas_id=processing_node.antsRegistration_workflow3.lzout.atlas_id, reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+processing_node.add(make_antsApplyTransforms_workflow1(reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 processing_node.set_output([
     ("out", processing_node.antsRegistration_workflow3.lzout.warped_image),
