@@ -33,6 +33,12 @@ def get_self(x):
     return list
 
 @pydra.mark.task
+def get_atlas_id_from_transform(transform):
+    atlas_id = transform
+    print(atlas_id)
+    return atlas_id
+
+@pydra.mark.task
 def get_atlas_id(atlas_id):
     return atlas_id
 
