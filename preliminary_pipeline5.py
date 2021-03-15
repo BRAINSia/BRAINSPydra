@@ -753,7 +753,7 @@ def make_antsApplyTransforms_workflow1(reference_image, transform):
 
     antsApplyTransforms_workflow.add(get_atlas_id_from_transform(name="get_atlas_id1", transform=antsApplyTransforms_workflow.lzin.transform))
 
-    antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir="91300", filename=experiment_configuration[configkey].get('input_image_filename')))
+    antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.get_atlas_id1.lzout.out, filename=experiment_configuration[configkey].get('input_image_filename')))
     antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.get_atlas_id1.lzout.out, filename=experiment_configuration[configkey].get('output_image_end')))
     antsApplyTransforms_workflow.add(get_self(name="get_self1", x=antsApplyTransforms_workflow.input_image.lzout.out))
     antsApplyTransforms_workflow.add(get_self(name="get_self2", x=antsApplyTransforms_workflow.output_image.lzout.out))
@@ -859,7 +859,7 @@ processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.
 processing_node.add(make_antsApplyTransforms_workflow1(reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 processing_node.set_output([
-    ("out", processing_node.antsApplyTransforms_workflow1.lzout.warped_image),
+    ("out", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
 ])
 
 
