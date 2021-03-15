@@ -38,7 +38,8 @@ def get_atlas_id(atlas_id):
 
 @pydra.mark.task
 def get_atlas_id_from_transform(transform):
-    atlas_id = Path(transform).name.split("_")[0]
+    # atlas_id = Path(transform).name.split("_")[0]
+    atlas_id = transform
     print(atlas_id)
     return atlas_id
 
