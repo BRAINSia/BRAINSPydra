@@ -754,7 +754,7 @@ def make_antsApplyTransforms_workflow1(reference_image, transform):
 
     antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir="91300", filename=experiment_configuration[configkey].get('input_image_filename')))
     antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str="before", filename=experiment_configuration[configkey].get('output_image_end')))
-    antsApplyTransforms_workflow.add(get_atlas_id_from_transform(name="atlas_id", transform=antsApplyTransforms_workflow.lzin.transform))
+    # antsApplyTransforms_workflow.add(get_atlas_id_from_transform(name="atlas_id", transform=antsApplyTransforms_workflow.lzin.transform))
     antsApplyTransforms_workflow.add(get_self(name="get_self1", x=antsApplyTransforms_workflow.input_image.lzout.out))
     antsApplyTransforms_workflow.add(get_self(name="get_self2", x=antsApplyTransforms_workflow.output_image.lzout.out))
     antsApplyTransforms_workflow.add(get_self(name="get_self3", x=antsApplyTransforms_workflow.lzin.reference_image))
