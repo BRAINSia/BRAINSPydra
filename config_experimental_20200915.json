@@ -1,6 +1,6 @@
 {
   "output_dir": "/localscratch/Users/cjohnson30/output_dir",
-  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir",
+  "cache_dir": "/localscratch/Users/cjohnson30/cache_dir_fresh_copy",
   "graph_dir": "/localscratch/Users/cjohnson30/graph_dir",
   "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
@@ -272,7 +272,7 @@
     "metric_weight": [1, 1, 1, 1, 1],
     "radius_or_number_of_bins": [32, 32, 4, 4, 4],
     "sampling_strategy": ["Regular", "Regular", "None", "None", "None"],
-    "sampling_percentage": [0.03, 0.03, 0.03, 0.03, 0.03],
+    "sampling_percentage": [1.0, 1.0, 0.5, 0.5, 0.5],
     "convergence_threshold": [0.00000005, 0.0000005, 0.0000005, 0.000005, 0.00005],
     "convergence_window_size": [12, 12, 12, 12, 12],
     "smoothing_sigmas": [ [3, 2, 1], [1, 0], [3, 2], [1], [0]],
@@ -287,6 +287,6 @@
   "ANTSApplyTransforms1": {
     "input_image_dir": "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz",
-    "output_image_end": "fm_2_subj_lbl.nii.gz"
+    "output_image_end": "_2_subj_lbl.nii.gz"
   }
 }
