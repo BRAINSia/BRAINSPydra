@@ -861,7 +861,8 @@ processing_node.add(make_antsApplyTransforms_workflow1(index=2, output_image_end
 
 
 processing_node.set_output([
-    ("out", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
+    ("out1", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
+    ("out2", processing_node.antsApplyTransforms_workflow2.lzout.output_image),
 ])
 
 
@@ -877,8 +878,8 @@ source_node.add(processing_node)
 
 # Set the output of the source node to the same as the output of the sink_node
 # source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
-source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
-# source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
+# source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
+source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
 
 
 
