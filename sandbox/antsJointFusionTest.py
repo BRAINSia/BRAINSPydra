@@ -30,6 +30,27 @@ antsJointFusion_task.inputs.atlas_image = [
     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz'],
     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/93075_2subject.nii.gz'],
     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/99056_2subject.nii.gz']
+
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/13512_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/14165_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/21003_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23163_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23687_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/27612_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/35888_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/37960_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/49543_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/52712_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/53657_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/55648_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/58446_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/68653_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75094_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75909_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/93075_2subject.nii.gz'],
+    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/99056_2subject.nii.gz']
     ]
 antsJointFusion_task.inputs.atlas_segmentation_image = [
     "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/13512_2_subj_lbl.nii.gz",
@@ -52,6 +73,26 @@ antsJointFusion_task.inputs.atlas_segmentation_image = [
     "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2_subj_lbl.nii.gz",
     "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/93075_2_subj_lbl.nii.gz",
     "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/99056_2_subj_lbl.nii.gz"
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/13512_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/14165_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/21003_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23163_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23687_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/27612_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/35888_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/37960_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/49543_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/52712_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/53657_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/55648_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/58446_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/68653_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75094_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75909_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/93075_2_subj_lbl.nii.gz",
+    # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/99056_2_subj_lbl.nii.gz"
 ]
 
 antsJointFusion_task.inputs.beta = 2.0
