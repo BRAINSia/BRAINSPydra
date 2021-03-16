@@ -1,12 +1,12 @@
 from pydra.tasks.nipype1.utils import Nipype1Task
 import json
-from nipype.interfaces.ants import AntsJointFusion
+from nipype.interfaces.ants import JointFusion
 
 # with open("/mnt/c/2020_Grad_School/Research/BRAINSPydra/config_experimental.json") as f:
 #     experiment_configuration = json.load(f)
 
 # antsJointFusion_task = AntsJointFusion()
-antsJointFusion_task = Nipype1Task(AntsJointFusion())
+antsJointFusion_task = Nipype1Task(JointFusion())
 antsJointFusion_task.inputs.alpha       = 0.1
 antsJointFusion_task.inputs.atlas_image = [
     # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/13512_2subject.nii.gz'],
