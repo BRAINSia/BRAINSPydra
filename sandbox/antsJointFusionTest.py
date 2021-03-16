@@ -59,7 +59,7 @@ antsJointFusion_task.inputs.search_radius = [3]
 antsJointFusion_task.inputs.target_image = ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz']
 antsJointFusion_task.inputs.verbose = True
 
-# print(antsJointFusion_task.cmdline)
+print(antsJointFusion_task.cmdline)
 
-res = antsJointFusion_task()
-print(res)
+# res = antsJointFusion_task()
+# print(res)
