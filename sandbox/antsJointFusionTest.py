@@ -5,8 +5,8 @@ from nipype.interfaces.ants import AntsJointFusion
 # with open("/mnt/c/2020_Grad_School/Research/BRAINSPydra/config_experimental.json") as f:
 #     experiment_configuration = json.load(f)
 
-antsJointFusion_task = AntsJointFusion()
-# antsJointFusion_task = Nipype1Task(AntsJointFusion())
+# antsJointFusion_task = AntsJointFusion()
+antsJointFusion_task = Nipype1Task(AntsJointFusion())
 antsJointFusion_task.inputs.alpha       = 0.1
 antsJointFusion_task.inputs.atlas_image = [
     # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/13512_2subject.nii.gz'],
@@ -59,7 +59,7 @@ antsJointFusion_task.inputs.search_radius = [3]
 antsJointFusion_task.inputs.target_image = ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz']
 antsJointFusion_task.inputs.verbose = True
 
-print(antsJointFusion_task.cmdline)
+# print(antsJointFusion_task.cmdline)
 
-# res = antsJointFusion_task()
-# print(res)
+res = antsJointFusion_task()
+print(res)
