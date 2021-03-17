@@ -799,10 +799,10 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image"], atlas_image=atlas_image)
 
     # antsJointFusion_workflow.add(combine_altas_image(name="combine_atlas_image", combined_list=combined_list, atlas_image=antsJointFusion_workflow.lzin.atlas_image))
-    antsJointFusion_workflow.add(print_self(name=f"atlas_image{index}", x=antsJointFusion_workflow.lzin.atlas_image))
-    # antsJointFusion_workflow.add(get_self(name=f"atlas_segmentation_image{index}", x=antsJointFusion_workflow.lzin.atlas_segmentation_image))
-    # antsJointFusion_workflow.add(get_self(name=f"target_image{index}", x=antsJointFusion_workflow.lzin.target_image))
-    # antsJointFusion_workflow.add(get_self(name=f"mask_image{index}", x=antsJointFusion_workflow.lzin.mask_image))
+    antsJointFusion_workflow.add(print_self(name=f"atlas_image{index}",                 x=antsJointFusion_workflow.lzin.atlas_image))
+    antsJointFusion_workflow.add(print_self(name=f"atlas_segmentation_image{index}",    x=antsJointFusion_workflow.lzin.atlas_segmentation_image))
+    antsJointFusion_workflow.add(print_self(name=f"target_image{index}",                x=antsJointFusion_workflow.lzin.target_image))
+    antsJointFusion_workflow.add(print_self(name=f"mask_image{index}",                  x=antsJointFusion_workflow.lzin.mask_image))
 
     # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
     # antsJointFusion_task = Nipype1Task(AntsJointFusion())
