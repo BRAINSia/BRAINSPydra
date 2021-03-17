@@ -266,7 +266,7 @@
     "initialize_transforms_per_stage": true ,
     "transforms": ["Affine","Affine","SyN", "SyN", "SyN"],
     "transform_parameters": [ [0.1],[0.1], [0.1, 3.0, 0.0], [0.1, 3.0, 0.0], [0.1, 3.0, 0.0] ],
-    "number_of_iterations": [[1, 1,1],[1, 1],[1, 1], [1], [1]],
+    "number_of_iterations": [[1000, 1000,500],[500, 500],[1000, 250], [140], [25]],
     "write_composite_transform": true,
     "metric": ["MI","MI","CC", "CC", "CC"],
     "metric_weight": [1, 1, 1, 1, 1],
