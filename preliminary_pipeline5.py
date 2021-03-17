@@ -853,6 +853,8 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
         ("mask_image", antsJointFusion_workflow.mask_image.lzout.out)
     ])
 
+    return antsJointFusion_workflow
+
 @pydra.mark.task
 def get_processed_outputs(processed_dict: dict):
     return list(processed_dict.values())
