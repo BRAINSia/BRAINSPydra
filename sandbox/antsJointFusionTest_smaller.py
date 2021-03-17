@@ -2,17 +2,17 @@ from nipype.interfaces.ants import AntsJointFusion
 from pydra.tasks.nipype1.utils import Nipype1Task
 import pydra
 
-wf = pydra.Workflow(name="wf", input_spec=["atlas_image"], atlas_image=[
-    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
-    # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz']
-    ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
-    ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz'],
-])
+# wf = pydra.Workflow(name="wf", input_spec=["atlas_image"], atlas_image=[
+#     # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
+#     # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz']
+#     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
+#     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz'],
+# ])
 
-# antsJointFusion_task = Nipype1Task(AntsJointFusion())
 antsJointFusion_task = AntsJointFusion()
+# antsJointFusion_task = AntsJointFusion()
 # wf.add(antsJointFusion_task)
-antsJointFusion_task.inputs.atlas_image = [
+antsJointFusion_task.inputs.atlas_image =[
     # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
     # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz']
     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
@@ -38,10 +38,10 @@ antsJointFusion_task.inputs.num_threads = 28
 
 antsJointFusion_workflow = Nipype1Task(antsJointFusion_task)
 
-# print(antsJointFusion_task.cmdline)
-# result = antsJointFusion_task.run()
-# print(result)
-with pydra.Submitter(plugin="cf") as sub:
-    sub(antsJointFusion_workflow)
-result = antsJointFusion_workflow.result()
+print(antsJointFusion_task.cmdline)
+result = antsJointFusion_task.run()
 print(result)
+# with pydra.Submitter(plugin="cf") as sub:
+#     sub(antsJointFusion_workflow)
+# result = antsJointFusion_workflow.result()
+# print(result)
