@@ -954,18 +954,18 @@ processing_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=
 
 
 processing_node.set_output([
-    # ("out1", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
-    # ("out2", processing_node.antsApplyTransforms_workflow2.lzout.output_image),
+    ("out1", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
+    ("out2", processing_node.antsApplyTransforms_workflow2.lzout.output_image),
 
-    ("out1", processing_node.antsJointFusion_workflow1.lzout.atlas_image),
+    # ("out1", processing_node.antsJointFusion_workflow1.lzout.atlas_image),
     # ("out2", processing_node.antsJointFusion_workflow1.lzout.atlas_segmentation_image),
     # ("out3", processing_node.antsJointFusion_workflow1.lzout.target_image),
     # ("out4", processing_node.antsJointFusion_workflow1.lzout.mask_image),
 ])
 
 post_processing_node = pydra.Workflow(name="post_processing_node", input_spec=["atlas_image"])
-post_processing_node.add(processing_node)
-post_processing_node.inputs.atlas_image = post_processing_node.processing_node.lzout.out1
+# post_processing_node.add(processing_node)
+post_processing_node.inputs.atlas_image = processing_node.lzout.out1
 post_processing_node.add(make_antsJointFusion_workflow1(atlas_image=post_processing_node.lzin.atlas_image)) #, atlas_segmentation_image=processing_node.antsApplyTransforms_workflow2.lzout.output_image, target_image=processing_node.abc_workflow1.lzout.t1_average, mask_image=processing_node.roi_workflow2.lzout.outputROIMaskVolume)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 # The sink converts the cached files to output_dir, a location on the local machine
