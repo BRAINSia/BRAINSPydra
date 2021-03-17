@@ -967,7 +967,7 @@ post_processing_node = pydra.Workflow(name="post_processing_node", input_spec=["
 # post_processing_node.add(processing_node)
 post_processing_node.inputs.atlas_image = processing_node.lzout.out1
 post_processing_node.add(make_antsJointFusion_workflow1(atlas_image=post_processing_node.lzin.atlas_image)) #, atlas_segmentation_image=processing_node.antsApplyTransforms_workflow2.lzout.output_image, target_image=processing_node.abc_workflow1.lzout.t1_average, mask_image=processing_node.roi_workflow2.lzout.outputROIMaskVolume)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
-
+post_processing_node.set_output([("out", processing_node.antsJointFusion_workflow1.lzout.atlas_image)])
 # The sink converts the cached files to output_dir, a location on the local machine
 # sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
 # sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
