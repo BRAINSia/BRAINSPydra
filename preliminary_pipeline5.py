@@ -778,8 +778,8 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     from pydra.tasks.nipype1.utils import Nipype1Task
     from nipype.interfaces.ants import AntsJointFusion
 
-    workflow_name = f"antsApplyTransforms_workflow1"
-    configkey=f'ANTSApplyTransforms1'
+    workflow_name = f"antsJointFusion_workflow1"
+    configkey=f'ANTSJointFusion1'
     print(f"Making task {workflow_name}")
 
     # Create the workflow
