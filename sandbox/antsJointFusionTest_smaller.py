@@ -23,7 +23,8 @@ antsJointFusion_task.inputs.target_image = ['/localscratch/Users/cjohnson30/outp
 antsJointFusion_task.inputs.mask_image = "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz"
 antsJointFusion_task.inputs.out_label_fusion = "JointFusion_HDAtlas20_2015_label.nii.gz"
 antsJointFusion_task.inputs.verbose = True
-antsJointFusion_task.set_default_num_threads(24)
+antsJointFusion_task.inputs.num_threads(56)
+# antsJointFusion_task.set_default_num_threads(24)
 
 print(antsJointFusion_task.cmdline)
 result = antsJointFusion_task.run()
