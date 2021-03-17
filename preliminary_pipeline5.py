@@ -781,13 +781,14 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     workflow_name = f"antsJointFusion_workflow1"
     configkey=f'ANTSJointFusion1'
     print(f"Making task {workflow_name}")
+    index = 1
 
     # Create the workflow
     antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
-    antsJointFusion_workflow.add(get_self(name="atlas_image", x=antsJointFusion_workflow.lzin.atlas_image))
-    antsJointFusion_workflow.add(get_self(name="atlas_segmentation_image", x=antsJointFusion_workflow.lzin.atlas_segmentation_image))
-    antsJointFusion_workflow.add(get_self(name="target_image", x=antsJointFusion_workflow.lzin.target_image))
-    antsJointFusion_workflow.add(get_self(name="mask_image", x=antsJointFusion_workflow.lzin.mask_image))
+    antsJointFusion_workflow.add(get_self(name=f"atlas_image{index}", x=antsJointFusion_workflow.lzin.atlas_image))
+    antsJointFusion_workflow.add(get_self(name=f"atlas_segmentation_image{index}", x=antsJointFusion_workflow.lzin.atlas_segmentation_image))
+    antsJointFusion_workflow.add(get_self(name=f"target_image{index}", x=antsJointFusion_workflow.lzin.target_image))
+    antsJointFusion_workflow.add(get_self(name=f"mask_image{index}", x=antsJointFusion_workflow.lzin.mask_image))
 
     # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
     # antsJointFusion_task = Nipype1Task(AntsJointFusion())
