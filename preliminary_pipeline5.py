@@ -810,67 +810,26 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     antsJointFusion_workflow.add(print_self(name=f"mask_image{index}",                  x=antsJointFusion_workflow.lzin.mask_image))
 
     # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
-    # antsJointFusion_task = Nipype1Task(AntsJointFusion())
-    # antsJointFusion_task.inputs.alpha = 0.1
-    # antsJointFusion_task.inputs.atlas_image =
-        # [
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/13512_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/14165_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/21003_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23163_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23687_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/27612_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/35888_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/37960_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/49543_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/52712_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/53657_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/55648_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/58446_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/68653_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75094_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75909_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/93075_2subject.nii.gz'],
-        # ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/99056_2subject.nii.gz']]
-    # antsJointFusion_task.inputs.atlas_segmentation_image =
-        # [
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/13512_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/14165_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/21003_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23163_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/23687_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/27612_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/35888_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/37960_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/49543_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/52712_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/53657_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/55648_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/58446_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/68653_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75094_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/75909_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/93075_2_subj_lbl.nii.gz",
-        # "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/99056_2_subj_lbl.nii.gz"]
+    antsJointFusion_task = Nipype1Task(AntsJointFusion())
+    antsJointFusion_task.inputs.alpha =                     0.1
+    antsJointFusion_task.inputs.atlas_image =               antsJointFusion_workflow.lzin.atlas_image
+    antsJointFusion_task.inputs.atlas_segmentation_image =  antsJointFusion_workflow.lzin.atlas_segmentation_image
 
-    # antsJointFusion_task.inputs.beta = 2.0
-    # antsJointFusion_task.inputs.dimension = 3
-    # antsJointFusion_task.inputs.mask_image = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz"
-    # antsJointFusion_task.inputs.out_label_fusion = "JointFusion_HDAtlas20_2015_label.nii.gz"
-    # antsJointFusion_task.inputs.search_radius = [3]
-    # antsJointFusion_task.inputs.target_image = ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz']
-    # antsJointFusion_task.inputs.verbose = True
-    #
-    # antsJointFusion_workflow.add(antsJointFusion_task)
+    antsJointFusion_task.inputs.beta =                      2.0
+    antsJointFusion_task.inputs.dimension =                 3
+    antsJointFusion_task.inputs.mask_image =                antsJointFusion_workflow.lzin.mask_image
+    antsJointFusion_task.inputs.out_label_fusion =          "JointFusion_HDAtlas20_2015_label.nii.gz"
+    antsJointFusion_task.inputs.search_radius =             [3]
+    antsJointFusion_task.inputs.target_image =              antsJointFusion_workflow.to_list.lzout.out
+    antsJointFusion_task.inputs.verbose =                   True
+
+    antsJointFusion_workflow.add(antsJointFusion_task)
     antsJointFusion_workflow.set_output([
-        ("atlas_image", antsJointFusion_workflow.atlas_image5.lzout.out),
+        # ("atlas_image", antsJointFusion_workflow.atlas_image5.lzout.out),
         # ("atlas_segmentation_image", antsJointFusion_workflow.atlas_segmentation_image5.lzout.out),
         # ("target_image", antsJointFusion_workflow.target_image3.lzout.out),
         # ("mask_image", antsJointFusion_workflow.mask_image3.lzout.out)
+        ("out_label_fusion", antsJointFusion_task.lzout.out_label_fusion)
     ])
 
     return antsJointFusion_workflow
@@ -980,7 +939,7 @@ post_processing_node.inputs.target_image =              processing_node.lzout.ta
 post_processing_node.inputs.mask_image =                processing_node.lzout.mask_image
 
 post_processing_node.add(make_antsJointFusion_workflow1(atlas_image=post_processing_node.lzin.atlas_image, atlas_segmentation_image=post_processing_node.lzin.atlas_segmentation_image, target_image=post_processing_node.lzin.target_image, mask_image=post_processing_node.lzin.mask_image)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
-post_processing_node.set_output([("out", post_processing_node.antsJointFusion_workflow1.lzout.atlas_image)])
+post_processing_node.set_output([("out", post_processing_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
 # The sink converts the cached files to output_dir, a location on the local machine
 # sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
 # sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
