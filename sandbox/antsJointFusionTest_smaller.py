@@ -2,7 +2,7 @@ from nipype.interfaces.ants import AntsJointFusion
 from pydra.tasks.nipype1.utils import Nipype1Task
 import pydra
 
-antsJointFusion_task = AntsJointFusion()
+antsJointFusion_task = Nipype1Task(AntsJointFusion())
 antsJointFusion_task.inputs.atlas_image =[
     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91300_2subject.nii.gz'],
     ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/91626_2subject.nii.gz'],
@@ -21,10 +21,11 @@ antsJointFusion_task.inputs.out_label_fusion = "JointFusion_HDAtlas20_2015_label
 antsJointFusion_task.inputs.verbose = True
 antsJointFusion_task.inputs.num_threads = 28
 
-print(antsJointFusion_task.cmdline)
-result = antsJointFusion_task.run()
+with pydra.Submitter(plugin="cf") as sub:
+    sub(antsJointFusion_task)
+result = antsJointFusion_task.result()
 print(result)
-# with pydra.Submitter(plugin="cf") as sub:
-#     sub(antsJointFusion_workflow)
-# result = antsJointFusion_workflow.result()
+
+# print(antsJointFusion_task.cmdline)
+# result = antsJointFusion_task.run()
 # print(result)
