@@ -30,7 +30,7 @@ def get_self(x):
     for index, ele in enumerate(x):
         list.append(str(ele))
     print(f"list: {list}")
-    return list
+    return x
 
 @pydra.mark.task
 def get_atlas_id(atlas_id):
