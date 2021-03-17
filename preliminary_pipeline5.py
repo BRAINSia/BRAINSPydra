@@ -847,10 +847,10 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     #
     # antsJointFusion_workflow.add(antsJointFusion_task)
     antsJointFusion_workflow.set_output([
-        ("atlas_image", antsJointFusion_workflow.lzout.atlas_image),
-        ("atlas_segmentation_image", antsJointFusion_workflow.lzout.atlas_segmentation_image),
-        ("target_image", antsJointFusion_workflow.lzout.target_image),
-        ("mask_image", antsJointFusion_workflow.lzout.mask_image)
+        ("atlas_image", antsJointFusion_workflow.atlas_image.lzout.out),
+        ("atlas_segmentation_image", antsJointFusion_workflow.atlas_segmentation_image.lzout.out),
+        ("target_image", antsJointFusion_workflow.target_image.lzout.out),
+        ("mask_image", antsJointFusion_workflow.mask_image.lzout.out)
     ])
 
 @pydra.mark.task
