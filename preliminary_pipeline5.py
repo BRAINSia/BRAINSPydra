@@ -789,8 +789,8 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     index = 3
 
     # Create the workflow
-    antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
-    antsJointFusion_workflow.add(get_self(name=f"atlas_image{index}", x=antsJointFusion_workflow.lzin.atlas_image))
+    antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_segmentation_image", "target_image", "mask_image"], atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
+    antsJointFusion_workflow.add(get_self(name=f"atlas_image{index}", x=atlas_image))
     antsJointFusion_workflow.add(get_self(name=f"atlas_segmentation_image{index}", x=antsJointFusion_workflow.lzin.atlas_segmentation_image))
     antsJointFusion_workflow.add(get_self(name=f"target_image{index}", x=antsJointFusion_workflow.lzin.target_image))
     antsJointFusion_workflow.add(get_self(name=f"mask_image{index}", x=antsJointFusion_workflow.lzin.mask_image))
@@ -941,7 +941,7 @@ processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1
 processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
 processing_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 processing_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
-# processing_node.add(make_antsJointFusion_workflow1(atlas_image=processing_node.antsRegistration_workflow3.lzout.all_, atlas_segmentation_image=processing_node.antsApplyTransforms_workflow2.lzout.all_, target_image=processing_node.abc_workflow1.lzout.t1_average, mask_image=processing_node.roi_workflow2.lzout.outputROIMaskVolume)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+processing_node.add(make_antsJointFusion_workflow1(atlas_image=processing_node.antsRegistration_workflow3.lzout.all_, atlas_segmentation_image=processing_node.antsApplyTransforms_workflow2.lzout.all_, target_image=processing_node.abc_workflow1.lzout.t1_average, mask_image=processing_node.roi_workflow2.lzout.outputROIMaskVolume)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 
 
 processing_node.set_output([
