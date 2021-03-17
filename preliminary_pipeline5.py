@@ -786,7 +786,7 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     workflow_name = f"antsJointFusion_workflow1"
     configkey=f'ANTSJointFusion1'
     print(f"Making task {workflow_name}")
-    index = 2
+    index = 3
 
     # Create the workflow
     antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
@@ -853,10 +853,10 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     #
     # antsJointFusion_workflow.add(antsJointFusion_task)
     antsJointFusion_workflow.set_output([
-        ("atlas_image", antsJointFusion_workflow.atlas_image2.lzout.out),
-        ("atlas_segmentation_image", antsJointFusion_workflow.atlas_segmentation_image2.lzout.out),
-        ("target_image", antsJointFusion_workflow.target_image2.lzout.out),
-        ("mask_image", antsJointFusion_workflow.mask_image2.lzout.out)
+        ("atlas_image", antsJointFusion_workflow.atlas_image3.lzout.out),
+        ("atlas_segmentation_image", antsJointFusion_workflow.atlas_segmentation_image3.lzout.out),
+        ("target_image", antsJointFusion_workflow.target_image3.lzout.out),
+        ("mask_image", antsJointFusion_workflow.mask_image3.lzout.out)
     ])
 
     return antsJointFusion_workflow
