@@ -941,7 +941,7 @@ post_processing_node.inputs.mask_image =                processing_node.lzout.ma
 post_processing_node.add(make_antsJointFusion_workflow1(atlas_image=post_processing_node.lzin.atlas_image, atlas_segmentation_image=post_processing_node.lzin.atlas_segmentation_image, target_image=post_processing_node.lzin.target_image, mask_image=post_processing_node.lzin.mask_image)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 post_processing_node.set_output([("out", post_processing_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
 # The sink converts the cached files to output_dir, a location on the local machine
-sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=processing_node.lzout.all_, post_processed_files=post_processed_files, input_data=source_node.lzin.input_data)
+sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=processing_node.lzout.all_, post_processed_files=post_processing_node.lzout.all_, input_data=source_node.lzin.input_data)
 # sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
 sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
 # sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
