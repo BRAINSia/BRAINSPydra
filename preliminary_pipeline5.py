@@ -873,6 +873,8 @@ def copy_from_cache(cache_path, output_dir, input_data):
                         print("\n\nHERE2\n\n")
                         out_path = copy(nested_path, file_output_dir)
                         output_list.append(out_path)
+                elif type(path) is list:
+                    print("\n\nINNER LIST\n\n")
                 else:
                     print("\n\nHERE3\n\n")
                     out_path = copy(path, file_output_dir)
