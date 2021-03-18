@@ -928,7 +928,7 @@ processing_node.set_output([
     ("roi_workflow2"                              , processing_node.roi_workflow2.lzout.all_                         ),
     ("antsRegistration_workflow1"                 , processing_node.antsRegistration_workflow1.lzout.all_            ),
     ("antsRegistration_workflow2"                 , processing_node.antsRegistration_workflow2.lzout.all_            ),
-    ("abc_workflow1"                              , processing_node.abc_workflow1.lzout.all_                         ),
+    # ("abc_workflow1"                              , processing_node.abc_workflow1.lzout.all_                         ),
     ("resample_workflow2"                         , processing_node.resample_workflow2.lzout.all_                    ),
     ("resample_workflow3"                         , processing_node.resample_workflow3.lzout.all_                    ),
     ("resample_workflow4"                         , processing_node.resample_workflow4.lzout.all_                    ),
