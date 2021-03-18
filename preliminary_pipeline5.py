@@ -952,7 +952,7 @@ source_node.add(post_processing_node)
 source_node.add(sink_node)
 
 # Set the output of the source node to the same as the output of the sink_node
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files),])
+source_node.set_output([("output_files", source_node.sink_node.lzout.all_),])
 # source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
 # source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
 # source_node.set_output([("output_files", source_node.post_processing_node.lzout.all_)])
