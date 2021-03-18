@@ -863,14 +863,18 @@ def copy_from_cache(cache_path, output_dir, input_data):
                     cache_path.append(cache_path_element)
         # If the files to be copied are in a list, copy each element of the list
         if type(cache_path) is list:
+            print("\n\nLIST\n\n")
             output_list = []
             for path in cache_path:
                 # If the files to be copied are in a dictionary, copy each value of the dictionary
                 if type(path) is dict:
+                    print("\n\nHERE1\n\n")
                     for nested_path in list(path.values()):
+                        print("\n\nHERE2\n\n")
                         out_path = copy(nested_path, file_output_dir)
                         output_list.append(out_path)
                 else:
+                    print("\n\nHERE3\n\n")
                     out_path = copy(path, file_output_dir)
                     output_list.append(out_path)
             return output_list
