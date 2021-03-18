@@ -948,12 +948,12 @@ processing_node.set_output([
     # ("mask_image", processing_node.roi_workflow2.lzout.outputROIMaskVolume),
 ])
 
-post_processing_node = pydra.Workflow(name="post_processing_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"])
-# post_processing_node.add(processing_node)
-post_processing_node.inputs.atlas_image =               processing_node.lzout.atlas_image
-post_processing_node.inputs.atlas_segmentation_image =  processing_node.lzout.atlas_segmentation_image
-post_processing_node.inputs.target_image =              processing_node.lzout.target_image
-post_processing_node.inputs.mask_image =                processing_node.lzout.mask_image
+# post_processing_node = pydra.Workflow(name="post_processing_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"])
+# # post_processing_node.add(processing_node)
+# post_processing_node.inputs.atlas_image =               processing_node.lzout.atlas_image
+# post_processing_node.inputs.atlas_segmentation_image =  processing_node.lzout.atlas_segmentation_image
+# post_processing_node.inputs.target_image =              processing_node.lzout.target_image
+# post_processing_node.inputs.mask_image =                processing_node.lzout.mask_image
 
 # post_processing_node.add(make_antsJointFusion_workflow1(atlas_image=post_processing_node.lzin.atlas_image, atlas_segmentation_image=post_processing_node.lzin.atlas_segmentation_image, target_image=post_processing_node.lzin.target_image, mask_image=post_processing_node.lzin.mask_image)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 # post_processing_node.set_output([("out", post_processing_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
