@@ -942,10 +942,10 @@ processing_node.set_output([
     ("antsRegistration_workflow3"                 , processing_node.antsRegistration_workflow3.lzout.all_            ),
     ("antsApplyTransforms_workflow1"              , processing_node.antsApplyTransforms_workflow1.lzout.all_         ),
     ('antsApplyTransforms_workflow2'              , processing_node.antsApplyTransforms_workflow2.lzout.all_         ),
-    # ("atlas_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
-    # ("atlas_segmentation_image", processing_node.antsApplyTransforms_workflow2.lzout.output_image),
-    # ("target_image", processing_node.abc_workflow1.lzout.t1_average),
-    # ("mask_image", processing_node.roi_workflow2.lzout.outputROIMaskVolume),
+    ("atlas_image", processing_node.antsRegistration_workflow3.lzout.warped_image),
+    ("atlas_segmentation_image", processing_node.antsApplyTransforms_workflow2.lzout.output_image),
+    ("target_image", processing_node.abc_workflow1.lzout.t1_average),
+    ("mask_image", processing_node.roi_workflow2.lzout.outputROIMaskVolume),
 ])
 
 post_processing_node = pydra.Workflow(name="post_processing_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"])
