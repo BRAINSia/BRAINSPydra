@@ -41,7 +41,7 @@ antsRegistration_task.inputs.output_warped_image = 'atlas2subjectRigid.nii.gz'
 antsRegistration_task.inputs.output_inverse_warped_image = 'subject2atlasRigid.nii.gz'
 antsRegistration_task.inputs.winsorize_lower_quantile = .01
 antsRegistration_task.inputs.winsorize_upper_quantile = .99
-antsRegistration_task.inputs.num_threads = 28
+# antsRegistration_task.inputs.num_threads = 28
 
 with pydra.Submitter(plugin="cf") as sub:
     sub(antsRegistration_task)
