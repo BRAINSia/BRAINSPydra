@@ -5,8 +5,8 @@ import copy, pprint
 from nipype.interfaces.ants import Registration
 
 antsRegistration_task = Registration()
-antsRegistration_task.set_default_num_threads(27)
-antsRegistration_task.inputs.num_threads = 27
+antsRegistration_task.set_default_num_threads(28)
+antsRegistration_task.inputs.num_threads = 28
 antsRegistration_task = Nipype1Task(antsRegistration_task)
 
 antsRegistration_task.inputs.fixed_image = '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
