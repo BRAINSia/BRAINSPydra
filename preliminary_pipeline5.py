@@ -684,7 +684,11 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     antsRegistration_workflow.add(make_output_filename(name="make_output_warped_image", before_str=antsRegistration_workflow.lzin.atlas_id, filename=experiment_configuration[configkey].get('output_warped_image_suffix')))
     antsRegistration_workflow.add(get_atlas_id(name="get_atlas_id", atlas_id=antsRegistration_workflow.lzin.atlas_id))
 
-    antsRegistration_task = Nipype1Task(Registration())
+    antsRegistration_task = Registration()
+    antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
+    antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
+    antsRegistration_task = Nipype1Task(antsRegistration_task)
+    # antsRegistration_task = Nipype1Task(Registration())
 
     antsRegistration_task.inputs.fixed_image =                      antsRegistration_workflow.lzin.fixed_image
     antsRegistration_task.inputs.fixed_image_masks =                antsRegistration_workflow.lzin.fixed_image_masks
@@ -769,7 +773,11 @@ def make_antsApplyTransforms_workflow(index, output_image_end, reference_image, 
     antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('input_image_filename')))
     antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=output_image_end))
 
-    antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
+    antsApplyTransforms_task = ApplyTransforms()
+    antsApplyTransforms_task.set_default_num_threads(experiment_configuration["num_threads"])
+    antsApplyTransforms_task.inputs.num_threads = experiment_configuration["num_threads"]
+    antsJointFusion_task = Nipype1Task(antsApplyTransforms_task)
+    # antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
     antsApplyTransforms_task.inputs.dimension = experiment_configuration[configkey].get('dimension')
     antsApplyTransforms_task.inputs.float = experiment_configuration[configkey].get('float')
@@ -790,7 +798,7 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
 # def make_antsJointFusion_workflow1(atlas_image):
 
     from pydra.tasks.nipype1.utils import Nipype1Task
-    from nipype.interfaces.ants import AntsJointFusion
+    from nipype.interfaces.ants import JointFusion
 
     workflow_name = f"antsJointFusion_workflow1"
     configkey=f'ANTSJointFusion1'
@@ -810,7 +818,11 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
     antsJointFusion_workflow.add(print_self(name=f"mask_image{index}",                  x=antsJointFusion_workflow.lzin.mask_image))
 
     # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
-    antsJointFusion_task = Nipype1Task(AntsJointFusion())
+    antsJointFusion_task = JointFusion()
+    antsJointFusion_task.set_default_num_threads(experiment_configuration["num_threads"])
+    antsJointFusion_task.inputs.num_threads = experiment_configuration["num_threads"]
+    antsJointFusion_task = Nipype1Task(antsJointFusion_task)
+    # antsJointFusion_task = Nipype1Task(AntsJointFusion())
     antsJointFusion_task.inputs.alpha =                     0.1
     antsJointFusion_task.inputs.atlas_image =               antsJointFusion_workflow.lzin.atlas_image
     antsJointFusion_task.inputs.atlas_segmentation_image =  antsJointFusion_workflow.lzin.atlas_segmentation_image
