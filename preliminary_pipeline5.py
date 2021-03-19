@@ -263,7 +263,7 @@ def make_antsRegistration_workflow1(fixed_image, fixed_image_masks, initial_movi
 
     # antsRegistration_task = Nipype1Task(Registration())
     antsRegistration_task = Registration()
-    antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
+    # antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
     antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
     antsRegistration_task = Nipype1Task(antsRegistration_task)
 
@@ -326,7 +326,7 @@ def make_antsRegistration_workflow2(fixed_image, fixed_image_masks, initial_movi
 
     # antsRegistration_task = Nipype1Task(Registration())
     antsRegistration_task = Registration()
-    antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
+    # antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
     antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
     antsRegistration_task = Nipype1Task(antsRegistration_task)
 
@@ -689,7 +689,7 @@ def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_movi
     antsRegistration_workflow.add(get_atlas_id(name="get_atlas_id", atlas_id=antsRegistration_workflow.lzin.atlas_id))
 
     antsRegistration_task = Registration()
-    antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
+    # antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
     antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
     antsRegistration_task = Nipype1Task(antsRegistration_task)
     # antsRegistration_task = Nipype1Task(Registration())
@@ -778,7 +778,7 @@ def make_antsApplyTransforms_workflow(index, output_image_end, reference_image, 
     antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=output_image_end))
 
     antsApplyTransforms_task = ApplyTransforms()
-    antsApplyTransforms_task.set_default_num_threads(experiment_configuration["num_threads"])
+    # antsApplyTransforms_task.set_default_num_threads(experiment_configuration["num_threads"])
     antsApplyTransforms_task.inputs.num_threads = experiment_configuration["num_threads"]
     antsApplyTransforms_task = Nipype1Task(antsApplyTransforms_task)
     # antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
@@ -823,7 +823,7 @@ def make_antsJointFusion_workflow1(atlas_image, atlas_segmentation_image, target
 
     # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
     antsJointFusion_task = JointFusion()
-    antsJointFusion_task.set_default_num_threads(experiment_configuration["num_threads"])
+    # antsJointFusion_task.set_default_num_threads(experiment_configuration["num_threads"])
     antsJointFusion_task.inputs.num_threads = experiment_configuration["num_threads"]
     antsJointFusion_task = Nipype1Task(antsJointFusion_task)
     # antsJointFusion_task = Nipype1Task(AntsJointFusion())

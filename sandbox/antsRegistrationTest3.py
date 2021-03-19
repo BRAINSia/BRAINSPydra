@@ -8,7 +8,7 @@ import copy, pprint
 from nipype.interfaces.ants import Registration
 
 # with open("/mnt/c/2020_Grad_School/Research/BRAINSPydra/config_experimental.json") as f:
-with open("/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/config_experimental_20200915.json") as f:
+with open("/localscratch/Users/cjohnson30/BRAINSPydra/config_experimental_20200915.json") as f:
     experiment_configuration = json.load(f)
 
 # antsRegistration_task = Registration()
