@@ -5,10 +5,11 @@ import copy, pprint
 from nipype.interfaces.ants import Registration
 
 antsRegistration_task = Registration()
-antsRegistration_task.set_default_num_threads(56)
-antsRegistration_task.inputs.num_threads = 56
+antsRegistration_task.set_default_num_threads(28)
+antsRegistration_task.inputs.num_threads = 28
 antsRegistration_task = Nipype1Task(antsRegistration_task)
-antsRegistration_task = Nipype1Task(Registration())
+
+# antsRegistration_task = Nipype1Task(Registration())
 antsRegistration_task.inputs.fixed_image = '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
 antsRegistration_task.inputs.moving_image = '/localscratch/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz'
 antsRegistration_task.inputs.fixed_image_masks = ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz', '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz', '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz']
@@ -40,7 +41,7 @@ antsRegistration_task.inputs.output_warped_image = 'atlas2subjectRigid.nii.gz'
 antsRegistration_task.inputs.output_inverse_warped_image = 'subject2atlasRigid.nii.gz'
 antsRegistration_task.inputs.winsorize_lower_quantile = .01
 antsRegistration_task.inputs.winsorize_upper_quantile = .99
-antsRegistration_task.inputs.num_threads = 56
+antsRegistration_task.inputs.num_threads = 28
 
 with pydra.Submitter(plugin="cf") as sub:
     sub(antsRegistration_task)
