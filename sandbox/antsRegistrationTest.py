@@ -5,8 +5,8 @@ import copy, pprint
 from nipype.interfaces.ants import Registration
 
 antsRegistration_task = Registration()
-antsRegistration_task.set_default_num_threads(28)
-# antsRegistration_task.inputs.num_threads = 28
+# antsRegistration_task.set_default_num_threads(28)
+antsRegistration_task.inputs.num_threads = 28
 antsRegistration_task = Nipype1Task(antsRegistration_task)
 
 # antsRegistration_task = Nipype1Task(Registration())
