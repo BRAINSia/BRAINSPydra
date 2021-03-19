@@ -1,18 +1,26 @@
 from pydra.tasks.nipype1.utils import Nipype1Task
 from nipype.interfaces import ants
 import json
+import pydra
 
 
 import copy, pprint
 from nipype.interfaces.ants import Registration
 
-with open("/mnt/c/2020_Grad_School/Research/BRAINSPydra/config_experimental.json") as f:
+# with open("/mnt/c/2020_Grad_School/Research/BRAINSPydra/config_experimental.json") as f:
+with open("/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/config_experimental_20200915.json") as f:
     experiment_configuration = json.load(f)
 
+# antsRegistration_task = Registration()
+
 antsRegistration_task = Registration()
-antsRegistration_task.inputs.fixed_image =              "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"  # antsRegistration_workflow.lzin.fixed_image
-antsRegistration_task.inputs.fixed_image_masks =        "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz"  # antsRegistration_workflow.lzin.fixed_image_masks
-antsRegistration_task.inputs.initial_moving_transform = "/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_91300_to_subject_transform.h5"  # antsRegistration_workflow.lzin.initial_moving_transform
+antsRegistration_task.set_default_num_threads(28)
+antsRegistration_task.inputs.num_threads = 28
+antsRegistration_task = Nipype1Task(antsRegistration_task)
+
+antsRegistration_task.inputs.fixed_image =              "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"  # antsRegistration_workflow.lzin.fixed_image
+antsRegistration_task.inputs.fixed_image_masks =        "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz"  # antsRegistration_workflow.lzin.fixed_image_masks
+antsRegistration_task.inputs.initial_moving_transform = "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_91300_to_subject_transform.h5"  # antsRegistration_workflow.lzin.initial_moving_transform
 
 configkey = 'ANTSRegistration3'
 
@@ -51,12 +59,16 @@ antsRegistration_task.inputs.winsorize_lower_quantile = experiment_configuration
 antsRegistration_task.inputs.winsorize_upper_quantile = experiment_configuration[configkey].get(
     'winsorize_upper_quantile')
 
+with pydra.Submitter(plugin="cf") as sub:
+    sub(antsRegistration_task)
+result = antsRegistration_task.result()
+print(result)
 # print(antsRegistration_task.input_spec)
 # print(antsRegistration_task.output_names)
 # print(antsRegistration_task.lzout.composite_transform)
 # res = antsRegistration_task()
 # print(res)
-print(antsRegistration_task.cmdline)
+# print(antsRegistration_task.cmdline)
 # 'antsRegistration --collapse-output-transforms 0 --dimensionality 3 --initial-moving-transform [ trans.mat, 0 ] --initialize-transforms-per-stage 0 --interpolation Linear --output [ output_, output_warped_image.nii.gz ] --transform Affine[ 2.0 ] --metric Mattes[ fixed1.nii, moving1.nii, 1, 32, Random, 0.05 ] --convergence [ 1500x200, 1e-08, 20 ] --smoothing-sigmas 1.0x0.0vox --shrink-factors 2x1 --use-estimate-learning-rate-once 1 --use-histogram-matching 1 --transform SyN[ 0.25, 3.0, 0.0 ] --metric Mattes[ fixed1.nii, moving1.nii, 1, 32 ] --convergence [ 100x50x30, 1e-09, 20 ] --smoothing-sigmas 2.0x1.0x0.0vox --shrink-factors 3x2x1 --use-estimate-learning-rate-once 1 --use-histogram-matching 1 --winsorize-image-intensities [ 0.0, 1.0 ]  --write-composite-transform 1'
 # antsRegistration_task.run()
 
