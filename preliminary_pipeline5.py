@@ -3,10 +3,6 @@ from pathlib import Path
 from shutil import copyfile
 import json
 import argparse
-import attr
-from nipype.interfaces.base import (
-    File,
-)
 
 
 parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
