@@ -5,12 +5,12 @@ from nipype.interfaces import ants
 import copy, pprint
 from nipype.interfaces.ants import Registration
 antsRegistration_task = Nipype1Task(Registration())
-antsRegistration_task.inputs.fixed_image = '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
-antsRegistration_task.inputs.moving_image = '/mnt/c/2020_Grad_School/Research/wf_ref/template_t1_denoised_gaussian.nii.gz'
-antsRegistration_task.inputs.fixed_image_masks = ['/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz', '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz', '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz']
-antsRegistration_task.inputs.moving_image_masks = ['/mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz', '/mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz', '/mnt/c/2020_Grad_School/Research/wf_ref/template_headregion.nii.gz']
+antsRegistration_task.inputs.fixed_image = '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz'
+antsRegistration_task.inputs.moving_image = '/localscratch/Users/cjohnson30/wf_ref/template_t1_denoised_gaussian.nii.gz'
+antsRegistration_task.inputs.fixed_image_masks = ['/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz', '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz', '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz']
+antsRegistration_task.inputs.moving_image_masks = ['/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz', '/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz', '/localscratch/Users/cjohnson30/wf_ref/template_headregion.nii.gz']
 antsRegistration_task.inputs.output_transform_prefix = "AtlasToSubjectPreBABC_Rigid"
-antsRegistration_task.inputs.initial_moving_transform = '/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5'
+antsRegistration_task.inputs.initial_moving_transform = '/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_atlas_to_subject_transform.h5'
 antsRegistration_task.inputs.transforms = ['Rigid', 'Affine', 'Affine']
 antsRegistration_task.inputs.transform_parameters = [(0.1,), (0.1,), (0.1,)]
 antsRegistration_task.inputs.number_of_iterations = [[1000, 1000, 1000], [1000, 1000, 500], [500, 500]]
