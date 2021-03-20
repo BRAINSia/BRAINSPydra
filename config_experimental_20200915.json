@@ -260,7 +260,7 @@
                            "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
                            "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/registrationMask.nii.gz"],
     "save_state": "SavedAtlasState.h5",
-    "verbose": true,
+    "verbose": false,
     "collapse_output_transforms": false ,
     "dimensionality": 3 ,
     "float": true ,
