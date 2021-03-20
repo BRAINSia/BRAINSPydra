@@ -1010,7 +1010,7 @@ source_node.set_output([("output_files", source_node.sink_node.lzout.all_),])
 
 
 # Run the entire workflow
-with pydra.Submitter(plugin="slurm") as sub:
+with pydra.Submitter(plugin="dask") as sub:
     sub(source_node)
 
 # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
