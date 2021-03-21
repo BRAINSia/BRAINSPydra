@@ -703,6 +703,8 @@ if __name__ == '__main__':
         antsRegistration_task = Registration()
         antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
         antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
+        # antsRegistration_task.set_default_num_threads(1)
+        # antsRegistration_task.inputs.num_threads = 1
         antsRegistration_task = Nipype1Task(antsRegistration_task)
         # antsRegistration_task = Nipype1Task(Registration())
 
@@ -837,8 +839,10 @@ if __name__ == '__main__':
         antsJointFusion_task = JointFusion()
         antsJointFusion_task.set_default_num_threads(experiment_configuration["num_threads"])
         antsJointFusion_task.inputs.num_threads = experiment_configuration["num_threads"]
+        # antsJointFusion_task.set_default_num_threads(14)
+        # antsJointFusion_task.inputs.num_threads = 14
         antsJointFusion_task = Nipype1Task(antsJointFusion_task)
-        # antsJointFusion_task = Nipype1Task(AntsJointFusion())
+        # antsJointFusion_task = Nipype1Task(JointFusion())
         antsJointFusion_task.inputs.alpha =                     0.1
         antsJointFusion_task.inputs.atlas_image =               antsJointFusion_workflow.lzin.atlas_image
         antsJointFusion_task.inputs.atlas_segmentation_image =  antsJointFusion_workflow.lzin.atlas_segmentation_image
@@ -891,24 +895,18 @@ if __name__ == '__main__':
                         cache_path.append(cache_path_element)
             # If the files to be copied are in a list, copy each element of the list
             if type(cache_path) is list:
-                print("\n\nLIST\n\n")
                 output_list = []
                 for path in cache_path:
                     # If the files to be copied are in a dictionary, copy each value of the dictionary
                     if type(path) is dict:
-                        print("\n\nHERE1\n\n")
                         for nested_path in list(path.values()):
-                            print("\n\nHERE2\n\n")
                             out_path = copy(nested_path, file_output_dir)
                             output_list.append(out_path)
                     elif type(path) is list:
-                        print("\n\nINNER LIST\n\n")
                         for nested_path in path:
-                            print("\n\nHERE4\n\n")
                             out_path = copy(nested_path, file_output_dir)
                             output_list.append(out_path)
                     else:
-                        print("\n\nHERE3\n\n")
                         out_path = copy(path, file_output_dir)
                         output_list.append(out_path)
                 return output_list
@@ -945,7 +943,9 @@ if __name__ == '__main__':
     processing_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=processing_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=processing_node.roi_workflow2.lzout.outputROIMaskVolume))
     processing_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=processing_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
     processing_node.add(make_roi_workflow3(inputVolume=processing_node.abc_workflow1.lzout.t1_average))
-    processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average, fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename)) #, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
+    processing_node.add(make_antsRegistration_workflow3(fixed_image=processing_node.abc_workflow1.lzout.t1_average,
+                                                        fixed_image_masks=processing_node.roi_workflow3.lzout.outputROIMaskVolume,
+                                                        initial_moving_transform=processing_node.landmarkInitializer_workflow3.lzout.outputTransformFilename)) #, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
     processing_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
     processing_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=processing_node.abc_workflow1.lzout.t1_average, transform=processing_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
 

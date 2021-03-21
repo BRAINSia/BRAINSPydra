@@ -2,7 +2,7 @@
   "output_dir": "/localscratch/Users/cjohnson30/output_dir_full_run_multithreaded",
   "cache_dir": "/localscratch/Users/cjohnson30/cache_dir_full_run_multithreaded",
   "graph_dir": "/localscratch/Users/cjohnson30/graph_dir",
-  "num_threads": 28,
+  "num_threads": 4,
   "BRAINSConstellationDetector1": {
     "executable": "BRAINSConstellationDetector",
     "LLSModel": "/localscratch/Users/cjohnson30/wf_ref/20141004_BCD/LLSModel_50Lmks.h5 ",
@@ -260,7 +260,7 @@
                            "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
                            "/localscratch/Users/cjohnson30/wf_ref/20160523_HDAdultAtlas/91300/registrationMask.nii.gz"],
     "save_state": "SavedAtlasState.h5",
-    "verbose": false,
+    "verbose": true,
     "collapse_output_transforms": false ,
     "dimensionality": 3 ,
     "float": true ,

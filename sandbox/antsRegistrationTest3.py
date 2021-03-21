@@ -35,7 +35,7 @@ antsRegistration_task.inputs.write_composite_transform = experiment_configuratio
     'write_composite_transform')
 antsRegistration_task.inputs.collapse_output_transforms = experiment_configuration[configkey].get(
     'collapse_output_transforms')
-antsRegistration_task.inputs.verbose = experiment_configuration[configkey].get('verbose')
+antsRegistration_task.inputs.verbose = False #experiment_configuration[configkey].get('verbose')
 antsRegistration_task.inputs.initialize_transforms_per_stage = experiment_configuration[configkey].get(
     'initialize_transforms_per_stage')
 antsRegistration_task.inputs.float = experiment_configuration[configkey].get('float')
