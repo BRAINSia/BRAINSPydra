@@ -5,6 +5,8 @@ import json
 import argparse
 
 if __name__ == '__main__':
+    set_num_threads = False
+
     parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
     parser.add_argument('config_experimental', type=str, help='Path to the json file for configuring task parameters')
     parser.add_argument('input_data_dictionary', type=str, help='Path to the json file for input data')
@@ -268,11 +270,13 @@ if __name__ == '__main__':
         # Create the workflow
         antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
 
-        # antsRegistration_task = Nipype1Task(Registration())
-        antsRegistration_task = Registration()
-        antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
-        antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
-        antsRegistration_task = Nipype1Task(antsRegistration_task)
+        if set_num_threads:
+            antsRegistration_task = Registration()
+            antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
+            antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
+            antsRegistration_task = Nipype1Task(antsRegistration_task)
+        else:
+            antsRegistration_task = Nipype1Task(Registration())
 
         # Set subject-specific files
         antsRegistration_task.inputs.fixed_image =                     antsRegistration_workflow.lzin.fixed_image
@@ -331,11 +335,14 @@ if __name__ == '__main__':
         # Create the workflow
         antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
 
-        # antsRegistration_task = Nipype1Task(Registration())
-        antsRegistration_task = Registration()
-        antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
-        antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
-        antsRegistration_task = Nipype1Task(antsRegistration_task)
+        if set_num_threads:
+            antsRegistration_task = Registration()
+            antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
+            antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
+            antsRegistration_task = Nipype1Task(antsRegistration_task)
+        else:
+            antsRegistration_task = Nipype1Task(Registration())
+
 
         # Set subject-specific files
         antsRegistration_task.inputs.fixed_image =                      antsRegistration_workflow.lzin.fixed_image
@@ -700,13 +707,15 @@ if __name__ == '__main__':
         antsRegistration_workflow.add(make_output_filename(name="make_output_warped_image", before_str=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('output_warped_image_suffix')))
         # antsRegistration_workflow.add(get_atlas_id(name="get_atlas_id", atlas_id=antsRegistration_workflow.lzin.atlas_id))
 
-        antsRegistration_task = Registration()
-        antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
-        antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
-        # antsRegistration_task.set_default_num_threads(1)
-        # antsRegistration_task.inputs.num_threads = 1
-        antsRegistration_task = Nipype1Task(antsRegistration_task)
-        # antsRegistration_task = Nipype1Task(Registration())
+        if set_num_threads:
+            antsRegistration_task = Registration()
+            antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
+            antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
+            # antsRegistration_task.set_default_num_threads(1)
+            # antsRegistration_task.inputs.num_threads = 1
+            antsRegistration_task = Nipype1Task(antsRegistration_task)
+        else:
+            antsRegistration_task = Nipype1Task(Registration())
 
         antsRegistration_task.inputs.fixed_image =                      antsRegistration_workflow.lzin.fixed_image
         antsRegistration_task.inputs.fixed_image_masks =                antsRegistration_workflow.lzin.fixed_image_masks
@@ -791,11 +800,13 @@ if __name__ == '__main__':
         antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('input_image_filename')))
         antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=output_image_end))
 
-        antsApplyTransforms_task = ApplyTransforms()
-        antsApplyTransforms_task.set_default_num_threads(experiment_configuration["num_threads"])
-        antsApplyTransforms_task.inputs.num_threads = experiment_configuration["num_threads"]
-        antsApplyTransforms_task = Nipype1Task(antsApplyTransforms_task)
-        # antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
+        if set_num_threads:
+            antsApplyTransforms_task = ApplyTransforms()
+            antsApplyTransforms_task.set_default_num_threads(experiment_configuration["num_threads"])
+            antsApplyTransforms_task.inputs.num_threads = experiment_configuration["num_threads"]
+            antsApplyTransforms_task = Nipype1Task(antsApplyTransforms_task)
+        else:
+            antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
         antsApplyTransforms_task.inputs.dimension = experiment_configuration[configkey].get('dimension')
         antsApplyTransforms_task.inputs.float = experiment_configuration[configkey].get('float')
@@ -836,13 +847,17 @@ if __name__ == '__main__':
         antsJointFusion_workflow.add(print_self(name=f"mask_image{index}",                  x=antsJointFusion_workflow.lzin.mask_image))
 
         # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
-        antsJointFusion_task = JointFusion()
-        antsJointFusion_task.set_default_num_threads(experiment_configuration["num_threads"])
-        antsJointFusion_task.inputs.num_threads = experiment_configuration["num_threads"]
+        if set_num_threads:
+            antsJointFusion_task = JointFusion()
+            antsJointFusion_task.set_default_num_threads(experiment_configuration["num_threads"])
+            antsJointFusion_task.inputs.num_threads = experiment_configuration["num_threads"]
+            antsJointFusion_task = Nipype1Task(antsJointFusion_task)
+
         # antsJointFusion_task.set_default_num_threads(14)
         # antsJointFusion_task.inputs.num_threads = 14
-        antsJointFusion_task = Nipype1Task(antsJointFusion_task)
-        # antsJointFusion_task = Nipype1Task(JointFusion())
+        else:
+            antsJointFusion_task = Nipype1Task(JointFusion())
+
         antsJointFusion_task.inputs.alpha =                     0.1
         antsJointFusion_task.inputs.atlas_image =               antsJointFusion_workflow.lzin.atlas_image
         antsJointFusion_task.inputs.atlas_segmentation_image =  antsJointFusion_workflow.lzin.atlas_segmentation_image

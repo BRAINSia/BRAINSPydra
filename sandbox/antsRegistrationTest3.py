@@ -14,13 +14,35 @@ with open("/localscratch/Users/cjohnson30/BRAINSPydra/config_experimental_202009
 # antsRegistration_task = Registration()
 
 antsRegistration_task = Registration()
-antsRegistration_task.set_default_num_threads(28)
-antsRegistration_task.inputs.num_threads = 28
+antsRegistration_task.set_default_num_threads(4)
+# antsRegistration_task.inputs.num_threads = 4
+# antsRegistration_task.resource_monitor(True)
 antsRegistration_task = Nipype1Task(antsRegistration_task)
 
 antsRegistration_task.inputs.fixed_image =              "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/t1_average_BRAINSABC.nii.gz"  # antsRegistration_workflow.lzin.fixed_image
 antsRegistration_task.inputs.fixed_image_masks =        "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/fixedImageROIAutoMask.nii.gz"  # antsRegistration_workflow.lzin.fixed_image_masks
-antsRegistration_task.inputs.initial_moving_transform = "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_91300_to_subject_transform.h5"  # antsRegistration_workflow.lzin.initial_moving_transform
+antsRegistration_task.inputs.initial_moving_transform = ["/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_91300_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_99056_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_91626_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_93075_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_53657_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_75094_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_75909_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_55648_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_27612_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_49543_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_58446_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_52712_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_68653_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_37960_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_35888_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_23687_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_14165_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_13512_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_23163_to_subject_transform.h5",
+                                                         "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/landmarkInitializer_21003_to_subject_transform.h5",]
+
+                                                         # antsRegistration_workflow.lzin.initial_moving_transform
 
 configkey = 'ANTSRegistration3'
 
@@ -59,6 +81,7 @@ antsRegistration_task.inputs.winsorize_lower_quantile = experiment_configuration
 antsRegistration_task.inputs.winsorize_upper_quantile = experiment_configuration[configkey].get(
     'winsorize_upper_quantile')
 
+antsRegistration_task.split("initial_moving_transform")
 with pydra.Submitter(plugin="cf") as sub:
     sub(antsRegistration_task)
 result = antsRegistration_task.result()
