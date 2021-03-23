@@ -5,7 +5,7 @@ import json
 import argparse
 
 if __name__ == '__main__':
-    set_num_threads = True
+    set_num_threads = False
 
     parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
     parser.add_argument('config_experimental', type=str, help='Path to the json file for configuring task parameters')
