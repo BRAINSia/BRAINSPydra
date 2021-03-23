@@ -4,7 +4,7 @@ struct_inputs_workflow [shape=record, label="{INPUT: | <input_data> input_data} 
 struct_processing_node:input_data -> struct_inputs_workflow:input_data;
 struct_processing_node [color=red, label="{WORKFLOW INPUT: | {<input_data> input_data}}"];
 struct_processing_node_out [color=red, label="{WORKFLOW OUTPUT: | {<out> out}}"];
-struct_landmarkInitializer_workflow3:outputTransformFilename -> struct_processing_node_out:out;
+struct_antsRegistration_workflow3:all_ -> struct_processing_node_out:out;
 struct_bcd_workflow1 [shape=record, label="{INPUT: | <inputLandmarksEMSP> inputLandmarksEMSP | <inputVolume> inputVolume} | bcd_workflow1 | {OUTPUT: | <outputLandmarksInACPCAlignedSpace> outputLandmarksInACPCAlignedSpace | <outputLandmarksInInputSpace> outputLandmarksInInputSpace | <outputResampledVolume> outputResampledVolume}"];
 struct_inputs_workflow:inputVolume -> struct_bcd_workflow1:inputVolume;
 struct_inputs_workflow:inputLandmarksEMSP -> struct_bcd_workflow1:inputLandmarksEMSP;
@@ -55,6 +55,13 @@ struct_abc_workflow1:atlasToSubjectTransform -> struct_resample_workflow8:warpTr
 struct_createLabelMapFromProbabilityMaps_workflow1 [shape=record, label="{INPUT: | <inputProbabilityVolume> inputProbabilityVolume | <nonAirRegionMask> nonAirRegionMask} | createLabelMapFromProbabilityMaps_workflow1 | {OUTPUT:}"];
 struct_abc_workflow1:posteriors -> struct_createLabelMapFromProbabilityMaps_workflow1:inputProbabilityVolume;
 struct_roi_workflow2:outputROIMaskVolume -> struct_createLabelMapFromProbabilityMaps_workflow1:nonAirRegionMask;
-struct_landmarkInitializer_workflow3 [shape=record, label="{INPUT: | <inputFixedLandmarkFilename> inputFixedLandmarkFilename} | landmarkInitializer_workflow3 | {OUTPUT: | <outputTransformFilename> outputTransformFilename}"];
+struct_landmarkInitializer_workflow3 [shape=record, label="{INPUT: | <inputFixedLandmarkFilename> inputFixedLandmarkFilename} | landmarkInitializer_workflow3 | {OUTPUT: | <atlas_id> atlas_id | <outputTransformFilename> outputTransformFilename}"];
 struct_bcd_workflow1:outputLandmarksInACPCAlignedSpace -> struct_landmarkInitializer_workflow3:inputFixedLandmarkFilename;
+struct_roi_workflow3 [shape=record, label="{INPUT: | <inputVolume> inputVolume} | roi_workflow3 | {OUTPUT: | <outputROIMaskVolume> outputROIMaskVolume}"];
+struct_abc_workflow1:t1_average -> struct_roi_workflow3:inputVolume;
+struct_antsRegistration_workflow3 [shape=record, label="{INPUT: | <atlas_id> atlas_id | <fixed_image> fixed_image | <fixed_image_masks> fixed_image_masks | <initial_moving_transform> initial_moving_transform} | antsRegistration_workflow3 | {OUTPUT: | <all_> all_}"];
+struct_abc_workflow1:t1_average -> struct_antsRegistration_workflow3:fixed_image;
+struct_roi_workflow3:outputROIMaskVolume -> struct_antsRegistration_workflow3:fixed_image_masks;
+struct_landmarkInitializer_workflow3:outputTransformFilename -> struct_antsRegistration_workflow3:initial_moving_transform;
+struct_landmarkInitializer_workflow3:atlas_id -> struct_antsRegistration_workflow3:atlas_id;
 }
