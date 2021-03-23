@@ -1,0 +1,42 @@
+digraph G {
+inputs_workflow [shape=box]
+bcd_workflow1 [shape=box]
+roi_workflow1 [shape=box]
+landmarkInitializer_workflow1 [shape=box]
+landmarkInitializer_workflow2 [shape=box]
+resample_workflow1 [shape=box]
+roi_workflow2 [shape=box]
+antsRegistration_workflow1 [shape=box]
+antsRegistration_workflow2 [shape=box]
+abc_workflow1 [shape=box]
+resample_workflow2 [shape=box]
+resample_workflow3 [shape=box]
+resample_workflow4 [shape=box]
+resample_workflow5 [shape=box]
+resample_workflow6 [shape=box]
+resample_workflow7 [shape=box]
+resample_workflow8 [shape=box]
+inputs_workflow -> bcd_workflow1
+bcd_workflow1 -> roi_workflow1
+bcd_workflow1 -> landmarkInitializer_workflow1
+bcd_workflow1 -> landmarkInitializer_workflow2
+inputs_workflow -> resample_workflow1
+landmarkInitializer_workflow1 -> resample_workflow1
+roi_workflow1 -> roi_workflow2
+roi_workflow1 -> antsRegistration_workflow1
+roi_workflow2 -> antsRegistration_workflow1
+landmarkInitializer_workflow2 -> antsRegistration_workflow1
+roi_workflow1 -> antsRegistration_workflow2
+roi_workflow2 -> antsRegistration_workflow2
+antsRegistration_workflow1 -> antsRegistration_workflow2
+roi_workflow1 -> abc_workflow1
+inputs_workflow -> abc_workflow1
+antsRegistration_workflow2 -> abc_workflow1
+abc_workflow1 -> resample_workflow2
+abc_workflow1 -> resample_workflow3
+abc_workflow1 -> resample_workflow4
+abc_workflow1 -> resample_workflow5
+abc_workflow1 -> resample_workflow6
+abc_workflow1 -> resample_workflow7
+abc_workflow1 -> resample_workflow8
+}
