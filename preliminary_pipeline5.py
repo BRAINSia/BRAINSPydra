@@ -936,15 +936,15 @@ if __name__ == '__main__':
 
     # Get the processing workflow defined in a separate function
     prejointFusion_node = pydra.Workflow(name="prejointFusion_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
-    prejointFusion_node.add(get_inputs_workflow(my_source_node=processing_node))
+    prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
 
 
-    prejointFusion_node.add(make_bcd_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=processing_node.inputs_workflow.lzout.inputLandmarksEMSP))
+    prejointFusion_node.add(make_bcd_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=prejointFusion_node.inputs_workflow.lzout.inputLandmarksEMSP))
     prejointFusion_node.add(make_roi_workflow1(inputVolume=prejointFusion_node.bcd_workflow1.lzout.outputResampledVolume))
     prejointFusion_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
     prejointFusion_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
     prejointFusion_node.add(make_resample_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, warpTransform=prejointFusion_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
-    prejointFusion_node.add(make_roi_workflow2(inputVolume=processing_node.roi_workflow1.lzout.outputVolume))
+    prejointFusion_node.add(make_roi_workflow2(inputVolume=prejointFusion_node.roi_workflow1.lzout.outputVolume))
     prejointFusion_node.add(make_antsRegistration_workflow1(fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
     prejointFusion_node.add(make_antsRegistration_workflow2(fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.antsRegistration_workflow1.lzout.composite_transform))
     prejointFusion_node.add(make_abc_workflow1(inputVolumes=prejointFusion_node.roi_workflow1.lzout.outputVolume, inputT1=prejointFusion_node.inputs_workflow.lzout.inputVolume, restoreState=prejointFusion_node.antsRegistration_workflow2.lzout.save_state))
@@ -958,19 +958,12 @@ if __name__ == '__main__':
     prejointFusion_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=prejointFusion_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume))
     prejointFusion_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
     prejointFusion_node.add(make_roi_workflow3(inputVolume=prejointFusion_node.abc_workflow1.lzout.t1_average))
-    prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename)) #, atlas_id=processing_node.landmarkInitializer_workflow3.lzout.atlas_id))
-    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
-    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
+    prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
+    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
+    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
 
 
-    processing_node.set_output([
-        # ("out1", processing_node.antsApplyTransforms_workflow1.lzout.output_image),
-        # ("out2", processing_node.antsApplyTransforms_workflow2.lzout.output_image),
-
-        # ("out1", processing_node.antsJointFusion_workflow1.lzout.atlas_image),
-        # ("out2", processing_node.antsJointFusion_workflow1.lzout.atlas_segmentation_image),
-        # ("out3", processing_node.antsJointFusion_workflow1.lzout.target_image),
-        # ("out4", processing_node.antsJointFusion_workflow1.lzout.mask_image),
+    prejointFusion_node.set_output([
         ("bcd_workflow1"                              , prejointFusion_node.bcd_workflow1.lzout.all_                         ),
         ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
         ("landmarkInitializer_workflow1"              , prejointFusion_node.landmarkInitializer_workflow1.lzout.all_         ),
@@ -1000,17 +993,15 @@ if __name__ == '__main__':
     ])
 
     joinFusion_node = pydra.Workflow(name="joinFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"])
-    # post_processing_node.add(processing_node)
     joinFusion_node.inputs.atlas_image =               prejointFusion_node.lzout.atlas_image
     joinFusion_node.inputs.atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image
     joinFusion_node.inputs.target_image =              prejointFusion_node.lzout.target_image
     joinFusion_node.inputs.mask_image =                prejointFusion_node.lzout.mask_image
 
-    joinFusion_node.add(make_antsJointFusion_workflow1(atlas_image=joinFusion_node.lzin.atlas_image, atlas_segmentation_image=joinFusion_node.lzin.atlas_segmentation_image, target_image=joinFusion_node.lzin.target_image, mask_image=joinFusion_node.lzin.mask_image)) # reference_image=processing_node.abc_workflow1.t1_average, transform=processing_node.antsRegistration_workflow3.inversCompositeTransform))
-    joinFusion_node.set_output([("out", post_processing_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
+    joinFusion_node.add(make_antsJointFusion_workflow1(atlas_image=joinFusion_node.lzin.atlas_image, atlas_segmentation_image=joinFusion_node.lzin.atlas_segmentation_image, target_image=joinFusion_node.lzin.target_image, mask_image=joinFusion_node.lzin.mask_image))
+    joinFusion_node.set_output([("out", joinFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
     # The sink converts the cached files to output_dir, a location on the local machine
     sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=joinFusion_node.lzout.all_, post_processed_files=joinFusion_node.lzout.all_, input_data=source_node.lzin.input_data)
-    # sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
     sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
     # sink_node.add(get_self(name="get_self", x=sink_node.get_processed_outputs.lzout.out))
     sink_node.add(copy_from_cache(name="copy_from_cache1", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
@@ -1028,9 +1019,6 @@ if __name__ == '__main__':
 
     # Set the output of the source node to the same as the output of the sink_node
     source_node.set_output([("output_files", source_node.sink_node.lzout.all_),])
-    # source_node.set_output([("output_files", source_node.processing_node.lzout.out)])
-    # source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
-    # source_node.set_output([("output_files", source_node.post_processing_node.lzout.all_)])
 
 
 
@@ -1040,13 +1028,13 @@ if __name__ == '__main__':
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     graph_dir = Path(experiment_configuration['graph_dir'])
-    processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
-    processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
-    processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
+    prejointFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
+    prejointFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
+    prejointFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
     print("Created the processing pipeline graph visual")
-    post_processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("post_processing_simple"))
-    post_processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("post_processing_nested"))
-    post_processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("post_processing_detailed"))
+    joinFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("post_processing_simple"))
+    joinFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("post_processing_nested"))
+    joinFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("post_processing_detailed"))
     print("Created the post processing pipeline graph visual")
 
     # result = source_node.result()
