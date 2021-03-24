@@ -927,6 +927,14 @@ if __name__ == '__main__':
                             print(task_dict.values())
                             for file in list(task_dict.values()):
                                 cache_path_list.append(file)
+                elif type(list(cache_path.values())[0]) is dict:
+                    cache_path_list = []
+                    for task_dict in list(cache_path.values()):
+                        print("Here6")
+                        print(task_dict)
+                        print(task_dict.values())
+                        for file in list(task_dict.values()):
+                            cache_path_list.append(file)
                 else:
                     print()
                     cache_path_elements = list(cache_path.values())
