@@ -1085,7 +1085,7 @@ if __name__ == '__main__':
     # source_node.set_output([("output_files", source_node.sink_node.lzout.pipline_output),])
     source_node.set_output([("output_files", source_node.processing_node.lzout.prejointFusion_out)])
 
-    source_node.output_dir = experiment_configuration['output_dir']
+    # source_node.output_dir = experiment_configuration['output_dir']
     # Run the entire workflow
     with pydra.Submitter(plugin="cf") as sub:
         sub(source_node)
