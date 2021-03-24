@@ -915,15 +915,7 @@ if __name__ == '__main__':
 
                 print(type(list(cache_path.values())[0]))
                 print(list(cache_path.values())[0])
-                if type(list(cache_path.values())[0]) is dict:
-                    print("Here1")
-                    cache_path_list = []
-                    for task_dict in cache_path.values():
-                        print("Here2")
-                        print(task_dict)
-                        print(task_dict.values())
-                        cache_path_list.join(task_dict.values())
-                elif type(list(cache_path.values())[0]) is list:
+                if type(list(cache_path.values())[0]) is list:
                     cache_path_list = []
                     print("Here4")
                     print(f"list(cache_path.values()): {list(cache_path.values())}")
@@ -1017,7 +1009,7 @@ if __name__ == '__main__':
         # ('resample_workflow6'                         , prejointFusion_node.resample_workflow6.lzout.all_                    ),
         # ("resample_workflow7"                         , prejointFusion_node.resample_workflow7.lzout.all_                    ),
         # ("resample_workflow8"                         , prejointFusion_node.resample_workflow8.lzout.all_                    ),
-        # ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
+        ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
         ("landmarkInitializer_workflow3"              , prejointFusion_node.landmarkInitializer_workflow3.lzout.all_         ),
         # ("roi_workflow3"                              , prejointFusion_node.roi_workflow3.lzout.all_                         ),
         # ("antsRegistration_workflow3"                 , prejointFusion_node.antsRegistration_workflow3.lzout.all_            ),
