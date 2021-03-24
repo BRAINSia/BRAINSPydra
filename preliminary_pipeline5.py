@@ -1034,12 +1034,6 @@ if __name__ == '__main__':
     # source_node.set_output([("output_files", source_node.processing_node.lzout.all_)])
     # source_node.set_output([("output_files", source_node.post_processing_node.lzout.all_)])
 
-
-
-    # Run the entire workflow
-    with pydra.Submitter(plugin="cf") as sub:
-        sub(source_node)
-
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     graph_dir = Path(experiment_configuration['graph_dir'])
     processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
@@ -1050,6 +1044,12 @@ if __name__ == '__main__':
     # source_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("source_nested"))
     # source_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("source_detailed"))
     print("Created the processing pipeline graph visual")
+
+    # Run the entire workflow
+    with pydra.Submitter(plugin="cf") as sub:
+        sub(source_node)
+
+
 
     result = source_node.result()
     print(result)
