@@ -975,7 +975,7 @@ if __name__ == '__main__':
         return cache_path
 
     # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
-    source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"], output_dir=experiment_configuration["output_dir"])
+    source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"])
     source_node.inputs.input_data = input_data_dictionary["input_data"]
     source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
@@ -1062,8 +1062,21 @@ if __name__ == '__main__':
     #     # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     # ])
 
+    @pydra.task.mark
+    def copy(dir):
+        p = Path(dir).glob("**/*")
+        files = [x for x in p if x.is_file()]
+        print(files)
+        return files
+    sink_node2 = pydra.Workflow(name="sink_node2", input_spec=["output_directory"], output_directory=source_node.output_dir)
+    sink_node2.add(copy(name="copy", dir=sink_node2.lzin.output_directory))
+    sink_node2.set_output([("files_out", sink_node2.copy.lzout.out)])
+
+
+
     source_node.add(processing_node)
     source_node.add(prejointFusion_node)
+    source_node.add(sink_node2)
     # source_node.add(jointFusion_node)
 
     # source_node.add(sink_node)
