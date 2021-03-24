@@ -1069,8 +1069,8 @@ if __name__ == '__main__':
         print(files)
         return files
     sink_node2 = pydra.Workflow(name="sink_node2", input_spec=["output_directory"], output_directory=source_node.output_dir)
-    sink_node2.add(copy(name="copy", dir=sink_node2.lzin.output_directory))
-    sink_node2.set_output([("files_out", sink_node2.copy.lzout.out)])
+    sink_node2.add(copy(name="copy2", dir=sink_node2.lzin.output_directory))
+    sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
 
 
 
