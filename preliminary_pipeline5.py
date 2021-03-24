@@ -1062,7 +1062,7 @@ if __name__ == '__main__':
     #     # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     # ])
 
-    @pydra.task.mark
+    @pydra.mark.task
     def copy(dir):
         p = Path(dir).glob("**/*")
         files = [x for x in p if x.is_file()]
