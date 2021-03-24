@@ -912,6 +912,9 @@ if __name__ == '__main__':
             if type(cache_path) is dict:
                 print("\n\nHere\n\n")
                 print(f"cache_path.values(): {cache_path.values()}")
+
+                print(type(list(cache_path.values())[0]))
+                print(list(cache_path.values())[0])
                 if type(list(cache_path.values())[0]) is dict:
                     print("Here1")
                     cache_path = []
