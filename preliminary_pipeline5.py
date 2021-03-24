@@ -912,16 +912,21 @@ if __name__ == '__main__':
             if type(cache_path) is dict:
                 print("\n\nHere\n\n")
                 if type(cache_path.values()[0]) is dict:
+                    print("Here1")
                     cache_path = []
                     for task_dict in cache_path.values():
+                        print("Here2")
+                        print(task_dict)
+                        print(task_dict.values())
                         cache_path.join(task_dict.values())
                 else:
+                    print()
                     cache_path_elements = list(cache_path.values())
                     print(cache_path_elements)
                     cache_path = []
                     for cache_path_element in cache_path_elements:
                             cache_path.append(cache_path_element)
-                    print(f"cache_path is now: {cache_path}")
+                print(f"cache_path is now: {cache_path}")
             # If the files to be copied are in a list, copy each element of the list
             if type(cache_path) is list:
                 output_list = []
