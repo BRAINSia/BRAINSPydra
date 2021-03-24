@@ -709,8 +709,8 @@ if __name__ == '__main__':
 
         if set_num_threads:
             antsRegistration_task = Registration()
-            antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
-            antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
+            antsRegistration_task.set_default_num_threads(1)
+            antsRegistration_task.inputs.num_threads = 1
             # antsRegistration_task.set_default_num_threads(1)
             # antsRegistration_task.inputs.num_threads = 1
             antsRegistration_task = Nipype1Task(antsRegistration_task)
@@ -848,8 +848,8 @@ if __name__ == '__main__':
         # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
         if set_num_threads:
             antsJointFusion_task = JointFusion()
-            antsJointFusion_task.set_default_num_threads(experiment_configuration["num_threads"])
-            antsJointFusion_task.inputs.num_threads = experiment_configuration["num_threads"]
+            antsJointFusion_task.set_default_num_threads(1)
+            antsJointFusion_task.inputs.num_threads = 1
             antsJointFusion_task = Nipype1Task(antsJointFusion_task)
 
         # antsJointFusion_task.set_default_num_threads(14)
@@ -1000,8 +1000,8 @@ if __name__ == '__main__':
 
     processing_node.add(prejointFusion_node)
     processing_node.add(jointFusion_node)
-    processing_node.set_output([("prejointFusion_out", prejointFusion_node.lzout.all_),
-                                ("jointFusion_out", jointFusion_node.lzout.all_)])
+    processing_node.set_output([("prejointFusion_out", processing_node.prejointFusion_node.lzout.all_),
+                                ("jointFusion_out", processing_node.jointFusion_node.lzout.all_)])
 
     # The sink converts the cached files to output_dir, a location on the local machine
     sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=prejointFusion_node.lzout.all_, post_processed_files=jointFusion_node.lzout.all_, input_data=source_node.lzin.input_data)
