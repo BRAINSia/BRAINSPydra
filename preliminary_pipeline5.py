@@ -1042,13 +1042,13 @@ if __name__ == '__main__':
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     graph_dir = Path(experiment_configuration['graph_dir'])
-    # processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
-    # processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
-    # processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
+    processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
+    processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
+    processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
     print("Created the processing pipeline graph visual")
-    source_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("source_simple"))
-    source_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("source_nested"))
-    source_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("source_detailed"))
+    # source_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("source_simple"))
+    # source_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("source_nested"))
+    # source_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("source_detailed"))
     print("Created the processing pipeline graph visual")
 
     result = source_node.result()
