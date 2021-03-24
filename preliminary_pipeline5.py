@@ -1033,6 +1033,7 @@ if __name__ == '__main__':
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     def make_graphs(node: pydra.Workflow):
         graph_dir = Path(experiment_configuration['graph_dir'])
+        graph_dir.mkdir(parents=True, exist_ok=True)
         node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path(f"{node.name}_simple"))
         node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path(f"{node.name}_nested"))
         node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path(f"{node.name}_detailed"))
