@@ -931,7 +931,7 @@ if __name__ == '__main__':
                     cache_path_list = []
                     for task_ele in list(cache_path.values()):
                         print("Here6")
-                        print(task_dict)
+                        # print(task_dict)
                         if type(task_ele) is list:
                             for task_dict in task_ele:
                                 print("Here5")
