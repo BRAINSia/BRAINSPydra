@@ -1091,3 +1091,5 @@ if __name__ == '__main__':
 
     result = source_node.result()
     print(result)
+
+    print(source_node.output_dir)
