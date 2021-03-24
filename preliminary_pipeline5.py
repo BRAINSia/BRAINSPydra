@@ -1038,6 +1038,7 @@ if __name__ == '__main__':
     graph_dir = Path(experiment_configuration['graph_dir'])
     nested_name = graph_dir / Path("processing_nested")
     print(type(nested_name))
+    print(nested_name)
     processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
     source_node.create_dotfile(type="nested", export="pdf", name=graph_dir / Path("processing_nested"))
     processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
