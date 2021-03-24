@@ -5,25 +5,22 @@ import json
 import argparse
 
 if __name__ == '__main__':
-    set_num_threads = True
-
     parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
     parser.add_argument('config_experimental', type=str, help='Path to the json file for configuring task parameters')
+    parser.add_argument('config_environment', type=str, help='Path to the json file for setting environment config parameters')
     parser.add_argument('input_data_dictionary', type=str, help='Path to the json file for input data')
     args = parser.parse_args()
 
     with open(args.config_experimental) as f:
         experiment_configuration = json.load(f)
+    with open(args.config_environment) as f:
+        environment_configuration = json.load(f)
     with open(args.input_data_dictionary) as f:
         input_data_dictionary = json.load(f)
 
 
     @pydra.mark.task
-    def to_list(value):
-        return [value]
-
-    @pydra.mark.task
-    def make_output_filename(filename="", before_str="", append_str="", extension="", directory="", parent_dir="", unused=""):
+    def make_filename(filename="", before_str="", append_str="", extension="", directory="", parent_dir="", unused=""):
         if filename is None:
             return None
         else:
@@ -40,13 +37,10 @@ if __name__ == '__main__':
                 new_filename = f"{Path(Path(directory) / Path(parent_dir) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
             return new_filename
 
-
-
-    @pydra.mark.task
-    def get_input_field(input_dict: dict, field):
-        return input_dict[field]
-
     def get_inputs_workflow(my_source_node):
+        @pydra.mark.task
+        def get_input_field(input_dict: dict, field):
+            return input_dict[field]
 
         get_inputs_workflow = pydra.Workflow(name="inputs_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
         get_inputs_workflow.add(get_input_field(name="get_inputVolume", input_dict=get_inputs_workflow.lzin.input_data, field="t1"))
@@ -69,24 +63,23 @@ if __name__ == '__main__':
         bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "inputLandmarksEMSP"], inputVolume=inputVolume, inputLandmarksEMSP=inputLandmarksEMSP)
 
         bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration[configkey]['executable']).get_task()
-        bcd_task.inputs.inputVolume =                       bcd_workflow.lzin.inputVolume    #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz" #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz" #bcd_workflow.lzin.inputVolume
+        bcd_task.inputs.inputVolume =                       bcd_workflow.lzin.inputVolume
         bcd_task.inputs.LLSModel =                          experiment_configuration[configkey].get('LLSModel')
         bcd_task.inputs.acLowerBound =                      experiment_configuration[configkey].get('acLowerBound')
         bcd_task.inputs.atlasLandmarkWeights =              experiment_configuration[configkey].get('atlasLandmarkWeights')
         bcd_task.inputs.atlasLandmarks =                    experiment_configuration[configkey].get('atlasLandmarks')
         bcd_task.inputs.houghEyeDetectorMode =              experiment_configuration[configkey].get('houghEyeDetectorMode')
-        bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.fcsv" #"/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.fcsv" #bcd_workflow.lzin.inputLandmarksEMSP
+        bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
         bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
         bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
 
-        bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey].get('outputLandmarksInInputSpace')      #bcd_workflow.outputLandmarksInInputSpace.lzout.out
-        bcd_task.inputs.outputResampledVolume =             experiment_configuration[configkey].get('outputResampledVolume')            #bcd_workflow.outputResampledVolume.lzout.out
-        bcd_task.inputs.outputTransform =                   experiment_configuration[configkey].get('outputTransform')                  #bcd_workflow.outputTransform.lzout.out
-        bcd_task.inputs.outputLandmarksInACPCAlignedSpace = experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')#bcd_workflow.outputLandmarksInACPCAlignedSpace.lzout.out
-        bcd_task.inputs.writeBranded2DImage =               experiment_configuration[configkey].get('writeBranded2DImage')              #bcd_workflow.writeBranded2DImage.lzout.out
+        bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey].get('outputLandmarksInInputSpace')
+        bcd_task.inputs.outputResampledVolume =             experiment_configuration[configkey].get('outputResampledVolume')
+        bcd_task.inputs.outputTransform =                   experiment_configuration[configkey].get('outputTransform')
+        bcd_task.inputs.outputLandmarksInACPCAlignedSpace = experiment_configuration[configkey].get('outputLandmarksInACPCAlignedSpace')
+        bcd_task.inputs.writeBranded2DImage =               experiment_configuration[configkey].get('writeBranded2DImage')
         bcd_workflow.add(bcd_task)
 
-        # print(bcd_task.cmdline)
 
         # Set the outputs of the processing node and the source node so they are output to the sink node
         bcd_workflow.set_output([
@@ -213,7 +206,7 @@ if __name__ == '__main__':
         # Create the workflow
         antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
 
-        if set_num_threads:
+        if environment_configuration['set_threads']:
             antsRegistration_task = Registration()
             antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
             antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
@@ -278,7 +271,7 @@ if __name__ == '__main__':
         # Create the workflow
         antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
 
-        if set_num_threads:
+        if environment_configuration['set_threads']:
             antsRegistration_task = Registration()
             antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
             antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
@@ -335,18 +328,17 @@ if __name__ == '__main__':
 
         return antsRegistration_workflow
 
-    @pydra.mark.task
-    def get_t1_average(outputs):
-        return outputs[0]
-
-    @pydra.mark.task
-    def get_posteriors(outputs):
-        return outputs[1:]
-
-
 
     def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
         from sem_tasks.segmentation.specialized import BRAINSABC
+
+        @pydra.mark.task
+        def get_t1_average(outputs):
+            return outputs[0]
+
+        @pydra.mark.task
+        def get_posteriors(outputs):
+            return outputs[1:]
 
         workflow_name = "abc_workflow1"
         configkey='BRAINSABC1'
@@ -354,7 +346,7 @@ if __name__ == '__main__':
 
         # Create the workflow
         abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1", "restoreState"], inputVolumes=inputVolumes, inputT1=inputT1, restoreState=restoreState)
-        abc_workflow.add(make_output_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
+        abc_workflow.add(make_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
 
         abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration[configkey]['executable']).get_task()
 
@@ -587,7 +579,7 @@ if __name__ == '__main__':
 
         landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputFixedLandmarkFilename", "inputMovingLandmarkFilename"], inputFixedLandmarkFilename=inputFixedLandmarkFilename, inputMovingLandmarkFilename=inputMovingLandmarkFilename)
         landmark_initializer_workflow.add(get_parent_directory(name="get_parent_directory", filepath=landmark_initializer_workflow.lzin.inputMovingLandmarkFilename))
-        landmark_initializer_workflow.add(make_output_filename(name="outputTransformFilename", before_str="landmarkInitializer_", filename=landmark_initializer_workflow.get_parent_directory.lzout.out, append_str="_to_subject_transform", extension=".h5"))
+        landmark_initializer_workflow.add(make_filename(name="outputTransformFilename", before_str="landmarkInitializer_", filename=landmark_initializer_workflow.get_parent_directory.lzout.out, append_str="_to_subject_transform", extension=".h5"))
 
         landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
         landmark_initializer_task.inputs.inputFixedLandmarkFilename =   landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
@@ -624,7 +616,6 @@ if __name__ == '__main__':
 
         return roi_workflow
 
-    # def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_moving_transform, atlas_id) -> pydra.Workflow:
     def make_antsRegistration_workflow3(fixed_image, fixed_image_masks, initial_moving_transform) -> pydra.Workflow:
 
         from pydra.tasks.nipype1.utils import Nipype1Task
@@ -644,12 +635,12 @@ if __name__ == '__main__':
 
         antsRegistration_workflow.add(get_atlas_id_from_landmark_initializer_transform(name="atlas_id", landmark_initializer_transform=antsRegistration_workflow.lzin.initial_moving_transform))
 
-        antsRegistration_workflow.add(make_output_filename(name="make_moving_image", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('moving_image_filename')))
-        antsRegistration_workflow.add(make_output_filename(name="make_moving_image_masks", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('moving_image_masks_filename')))
-        antsRegistration_workflow.add(make_output_filename(name="make_output_transform_prefix", before_str=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('output_transform_prefix_suffix')))
-        antsRegistration_workflow.add(make_output_filename(name="make_output_warped_image", before_str=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('output_warped_image_suffix')))
+        antsRegistration_workflow.add(make_filename(name="make_moving_image", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('moving_image_filename')))
+        antsRegistration_workflow.add(make_filename(name="make_moving_image_masks", directory=experiment_configuration[configkey].get('moving_image_dir'), parent_dir=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('moving_image_masks_filename')))
+        antsRegistration_workflow.add(make_filename(name="make_output_transform_prefix", before_str=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('output_transform_prefix_suffix')))
+        antsRegistration_workflow.add(make_filename(name="make_output_warped_image", before_str=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('output_warped_image_suffix')))
 
-        if set_num_threads:
+        if environment_configuration['set_threads']:
             antsRegistration_task = Registration()
             antsRegistration_task.set_default_num_threads(1)
             antsRegistration_task.inputs.num_threads = 1
@@ -741,10 +732,10 @@ if __name__ == '__main__':
 
         antsApplyTransforms_workflow.add(get_atlas_id_from_transform(name="atlas_id", transform=antsApplyTransforms_workflow.lzin.transform))
 
-        antsApplyTransforms_workflow.add(make_output_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('input_image_filename')))
-        antsApplyTransforms_workflow.add(make_output_filename(name="output_image", before_str=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=output_image_end))
+        antsApplyTransforms_workflow.add(make_filename(name="input_image", directory=experiment_configuration[configkey].get('input_image_dir'), parent_dir=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('input_image_filename')))
+        antsApplyTransforms_workflow.add(make_filename(name="output_image", before_str=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=output_image_end))
 
-        if set_num_threads:
+        if environment_configuration['set_threads']:
             antsApplyTransforms_task = ApplyTransforms()
             antsApplyTransforms_task.set_default_num_threads(experiment_configuration["num_threads"])
             antsApplyTransforms_task.inputs.num_threads = experiment_configuration["num_threads"]
@@ -772,6 +763,10 @@ if __name__ == '__main__':
         from pydra.tasks.nipype1.utils import Nipype1Task
         from nipype.interfaces.ants import JointFusion
 
+        @pydra.mark.task
+        def to_list(value):
+            return [value]
+
         workflow_name = f"antsJointFusion_workflow1"
         configkey=f'ANTSJointFusion1'
         print(f"Making task {workflow_name}")
@@ -780,7 +775,7 @@ if __name__ == '__main__':
         antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
         antsJointFusion_workflow.add(to_list(name="to_list", value=antsJointFusion_workflow.lzin.target_image))
 
-        if set_num_threads:
+        if environment_configuration['set_threads']:
             antsJointFusion_task = JointFusion()
             antsJointFusion_task.set_default_num_threads(1)
             antsJointFusion_task.inputs.num_threads = 1
@@ -866,10 +861,9 @@ if __name__ == '__main__':
 
     # Get the processing workflow defined in a separate function
     processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
+
     prejointFusion_node = pydra.Workflow(name="prejointFusion_node", input_spec=["input_data"], input_data=processing_node.lzin.input_data)
     prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
-
-
     prejointFusion_node.add(make_bcd_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=prejointFusion_node.inputs_workflow.lzout.inputLandmarksEMSP))
     prejointFusion_node.add(make_roi_workflow1(inputVolume=prejointFusion_node.bcd_workflow1.lzout.outputResampledVolume))
     prejointFusion_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
@@ -921,11 +915,7 @@ if __name__ == '__main__':
         ("mask_image", prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume),
     ])
 
-    jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"],
-                                      atlas_image =               prejointFusion_node.lzout.atlas_image,
-                                      atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image,
-                                      target_image =              prejointFusion_node.lzout.target_image,
-                                      mask_image =                prejointFusion_node.lzout.mask_image)
+    jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image = prejointFusion_node.lzout.atlas_image, atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image, target_image = prejointFusion_node.lzout.target_image, mask_image = prejointFusion_node.lzout.mask_image)
     jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
     jointFusion_node.set_output([("jointFusion_out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
 
@@ -959,19 +949,16 @@ if __name__ == '__main__':
         sub(source_node)
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
-    graph_dir = Path(experiment_configuration['graph_dir'])
-    prejointFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("prejointFusion_simple"))
-    prejointFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("prejointFusion_nested"))
-    prejointFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("prejointFusion_detailed"))
-    print("Created the processing pipeline graph visual")
-    jointFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("jointFusion_simple"))
-    jointFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("jointFusion_nested"))
-    jointFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("jointFusion_detailed"))
-    print("Created the post processing pipeline graph visual")
-    processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
-    processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
-    processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
-    print("Created the post processing pipeline graph visual")
+    def make_graphs(node: pydra.Workflow):
+        graph_dir = Path(experiment_configuration['graph_dir'])
+        node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path(f"{node.name}_simple"))
+        node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path(f"{node.name}_nested"))
+        node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path(f"{node.name}_detailed"))
+        print(f"Created the {node.name} graph visual")
+
+    make_graphs(prejointFusion_node)
+    make_graphs(jointFusion_node)
+    make_graphs(processing_node)
 
     result = source_node.result()
     print(result)
