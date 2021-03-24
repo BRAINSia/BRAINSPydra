@@ -934,7 +934,7 @@ if __name__ == '__main__':
                             print(task_dict)
                             print(task_dict.values())
                             for file in list(task_dict.values()):
-                                cache_path_list.join(file)
+                                cache_path_list.append(file)
                 else:
                     print()
                     cache_path_elements = list(cache_path.values())
