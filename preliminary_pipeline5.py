@@ -927,11 +927,13 @@ if __name__ == '__main__':
                     cache_path_list = []
                     print("Here4")
                     print(f"list(cache_path.values()): {list(cache_path.values())}")
-                    for task_dict in list(cache_path.values()):
+                    for task_list in list(cache_path.values()):
                         print("Here3")
-                        print(task_dict)
-                        print(task_dict.values())
-                        cache_path_list.join(task_dict.values())
+                        for task_dict in task_list:
+                            print("Here5")
+                            print(task_dict)
+                            print(task_dict.values())
+                            cache_path_list.join(list(task_dict.values()))
                 else:
                     print()
                     cache_path_elements = list(cache_path.values())
