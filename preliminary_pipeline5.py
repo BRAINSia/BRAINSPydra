@@ -1014,8 +1014,9 @@ if __name__ == '__main__':
         ("output_files2", sink_node.copy_from_cache2.lzout.out)
     ])
 
-    source_node.add(prejointFusion_node)
-    source_node.add(jointFusion_node)
+    source_node.add(processing_node)
+    # source_node.add(prejointFusion_node)
+    # source_node.add(jointFusion_node)
 
     source_node.add(sink_node)
 
