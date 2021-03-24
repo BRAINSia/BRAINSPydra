@@ -935,6 +935,7 @@ if __name__ == '__main__':
     source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
     # Get the processing workflow defined in a separate function
+    processing_node = pydra.Workflow(name="processing_node")
     prejointFusion_node = pydra.Workflow(name="prejointFusion_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
     prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
 
@@ -992,16 +993,20 @@ if __name__ == '__main__':
         ("mask_image", prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume),
     ])
 
-    joinFusion_node = pydra.Workflow(name="joinFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"])
-    joinFusion_node.inputs.atlas_image =               prejointFusion_node.lzout.atlas_image
-    joinFusion_node.inputs.atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image
-    joinFusion_node.inputs.target_image =              prejointFusion_node.lzout.target_image
-    joinFusion_node.inputs.mask_image =                prejointFusion_node.lzout.mask_image
+    jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"])
+    jointFusion_node.inputs.atlas_image =               prejointFusion_node.lzout.atlas_image
+    jointFusion_node.inputs.atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image
+    jointFusion_node.inputs.target_image =              prejointFusion_node.lzout.target_image
+    jointFusion_node.inputs.mask_image =                prejointFusion_node.lzout.mask_image
+    processing_node.add(prejointFusion_node)
+    processing_node.add(jointFusion_node)
+    processing_node.set_output([("prejointFusion_out", prejointFusion_node.lzout.all_),
+                                ("jointFusion_out", jointFusion_node.lzout.all_)])
 
-    joinFusion_node.add(make_antsJointFusion_workflow1(atlas_image=joinFusion_node.lzin.atlas_image, atlas_segmentation_image=joinFusion_node.lzin.atlas_segmentation_image, target_image=joinFusion_node.lzin.target_image, mask_image=joinFusion_node.lzin.mask_image))
-    joinFusion_node.set_output([("out", joinFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
+    jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
+    jointFusion_node.set_output([("out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
     # The sink converts the cached files to output_dir, a location on the local machine
-    sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=joinFusion_node.lzout.all_, post_processed_files=joinFusion_node.lzout.all_, input_data=source_node.lzin.input_data)
+    sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=jointFusion_node.lzout.all_, post_processed_files=jointFusion_node.lzout.all_, input_data=source_node.lzin.input_data)
     sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
     # sink_node.add(get_self(name="get_self", x=sink_node.get_processed_outputs.lzout.out))
     sink_node.add(copy_from_cache(name="copy_from_cache1", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
@@ -1013,7 +1018,7 @@ if __name__ == '__main__':
     ])
 
     source_node.add(prejointFusion_node)
-    source_node.add(joinFusion_node)
+    source_node.add(jointFusion_node)
 
     source_node.add(sink_node)
 
@@ -1028,13 +1033,17 @@ if __name__ == '__main__':
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     graph_dir = Path(experiment_configuration['graph_dir'])
-    prejointFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
-    prejointFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
-    prejointFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
+    prejointFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("prejointFusion_simple"))
+    prejointFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("prejointFusion_nested"))
+    prejointFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("prejointFusion_detailed"))
     print("Created the processing pipeline graph visual")
-    joinFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("post_processing_simple"))
-    joinFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("post_processing_nested"))
-    joinFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("post_processing_detailed"))
+    jointFusion_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("jointFusion_simple"))
+    jointFusion_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("jointFusion_nested"))
+    jointFusion_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("jointFusion_detailed"))
+    print("Created the post processing pipeline graph visual")
+    processing_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("processing_simple"))
+    processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
+    processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
     print("Created the post processing pipeline graph visual")
 
     # result = source_node.result()
