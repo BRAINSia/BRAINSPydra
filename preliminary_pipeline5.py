@@ -20,13 +20,15 @@ if __name__ == '__main__':
 
 
     @pydra.mark.task
-    def make_filename(filename="", before_str="", append_str="", extension="", directory="", parent_dir="", unused=""):
+    def make_filename(filename="", before_str="", append_str="", extension="", directory="", parent_dir=""):
         if filename is None:
             return None
         else:
+            # if the input filename is a list, set the filename for each element in the list
             if type(filename) is list:
                 new_filename = []
                 for f in filename:
+                    # If an extension is not specified and the filename has an extension, use the filename's extension(s)
                     if extension == "":
                         extension = "".join(Path(f).suffixes)
                     new_filename.append(f"{Path(Path(directory) / Path(parent_dir) / Path(before_str + Path(f).with_suffix('').with_suffix('').name))}{append_str}{extension}")
@@ -43,7 +45,9 @@ if __name__ == '__main__':
             return input_dict[field]
 
         get_inputs_workflow = pydra.Workflow(name="inputs_workflow", input_spec=["input_data"], input_data=my_source_node.lzin.input_data)
+        # Get the list of t1 files from input_data_dictionary
         get_inputs_workflow.add(get_input_field(name="get_inputVolume", input_dict=get_inputs_workflow.lzin.input_data, field="t1"))
+        # Get the list of landmark files from input_data_dictionary
         get_inputs_workflow.add(get_input_field(name="get_inputLandmarksEMSP", input_dict=get_inputs_workflow.lzin.input_data, field="inputLandmarksEMSP"))
 
         get_inputs_workflow.set_output([
@@ -60,19 +64,22 @@ if __name__ == '__main__':
         configkey='BRAINSConstellationDetector1'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         bcd_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "inputLandmarksEMSP"], inputVolume=inputVolume, inputLandmarksEMSP=inputLandmarksEMSP)
 
+        # Create the pydra-sem generated task
         bcd_task = BRAINSConstellationDetector(name="BRAINSConstellationDetector", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
         bcd_task.inputs.inputVolume =                       bcd_workflow.lzin.inputVolume
+        bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
+        bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
+        bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
         bcd_task.inputs.LLSModel =                          experiment_configuration[configkey].get('LLSModel')
         bcd_task.inputs.acLowerBound =                      experiment_configuration[configkey].get('acLowerBound')
         bcd_task.inputs.atlasLandmarkWeights =              experiment_configuration[configkey].get('atlasLandmarkWeights')
         bcd_task.inputs.atlasLandmarks =                    experiment_configuration[configkey].get('atlasLandmarks')
         bcd_task.inputs.houghEyeDetectorMode =              experiment_configuration[configkey].get('houghEyeDetectorMode')
-        bcd_task.inputs.inputLandmarksEMSP =                bcd_workflow.lzin.inputLandmarksEMSP
-        bcd_task.inputs.inputTemplateModel =                experiment_configuration[configkey].get('inputTemplateModel')
-        bcd_task.inputs.interpolationMode =                 experiment_configuration[configkey].get('interpolationMode')
-
         bcd_task.inputs.outputLandmarksInInputSpace =       experiment_configuration[configkey].get('outputLandmarksInInputSpace')
         bcd_task.inputs.outputResampledVolume =             experiment_configuration[configkey].get('outputResampledVolume')
         bcd_task.inputs.outputTransform =                   experiment_configuration[configkey].get('outputTransform')
@@ -97,9 +104,13 @@ if __name__ == '__main__':
         configkey='BRAINSROIAuto1'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
 
+        # Create the pydra-sem generated task
         roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
+
+        # Set task inputs
         roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
         roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
         roi_task.inputs.cropOutput =            experiment_configuration[configkey].get('cropOutput')
@@ -119,11 +130,15 @@ if __name__ == '__main__':
         print(f"Making task {workflow_name}")
 
 
+        # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputMovingLandmarkFilename"], inputMovingLandmarkFilename=inputMovingLandmarkFilename)
 
+        # Create the pydra-sem generated task
         landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
-        landmark_initializer_task.inputs.inputFixedLandmarkFilename =   experiment_configuration[configkey].get('inputFixedLandmarkFilename')
+
+        # Set task inputs
         landmark_initializer_task.inputs.inputMovingLandmarkFilename =  landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
+        landmark_initializer_task.inputs.inputFixedLandmarkFilename =   experiment_configuration[configkey].get('inputFixedLandmarkFilename')
         landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
         landmark_initializer_task.inputs.outputTransformFilename =      experiment_configuration[configkey].get('outputTransformFilename') #landmark_initializer_workflow.outputTransformFilename.lzout.out
 
@@ -140,9 +155,13 @@ if __name__ == '__main__':
         print(f"Making task {workflow_name}")
 
 
+        # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputFixedLandmarkFilename"], inputFixedLandmarkFilename=inputFixedLandmarkFilename)
 
+        # Create the pydra-sem generated task
         landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
+
+        # Set task inputs
         landmark_initializer_task.inputs.inputFixedLandmarkFilename =   landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
         landmark_initializer_task.inputs.inputMovingLandmarkFilename =  experiment_configuration[configkey].get('inputMovingLandmarkFilename')
         landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
@@ -161,14 +180,17 @@ if __name__ == '__main__':
         configkey='BRAINSResample1'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume", "warpTransform"], inputVolume=inputVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
         resample_task.inputs.inputVolume =          resample_workflow.lzin.inputVolume
+        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -181,9 +203,13 @@ if __name__ == '__main__':
         configkey='BRAINSROIAuto2'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
 
+        # Create the pydra-sem generated task
         roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
+
+        # Set task inputs
         roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
         roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
         roi_task.inputs.outputROIMaskVolume =   experiment_configuration[configkey].get('outputROIMaskVolume')
@@ -203,15 +229,17 @@ if __name__ == '__main__':
         configkey='ANTSRegistration1'
         print(f"Making task {workflow_name}")
 
-        # Create the workflow
+        # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
 
         if environment_configuration['set_threads']:
+            # Set the number of threads to be used by ITK
             antsRegistration_task = Registration()
             antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
             antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
             antsRegistration_task = Nipype1Task(antsRegistration_task)
         else:
+            # Use the default number of threads (1)
             antsRegistration_task = Nipype1Task(Registration())
 
         # Set subject-specific files
@@ -268,15 +296,18 @@ if __name__ == '__main__':
         configkey='ANTSRegistration2'
         print(f"Making task {workflow_name}")
 
-        # Create the workflow
+
+        # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
 
         if environment_configuration['set_threads']:
+            # Set the number of threads to be used by ITK
             antsRegistration_task = Registration()
             antsRegistration_task.set_default_num_threads(experiment_configuration["num_threads"])
             antsRegistration_task.inputs.num_threads = experiment_configuration["num_threads"]
             antsRegistration_task = Nipype1Task(antsRegistration_task)
         else:
+            # Use the default number of threads (1)
             antsRegistration_task = Nipype1Task(Registration())
 
 
@@ -344,11 +375,18 @@ if __name__ == '__main__':
         configkey='BRAINSABC1'
         print(f"Making task {workflow_name}")
 
-        # Create the workflow
+
+        # Define the workflow and its lazy inputs
         abc_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolumes", "inputT1", "restoreState"], inputVolumes=inputVolumes, inputT1=inputT1, restoreState=restoreState)
         abc_workflow.add(make_filename(name="outputVolumes", filename=abc_workflow.lzin.inputT1, append_str="_corrected", extension=".nii.gz"))
 
+        # Create the pydra-sem generated task
         abc_task = BRAINSABC(name="BRAINSABC", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        abc_task.inputs.inputVolumes =                  abc_workflow.lzin.inputVolumes #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # # # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #  #abc_workflow.lzin.inputVolumes
+        abc_task.inputs.restoreState =                  abc_workflow.lzin.restoreState #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #
+        abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" # #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #
 
         abc_task.inputs.atlasDefinition =               experiment_configuration[configkey].get('atlasDefinition')
         abc_task.inputs.atlasToSubjectTransform =       experiment_configuration[configkey].get('atlasToSubjectTransform')
@@ -357,20 +395,17 @@ if __name__ == '__main__':
         abc_task.inputs.filterIteration =               experiment_configuration[configkey].get('filterIteration')
         abc_task.inputs.filterMethod =                  experiment_configuration[configkey].get('filterMethod')
         abc_task.inputs.inputVolumeTypes =              experiment_configuration[configkey].get('inputVolumeTypes')
-        abc_task.inputs.inputVolumes =                  abc_workflow.lzin.inputVolumes #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # # # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #  #abc_workflow.lzin.inputVolumes
         abc_task.inputs.interpolationMode =             experiment_configuration[configkey].get('interpolationMode')
         abc_task.inputs.maxBiasDegree =                 experiment_configuration[configkey].get('maxBiasDegree')
         abc_task.inputs.maxIterations =                 experiment_configuration[configkey].get('maxIterations')
         abc_task.inputs.posteriorTemplate =             experiment_configuration[configkey].get('POSTERIOR_%s.nii.gz')
         abc_task.inputs.purePlugsThreshold =            experiment_configuration[configkey].get('purePlugsThreshold')
-        abc_task.inputs.restoreState =                  abc_workflow.lzin.restoreState #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #
         abc_task.inputs.saveState =                     experiment_configuration[configkey].get('saveState')
         abc_task.inputs.useKNN =                        experiment_configuration[configkey].get('useKNN')
         abc_task.inputs.outputFormat =                  experiment_configuration[configkey].get('outputFormat')
         abc_task.inputs.outputDir =                     experiment_configuration[configkey].get('outputDir')
         abc_task.inputs.outputDirtyLabels =             experiment_configuration[configkey].get('outputDirtyLabels')
         abc_task.inputs.outputLabels =                  experiment_configuration[configkey].get('outputLabels')
-        abc_task.inputs.outputVolumes =                 abc_workflow.outputVolumes.lzout.out #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" # #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #
         abc_task.inputs.implicitOutputs =               [experiment_configuration[configkey].get('t1_average')] + experiment_configuration[configkey].get('posteriors')
 
 
@@ -395,16 +430,19 @@ if __name__ == '__main__':
         configkey='BRAINSResample2'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
+        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
         resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
         resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -417,16 +455,19 @@ if __name__ == '__main__':
         configkey='BRAINSResample3'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
+        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
         resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
         resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -439,16 +480,19 @@ if __name__ == '__main__':
         configkey='BRAINSResample4'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
+        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
         resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
         resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -461,16 +505,19 @@ if __name__ == '__main__':
         configkey='BRAINSResample5'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        resample_task.inputs.referenceVolume = resample_workflow.lzin.referenceVolume
+        resample_task.inputs.warpTransform = resample_workflow.lzin.warpTransform
         resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
         resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -483,16 +530,19 @@ if __name__ == '__main__':
         configkey='BRAINSResample6'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        resample_task.inputs.referenceVolume = resample_workflow.lzin.referenceVolume
+        resample_task.inputs.warpTransform = resample_workflow.lzin.warpTransform
         resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
         resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -505,16 +555,19 @@ if __name__ == '__main__':
         configkey='BRAINSResample7'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        resample_task.inputs.referenceVolume = resample_workflow.lzin.referenceVolume
+        resample_task.inputs.warpTransform = resample_workflow.lzin.warpTransform
         resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
         resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -527,16 +580,19 @@ if __name__ == '__main__':
         configkey='BRAINSResample8'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(name=workflow_name, input_spec=["referenceVolume", "warpTransform"], referenceVolume=referenceVolume, warpTransform=warpTransform)
 
-        # Set the inputs of Resample
+        # Create the pydra-sem generated task
         resample_task = BRAINSResample("BRAINSResample", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        resample_task.inputs.referenceVolume = resample_workflow.lzin.referenceVolume
+        resample_task.inputs.warpTransform = resample_workflow.lzin.warpTransform
         resample_task.inputs.inputVolume =          experiment_configuration[configkey].get("inputVolume")
         resample_task.inputs.interpolationMode =    experiment_configuration[configkey].get("interpolationMode")
         resample_task.inputs.outputVolume =         experiment_configuration[configkey].get("outputVolume")
         resample_task.inputs.pixelType =            experiment_configuration[configkey].get("pixelType")
-        resample_task.inputs.referenceVolume =      resample_workflow.lzin.referenceVolume
-        resample_task.inputs.warpTransform =        resample_workflow.lzin.warpTransform
 
         resample_workflow.add(resample_task)
         resample_workflow.set_output([("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)])
@@ -549,16 +605,20 @@ if __name__ == '__main__':
         configkey='BRAINSCreateLabelMapFromProbabilityMaps1'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         label_map_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputProbabilityVolume", "nonAirRegionMask"], inputProbabilityVolume=inputProbabilityVolume, nonAirRegionMask=nonAirRegionMask)
 
+        # Create the pydra-sem generated task
         label_map_task = BRAINSCreateLabelMapFromProbabilityMaps(name="BRAINSCreateLabelMapFromProbabilityMaps", executable=experiment_configuration[configkey]['executable']).get_task()
+
+        # Set task inputs
+        label_map_task.inputs.inputProbabilityVolume =      label_map_workflow.lzin.inputProbabilityVolume
+        label_map_task.inputs.nonAirRegionMask =            label_map_workflow.lzin.nonAirRegionMask
         label_map_task.inputs.cleanLabelVolume =            experiment_configuration[configkey].get('cleanLabelVolume')
         label_map_task.inputs.dirtyLabelVolume =            experiment_configuration[configkey].get('dirtyLabelVolume')
         label_map_task.inputs.foregroundPriors =            experiment_configuration[configkey].get('foregroundPriors')
-        label_map_task.inputs.inputProbabilityVolume =      label_map_workflow.lzin.inputProbabilityVolume
         label_map_task.inputs.priorLabelCodes =             experiment_configuration[configkey].get('priorLabelCodes')
         label_map_task.inputs.inclusionThreshold =          experiment_configuration[configkey].get('inclusionThreshold')
-        label_map_task.inputs.nonAirRegionMask =            label_map_workflow.lzin.nonAirRegionMask
 
         label_map_workflow.add(label_map_task)
         label_map_workflow.set_output([
@@ -577,15 +637,20 @@ if __name__ == '__main__':
         def get_parent_directory(filepath):
             return Path(filepath).parent.name
 
+        # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputFixedLandmarkFilename", "inputMovingLandmarkFilename"], inputFixedLandmarkFilename=inputFixedLandmarkFilename, inputMovingLandmarkFilename=inputMovingLandmarkFilename)
+
         landmark_initializer_workflow.add(get_parent_directory(name="get_parent_directory", filepath=landmark_initializer_workflow.lzin.inputMovingLandmarkFilename))
         landmark_initializer_workflow.add(make_filename(name="outputTransformFilename", before_str="landmarkInitializer_", filename=landmark_initializer_workflow.get_parent_directory.lzout.out, append_str="_to_subject_transform", extension=".h5"))
 
+        # Create the pydra-sem generated task
         landmark_initializer_task = BRAINSLandmarkInitializer(name="BRAINSLandmarkInitializer", executable=experiment_configuration[configkey].get('executable')).get_task()
+
+        # Set task inputs
         landmark_initializer_task.inputs.inputFixedLandmarkFilename =   landmark_initializer_workflow.lzin.inputFixedLandmarkFilename
         landmark_initializer_task.inputs.inputMovingLandmarkFilename =   landmark_initializer_workflow.lzin.inputMovingLandmarkFilename
-        landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
         landmark_initializer_task.inputs.outputTransformFilename =      landmark_initializer_workflow.outputTransformFilename.lzout.out #experiment_configuration[configkey].get('outputTransformFilename')
+        landmark_initializer_task.inputs.inputWeightFilename =          experiment_configuration[configkey].get('inputWeightFilename')
 
         landmark_initializer_workflow.add(landmark_initializer_task)
         landmark_initializer_workflow.set_output([
@@ -602,9 +667,13 @@ if __name__ == '__main__':
         configkey='BRAINSROIAuto2'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
 
+        # Create the pydra-sem generated task
         roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
+
+        # Set task inputs
         roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
         roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
         roi_task.inputs.outputROIMaskVolume =   experiment_configuration[configkey].get('outputROIMaskVolume')
@@ -630,7 +699,8 @@ if __name__ == '__main__':
         configkey='ANTSRegistration3'
         print(f"Making task {workflow_name}")
 
-        # Create the workflow
+
+        # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(name=workflow_name, input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"], fixed_image=fixed_image, fixed_image_masks=fixed_image_masks, initial_moving_transform=initial_moving_transform)
 
         antsRegistration_workflow.add(get_atlas_id_from_landmark_initializer_transform(name="atlas_id", landmark_initializer_transform=antsRegistration_workflow.lzin.initial_moving_transform))
@@ -641,13 +711,16 @@ if __name__ == '__main__':
         antsRegistration_workflow.add(make_filename(name="make_output_warped_image", before_str=antsRegistration_workflow.atlas_id.lzout.out, filename=experiment_configuration[configkey].get('output_warped_image_suffix')))
 
         if environment_configuration['set_threads']:
+            # Set the number of threads to be used by ITK
             antsRegistration_task = Registration()
             antsRegistration_task.set_default_num_threads(1)
             antsRegistration_task.inputs.num_threads = 1
             antsRegistration_task = Nipype1Task(antsRegistration_task)
         else:
+            # Use the default number of threads (1)
             antsRegistration_task = Nipype1Task(Registration())
 
+        # Set task inputs
         antsRegistration_task.inputs.fixed_image =                      antsRegistration_workflow.lzin.fixed_image
         antsRegistration_task.inputs.fixed_image_masks =                antsRegistration_workflow.lzin.fixed_image_masks
         antsRegistration_task.inputs.initial_moving_transform =         antsRegistration_workflow.lzin.initial_moving_transform
@@ -699,9 +772,13 @@ if __name__ == '__main__':
         configkey='BRAINSROIAuto3'
         print(f"Making task {workflow_name}")
 
+        # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume)
 
+        # Create the pydra-sem generated task
         roi_task = BRAINSROIAuto("BRAINSROIAuto", executable=experiment_configuration[configkey].get('executable')).get_task()
+
+        # Set task inputs
         roi_task.inputs.inputVolume =           roi_workflow.lzin.inputVolume
         roi_task.inputs.ROIAutoDilateSize =     experiment_configuration[configkey].get('ROIAutoDilateSize')
         roi_task.inputs.outputROIMaskVolume =   experiment_configuration[configkey].get('outputROIMaskVolume')
@@ -727,7 +804,7 @@ if __name__ == '__main__':
         configkey=f'ANTSApplyTransforms{index}'
         print(f"Making task {workflow_name}")
 
-        # Create the workflow
+        # Define the workflow and its lazy inputs
         antsApplyTransforms_workflow = pydra.Workflow(name=workflow_name, input_spec=["reference_image", "transform"], reference_image=reference_image, transform=transform)
 
         antsApplyTransforms_workflow.add(get_atlas_id_from_transform(name="atlas_id", transform=antsApplyTransforms_workflow.lzin.transform))
@@ -736,20 +813,23 @@ if __name__ == '__main__':
         antsApplyTransforms_workflow.add(make_filename(name="output_image", before_str=antsApplyTransforms_workflow.atlas_id.lzout.out, filename=output_image_end))
 
         if environment_configuration['set_threads']:
+            # Set the number of threads to be used by ITK
             antsApplyTransforms_task = ApplyTransforms()
             antsApplyTransforms_task.set_default_num_threads(experiment_configuration["num_threads"])
             antsApplyTransforms_task.inputs.num_threads = experiment_configuration["num_threads"]
             antsApplyTransforms_task = Nipype1Task(antsApplyTransforms_task)
         else:
+            # Use the default number of threads (1)
             antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
 
-        antsApplyTransforms_task.inputs.dimension = experiment_configuration[configkey].get('dimension')
-        antsApplyTransforms_task.inputs.float = experiment_configuration[configkey].get('float')
+        # Set task inputs
         antsApplyTransforms_task.inputs.input_image = antsApplyTransforms_workflow.input_image.lzout.out
-        antsApplyTransforms_task.inputs.interpolation = experiment_configuration[configkey].get('interpolation')
         antsApplyTransforms_task.inputs.output_image = antsApplyTransforms_workflow.output_image.lzout.out
         antsApplyTransforms_task.inputs.reference_image = antsApplyTransforms_workflow.lzin.reference_image
         antsApplyTransforms_task.inputs.transforms = antsApplyTransforms_workflow.lzin.transform
+        antsApplyTransforms_task.inputs.dimension = experiment_configuration[configkey].get('dimension')
+        antsApplyTransforms_task.inputs.float = experiment_configuration[configkey].get('float')
+        antsApplyTransforms_task.inputs.interpolation = experiment_configuration[configkey].get('interpolation')
 
         antsApplyTransforms_workflow.add(antsApplyTransforms_task)
         antsApplyTransforms_workflow.set_output([
@@ -771,28 +851,29 @@ if __name__ == '__main__':
         configkey=f'ANTSJointFusion1'
         print(f"Making task {workflow_name}")
 
-        # Create the workflow
+        # Define the workflow and its lazy inputs
         antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
         antsJointFusion_workflow.add(to_list(name="to_list", value=antsJointFusion_workflow.lzin.target_image))
 
         if environment_configuration['set_threads']:
+            # Set the number of threads to be used by ITK
             antsJointFusion_task = JointFusion()
             antsJointFusion_task.set_default_num_threads(1)
             antsJointFusion_task.inputs.num_threads = 1
             antsJointFusion_task = Nipype1Task(antsJointFusion_task)
         else:
+            # Use the default number of threads (1)
             antsJointFusion_task = Nipype1Task(JointFusion())
 
-        antsJointFusion_task.inputs.alpha =                     experiment_configuration[configkey].get('alpha')
         antsJointFusion_task.inputs.atlas_image =               antsJointFusion_workflow.lzin.atlas_image
         antsJointFusion_task.inputs.atlas_segmentation_image =  antsJointFusion_workflow.lzin.atlas_segmentation_image
-
+        antsJointFusion_task.inputs.mask_image =                antsJointFusion_workflow.lzin.mask_image
+        antsJointFusion_task.inputs.target_image =              antsJointFusion_workflow.to_list.lzout.out
+        antsJointFusion_task.inputs.alpha =                     experiment_configuration[configkey].get('alpha')
         antsJointFusion_task.inputs.beta =                      experiment_configuration[configkey].get('beta')
         antsJointFusion_task.inputs.dimension =                 experiment_configuration[configkey].get('dimension')
-        antsJointFusion_task.inputs.mask_image =                antsJointFusion_workflow.lzin.mask_image
         antsJointFusion_task.inputs.out_label_fusion =          experiment_configuration[configkey].get('out_label_fusion')
         antsJointFusion_task.inputs.search_radius =             experiment_configuration[configkey].get('search_radius')
-        antsJointFusion_task.inputs.target_image =              antsJointFusion_workflow.to_list.lzout.out
         antsJointFusion_task.inputs.verbose =                   experiment_configuration[configkey].get('verbose')
 
         antsJointFusion_workflow.add(antsJointFusion_task)
@@ -859,85 +940,86 @@ if __name__ == '__main__':
     source_node.inputs.input_data = input_data_dictionary["input_data"]
     source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
-    # Get the processing workflow defined in a separate function
+    # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
     processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
 
     prejointFusion_node = pydra.Workflow(name="prejointFusion_node", input_spec=["input_data"], input_data=processing_node.lzin.input_data)
     prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
     prejointFusion_node.add(make_bcd_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=prejointFusion_node.inputs_workflow.lzout.inputLandmarksEMSP))
-    prejointFusion_node.add(make_roi_workflow1(inputVolume=prejointFusion_node.bcd_workflow1.lzout.outputResampledVolume))
-    prejointFusion_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
-    prejointFusion_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
-    prejointFusion_node.add(make_resample_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, warpTransform=prejointFusion_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
-    prejointFusion_node.add(make_roi_workflow2(inputVolume=prejointFusion_node.roi_workflow1.lzout.outputVolume))
-    prejointFusion_node.add(make_antsRegistration_workflow1(fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
-    prejointFusion_node.add(make_antsRegistration_workflow2(fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.antsRegistration_workflow1.lzout.composite_transform))
-    prejointFusion_node.add(make_abc_workflow1(inputVolumes=prejointFusion_node.roi_workflow1.lzout.outputVolume, inputT1=prejointFusion_node.inputs_workflow.lzout.inputVolume, restoreState=prejointFusion_node.antsRegistration_workflow2.lzout.save_state))
-    prejointFusion_node.add(make_resample_workflow2(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
-    prejointFusion_node.add(make_resample_workflow3(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
-    prejointFusion_node.add(make_resample_workflow4(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
-    prejointFusion_node.add(make_resample_workflow5(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
-    prejointFusion_node.add(make_resample_workflow6(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
-    prejointFusion_node.add(make_resample_workflow7(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
-    prejointFusion_node.add(make_resample_workflow8(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
-    prejointFusion_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=prejointFusion_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume))
-    prejointFusion_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
-    prejointFusion_node.add(make_roi_workflow3(inputVolume=prejointFusion_node.abc_workflow1.lzout.t1_average))
-    prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
-    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
-    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
+    # prejointFusion_node.add(make_roi_workflow1(inputVolume=prejointFusion_node.bcd_workflow1.lzout.outputResampledVolume))
+    # prejointFusion_node.add(make_landmarkInitializer_workflow1(inputMovingLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInInputSpace))
+    # prejointFusion_node.add(make_landmarkInitializer_workflow2(inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace))
+    # prejointFusion_node.add(make_resample_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, warpTransform=prejointFusion_node.landmarkInitializer_workflow1.lzout.outputTransformFilename))
+    # prejointFusion_node.add(make_roi_workflow2(inputVolume=prejointFusion_node.roi_workflow1.lzout.outputVolume))
+    # prejointFusion_node.add(make_antsRegistration_workflow1(fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow2.lzout.outputTransformFilename))
+    # prejointFusion_node.add(make_antsRegistration_workflow2(fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume, fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.antsRegistration_workflow1.lzout.composite_transform))
+    # prejointFusion_node.add(make_abc_workflow1(inputVolumes=prejointFusion_node.roi_workflow1.lzout.outputVolume, inputT1=prejointFusion_node.inputs_workflow.lzout.inputVolume, restoreState=prejointFusion_node.antsRegistration_workflow2.lzout.save_state))
+    # prejointFusion_node.add(make_resample_workflow2(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
+    # prejointFusion_node.add(make_resample_workflow3(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
+    # prejointFusion_node.add(make_resample_workflow4(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
+    # prejointFusion_node.add(make_resample_workflow5(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
+    # prejointFusion_node.add(make_resample_workflow6(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
+    # prejointFusion_node.add(make_resample_workflow7(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
+    # prejointFusion_node.add(make_resample_workflow8(referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average, warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform))
+    # prejointFusion_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=prejointFusion_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume))
+    # prejointFusion_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
+    # prejointFusion_node.add(make_roi_workflow3(inputVolume=prejointFusion_node.abc_workflow1.lzout.t1_average))
+    # prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
+    # prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
+    # prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
     prejointFusion_node.set_output([
         ("bcd_workflow1"                              , prejointFusion_node.bcd_workflow1.lzout.all_                         ),
-        ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
-        ("landmarkInitializer_workflow1"              , prejointFusion_node.landmarkInitializer_workflow1.lzout.all_         ),
-        ("landmarkInitializer_workflow2"              , prejointFusion_node.landmarkInitializer_workflow2.lzout.all_         ),
-        ("resample_workflow1"                         , prejointFusion_node.resample_workflow1.lzout.all_                    ),
-        ("roi_workflow2"                              , prejointFusion_node.roi_workflow2.lzout.all_                         ),
-        ("antsRegistration_workflow1"                 , prejointFusion_node.antsRegistration_workflow1.lzout.all_            ),
-        ("antsRegistration_workflow2"                 , prejointFusion_node.antsRegistration_workflow2.lzout.all_            ),
-        ("abc_workflow1"                              , prejointFusion_node.abc_workflow1.lzout.all_                         ),
-        ("resample_workflow2"                         , prejointFusion_node.resample_workflow2.lzout.all_                    ),
-        ("resample_workflow3"                         , prejointFusion_node.resample_workflow3.lzout.all_                    ),
-        ("resample_workflow4"                         , prejointFusion_node.resample_workflow4.lzout.all_                    ),
-        ("resample_workflow5"                         , prejointFusion_node.resample_workflow5.lzout.all_                    ),
-        ('resample_workflow6'                         , prejointFusion_node.resample_workflow6.lzout.all_                    ),
-        ("resample_workflow7"                         , prejointFusion_node.resample_workflow7.lzout.all_                    ),
-        ("resample_workflow8"                         , prejointFusion_node.resample_workflow8.lzout.all_                    ),
-        ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
-        ("landmarkInitializer_workflow3"              , prejointFusion_node.landmarkInitializer_workflow3.lzout.all_         ),
-        ("roi_workflow3"                              , prejointFusion_node.roi_workflow3.lzout.all_                         ),
-        ("antsRegistration_workflow3"                 , prejointFusion_node.antsRegistration_workflow3.lzout.all_            ),
-        ("antsApplyTransforms_workflow1"              , prejointFusion_node.antsApplyTransforms_workflow1.lzout.all_         ),
-        ('antsApplyTransforms_workflow2'              , prejointFusion_node.antsApplyTransforms_workflow2.lzout.all_         ),
-        ("atlas_image", prejointFusion_node.antsRegistration_workflow3.lzout.warped_image),
-        ("atlas_segmentation_image", prejointFusion_node.antsApplyTransforms_workflow2.lzout.output_image),
-        ("target_image", prejointFusion_node.abc_workflow1.lzout.t1_average),
-        ("mask_image", prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume),
+        # ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
+        # ("landmarkInitializer_workflow1"              , prejointFusion_node.landmarkInitializer_workflow1.lzout.all_         ),
+        # ("landmarkInitializer_workflow2"              , prejointFusion_node.landmarkInitializer_workflow2.lzout.all_         ),
+        # ("resample_workflow1"                         , prejointFusion_node.resample_workflow1.lzout.all_                    ),
+        # ("roi_workflow2"                              , prejointFusion_node.roi_workflow2.lzout.all_                         ),
+        # ("antsRegistration_workflow1"                 , prejointFusion_node.antsRegistration_workflow1.lzout.all_            ),
+        # ("antsRegistration_workflow2"                 , prejointFusion_node.antsRegistration_workflow2.lzout.all_            ),
+        # ("abc_workflow1"                              , prejointFusion_node.abc_workflow1.lzout.all_                         ),
+        # ("resample_workflow2"                         , prejointFusion_node.resample_workflow2.lzout.all_                    ),
+        # ("resample_workflow3"                         , prejointFusion_node.resample_workflow3.lzout.all_                    ),
+        # ("resample_workflow4"                         , prejointFusion_node.resample_workflow4.lzout.all_                    ),
+        # ("resample_workflow5"                         , prejointFusion_node.resample_workflow5.lzout.all_                    ),
+        # ('resample_workflow6'                         , prejointFusion_node.resample_workflow6.lzout.all_                    ),
+        # ("resample_workflow7"                         , prejointFusion_node.resample_workflow7.lzout.all_                    ),
+        # ("resample_workflow8"                         , prejointFusion_node.resample_workflow8.lzout.all_                    ),
+        # ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
+        # ("landmarkInitializer_workflow3"              , prejointFusion_node.landmarkInitializer_workflow3.lzout.all_         ),
+        # ("roi_workflow3"                              , prejointFusion_node.roi_workflow3.lzout.all_                         ),
+        # ("antsRegistration_workflow3"                 , prejointFusion_node.antsRegistration_workflow3.lzout.all_            ),
+        # ("antsApplyTransforms_workflow1"              , prejointFusion_node.antsApplyTransforms_workflow1.lzout.all_         ),
+        # ('antsApplyTransforms_workflow2'              , prejointFusion_node.antsApplyTransforms_workflow2.lzout.all_         ),
+        # ("atlas_image", prejointFusion_node.antsRegistration_workflow3.lzout.warped_image),
+        # ("atlas_segmentation_image", prejointFusion_node.antsApplyTransforms_workflow2.lzout.output_image),
+        # ("target_image", prejointFusion_node.abc_workflow1.lzout.t1_average),
+        # ("mask_image", prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume),
     ])
 
-    jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image = prejointFusion_node.lzout.atlas_image, atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image, target_image = prejointFusion_node.lzout.target_image, mask_image = prejointFusion_node.lzout.mask_image)
-    jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
-    jointFusion_node.set_output([("jointFusion_out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
+    # jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image = prejointFusion_node.lzout.atlas_image, atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image, target_image = prejointFusion_node.lzout.target_image, mask_image = prejointFusion_node.lzout.mask_image)
+    # jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
+    # jointFusion_node.set_output([("jointFusion_out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
 
     processing_node.add(prejointFusion_node)
-    processing_node.add(jointFusion_node)
+    # processing_node.add(jointFusion_node)
     processing_node.set_output([("prejointFusion_out", processing_node.prejointFusion_node.lzout.all_),
-                                ("jointFusion_out", processing_node.jointFusion_node.lzout.all_)])
+                                # ("jointFusion_out", processing_node.jointFusion_node.lzout.all_)
+                                ])
 
     # The sink converts the cached files to output_dir, a location on the local machine
     sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=prejointFusion_node.lzout.all_, post_processed_files=jointFusion_node.lzout.all_, input_data=source_node.lzin.input_data)
     sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-    sink_node.add(copy_from_cache(name="copy_from_cache1", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-    sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
-    sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+    sink_node.add(copy_from_cache(name="copy_from_cache", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+    # sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
+    # sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     sink_node.set_output([
         ("output_files1", sink_node.copy_from_cache1.lzout.out),
-        ("output_files2", sink_node.copy_from_cache2.lzout.out)
+        # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     ])
 
     source_node.add(processing_node)
     source_node.add(prejointFusion_node)
-    source_node.add(jointFusion_node)
+    # source_node.add(jointFusion_node)
 
     source_node.add(sink_node)
 
@@ -957,7 +1039,7 @@ if __name__ == '__main__':
         print(f"Created the {node.name} graph visual")
 
     make_graphs(prejointFusion_node)
-    make_graphs(jointFusion_node)
+    # make_graphs(jointFusion_node)
     make_graphs(processing_node)
 
     result = source_node.result()
