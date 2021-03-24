@@ -3,7 +3,7 @@ from pathlib import Path
 from shutil import copyfile
 import json
 import argparse
-from pydra.utils import fun_write_file_list2dict
+# from pydra.utils import fun_write_file_list2dict
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
