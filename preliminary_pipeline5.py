@@ -1044,6 +1044,7 @@ if __name__ == '__main__':
     processing_node.add(prejointFusion_node)
     # processing_node.add(jointFusion_node)
     processing_node.set_output([("prejointFusion_out", processing_node.prejointFusion_node.lzout.all_),
+                                ("prejointFusion_out2", processing_node.prejointFusion_node.lzout.all_),
                                 # ("jointFusion_out", processing_node.jointFusion_node.lzout.all_)
                                 ])
 
