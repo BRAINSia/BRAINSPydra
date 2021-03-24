@@ -1070,7 +1070,7 @@ if __name__ == '__main__':
 
     # Set the output of the source node to the same as the output of the sink_node
     # source_node.set_output([("output_files", source_node.sink_node.lzout.pipline_output),])
-    source_node.set_output([("output_files", source_node.processing_node.lzout.prejointfusion_out)])
+    source_node.set_output([("output_files", source_node.processing_node.lzout.prejointFusion_out)])
 
     # Run the entire workflow
     with pydra.Submitter(plugin="cf") as sub:
