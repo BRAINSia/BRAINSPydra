@@ -926,6 +926,7 @@ if __name__ == '__main__':
                 elif type(list(cache_path.values())[0]) is list:
                     cache_path = []
                     print("Here4")
+                    print(f"list(cache_path.values()): {list(cache_path.values())}")
                     for task_dict in list(cache_path.values()):
                         print("Here3")
                         print(task_dict)
@@ -1037,11 +1038,11 @@ if __name__ == '__main__':
     # The sink converts the cached files to output_dir, a location on the local machine
     sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
     sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-    sink_node.add(copy_from_cache(name="copy_from_cache10", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+    sink_node.add(copy_from_cache(name="copy_from_cache11", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     # sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
     # sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     sink_node.set_output([
-        ("output_files1", sink_node.copy_from_cache10.lzout.out),
+        ("output_files1", sink_node.copy_from_cache11.lzout.out),
         # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     ])
 
