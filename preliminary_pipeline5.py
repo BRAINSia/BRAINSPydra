@@ -971,23 +971,23 @@ if __name__ == '__main__':
     # prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
     # Combine the results of the processing to this point into lists as input to JointFusion
     prejointFusion_node.set_output([
-        ("bcd_workflow1"                              , prejointFusion_node.bcd_workflow1.lzout.all_                         ),
-        ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
-        ("landmarkInitializer_workflow1"              , prejointFusion_node.landmarkInitializer_workflow1.lzout.all_         ),
-        ("landmarkInitializer_workflow2"              , prejointFusion_node.landmarkInitializer_workflow2.lzout.all_         ),
-        ("resample_workflow1"                         , prejointFusion_node.resample_workflow1.lzout.all_                    ),
-        ("roi_workflow2"                              , prejointFusion_node.roi_workflow2.lzout.all_                         ),
-        ("antsRegistration_workflow1"                 , prejointFusion_node.antsRegistration_workflow1.lzout.all_            ),
-        ("antsRegistration_workflow2"                 , prejointFusion_node.antsRegistration_workflow2.lzout.all_            ),
-        ("abc_workflow1"                              , prejointFusion_node.abc_workflow1.lzout.all_                         ),
-        ("resample_workflow2"                         , prejointFusion_node.resample_workflow2.lzout.all_                    ),
-        ("resample_workflow3"                         , prejointFusion_node.resample_workflow3.lzout.all_                    ),
-        ("resample_workflow4"                         , prejointFusion_node.resample_workflow4.lzout.all_                    ),
-        ("resample_workflow5"                         , prejointFusion_node.resample_workflow5.lzout.all_                    ),
-        ('resample_workflow6'                         , prejointFusion_node.resample_workflow6.lzout.all_                    ),
-        ("resample_workflow7"                         , prejointFusion_node.resample_workflow7.lzout.all_                    ),
-        ("resample_workflow8"                         , prejointFusion_node.resample_workflow8.lzout.all_                    ),
-        ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
+        # ("bcd_workflow1"                              , prejointFusion_node.bcd_workflow1.lzout.all_                         ),
+        # ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
+        # ("landmarkInitializer_workflow1"              , prejointFusion_node.landmarkInitializer_workflow1.lzout.all_         ),
+        # ("landmarkInitializer_workflow2"              , prejointFusion_node.landmarkInitializer_workflow2.lzout.all_         ),
+        # ("resample_workflow1"                         , prejointFusion_node.resample_workflow1.lzout.all_                    ),
+        # ("roi_workflow2"                              , prejointFusion_node.roi_workflow2.lzout.all_                         ),
+        # ("antsRegistration_workflow1"                 , prejointFusion_node.antsRegistration_workflow1.lzout.all_            ),
+        # ("antsRegistration_workflow2"                 , prejointFusion_node.antsRegistration_workflow2.lzout.all_            ),
+        # ("abc_workflow1"                              , prejointFusion_node.abc_workflow1.lzout.all_                         ),
+        # ("resample_workflow2"                         , prejointFusion_node.resample_workflow2.lzout.all_                    ),
+        # ("resample_workflow3"                         , prejointFusion_node.resample_workflow3.lzout.all_                    ),
+        # ("resample_workflow4"                         , prejointFusion_node.resample_workflow4.lzout.all_                    ),
+        # ("resample_workflow5"                         , prejointFusion_node.resample_workflow5.lzout.all_                    ),
+        # ('resample_workflow6'                         , prejointFusion_node.resample_workflow6.lzout.all_                    ),
+        # ("resample_workflow7"                         , prejointFusion_node.resample_workflow7.lzout.all_                    ),
+        # ("resample_workflow8"                         , prejointFusion_node.resample_workflow8.lzout.all_                    ),
+        # ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
         ("landmarkInitializer_workflow3"              , prejointFusion_node.landmarkInitializer_workflow3.lzout.all_         ),
         # ("roi_workflow3"                              , prejointFusion_node.roi_workflow3.lzout.all_                         ),
         # ("antsRegistration_workflow3"                 , prejointFusion_node.antsRegistration_workflow3.lzout.all_            ),
@@ -1012,11 +1012,11 @@ if __name__ == '__main__':
     # The sink converts the cached files to output_dir, a location on the local machine
     sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data)
     sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-    sink_node.add(copy_from_cache(name="copy_from_cache1", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+    sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     # sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
     # sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     sink_node.set_output([
-        ("output_files1", sink_node.copy_from_cache1.lzout.out),
+        ("output_files1", sink_node.copy_from_cache2.lzout.out),
         # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     ])
 
