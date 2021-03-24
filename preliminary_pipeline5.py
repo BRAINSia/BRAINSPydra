@@ -1046,6 +1046,10 @@ if __name__ == '__main__':
     processing_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("processing_nested"))
     processing_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("processing_detailed"))
     print("Created the processing pipeline graph visual")
+    source_node.create_dotfile(type="simple", export=["pdf", "png"], name=graph_dir / Path("source_simple"))
+    source_node.create_dotfile(type="nested", export=["pdf", "png"], name=graph_dir / Path("source_nested"))
+    source_node.create_dotfile(type="detailed", export=["pdf", "png"], name=graph_dir / Path("source_detailed"))
+    print("Created the processing pipeline graph visual")
 
     result = source_node.result()
     print(result)
