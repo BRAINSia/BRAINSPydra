@@ -832,7 +832,6 @@ if __name__ == '__main__':
         workflow_name = f"antsJointFusion_workflow1"
         configkey=f'ANTSJointFusion1'
         print(f"Making task {workflow_name}")
-        index = 5
         # combined_list = []
         # combine_altas_image(combined_list, atlas_image)
         # Create the workflow
@@ -840,11 +839,11 @@ if __name__ == '__main__':
         # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image"], atlas_image=atlas_image)
 
         # antsJointFusion_workflow.add(combine_altas_image(name="combine_atlas_image", combined_list=combined_list, atlas_image=antsJointFusion_workflow.lzin.atlas_image))
-        antsJointFusion_workflow.add(print_self(name=f"atlas_image{index}",                 x=antsJointFusion_workflow.lzin.atlas_image))
-        antsJointFusion_workflow.add(print_self(name=f"atlas_segmentation_image{index}",    x=antsJointFusion_workflow.lzin.atlas_segmentation_image))
+        antsJointFusion_workflow.add(print_self(name=f"atlas_image",                 x=antsJointFusion_workflow.lzin.atlas_image))
+        antsJointFusion_workflow.add(print_self(name=f"atlas_segmentation_image",    x=antsJointFusion_workflow.lzin.atlas_segmentation_image))
         antsJointFusion_workflow.add(to_list(name="to_list", value=antsJointFusion_workflow.lzin.target_image))
-        antsJointFusion_workflow.add(print_self(name=f"target_image{index}",                x=antsJointFusion_workflow.to_list.lzout.out))
-        antsJointFusion_workflow.add(print_self(name=f"mask_image{index}",                  x=antsJointFusion_workflow.lzin.mask_image))
+        antsJointFusion_workflow.add(print_self(name=f"target_image",                x=antsJointFusion_workflow.to_list.lzout.out))
+        antsJointFusion_workflow.add(print_self(name=f"mask_image",                  x=antsJointFusion_workflow.lzin.mask_image))
 
         # antsJointFusion_workflow = pydra.Workflow(name=workflow_name, input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image=atlas_image, atlas_segmentation_image=atlas_segmentation_image, target_image=target_image, mask_image=mask_image)
         if set_num_threads:
@@ -935,8 +934,8 @@ if __name__ == '__main__':
     source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
     # Get the processing workflow defined in a separate function
-    processing_node = pydra.Workflow(name="processing_node")
-    prejointFusion_node = pydra.Workflow(name="prejointFusion_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
+    processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
+    prejointFusion_node = pydra.Workflow(name="prejointFusion_node", input_spec=["input_data"], input_data=processing_node.lzin.input_data)
     prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
 
 
@@ -962,8 +961,6 @@ if __name__ == '__main__':
     prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
     prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
     prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
-
-
     prejointFusion_node.set_output([
         ("bcd_workflow1"                              , prejointFusion_node.bcd_workflow1.lzout.all_                         ),
         ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
@@ -993,22 +990,22 @@ if __name__ == '__main__':
         ("mask_image", prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume),
     ])
 
-    jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"])
-    jointFusion_node.inputs.atlas_image =               prejointFusion_node.lzout.atlas_image
-    jointFusion_node.inputs.atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image
-    jointFusion_node.inputs.target_image =              prejointFusion_node.lzout.target_image
-    jointFusion_node.inputs.mask_image =                prejointFusion_node.lzout.mask_image
+    jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"],
+                                      atlas_image =               prejointFusion_node.lzout.atlas_image,
+                                      atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image,
+                                      target_image =              prejointFusion_node.lzout.target_image,
+                                      mask_image =                prejointFusion_node.lzout.mask_image)
+    jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
+    jointFusion_node.set_output([("jointFusion_out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
+
     processing_node.add(prejointFusion_node)
     processing_node.add(jointFusion_node)
     processing_node.set_output([("prejointFusion_out", prejointFusion_node.lzout.all_),
                                 ("jointFusion_out", jointFusion_node.lzout.all_)])
 
-    jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
-    jointFusion_node.set_output([("out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
     # The sink converts the cached files to output_dir, a location on the local machine
-    sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=jointFusion_node.lzout.all_, post_processed_files=jointFusion_node.lzout.all_, input_data=source_node.lzin.input_data)
+    sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'post_processed_files', 'input_data'], processed_files=prejointFusion_node.lzout.all_, post_processed_files=jointFusion_node.lzout.all_, input_data=source_node.lzin.input_data)
     sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-    # sink_node.add(get_self(name="get_self", x=sink_node.get_processed_outputs.lzout.out))
     sink_node.add(copy_from_cache(name="copy_from_cache1", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
     sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
@@ -1025,11 +1022,9 @@ if __name__ == '__main__':
     # Set the output of the source node to the same as the output of the sink_node
     source_node.set_output([("output_files", source_node.sink_node.lzout.all_),])
 
-
-
-    # # Run the entire workflow
-    # with pydra.Submitter(plugin="cf") as sub:
-    #     sub(source_node)
+    # Run the entire workflow
+    with pydra.Submitter(plugin="cf") as sub:
+        sub(source_node)
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     graph_dir = Path(experiment_configuration['graph_dir'])
