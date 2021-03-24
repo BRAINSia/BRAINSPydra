@@ -931,9 +931,9 @@ if __name__ == '__main__':
                     print()
                     cache_path_elements = list(cache_path.values())
                     print(cache_path_elements)
-                    cache_path = []
+                    cache_path_list = []
                     for cache_path_element in cache_path_elements:
-                            cache_path.append(cache_path_element)
+                            cache_path_list.append(cache_path_element)
                 cache_path = cache_path_list
                 print(f"cache_path is now: {cache_path}")
             # If the files to be copied are in a list, copy each element of the list
