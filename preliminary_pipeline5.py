@@ -943,6 +943,8 @@ if __name__ == '__main__':
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
     processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
 
+
+    # Fill the processing node with BRAINS and ANTs applications
     prejointFusion_node = pydra.Workflow(name="prejointFusion_node", input_spec=["input_data"], input_data=processing_node.lzin.input_data)
     prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
     prejointFusion_node.add(make_bcd_workflow1(inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume, inputLandmarksEMSP=prejointFusion_node.inputs_workflow.lzout.inputLandmarksEMSP))
@@ -967,25 +969,26 @@ if __name__ == '__main__':
     # prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
     # prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
     # prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
+    # Combine the results of the processing to this point into lists as input to JointFusion
     prejointFusion_node.set_output([
         ("bcd_workflow1"                              , prejointFusion_node.bcd_workflow1.lzout.all_                         ),
-        # ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
-        # ("landmarkInitializer_workflow1"              , prejointFusion_node.landmarkInitializer_workflow1.lzout.all_         ),
-        # ("landmarkInitializer_workflow2"              , prejointFusion_node.landmarkInitializer_workflow2.lzout.all_         ),
-        # ("resample_workflow1"                         , prejointFusion_node.resample_workflow1.lzout.all_                    ),
-        # ("roi_workflow2"                              , prejointFusion_node.roi_workflow2.lzout.all_                         ),
-        # ("antsRegistration_workflow1"                 , prejointFusion_node.antsRegistration_workflow1.lzout.all_            ),
-        # ("antsRegistration_workflow2"                 , prejointFusion_node.antsRegistration_workflow2.lzout.all_            ),
-        # ("abc_workflow1"                              , prejointFusion_node.abc_workflow1.lzout.all_                         ),
-        # ("resample_workflow2"                         , prejointFusion_node.resample_workflow2.lzout.all_                    ),
-        # ("resample_workflow3"                         , prejointFusion_node.resample_workflow3.lzout.all_                    ),
-        # ("resample_workflow4"                         , prejointFusion_node.resample_workflow4.lzout.all_                    ),
-        # ("resample_workflow5"                         , prejointFusion_node.resample_workflow5.lzout.all_                    ),
-        # ('resample_workflow6'                         , prejointFusion_node.resample_workflow6.lzout.all_                    ),
-        # ("resample_workflow7"                         , prejointFusion_node.resample_workflow7.lzout.all_                    ),
-        # ("resample_workflow8"                         , prejointFusion_node.resample_workflow8.lzout.all_                    ),
-        # ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
-        # ("landmarkInitializer_workflow3"              , prejointFusion_node.landmarkInitializer_workflow3.lzout.all_         ),
+        ("roi_workflow1"                              , prejointFusion_node.roi_workflow1.lzout.all_                         ),
+        ("landmarkInitializer_workflow1"              , prejointFusion_node.landmarkInitializer_workflow1.lzout.all_         ),
+        ("landmarkInitializer_workflow2"              , prejointFusion_node.landmarkInitializer_workflow2.lzout.all_         ),
+        ("resample_workflow1"                         , prejointFusion_node.resample_workflow1.lzout.all_                    ),
+        ("roi_workflow2"                              , prejointFusion_node.roi_workflow2.lzout.all_                         ),
+        ("antsRegistration_workflow1"                 , prejointFusion_node.antsRegistration_workflow1.lzout.all_            ),
+        ("antsRegistration_workflow2"                 , prejointFusion_node.antsRegistration_workflow2.lzout.all_            ),
+        ("abc_workflow1"                              , prejointFusion_node.abc_workflow1.lzout.all_                         ),
+        ("resample_workflow2"                         , prejointFusion_node.resample_workflow2.lzout.all_                    ),
+        ("resample_workflow3"                         , prejointFusion_node.resample_workflow3.lzout.all_                    ),
+        ("resample_workflow4"                         , prejointFusion_node.resample_workflow4.lzout.all_                    ),
+        ("resample_workflow5"                         , prejointFusion_node.resample_workflow5.lzout.all_                    ),
+        ('resample_workflow6'                         , prejointFusion_node.resample_workflow6.lzout.all_                    ),
+        ("resample_workflow7"                         , prejointFusion_node.resample_workflow7.lzout.all_                    ),
+        ("resample_workflow8"                         , prejointFusion_node.resample_workflow8.lzout.all_                    ),
+        ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
+        ("landmarkInitializer_workflow3"              , prejointFusion_node.landmarkInitializer_workflow3.lzout.all_         ),
         # ("roi_workflow3"                              , prejointFusion_node.roi_workflow3.lzout.all_                         ),
         # ("antsRegistration_workflow3"                 , prejointFusion_node.antsRegistration_workflow3.lzout.all_            ),
         # ("antsApplyTransforms_workflow1"              , prejointFusion_node.antsApplyTransforms_workflow1.lzout.all_         ),
