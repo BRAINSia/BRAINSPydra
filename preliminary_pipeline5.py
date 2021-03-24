@@ -1016,7 +1016,7 @@ if __name__ == '__main__':
     # sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
     # sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     sink_node.set_output([
-        ("output_files1", sink_node.copy_from_cache.lzout.out),
+        ("output_files1", sink_node.copy_from_cache1.lzout.out),
         # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     ])
 
