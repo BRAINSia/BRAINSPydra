@@ -1106,9 +1106,9 @@ if __name__ == '__main__':
 
 
     # After processing all the files, copy the results to a local output directory
-    print(f"\n\n{input_data_dictionary.get('input_data')}\n\n")
-    # sessions = [sess_data['session'] for sess_data in input_data_dictionary.get("input_data")]
-    # print(f"\n\n{sessions}\n\n")
+    print(f"\n\ninput_data_dict.get input_data: {input_data_dictionary.get('input_data')}\n\n")
+    sessions = [sess_data['session'] for sess_data in input_data_dictionary.get("input_data")]
+    print(f"\n\nsessions: {sessions}\n\n")
 
     sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"],
                                 output_directory=source_node.output_dir)
