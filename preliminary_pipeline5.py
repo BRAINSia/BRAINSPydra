@@ -1065,15 +1065,16 @@ if __name__ == '__main__':
     @pydra.mark.task
     def copy(source_output_dir, input_data):
         print(f"output_dir in sink: {source_output_dir}")
-        input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
-        file_output_dir = Path(source_output_dir) / Path(input_filename)
-        file_output_dir.mkdir(parents=True, exist_ok=True)
-        p = Path(source_output_dir).glob("**/*")
-        files = [x for x in p if x.is_file()]
-        print(files)
-        return files
+        # input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
+        #         # file_output_dir = Path(source_output_dir) / Path(input_filename)
+        #         # file_output_dir.mkdir(parents=True, exist_ok=True)
+        #         # p = Path(source_output_dir).glob("**/*")
+        #         # files = [x for x in p if x.is_file()]
+        #         # print(files)
+        #         # return files
+        return source_output_dir
     sink_node2 = pydra.Workflow(name="sink_node4", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
-    sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir"))
+    sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data))
     sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
 
 
@@ -1094,6 +1095,8 @@ if __name__ == '__main__':
     with pydra.Submitter(plugin="cf") as sub:
         sub(source_node)
         sub(sink_node2)
+
+
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     def make_graphs(node: pydra.Workflow):
