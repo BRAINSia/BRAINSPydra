@@ -1055,7 +1055,7 @@ if __name__ == '__main__':
     # # sink_node.add(fun_)
     # # sink_node.add(copy_from_cache(name="copy_from_cache19", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     # # sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
-    # # sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+    # sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
     # sink_node.set_output([
     #     ("processing_node_out", sink_node.lzin.processed_files)
     #     # ("pipline_output", sink_node.copy_from_cache19.lzout.out),
@@ -1063,13 +1063,16 @@ if __name__ == '__main__':
     # ])
 
     @pydra.mark.task
-    def copy(dir):
+    def copy(source_output_dir, input_data):
+        input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
+        file_output_dir = Path(source_output_dir) / Path(input_filename)
+        file_output_dir.mkdir(parents=True, exist_ok=True)
         p = Path(dir).glob("**/*")
         files = [x for x in p if x.is_file()]
         print(files)
         return files
     sink_node2 = pydra.Workflow(name="sink_node2", input_spec=["output_directory"], output_directory=source_node.output_dir)
-    sink_node2.add(copy(name="copy2", dir=sink_node2.lzin.output_directory))
+    sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split(("source_output_dir", )))
     sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
 
 
