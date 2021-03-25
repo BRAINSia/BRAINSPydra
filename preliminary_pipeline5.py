@@ -1097,6 +1097,9 @@ if __name__ == '__main__':
             print(cache_filepath)
             output_files.append(cache_filepath)
             output_filepath = output_dir / cache_filepath.name
+            # Remove a file if it already exists so it can be replaced by a new file or hardlink
+            if output_filepath.exists():
+                output_filepath.unlink()
             if environment_configuration.get('hard_links'):
                 print(f"Hardlinking {cache_filepath} to {output_filepath}")
                 cache_filepath.link_to(output_filepath)
