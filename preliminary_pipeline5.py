@@ -1087,11 +1087,11 @@ if __name__ == '__main__':
     print(result)
 
     @pydra.mark.task
-    def copy(source_output_dir):
+    def copy(source_output_dir, session):
         print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
         output_files = []
-        output_dir = Path(experiment_configuration.get("output_dir")) / Path(source_output_dir).name
+        output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
         output_dir.mkdir(exist_ok=True, parents=True)
         for cache_filepath in p.glob("**/[!_]*"):
             print(cache_filepath)
@@ -1110,9 +1110,9 @@ if __name__ == '__main__':
     sessions = [sess_data['session'] for sess_data in input_data_dictionary.get("input_data")]
     print(f"\n\nsessions: {sessions}\n\n")
 
-    sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"],
-                                output_directory=source_node.output_dir)
-    sink_node.add(copy(name="copy", source_output_dir=sink_node.lzin.output_directory).split("source_output_dir"))
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "sessions"],
+                                output_directory=source_node.output_dir, session=sessions)
+    sink_node.add(copy(name="copy", source_output_dir=sink_node.lzin.output_directory).split(("source_output_dir", "session")))
     sink_node.set_output([("files_out", sink_node.copy.lzout.out)])
 
     with pydra.Submitter(plugin="cf") as sub:
