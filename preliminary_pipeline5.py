@@ -1113,7 +1113,7 @@ if __name__ == '__main__':
         output_files = []
         output_dir = Path(experiment_configuration.get("output_dir")) / Path(source_output_dir).name
         output_dir.mkdir(exist_ok=True, parents=True)
-        for cache_filepath in p.glob("**/*"):
+        for cache_filepath in p.glob("**/[!_]*"):
             print(cache_filepath)
             output_files.append(cache_filepath)
             output_filepath = output_dir / cache_filepath.name
