@@ -1109,6 +1109,9 @@ if __name__ == '__main__':
     @pydra.mark.task
     def copy(source_output_dir):
         print(f"output_dir in sink: {source_output_dir}")
+        p = Path(source_output_dir)
+        for file in p.glob("**/*"):
+            print(file)
 
 
     sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory"], output_directory=source_node.output_dir)
