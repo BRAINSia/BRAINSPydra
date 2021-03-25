@@ -1089,7 +1089,8 @@ if __name__ == '__main__':
 
     # Set the output of the source node to the same as the output of the sink_node
     # source_node.set_output([("output_files", source_node.sink_node.lzout.pipline_output),])
-    source_node.set_output([("output_files", source_node.sink_node.lzout.files_out)])
+    # source_node.set_output([("output_files", source_node.sink_node.lzout.files_out)])
+    source_node.set_output([("out", source_node.processing_node.lzout.all_)])
 
     # source_node.output_dir = experiment_configuration['output_dir']
     # Run the entire workflow
