@@ -1062,20 +1062,13 @@ if __name__ == '__main__':
     #     # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     # ])
 
-    @pydra.mark.task
-    def copy(source_output_dir):
-        print(f"output_dir in sink: {source_output_dir}")
 
-
-    sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory"], output_directory=source_node.output_dir)
-    sink_node2.add(copy(name="copy3", source_output_dir=sink_node2.lzin.output_directory))
-    sink_node2.set_output([("files_out", sink_node2.copy3.lzout.out)])
 
 
 
     source_node.add(processing_node)
     source_node.add(prejointFusion_node)
-    source_node.add(sink_node2)
+    # source_node.add(sink_node2)
     # source_node.add(jointFusion_node)
 
     # source_node.add(sink_node)
@@ -1111,3 +1104,16 @@ if __name__ == '__main__':
 
     print(f"processing node output_dir: {processing_node.output_dir}")
     print(f"output_dir: {source_node.output_dir}")
+
+
+    @pydra.mark.task
+    def copy(source_output_dir):
+        print(f"output_dir in sink: {source_output_dir}")
+
+
+    sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory"], output_directory=source_node.output_dir)
+    sink_node2.add(copy(name="copy3", source_output_dir=sink_node2.lzin.output_directory))
+    sink_node2.set_output([("files_out", sink_node2.copy3.lzout.out)])
+
+    with pydra.Submitter(plugin="cf") as sub:
+        sub(sink_node2)
