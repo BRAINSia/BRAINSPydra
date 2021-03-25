@@ -1116,6 +1116,7 @@ if __name__ == '__main__':
             output_files.append(cache_filepath)
             output_filepath = Path(experiment_configuration.get("output_dir")) / Path(cache_filepath).parent.name / cache_filepath.name
             print(f"Copying {cache_filepath} to {output_filepath}")
+            copyfile(cache_filepath, output_filepath)
         return output_files
 
 
