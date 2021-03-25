@@ -1114,7 +1114,7 @@ if __name__ == '__main__':
             output_filepath = Path(experiment_configuration["output_dir"]) / cache_filepath.name
             output_filepath.mkdir(parents=True, exist_ok=True)
             if environment_configuration['hard_links']:
-                output_filepath.link_to(cache_filepath)
+                cache_filepath.link_to(output_filepath)
                 print(f"Hard linked {cache_filepath} to {output_filepath}")
             else:
                 copyfile(cache_filepath, output_filepath)
