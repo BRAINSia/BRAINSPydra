@@ -1111,8 +1111,9 @@ if __name__ == '__main__':
         print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
         for cache_filepath in p.glob("**/[!_]*"):
-            output_filepath = Path(experiment_configuration["output_dir"]) / cache_filepath.name
-            output_filepath.mkdir(parents=True, exist_ok=True)
+            output_directory = Path(experiment_configuration["output_dir"])
+            output_directory.mkdir(parents=True, exist_ok=True)
+            output_filepath = output_directory / cache_filepath.name
             if environment_configuration['hard_links']:
                 cache_filepath.link_to(output_filepath)
                 print(f"Hard linked {cache_filepath} to {output_filepath}")
