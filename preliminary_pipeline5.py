@@ -1074,9 +1074,9 @@ if __name__ == '__main__':
         return files
         # return None
         # return Path(source_output_dir) / "t1_average_BRAINSABC.nii.gz"
-    sink_node2 = pydra.Workflow(name="sink_node4", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
-    sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir"))
-    sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
+    sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
+    sink_node2.add(copy(name="copy1", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir"))
+    sink_node2.set_output([("files_out", sink_node2.copy1.lzout.out)])
 
 
 
@@ -1089,7 +1089,7 @@ if __name__ == '__main__':
 
     # Set the output of the source node to the same as the output of the sink_node
     # source_node.set_output([("output_files", source_node.sink_node.lzout.pipline_output),])
-    source_node.set_output([("output_files", source_node.sink_node4.lzout.files_out)])
+    source_node.set_output([("output_files", source_node.sink_node.lzout.files_out)])
 
     # source_node.output_dir = experiment_configuration['output_dir']
     # Run the entire workflow
