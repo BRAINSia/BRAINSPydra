@@ -1062,27 +1062,20 @@ if __name__ == '__main__':
     #     # ("output_files2", sink_node.copy_from_cache2.lzout.out)
     # ])
 
-    # @pydra.mark.task
-    # def copy(source_output_dir, input_data):
-    #     print(f"output_dir in sink: {source_output_dir}")
-    #     # input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
-    #     #         # file_output_dir = Path(source_output_dir) / Path(input_filename)
-    #     #         # file_output_dir.mkdir(parents=True, exist_ok=True)
-    #     p = Path(source_output_dir).glob("**/*")
-    #     files = [x for x in p if x.is_file()]
-    #     print(files)
-    #     return files
-    #     # return None
-    #     # return Path(source_output_dir) / "t1_average_BRAINSABC.nii.gz"
-    # sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"], output_directory=processing_node.output_dir, input_data=source_node.lzin.input_data)
-    # sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data))
-    # sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
+    @pydra.mark.task
+    def copy(source_output_dir):
+        print(f"output_dir in sink: {source_output_dir}")
+
+
+    sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory"], output_directory=processing_node.output_dir)
+    sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory))
+    sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
 
 
 
     source_node.add(processing_node)
     source_node.add(prejointFusion_node)
-    # source_node.add(sink_node2)
+    source_node.add(sink_node2)
     # source_node.add(jointFusion_node)
 
     # source_node.add(sink_node)
