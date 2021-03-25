@@ -1068,12 +1068,12 @@ if __name__ == '__main__':
         # input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
         #         # file_output_dir = Path(source_output_dir) / Path(input_filename)
         #         # file_output_dir.mkdir(parents=True, exist_ok=True)
-        #         # p = Path(source_output_dir).glob("**/*")
-        #         # files = [x for x in p if x.is_file()]
-        #         # print(files)
-        #         # return files
+        p = Path(source_output_dir).glob("**/*")
+        files = [x for x in p if x.is_file()]
+        print(files)
+        return files
         # return None
-        return Path(source_output_dir) / "t1_average_BRAINSABC.nii.gz"
+        # return Path(source_output_dir) / "t1_average_BRAINSABC.nii.gz"
     sink_node2 = pydra.Workflow(name="sink_node4", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
     sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir"))
     sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
