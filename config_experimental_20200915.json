@@ -1,5 +1,5 @@
 {
-  "output_dir": "/localscratch/Users/cjohnson30/output_dir_natural",
+  "output_dir": "/localscratch/Users/cjohnson30/output_dir_full_run_multithreaded",
   "cache_dir": "/localscratch/Users/cjohnson30/cache_dir_full_run_multithreaded",
   "graph_dir": "/localscratch/Users/cjohnson30/graph_dir_argon",
   "num_threads": 4,
