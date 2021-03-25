@@ -1064,6 +1064,7 @@ if __name__ == '__main__':
 
     @pydra.mark.task
     def copy(source_output_dir, input_data):
+        print(f"output_dir in sink: {source_output_dir}")
         input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
         file_output_dir = Path(source_output_dir) / Path(input_filename)
         file_output_dir.mkdir(parents=True, exist_ok=True)
