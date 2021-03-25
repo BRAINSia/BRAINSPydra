@@ -1110,7 +1110,7 @@ if __name__ == '__main__':
     sessions = [sess_data['session'] for sess_data in input_data_dictionary.get("input_data")]
     print(f"\n\nsessions: {sessions}\n\n")
 
-    sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "sessions"],
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "session"],
                                 output_directory=source_node.output_dir, session=sessions)
     sink_node.add(copy(name="copy", source_output_dir=sink_node.lzin.output_directory, session=sink_node.lzin.session).split(("source_output_dir", "session")))
     sink_node.set_output([("files_out", sink_node.copy.lzout.out)])
