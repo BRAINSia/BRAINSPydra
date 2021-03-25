@@ -1097,23 +1097,19 @@ if __name__ == '__main__':
             print(cache_filepath)
             output_files.append(cache_filepath)
             output_filepath = output_dir / cache_filepath.name
-            print(f"Copying {cache_filepath} to {output_filepath}")
             if environment_configuration.get('hard_links'):
+                print(f"Hardlinking {cache_filepath} to {output_filepath}")
                 cache_filepath.link_to(output_filepath)
             else:
+                print(f"Copying {cache_filepath} to {output_filepath}")
                 copyfile(cache_filepath, output_filepath)
         return output_files
 
 
     # After processing all the files, copy the results to a local output directory
-    print(f"\n\ninput_data_dict.get input_data: {input_data_dictionary.get('input_data')}\n\n")
     sessions = [sess_data['session'] for sess_data in input_data_dictionary.get("input_data")]
-    print(f"\n\nsessions: {sessions}\n\n")
-
-    sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "session"],
-                                output_directory=source_node.output_dir, session=sessions)
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "session"], output_directory=source_node.output_dir, session=sessions)
     sink_node.add(copy(name="copy", source_output_dir=sink_node.lzin.output_directory, session=sink_node.lzin.session).split(("source_output_dir", "session")))
     sink_node.set_output([("files_out", sink_node.copy.lzout.out)])
-
     with pydra.Submitter(plugin="cf") as sub:
         sub(sink_node)
