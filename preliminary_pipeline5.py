@@ -3,7 +3,6 @@ from pathlib import Path
 from shutil import copyfile
 import json
 import argparse
-# from pydra.utils import fun_write_file_list2dict
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Move echo numbers in fmap BIDS data to JSON sidecars')
@@ -899,81 +898,6 @@ if __name__ == '__main__':
 
         return out_path
 
-    # If on same mount point use hard link instead of copy (not windows - look into this)
-    @pydra.mark.task
-    def copy_from_cache(cache_path, output_dir, input_data):
-        print(f"\n\n\n{cache_path}\n\n\n")
-        input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
-        file_output_dir = Path(output_dir) / Path(input_filename)
-        file_output_dir.mkdir(parents=True, exist_ok=True)
-        if cache_path is None:
-            return "" # Don't return a cache_path if it is None
-        else:
-            # If the files to be copied locally are nested in a dictionary, put the values of the dictionary in a list
-            if type(cache_path) is dict:
-                print("\n\nHere\n\n")
-                print(f"cache_path.values(): {cache_path.values()}")
-
-                print(type(list(cache_path.values())[0]))
-                print(list(cache_path.values())[0])
-                if type(list(cache_path.values())[0]) is list:
-                    cache_path_list = []
-                    print("Here4")
-                    print(f"list(cache_path.values()): {list(cache_path.values())}")
-                    for task_list in list(cache_path.values()):
-                        print("Here3")
-                        for task_dict in task_list:
-                            print("Here5")
-                            print(task_dict)
-                            print(task_dict.values())
-                            for file in list(task_dict.values()):
-                                cache_path_list.append(file)
-                elif type(list(cache_path.values())[0]) is dict:
-                    cache_path_list = []
-                    for task_ele in list(cache_path.values()):
-                        print("Here6")
-                        # print(task_dict)
-                        if type(task_ele) is list:
-                            for task_dict in task_ele:
-                                print("Here5")
-                                print(task_dict)
-                                print(task_dict.values())
-                                for file in list(task_dict.values()):
-                                    cache_path_list.append(file)
-                        else:
-                            # print(task_dict.values())
-                            for file in list(task_ele.values()):
-                                cache_path_list.append(file)
-                else:
-                    print()
-                    cache_path_elements = list(cache_path.values())
-                    print(cache_path_elements)
-                    cache_path_list = []
-                    for cache_path_element in cache_path_elements:
-                            cache_path_list.append(cache_path_element)
-                cache_path = cache_path_list
-                print(f"cache_path is now: {cache_path}")
-            # If the files to be copied are in a list, copy each element of the list
-            if type(cache_path) is list:
-                output_list = []
-                for path in cache_path:
-                    # If the files to be copied are in a dictionary, copy each value of the dictionary
-                    if type(path) is dict:
-                        for nested_path in list(path.values()):
-                            out_path = copy(nested_path, file_output_dir)
-                            output_list.append(out_path)
-                    elif type(path) is list:
-                        for nested_path in path:
-                            out_path = copy(nested_path, file_output_dir)
-                            output_list.append(out_path)
-                    else:
-                        out_path = copy(path, file_output_dir)
-                        output_list.append(out_path)
-                return output_list
-            else:
-                cache_path = copy(cache_path, file_output_dir)
-        return cache_path
-
     # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
     source_node = pydra.Workflow(name="source_node", input_spec=["input_data"], cache_dir=experiment_configuration["cache_dir"])
     source_node.inputs.input_data = input_data_dictionary["input_data"]
@@ -1005,9 +929,9 @@ if __name__ == '__main__':
     prejointFusion_node.add(make_createLabelMapFromProbabilityMaps_workflow1(inputProbabilityVolume=prejointFusion_node.abc_workflow1.lzout.posteriors, nonAirRegionMask=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume))
     prejointFusion_node.add(make_landmarkInitializer_workflow3(inputMovingLandmarkFilename=experiment_configuration["BRAINSLandmarkInitializer3"].get('inputMovingLandmarkFilename'), inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace).split("inputMovingLandmarkFilename"))
     prejointFusion_node.add(make_roi_workflow3(inputVolume=prejointFusion_node.abc_workflow1.lzout.t1_average))
-    # prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
-    # prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
-    # prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
+    prejointFusion_node.add(make_antsRegistration_workflow3(fixed_image=prejointFusion_node.abc_workflow1.lzout.t1_average, fixed_image_masks=prejointFusion_node.roi_workflow3.lzout.outputROIMaskVolume, initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow3.lzout.outputTransformFilename))
+    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=1, output_image_end=experiment_configuration["ANTSApplyTransforms1"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
+    prejointFusion_node.add(make_antsApplyTransforms_workflow(index=2, output_image_end=experiment_configuration["ANTSApplyTransforms2"].get('output_image_end'), reference_image=prejointFusion_node.abc_workflow1.lzout.t1_average, transform=prejointFusion_node.antsRegistration_workflow3.lzout.inverse_composite_transform))
     # Combine the results of the processing to this point into lists as input to JointFusion
     prejointFusion_node.set_output([
         ("bcd_workflow1"                              , prejointFusion_node.bcd_workflow1.lzout.all_                         ),
@@ -1029,29 +953,28 @@ if __name__ == '__main__':
         ("createLabelMapFromProbabilityMaps_workflow1", prejointFusion_node.createLabelMapFromProbabilityMaps_workflow1.lzout.all_),
         ("landmarkInitializer_workflow3"              , prejointFusion_node.landmarkInitializer_workflow3.lzout.all_         ),
         ("roi_workflow3"                              , prejointFusion_node.roi_workflow3.lzout.all_                         ),
-        # ("antsRegistration_workflow3"                 , prejointFusion_node.antsRegistration_workflow3.lzout.all_            ),
-        # ("antsApplyTransforms_workflow1"              , prejointFusion_node.antsApplyTransforms_workflow1.lzout.all_         ),
-        # ('antsApplyTransforms_workflow2'              , prejointFusion_node.antsApplyTransforms_workflow2.lzout.all_         ),
-        # ("atlas_image", prejointFusion_node.antsRegistration_workflow3.lzout.warped_image),
-        # ("atlas_segmentation_image", prejointFusion_node.antsApplyTransforms_workflow2.lzout.output_image),
-        # ("target_image", prejointFusion_node.abc_workflow1.lzout.t1_average),
-        # ("mask_image", prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume),
+        ("antsRegistration_workflow3"                 , prejointFusion_node.antsRegistration_workflow3.lzout.all_            ),
+        ("antsApplyTransforms_workflow1"              , prejointFusion_node.antsApplyTransforms_workflow1.lzout.all_         ),
+        ('antsApplyTransforms_workflow2'              , prejointFusion_node.antsApplyTransforms_workflow2.lzout.all_         ),
+        ("atlas_image", prejointFusion_node.antsRegistration_workflow3.lzout.warped_image),
+        ("atlas_segmentation_image", prejointFusion_node.antsApplyTransforms_workflow2.lzout.output_image),
+        ("target_image", prejointFusion_node.abc_workflow1.lzout.t1_average),
+        ("mask_image", prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume),
     ])
 
-    # jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image = prejointFusion_node.lzout.atlas_image, atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image, target_image = prejointFusion_node.lzout.target_image, mask_image = prejointFusion_node.lzout.mask_image)
-    # jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
-    # jointFusion_node.set_output([("jointFusion_out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
+    jointFusion_node = pydra.Workflow(name="jointFusion_node", input_spec=["atlas_image", "atlas_segmentation_image", "target_image", "mask_image"], atlas_image = prejointFusion_node.lzout.atlas_image, atlas_segmentation_image =  prejointFusion_node.lzout.atlas_segmentation_image, target_image = prejointFusion_node.lzout.target_image, mask_image = prejointFusion_node.lzout.mask_image)
+    jointFusion_node.add(make_antsJointFusion_workflow1(atlas_image=jointFusion_node.lzin.atlas_image, atlas_segmentation_image=jointFusion_node.lzin.atlas_segmentation_image, target_image=jointFusion_node.lzin.target_image, mask_image=jointFusion_node.lzin.mask_image))
+    jointFusion_node.set_output([("jointFusion_out", jointFusion_node.antsJointFusion_workflow1.lzout.out_label_fusion)])
 
     processing_node.add(prejointFusion_node)
-    # processing_node.add(jointFusion_node)
+    processing_node.add(jointFusion_node)
     processing_node.set_output([("prejointFusion_out", processing_node.prejointFusion_node.lzout.all_),
-                                # ("prejointFusion_out2", processing_node.prejointFusion_node.lzout.all_),
-                                # ("jointFusion_out", processing_node.jointFusion_node.lzout.all_)
+                                ("jointFusion_out", processing_node.jointFusion_node.lzout.all_)
                                 ])
 
     source_node.add(processing_node)
     source_node.add(prejointFusion_node)
-    # source_node.add(jointFusion_node)
+    source_node.add(jointFusion_node)
 
 
     # Set the output of the source node to the same as the output of the sink_node
@@ -1073,11 +996,8 @@ if __name__ == '__main__':
         print(f"Created the {node.name} graph visual")
 
     make_graphs(prejointFusion_node)
-    # make_graphs(jointFusion_node)
+    make_graphs(jointFusion_node)
     make_graphs(processing_node)
-
-    print(f"processing node output_dir: {processing_node.output_dir}")
-    print(f"output_dir: {source_node.output_dir}")
 
 
     # Run the entire pipeline
@@ -1088,13 +1008,12 @@ if __name__ == '__main__':
 
     @pydra.mark.task
     def copy(source_output_dir, session):
-        print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
         output_files = []
         output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
         output_dir.mkdir(exist_ok=True, parents=True)
+        # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
         for cache_filepath in p.glob("**/[!_]*"):
-            print(cache_filepath)
             output_files.append(cache_filepath)
             output_filepath = output_dir / cache_filepath.name
             # Remove a file if it already exists so it can be replaced by a new file or hardlink

@@ -20,12 +20,12 @@ def get_input_field(input_dict: dict, field):
 @pydra.mark.task
 def make_cache_dir(input_sub):
     cache_dir = Path("/mnt/c/2020_Grad_School/Research/BRAINSPydra/cache_dir") / Path(input_sub).with_suffix("").with_suffix("").name
-    print(cache_dir)
+    # print(cache_dir)
     return cache_dir
 
 @pydra.mark.task
 def make_output_filename(filename="", before_str="", append_str="", extension="", directory="", unused=""):
-    print("Making output filename")
+    # print("Making output filename")
     if filename is None:
         print("filename is none")
         return None
@@ -43,8 +43,8 @@ def make_output_filename(filename="", before_str="", append_str="", extension=""
                 extension = "".join(Path(filename).suffixes)
             new_filename = f"{Path(Path(directory) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
             # Path(new_filename).touch()
-        print(f"filename: {filename}")
-        print(f"new_filename: {new_filename}")
+        # print(f"filename: {filename}")
+        # print(f"new_filename: {new_filename}")
         return new_filename
 
 @pydra.mark.task
@@ -90,17 +90,22 @@ file = '/mnt/c/2020_Grad_School/Research/BRAINSPydra/dummy_shell_scripts/test.sh
 
 cmd = "bash"
 
+input_data = [
+    {
+      "session": "sub-052823_ses-43817",
+      "t1": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.nii.gz",
+      "inputLandmarksEMSP": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-052823_ses-43817_run-002_T1w.fcsv"
+    },
+    {
+      "session": "sub-273625_ses-47445",
+      "t1": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.nii.gz",
+      "inputLandmarksEMSP": "/localscratch/Users/cjohnson30/wf_ref/t1w_examples2/sub-273625_ses-47445_run-002_T1w.fcsv"
+    }
+  ]
+
 source_node = pydra.Workflow(name="source_node", input_spec=["input_data"])
 # source_node.inputs.input_data = ["sub1", "sub2"]
-source_node.inputs.input_data =[
-    {"t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject1.txt",
-     "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
-     },
-    {
-        "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/subject2.txt",
-        "inputMovingLandmarkFilename": "/Shared/sinapse/CACHE/20200915_PREDICTHD_base_CACHE/singleSession_sub-697343_ses-50028/LandmarkInitialize/BCD/BCD_Original.fcsv"
-    }
-]
+source_node.inputs.input_data = input_data
 source_node.split("input_data")  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
 my_input_spec = SpecInfo(
@@ -169,7 +174,8 @@ my_output_spec = SpecInfo(
     bases=(ShellOutSpec,),
 )
 
-shelly_workflow = pydra.Workflow(name="shelly_workflow", input_spec=["input_data"], input_data=source_node.lzin.input_data)
+processing_node = pydra.Workflow(name="processing_node", input_spec=["input_data"], input_data=source_node.lzin.input_data)
+shelly_workflow = pydra.Workflow(name="shelly_workflow", input_spec=["input_data"], input_data=processing_node.lzin.input_data)
 
 
 shelly_createFiles = ShellCommandTask(
@@ -187,41 +193,117 @@ shelly_writeOutput = ShellCommandTask(
     output_spec=my_output_spec,
 )
 
-# @pydra.mark.task
-# def get_self(x):
-#     print(x)
-#     return x
-
 shelly_workflow.add(get_input_field(name="get_t1", input_dict=shelly_workflow.lzin.input_data, field="t1"))
+source_node.add(get_input_field(name="get_session", input_dict=source_node.lzin.input_data, field="session"))
 shelly_workflow.add(make_output_filename(name="output", filename=shelly_workflow.get_t1.lzout.out, append_str="_corrected", extension=".txt"))
-shelly_workflow.add(get_None(name="get_None"))
 
 shelly_workflow.add(shelly_createFiles)
-# shelly_workflow.add(get_self(name="get_self", x=shelly_workflow.shelly_createFiles.lzout.createFiles))
 shelly_writeOutput.inputs.contents = shelly_workflow.shelly_createFiles.lzout.createFiles
 shelly_writeOutput.inputs.output = shelly_workflow.output.lzout.out
 shelly_workflow.add(shelly_writeOutput)
 
 shelly_workflow.set_output([("out", shelly_workflow.shelly_writeOutput.lzout.output),
-                            ("out2", shelly_workflow.get_None.lzout.out),
                             ])
+processing_node.add(shelly_workflow)
+processing_node.set_output([("out", processing_node.shelly_workflow.lzout.all_),
+                            # ("session", processing_node.get_session.lzout.out)])
+                            ])
+source_node.add(processing_node)
 
+@pydra.mark.task
+def get_output_dir(node):
+    print(f"{node.name} output_dir: {node.output_dir}")
+    p = Path(node.output_dir)
+    # for cache_filepath in p.glob("**/*"):
+    # return node.output_dir
 
+@pydra.mark.task
+def copy(source_output_dir):
+    # print(f"input_data: {input_data}")
+    print(f"output_dir in sink: {source_output_dir}")
+    p = Path(source_output_dir)
+    # for cache_filepath in p.glob("**/[!_]*"):
+    for cache_filepath in p.glob("**/*"):
+        print("Here")
+        print(cache_filepath)
+        # # if Path(cache_path).is_file():
+        # #     out_path = Path(output_dir) / Path(cache_path).name
+        # #     print(f"Copying from {cache_path} to {out_path}")
+        # #     copyfile(cache_path, out_path)
+        #
+        # input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
+        # # file_output_dir = Path(output_dir) / Path(input_filename)
+        # # file_output_dir.mkdir(parents=True, exist_ok=True)
+        #
+        # output_directory = Path(experiment_configuration["output_dir"]) / Path(input_filename)
+        # output_directory.mkdir(parents=True, exist_ok=True)
+        # output_filepath = Path(output_directory) / Path(cache_filepath).name
+        # print(f"Copying {cache_filepath} to {output_filepath}")
+        # print(type(cache_filepath))
+        # print(type(output_filepath))
+        # cache_filepath.link_to(output_filepath)
+    return source_output_dir
 
-sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=shelly_workflow.lzout.all_, input_data=source_node.lzin.input_data)
-sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-sink_node.add(copy_from_cache(name="copy_from_cache", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-sink_node.set_output([("output_files", sink_node.copy_from_cache.lzout.out)])
-# sink_node.set_output([("output_files", sink_node.get_processed_outputs.lzout.out)])
+# sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=shelly_workflow.lzout.all_, input_data=source_node.lzin.input_data)
+# sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
+# # sink_node.add(copy_from_cache(name="copy_from_cache", output_dir="/mnt/c/2020_Grad_School/Research/BRAINSPydra/output_dir", cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
+# sink_node.add(get_output_dir(name="get_output_dir", node=processing_node))
+# # sink_node.add(copy(name="copy", source_output_dir=sink_node.get_output_dir.lzout.out))
+# sink_node.set_output([
+#     ("out_dir", sink_node.get_processed_outputs.lzout.out),
+#     # ("out_dir_in_copy", sink_node.copy.lzout.out)
+#     # ("output_files", sink_node.copy_from_cache.lzout.out),
+#       # ("output_dir", sink_node.get_output_dir.lzout.out)])
+#     ])
+
 
 
 source_node.add(shelly_workflow)
-source_node.add(sink_node)
-source_node.set_output([("output_files", source_node.sink_node.lzout.output_files)])
-# source_node.set_output([("output_files", source_node.shelly_workflow.lzout.out)])
+# source_node.add(sink_node)
+source_node.set_output([
+    ("output_files", source_node.processing_node.lzout.all_),
+    ("session", source_node.get_session.lzout.out),
+])
+
+output_dir = "/mnt/c/2020_Grad_School/Research/output_dir"
+
+environment_configuration = {}
+environment_configuration["hard_links"] = False
+experiment_configuration = {
+  "output_dir": "/mnt/c/2020_Grad_School/Research/output_dir_full_run_multithreaded",
+  "cache_dir": "/mnt/c/2020_Grad_School/Research/cache_dir_full_run_multithreaded",
+  "graph_dir": "/mnt/c/2020_Grad_School/Research/graph_dir"}
+
+@pydra.mark.task
+def copy(source_output_dir, session):
+    print(f"session: {session}")
+    print(f"output_dir in sink: {source_output_dir}")
+    p = Path(source_output_dir)
+    output_files = []
+    output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
+    output_dir.mkdir(exist_ok=True, parents=True)
+    for cache_filepath in p.glob("**/[!_]*"):
+        print(cache_filepath)
+        output_files.append(cache_filepath)
+        output_filepath = output_dir / cache_filepath.name
+        print(f"Copying {cache_filepath} to {output_filepath}")
+        if environment_configuration.get('hard_links'):
+            cache_filepath.link_to(output_filepath)
+        else:
+            copyfile(cache_filepath, output_filepath)
+    return output_files
 
 # Run the entire workflow
 with pydra.Submitter(plugin="cf") as sub:
     sub(source_node)
 result = source_node.result()
 print(result)
+# print(result.get_output_field("session"))
+
+sessions = [sess_data['session'] for sess_data in input_data]
+sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory", "session"], output_directory=source_node.output_dir, session=sessions)
+sink_node2.add(copy(name="copy4", source_output_dir=sink_node2.lzin.output_directory, session=sink_node2.lzin.session).split(("source_output_dir", "session")))
+sink_node2.set_output([("files_out", sink_node2.copy4.lzout.out)])
+
+with pydra.Submitter(plugin="cf") as sub:
+    sub(sink_node2)
