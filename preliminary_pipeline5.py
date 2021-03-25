@@ -1110,7 +1110,7 @@ if __name__ == '__main__':
     def copy(source_output_dir):
         print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
-        for file in p.glob("**/*"):
+        for file in p.glob("**/[!_]*"):
             print(file)
 
 
