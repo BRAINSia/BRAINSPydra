@@ -1072,7 +1072,7 @@ if __name__ == '__main__':
         files = [x for x in p if x.is_file()]
         print(files)
         return files
-    sink_node2 = pydra.Workflow(name="sink_node2", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
+    sink_node2 = pydra.Workflow(name="sink_node3", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
     sink_node2.add(copy(name="copy2", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir"))
     sink_node2.set_output([("files_out", sink_node2.copy2.lzout.out)])
 
@@ -1087,7 +1087,7 @@ if __name__ == '__main__':
 
     # Set the output of the source node to the same as the output of the sink_node
     # source_node.set_output([("output_files", source_node.sink_node.lzout.pipline_output),])
-    source_node.set_output([("output_files", source_node.sink_node2.lzout.files_out)])
+    source_node.set_output([("output_files", source_node.sink_node3.lzout.files_out)])
 
     # source_node.output_dir = experiment_configuration['output_dir']
     # Run the entire workflow
