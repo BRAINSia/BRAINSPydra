@@ -1110,8 +1110,26 @@ if __name__ == '__main__':
     def copy(source_output_dir):
         print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
-        for file in p.glob("**/[!_]*"):
-            print(file)
+        for cache_filepath in p.glob("**/[!_]*"):
+            output_filepath = Path(experiment_configuration["output_dir"]) / file.name
+            if environment_configuration['hard_links']:
+                cache_filepath.link_to(output_filepath)
+                print(f"Hard linked {cache_filepath} to {output_filepath}")
+            else:
+                copyfile(cache_filepath, output_filepath)
+                print(f"Copied {cache_filepath} to {output_filepath}")
+
+
+    # def copy(cache_path, output_dir):
+    #     if Path(cache_path).is_file():
+    #         out_path = Path(output_dir) / Path(cache_path).name
+    #         print(f"Copying from {cache_path} to {out_path}")
+    #         copyfile(cache_path, out_path)
+    #     else:
+    #         print(f"{cache_path} is not a file")
+    #         out_path = cache_path
+    #
+    #     return out_path
 
 
     sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory"], output_directory=source_node.output_dir)
