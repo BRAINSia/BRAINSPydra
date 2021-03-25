@@ -1107,51 +1107,27 @@ if __name__ == '__main__':
 
 
     @pydra.mark.task
-    def copy(source_output_dir, input_data):
-        print(f"input_data: {input_data}")
+    def copy(source_output_dir):
         print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
-        for cache_filepath in p.glob("**/[!_]*"):
-
-            # if Path(cache_path).is_file():
-            #     out_path = Path(output_dir) / Path(cache_path).name
-            #     print(f"Copying from {cache_path} to {out_path}")
-            #     copyfile(cache_path, out_path)
-
-            input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
-            # file_output_dir = Path(output_dir) / Path(input_filename)
-            # file_output_dir.mkdir(parents=True, exist_ok=True)
-
-            output_directory = Path(experiment_configuration["output_dir"]) / Path(input_filename)
-            output_directory.mkdir(parents=True, exist_ok=True)
-            output_filepath = Path(output_directory) / Path(cache_filepath).name
+        output_files = []
+        for cache_filepath in p.glob("**/*"):
+            print(cache_filepath)
+            output_files.append(cache_filepath)
+            output_filepath = Path(experiment_configuration.get("output_dir")) / Path(cache_filepath).parent.name / cache_filepath.name
             print(f"Copying {cache_filepath} to {output_filepath}")
-            print(type(cache_filepath))
-            print(type(output_filepath))
-            cache_filepath.link_to(output_filepath)
-            # copyfile(cache_filepath, output_filepath)
-            # if environment_configuration['hard_links']:
-            #     output_filepath.link_to(cache_filepath)
-            #     print(f"Hard linked {cache_filepath} to {output_filepath}")
-            # else:
-            #     copyfile(cache_filepath, output_filepath)
-            #     print(f"Copied {cache_filepath} to {output_filepath}")
+        return output_files
 
 
-    # def copy(cache_path, output_dir):
-    #     if Path(cache_path).is_file():
-    #         out_path = Path(output_dir) / Path(cache_path).name
-    #         print(f"Copying from {cache_path} to {out_path}")
-    #         copyfile(cache_path, out_path)
-    #     else:
-    #         print(f"{cache_path} is not a file")
-    #         out_path = cache_path
-    #
-    #     return out_path
+    # Run the entire workflow
+    with pydra.Submitter(plugin="cf") as sub:
+        sub(source_node)
+    result = source_node.result()
+    print(result)
 
-
-    sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
-    sink_node2.add(copy(name="copy4", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir", "input_data"))
+    sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"],
+                                output_directory=source_node.output_dir)
+    sink_node2.add(copy(name="copy4", source_output_dir=sink_node2.lzin.output_directory).split("source_output_dir"))
     sink_node2.set_output([("files_out", sink_node2.copy4.lzout.out)])
 
     with pydra.Submitter(plugin="cf") as sub:
