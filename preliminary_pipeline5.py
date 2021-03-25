@@ -1122,6 +1122,8 @@ if __name__ == '__main__':
             output_directory.mkdir(parents=True, exist_ok=True)
             output_filepath = Path(output_directory) / Path(cache_filepath).name
             print(f"Copying {cache_filepath} to {output_filepath}")
+            print(type(cache_filepath))
+            print(type(output_filepath))
             # if environment_configuration['hard_links']:
             #     cache_filepath.link_to(output_filepath)
             #     print(f"Hard linked {cache_filepath} to {output_filepath}")
