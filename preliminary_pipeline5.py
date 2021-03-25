@@ -1124,7 +1124,8 @@ if __name__ == '__main__':
             print(f"Copying {cache_filepath} to {output_filepath}")
             print(type(cache_filepath))
             print(type(output_filepath))
-            copyfile(cache_filepath, output_filepath)
+            output_filepath.link_to(cache_filepath)
+            # copyfile(cache_filepath, output_filepath)
             # if environment_configuration['hard_links']:
             #     output_filepath.link_to(cache_filepath)
             #     print(f"Hard linked {cache_filepath} to {output_filepath}")
