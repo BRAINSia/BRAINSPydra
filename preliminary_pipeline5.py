@@ -1119,7 +1119,7 @@ if __name__ == '__main__':
             output_filepath = output_dir / cache_filepath.name
             print(f"Copying {cache_filepath} to {output_filepath}")
             if environment_configuration.get('hard_links'):
-                output_filepath.link_to(cache_filepath)
+                cache_filepath.link_to(output_filepath)
             else:
                 copyfile(cache_filepath, output_filepath)
         return output_files
