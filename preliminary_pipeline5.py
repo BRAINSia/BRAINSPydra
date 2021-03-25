@@ -1108,6 +1108,7 @@ if __name__ == '__main__':
 
     @pydra.mark.task
     def copy(source_output_dir, input_data):
+        print(f"input_data: {input_data}")
         print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
         for cache_filepath in p.glob("**/[!_]*"):
@@ -1117,7 +1118,7 @@ if __name__ == '__main__':
             #     print(f"Copying from {cache_path} to {out_path}")
             #     copyfile(cache_path, out_path)
 
-            input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
+            # input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
             # file_output_dir = Path(output_dir) / Path(input_filename)
             # file_output_dir.mkdir(parents=True, exist_ok=True)
 
