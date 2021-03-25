@@ -1049,40 +1049,17 @@ if __name__ == '__main__':
                                 # ("jointFusion_out", processing_node.jointFusion_node.lzout.all_)
                                 ])
 
-    # The sink converts the cached files to output_dir, a location on the local machine
-    # sink_node = pydra.Workflow(name="sink_node", input_spec=['processed_files', 'input_data'], processed_files=processing_node.lzout.all_, input_data=source_node.lzin.input_data, output_dir=experiment_configuration["output_dir"])
-    # sink_node.add(get_processed_outputs(name="get_processed_outputs", processed_dict=sink_node.lzin.processed_files))
-    # # sink_node.add(fun_)
-    # # sink_node.add(copy_from_cache(name="copy_from_cache19", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-    # # sink_node.add(get_processed_outputs(name="get_post_processed_outputs", processed_dict=sink_node.lzin.post_processed_files))
-    # sink_node.add(copy_from_cache(name="copy_from_cache2", output_dir=experiment_configuration['output_dir'], cache_path=sink_node.get_post_processed_outputs.lzout.out, input_data=sink_node.lzin.input_data).split("cache_path"))
-    # sink_node.set_output([
-    #     ("processing_node_out", sink_node.lzin.processed_files)
-    #     # ("pipline_output", sink_node.copy_from_cache19.lzout.out),
-    #     # ("output_files2", sink_node.copy_from_cache2.lzout.out)
-    # ])
-
-
-
-
-
     source_node.add(processing_node)
     source_node.add(prejointFusion_node)
-    # source_node.add(sink_node2)
     # source_node.add(jointFusion_node)
 
-    # source_node.add(sink_node)
 
     # Set the output of the source node to the same as the output of the sink_node
-    # source_node.set_output([("output_files", source_node.sink_node.lzout.pipline_output),])
-    # source_node.set_output([("output_files", source_node.sink_node.lzout.files_out)])
     source_node.set_output([("out", source_node.processing_node.lzout.all_)])
 
-    # source_node.output_dir = experiment_configuration['output_dir']
     # Run the entire workflow
     with pydra.Submitter(plugin="cf") as sub:
         sub(source_node)
-        # sub(sink_node2)
 
 
 
@@ -1099,12 +1076,15 @@ if __name__ == '__main__':
     # make_graphs(jointFusion_node)
     make_graphs(processing_node)
 
-    result = source_node.result()
-    print(result)
-
     print(f"processing node output_dir: {processing_node.output_dir}")
     print(f"output_dir: {source_node.output_dir}")
 
+
+    # Run the entire pipeline
+    with pydra.Submitter(plugin="cf") as sub:
+        sub(source_node)
+    result = source_node.result()
+    print(result)
 
     @pydra.mark.task
     def copy(source_output_dir):
@@ -1125,16 +1105,11 @@ if __name__ == '__main__':
         return output_files
 
 
-    # Run the entire workflow
-    with pydra.Submitter(plugin="cf") as sub:
-        sub(source_node)
-    result = source_node.result()
-    print(result)
-
-    sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"],
-                                output_directory=processing_node.output_dir)
-    sink_node2.add(copy(name="copy4", source_output_dir=sink_node2.lzin.output_directory).split("source_output_dir"))
-    sink_node2.set_output([("files_out", sink_node2.copy4.lzout.out)])
+    # After processing all the files, copy the results to a local output directory
+    sink_node = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"],
+                                output_directory=source_node.output_dir)
+    sink_node.add(copy(name="copy", source_output_dir=sink_node.lzin.output_directory).split("source_output_dir"))
+    sink_node.set_output([("files_out", sink_node.copy.lzout.out)])
 
     with pydra.Submitter(plugin="cf") as sub:
-        sub(sink_node2)
+        sub(sink_node)
