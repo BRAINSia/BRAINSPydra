@@ -1116,4 +1116,5 @@ if __name__ == '__main__':
     result = source_node.result()
     print(result)
 
+    print(f"processing node output_dir: {processing_node.output_dir}")
     print(f"output_dir: {source_node.output_dir}")
