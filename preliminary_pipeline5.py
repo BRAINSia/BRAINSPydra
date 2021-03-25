@@ -1118,7 +1118,7 @@ if __name__ == '__main__':
             #     print(f"Copying from {cache_path} to {out_path}")
             #     copyfile(cache_path, out_path)
 
-            # input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
+            input_filename = Path(input_data.get('t1')).with_suffix('').with_suffix('').name
             # file_output_dir = Path(output_dir) / Path(input_filename)
             # file_output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1151,7 +1151,7 @@ if __name__ == '__main__':
 
 
     sink_node2 = pydra.Workflow(name="sink_node", input_spec=["output_directory", "input_data"], output_directory=source_node.output_dir, input_data=source_node.lzin.input_data)
-    sink_node2.add(copy(name="copy4", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir"))
+    sink_node2.add(copy(name="copy4", source_output_dir=sink_node2.lzin.output_directory, input_data=sink_node2.lzin.input_data).split("source_output_dir", "input_data"))
     sink_node2.set_output([("files_out", sink_node2.copy4.lzout.out)])
 
     with pydra.Submitter(plugin="cf") as sub:
