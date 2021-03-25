@@ -1093,6 +1093,7 @@ if __name__ == '__main__':
     # Run the entire workflow
     with pydra.Submitter(plugin="cf") as sub:
         sub(source_node)
+        sub(sink_node2)
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     def make_graphs(node: pydra.Workflow):
