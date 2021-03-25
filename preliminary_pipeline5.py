@@ -1121,12 +1121,13 @@ if __name__ == '__main__':
             output_directory = Path(experiment_configuration["output_dir"])
             output_directory.mkdir(parents=True, exist_ok=True)
             output_filepath = Path(output_directory) / Path(cache_filepath).name
-            if environment_configuration['hard_links']:
-                cache_filepath.link_to(output_filepath)
-                print(f"Hard linked {cache_filepath} to {output_filepath}")
-            else:
-                copyfile(cache_filepath, output_filepath)
-                print(f"Copied {cache_filepath} to {output_filepath}")
+            print(f"Copying {cache_filepath} to {output_filepath}")
+            # if environment_configuration['hard_links']:
+            #     cache_filepath.link_to(output_filepath)
+            #     print(f"Hard linked {cache_filepath} to {output_filepath}")
+            # else:
+            #     copyfile(cache_filepath, output_filepath)
+            #     print(f"Copied {cache_filepath} to {output_filepath}")
 
 
     # def copy(cache_path, output_dir):
