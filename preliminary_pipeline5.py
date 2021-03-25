@@ -1111,10 +1111,12 @@ if __name__ == '__main__':
         print(f"output_dir in sink: {source_output_dir}")
         p = Path(source_output_dir)
         output_files = []
+        output_dir = Path(experiment_configuration.get("output_dir")) / Path(source_output_dir).name
+        output_dir.mkdir(exist_ok=True, parents=True)
         for cache_filepath in p.glob("**/*"):
             print(cache_filepath)
             output_files.append(cache_filepath)
-            output_filepath = Path(experiment_configuration.get("output_dir")) / Path(cache_filepath).parent.name / cache_filepath.name
+            output_filepath = output_dir / cache_filepath.name
             print(f"Copying {cache_filepath} to {output_filepath}")
             copyfile(cache_filepath, output_filepath)
         return output_files
