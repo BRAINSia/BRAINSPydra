@@ -1,0 +1,9 @@
+digraph G {
+compound=true 
+subgraph cluster_antsJointFusion_workflow1 {
+label = antsJointFusion_workflow1 
+to_list
+JointFusion
+to_list -> JointFusion
+}
+}

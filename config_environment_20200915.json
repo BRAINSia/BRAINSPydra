@@ -1,0 +1,5 @@
+{
+  "set_threads": true,
+  "max_threds": 28,
+  "hard_links": true
+}

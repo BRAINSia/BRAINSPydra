@@ -1,5 +1,7 @@
 digraph G {
 compound=true 
+subgraph cluster_prejointFusion_node {
+label = prejointFusion_node 
 subgraph cluster_inputs_workflow {
 label = inputs_workflow 
 get_inputVolume
@@ -75,6 +77,65 @@ subgraph cluster_resample_workflow8 {
 label = resample_workflow8 
 BRAINSResample
 }
+subgraph cluster_createLabelMapFromProbabilityMaps_workflow1 {
+label = createLabelMapFromProbabilityMaps_workflow1 
+BRAINSCreateLabelMapFromProbabilityMaps
+}
+subgraph cluster_landmarkInitializer_workflow3 {
+label = landmarkInitializer_workflow3 
+get_parent_directory
+outputTransformFilename
+BRAINSLandmarkInitializer
+get_parent_directory -> outputTransformFilename
+outputTransformFilename -> BRAINSLandmarkInitializer
+color=blue
+}
+subgraph cluster_roi_workflow3 {
+label = roi_workflow3 
+BRAINSROIAuto
+}
+subgraph cluster_antsRegistration_workflow3 {
+label = antsRegistration_workflow3 
+atlas_id
+make_moving_image
+make_moving_image_masks
+make_output_transform_prefix
+make_output_warped_image
+Registration
+atlas_id -> make_moving_image
+atlas_id -> make_moving_image_masks
+atlas_id -> make_output_transform_prefix
+atlas_id -> make_output_warped_image
+make_moving_image -> Registration
+make_moving_image_masks -> Registration
+make_output_transform_prefix -> Registration
+make_output_warped_image -> Registration
+color=blue
+}
+subgraph cluster_antsApplyTransforms_workflow1 {
+label = antsApplyTransforms_workflow1 
+atlas_id
+input_image
+output_image
+ApplyTransforms
+atlas_id -> input_image
+atlas_id -> output_image
+input_image -> ApplyTransforms
+output_image -> ApplyTransforms
+color=blue
+}
+subgraph cluster_antsApplyTransforms_workflow2 {
+label = antsApplyTransforms_workflow2 
+atlas_id
+input_image
+output_image
+ApplyTransforms
+atlas_id -> input_image
+atlas_id -> output_image
+input_image -> ApplyTransforms
+output_image -> ApplyTransforms
+color=blue
+}
 get_inputLandmarksEMSP -> BRAINSConstellationDetector [ltail=cluster_inputs_workflow, lhead=cluster_bcd_workflow1]
 BRAINSConstellationDetector -> BRAINSROIAuto [ltail=cluster_bcd_workflow1, lhead=cluster_roi_workflow1]
 BRAINSConstellationDetector -> BRAINSLandmarkInitializer [ltail=cluster_bcd_workflow1, lhead=cluster_landmarkInitializer_workflow1]
@@ -98,4 +159,26 @@ get_posteriors -> BRAINSResample [ltail=cluster_abc_workflow1, lhead=cluster_res
 get_posteriors -> BRAINSResample [ltail=cluster_abc_workflow1, lhead=cluster_resample_workflow6]
 get_posteriors -> BRAINSResample [ltail=cluster_abc_workflow1, lhead=cluster_resample_workflow7]
 get_posteriors -> BRAINSResample [ltail=cluster_abc_workflow1, lhead=cluster_resample_workflow8]
+get_posteriors -> BRAINSCreateLabelMapFromProbabilityMaps [ltail=cluster_abc_workflow1, lhead=cluster_createLabelMapFromProbabilityMaps_workflow1]
+BRAINSROIAuto -> BRAINSCreateLabelMapFromProbabilityMaps [ltail=cluster_roi_workflow2, lhead=cluster_createLabelMapFromProbabilityMaps_workflow1]
+BRAINSConstellationDetector -> get_parent_directory [ltail=cluster_bcd_workflow1, lhead=cluster_landmarkInitializer_workflow3]
+get_posteriors -> BRAINSROIAuto [ltail=cluster_abc_workflow1, lhead=cluster_roi_workflow3]
+get_posteriors -> atlas_id [ltail=cluster_abc_workflow1, lhead=cluster_antsRegistration_workflow3]
+BRAINSROIAuto -> atlas_id [ltail=cluster_roi_workflow3, lhead=cluster_antsRegistration_workflow3]
+BRAINSLandmarkInitializer -> atlas_id [ltail=cluster_landmarkInitializer_workflow3, lhead=cluster_antsRegistration_workflow3] [color=blue]
+get_posteriors -> atlas_id [ltail=cluster_abc_workflow1, lhead=cluster_antsApplyTransforms_workflow1]
+Registration -> atlas_id [ltail=cluster_antsRegistration_workflow3, lhead=cluster_antsApplyTransforms_workflow1] [color=blue]
+get_posteriors -> atlas_id [ltail=cluster_abc_workflow1, lhead=cluster_antsApplyTransforms_workflow2]
+Registration -> atlas_id [ltail=cluster_antsRegistration_workflow3, lhead=cluster_antsApplyTransforms_workflow2] [color=blue]
+}
+subgraph cluster_jointFusion_node {
+label = jointFusion_node 
+subgraph cluster_antsJointFusion_workflow1 {
+label = antsJointFusion_workflow1 
+to_list
+JointFusion
+to_list -> JointFusion
+}
+}
+antsApplyTransforms_workflow2 -> antsJointFusion_workflow1 [ltail=cluster_prejointFusion_node, lhead=cluster_jointFusion_node]
 }
