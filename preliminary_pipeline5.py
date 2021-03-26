@@ -95,9 +95,9 @@ if __name__ == '__main__':
             ("outputTransform",                     bcd_workflow.BRAINSConstellationDetector.lzout.outputTransform),
             ("outputLandmarksInACPCAlignedSpace",   bcd_workflow.BRAINSConstellationDetector.lzout.outputLandmarksInACPCAlignedSpace),
             ("writeBranded2DImage",                 bcd_workflow.BRAINSConstellationDetector.lzout.writeBranded2DImage)
+
         ])
         return bcd_workflow
-
     def make_roi_workflow1(inputVolume) -> pydra.Workflow:
         from sem_tasks.segmentation.specialized import BRAINSROIAuto
         workflow_name = "roi_workflow1"

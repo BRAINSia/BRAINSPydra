@@ -2,13 +2,8 @@ digraph G {
 compound=true 
 subgraph cluster_antsJointFusion_workflow1 {
 label = antsJointFusion_workflow1 
-atlas_image5
-atlas_segmentation_image5
 to_list
-target_image5
-mask_image5
 JointFusion
-to_list -> target_image5
 to_list -> JointFusion
 }
 }

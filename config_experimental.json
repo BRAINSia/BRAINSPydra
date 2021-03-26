@@ -294,5 +294,13 @@
     "input_image_dir": "/mnt/c/2020_Grad_School/Research/wf_ref/20160523_HDAdultAtlas/",
     "input_image_filename": "wholeBrain_label.nii.gz",
     "output_image_end": "_2_subj_lbl.nii.gz"
+  },
+  "ANTSJointFusion1": {
+    "alpha": 0.1,
+    "beta": 2.0,
+    "dimension": 3,
+    "out_label_fusion": "JointFusion_HDAtlas20_2015_label.nii.gz",
+    "search_radius": [3],
+    "verbose": true
   }
 }

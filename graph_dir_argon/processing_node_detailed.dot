@@ -1,0 +1,14 @@
+digraph structs {
+node [shape=record];
+struct_prejointFusion_node [shape=record, label="{INPUT: | <input_data> input_data} | prejointFusion_node | {OUTPUT: | <all_> all_ | <atlas_image> atlas_image | <atlas_segmentation_image> atlas_segmentation_image | <mask_image> mask_image | <target_image> target_image}"];
+struct_processing_node:input_data -> struct_prejointFusion_node:input_data;
+struct_processing_node [color=red, label="{WORKFLOW INPUT: | {<input_data> input_data}}"];
+struct_processing_node_out [color=red, label="{WORKFLOW OUTPUT: | {<jointFusion_out> jointFusion_out | <prejointFusion_out> prejointFusion_out}}"];
+struct_prejointFusion_node:all_ -> struct_processing_node_out:prejointFusion_out;
+struct_jointFusion_node:all_ -> struct_processing_node_out:jointFusion_out;
+struct_jointFusion_node [shape=record, label="{INPUT: | <atlas_image> atlas_image | <atlas_segmentation_image> atlas_segmentation_image | <mask_image> mask_image | <target_image> target_image} | jointFusion_node | {OUTPUT: | <all_> all_}"];
+struct_prejointFusion_node:atlas_image -> struct_jointFusion_node:atlas_image;
+struct_prejointFusion_node:atlas_segmentation_image -> struct_jointFusion_node:atlas_segmentation_image;
+struct_prejointFusion_node:target_image -> struct_jointFusion_node:target_image;
+struct_prejointFusion_node:mask_image -> struct_jointFusion_node:mask_image;
+}
