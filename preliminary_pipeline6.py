@@ -62,7 +62,10 @@ if __name__ == "__main__":
     def get_inputs_workflow(my_source_node):
         @pydra.mark.task
         def get_input_field(input_dict: dict, field):
-            return input_dict[field]
+            if field in input_dict:
+                return input_dict[field]
+            else:
+                return None
 
         get_inputs_workflow = pydra.Workflow(
             name="inputs_workflow",
@@ -72,9 +75,16 @@ if __name__ == "__main__":
         # Get the list of t1 files from input_data_dictionary
         get_inputs_workflow.add(
             get_input_field(
-                name="get_inputVolume",
+                name="get_inputVolumes",
                 input_dict=get_inputs_workflow.lzin.input_data,
-                field="t1",
+                field="inputVolumes",
+            )
+        )
+        get_inputs_workflow.add(
+            get_input_field(
+                name="get_inputVolumeTypes",
+                input_dict=get_inputs_workflow.lzin.input_data,
+                field="inputVolumeTypes",
             )
         )
         # Get the list of landmark files from input_data_dictionary
@@ -88,7 +98,11 @@ if __name__ == "__main__":
 
         get_inputs_workflow.set_output(
             [
-                ("inputVolume", get_inputs_workflow.get_inputVolume.lzout.out),
+                ("inputVolumes", get_inputs_workflow.get_inputVolumes.lzout.out),
+                (
+                    "inputVolumeTypes",
+                    get_inputs_workflow.get_inputVolumeTypes.lzout.out,
+                ),
                 (
                     "inputLandmarksEMSP",
                     get_inputs_workflow.get_inputLandmarksEMSP.lzout.out,
@@ -703,7 +717,9 @@ if __name__ == "__main__":
 
         return antsRegistration_workflow
 
-    def make_abc_workflow1(inputVolumes, inputT1, restoreState) -> pydra.Workflow:
+    def make_abc_workflow1(
+        inputVolumeCropped, inputVolumes, inputVolumeTypes, restoreState
+    ) -> pydra.Workflow:
         from sem_tasks.segmentation.specialized import BRAINSABC
 
         @pydra.mark.task
@@ -714,6 +730,17 @@ if __name__ == "__main__":
         def get_posteriors(outputs):
             return outputs[1:]
 
+        @pydra.mark.task
+        def print_input(x, element):
+            print(f"{element} ({type(x)}): {x}")
+            return x
+
+        @pydra.mark.task
+        def set_inputVolumes(inputVolumeCropped, inputVolumes):
+            inputVolumes[0] = inputVolumeCropped
+            print(f"inputVolumes: {inputVolumes}")
+            return inputVolumes
+
         workflow_name = "abc_workflow1"
         configkey = "BRAINSABC1"
         print(f"Making task {workflow_name}")
@@ -721,17 +748,30 @@ if __name__ == "__main__":
         # Define the workflow and its lazy inputs
         abc_workflow = pydra.Workflow(
             name=workflow_name,
-            input_spec=["inputVolumes", "inputT1", "restoreState"],
+            input_spec=[
+                "inputVolumes",
+                "inputVolumeCropped",
+                "inputVolumeTypes",
+                "restoreState",
+            ],
             inputVolumes=inputVolumes,
-            inputT1=inputT1,
+            inputVolumeTypes=inputVolumeTypes,
+            inputVolumeCropped=inputVolumeCropped,
             restoreState=restoreState,
         )
         abc_workflow.add(
             make_filename(
                 name="outputVolumes",
-                filename=abc_workflow.lzin.inputT1,
+                filename=abc_workflow.lzin.inputVolumes,
                 append_str="_corrected",
                 extension=".nii.gz",
+            )
+        )
+        abc_workflow.add(
+            set_inputVolumes(
+                name="set_inputVolumes",
+                inputVolumeCropped=abc_workflow.lzin.inputVolumeCropped,
+                inputVolumes=abc_workflow.lzin.inputVolumes,
             )
         )
 
@@ -742,15 +782,10 @@ if __name__ == "__main__":
         ).get_task()
 
         # Set task inputs
-        abc_task.inputs.inputVolumes = (
-            abc_workflow.lzin.inputVolumes
-        )  # "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" # # # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/Cropped_BCD_ACPC_Aligned.nii.gz" #  #abc_workflow.lzin.inputVolumes
-        abc_task.inputs.restoreState = (
-            abc_workflow.lzin.restoreState
-        )  # "/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" # #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/mnt/c/2020_Grad_School/Research/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #"/localscratch/Users/cjohnson30/output_dir/sub-052823_ses-43817_run-002_T1w/SavedInternalSyNState.h5" #
-        abc_task.inputs.outputVolumes = (
-            abc_workflow.outputVolumes.lzout.out
-        )  # "sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" # #"sub-052823_ses-43817_run-002_T1w_corrected.nii.gz" #
+        abc_task.inputs.inputVolumes = abc_workflow.set_inputVolumes.lzout.out
+        abc_task.inputs.restoreState = abc_workflow.lzin.restoreState
+        abc_task.inputs.inputVolumeTypes = abc_workflow.lzin.inputVolumeTypes
+        abc_task.inputs.outputVolumes = abc_workflow.outputVolumes.lzout.out
 
         abc_task.inputs.atlasDefinition = experiment_configuration[configkey].get(
             "atlasDefinition"
@@ -770,9 +805,9 @@ if __name__ == "__main__":
         abc_task.inputs.filterMethod = experiment_configuration[configkey].get(
             "filterMethod"
         )
-        abc_task.inputs.inputVolumeTypes = experiment_configuration[configkey].get(
-            "inputVolumeTypes"
-        )
+        # abc_task.inputs.inputVolumeTypes = experiment_configuration[configkey].get(
+        #     "inputVolumeTypes"
+        # )
         abc_task.inputs.interpolationMode = experiment_configuration[configkey].get(
             "interpolationMode"
         )
@@ -805,6 +840,20 @@ if __name__ == "__main__":
         ] + experiment_configuration[configkey].get("posteriors")
 
         abc_workflow.add(abc_task)
+        abc_workflow.add(
+            print_input(
+                name="print_inputVolumes",
+                x=abc_task.inputs.inputVolumes,
+                element="inputVolumes",
+            )
+        )
+        # abc_workflow.add(
+        #     print_input(
+        #         name="print_input_volume_type",
+        #         x=abc_task.inputs.inputVolumeTypes,
+        #         element="inputVolumeTypes",
+        #     )
+        # )
         abc_workflow.add(
             get_t1_average(
                 name="get_t1_average", outputs=abc_task.lzout.implicitOutputs
@@ -1275,45 +1324,6 @@ if __name__ == "__main__":
 
         return landmark_initializer_workflow
 
-    def make_roi_workflow3(inputVolume) -> pydra.Workflow:
-        from sem_tasks.segmentation.specialized import BRAINSROIAuto
-
-        workflow_name = "roi_workflow2"
-        configkey = "BRAINSROIAuto2"
-        print(f"Making task {workflow_name}")
-
-        # Define the workflow and its lazy inputs
-        roi_workflow = pydra.Workflow(
-            name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume
-        )
-
-        # Create the pydra-sem generated task
-        roi_task = BRAINSROIAuto(
-            "BRAINSROIAuto",
-            executable=experiment_configuration[configkey].get("executable"),
-        ).get_task()
-
-        # Set task inputs
-        roi_task.inputs.inputVolume = roi_workflow.lzin.inputVolume
-        roi_task.inputs.ROIAutoDilateSize = experiment_configuration[configkey].get(
-            "ROIAutoDilateSize"
-        )
-        roi_task.inputs.outputROIMaskVolume = experiment_configuration[configkey].get(
-            "outputROIMaskVolume"
-        )
-
-        roi_workflow.add(roi_task)
-        roi_workflow.set_output(
-            [
-                (
-                    "outputROIMaskVolume",
-                    roi_workflow.BRAINSROIAuto.lzout.outputROIMaskVolume,
-                ),
-            ]
-        )
-
-        return roi_workflow
-
     def make_antsRegistration_workflow3(
         fixed_image, fixed_image_masks, initial_moving_transform
     ) -> pydra.Workflow:
@@ -1760,6 +1770,17 @@ if __name__ == "__main__":
 
         return out_path
 
+    @pydra.mark.task
+    def get_inputVolumesT1(inputVolumes, inputVolumeTypes):
+        inputVolumesT1 = []
+        print(f"inputVolumeTypes: {inputVolumeTypes}")
+        for index, ele in enumerate(inputVolumeTypes):
+            print(f"ele: {ele}")
+            if ele == "T1":
+                inputVolumesT1.append(inputVolumes[index])
+        print(f"inputVolumesT1: {inputVolumesT1}")
+        return inputVolumesT1
+
     # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
     source_node = pydra.Workflow(
         name="source_node",
@@ -1786,8 +1807,15 @@ if __name__ == "__main__":
     )
     prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
     prejointFusion_node.add(
+        get_inputVolumesT1(
+            name="get_inputVolumesT1",
+            inputVolumes=prejointFusion_node.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node.inputs_workflow.lzout.inputVolumeTypes,
+        )
+    )
+    prejointFusion_node.add(
         make_bcd_workflow1(
-            inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume,
+            inputVolume=prejointFusion_node.get_inputVolumesT1.lzout.out,
             inputLandmarksEMSP=prejointFusion_node.inputs_workflow.lzout.inputLandmarksEMSP,
         )
     )
@@ -1808,7 +1836,7 @@ if __name__ == "__main__":
     )
     prejointFusion_node.add(
         make_resample_workflow1(
-            inputVolume=prejointFusion_node.inputs_workflow.lzout.inputVolume,
+            inputVolume=prejointFusion_node.get_inputVolumesT1.lzout.out,
             warpTransform=prejointFusion_node.landmarkInitializer_workflow1.lzout.outputTransformFilename,
         )
     )
@@ -1833,8 +1861,13 @@ if __name__ == "__main__":
     )
     prejointFusion_node.add(
         make_abc_workflow1(
-            inputVolumes=prejointFusion_node.roi_workflow1.lzout.outputVolume,
-            inputT1=prejointFusion_node.inputs_workflow.lzout.inputVolume,
+            # inputVolumes=prejointFusion_node.roi_workflow1.lzout.outputVolume,
+            # inputVolumes=prejointFusion_node.get_inputVolumes.lzout.out,
+            # inputT1=prejointFusion_node.inputs_workflow.lzout.inputVolumeT1,
+            # inputT2=prejointFusion_node.inputs_workflow.lzout.inputVolumeT2,
+            inputVolumes=prejointFusion_node.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node.inputs_workflow.lzout.inputVolumeTypes,
+            inputVolumeCropped=prejointFusion_node.roi_workflow1.lzout.outputVolume,
             restoreState=prejointFusion_node.antsRegistration_workflow2.lzout.save_state,
         )
     )
