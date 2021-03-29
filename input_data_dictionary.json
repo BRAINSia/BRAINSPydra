@@ -1,11 +1,15 @@
 {
   "input_data": [
     {
+      "session": "sub-052823_ses-43817",
       "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-002_T1w.nii.gz",
+      "t2": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-003_T2w.nii.gz",
       "inputLandmarksEMSP": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-002_T1w.fcsv"
     },
     {
+      "session": "sub-273625_ses-47445",
       "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T1w.nii.gz",
+      "t2": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T2w.nii.gz",
       "inputLandmarksEMSP": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T1w.fcsv"
     }
   ]

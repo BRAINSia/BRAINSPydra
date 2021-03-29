@@ -1,16 +1,16 @@
 {
-  "output_dir": "/home/cjohnson30/output_dir_full_run_multithreaded",
-  "cache_dir": "/home/cjohnson30/cache_dir_full_run_multithreaded",
-  "graph_dir": "/home/cjohnson30/graph_dir_argon",
+  "output_dir": "/Shared/sinapse/pydra-cjohnson/output_dir_from_argon_30",
+  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_full_run_multithreaded_Shared_30",
+  "graph_dir": "/Shared/sinapse/pydra-cjohnson/graph_dir_argon_30",
   "num_threads": 4,
   "BRAINSConstellationDetector1": {
-    "executable": "/Shared/johnsonhj/Binaries/20200615/Linux/BRAINSTools/bin/BRAINSConstellationDetector",
-    "LLSModel": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/LLSModel_50Lmks.h5 ",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSConstellationDetector",
+    "LLSModel": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/LLSModel_50Lmks.h5 ",
     "acLowerBound": 80.000000,
-    "atlasLandmarkWeights": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/template_weights_50Lmks.wts ",
-    "atlasLandmarks": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "atlasLandmarkWeights": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_weights_50Lmks.wts ",
+    "atlasLandmarks": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "houghEyeDetectorMode": 1,
-    "inputTemplateModel": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/T1_50Lmks.mdl",
+    "inputTemplateModel": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/T1_50Lmks.mdl",
     "interpolationMode": "Linear",
     "outputLandmarksInACPCAlignedSpace": "BCD_ACPC_Landmarks.fcsv",
     "outputLandmarksInInputSpace": "BCD_Original.fcsv",
@@ -19,39 +19,40 @@
     "writeBranded2DImage": "BCD_Branded2DQCimage.png"
   },
   "BRAINSROIAuto1": {
-    "executable": "BRAINSROIAuto",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
     "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
   },
   "BRAINSLandmarkInitializer1": {
-    "executable": "BRAINSLandmarkInitializer",
-    "inputFixedLandmarkFilename": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
-    "inputWeightFilename": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSLandmarkInitializer",
+    "inputFixedLandmarkFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
   },
   "BRAINSLandmarkInitializer2": {
-    "executable": "BRAINSLandmarkInitializer",
-    "inputMovingLandmarkFilename": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/template_landmarks_50Lmks.fcsv",
-    "inputWeightFilename": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSLandmarkInitializer",
+    "inputMovingLandmarkFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_landmarks_50Lmks.fcsv",
+    "inputWeightFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_atlas_to_subject_transform.h5"
   },
   "BRAINSResample1": {
-    "executable": "BRAINSResample",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz"
   },
   "BRAINSROIAuto2": {
-    "executable": "BRAINSROIAuto",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 15.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "ANTSRegistration1": {
-    "moving_image": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_t1_denoised_gaussian.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
+    "moving_image": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_t1_denoised_gaussian.nii.gz",
     "moving_image_masks": [
-      "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_headregion.nii.gz",
-      "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_headregion.nii.gz",
-      "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_headregion.nii.gz"
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz"
     ],
     "output_transform_prefix": "AtlasToSubjectPreBABC_Rigid",
     "verbose": true,
@@ -180,12 +181,12 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSRegistration2": {
-    "executable": "antsRegistration",
-    "moving_image": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_t1_denoised_gaussian.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
+    "moving_image": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_t1_denoised_gaussian.nii.gz",
     "moving_image_masks": [
-      "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_headregion.nii.gz",
-      "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_headregion.nii.gz",
-      "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_headregion.nii.gz"
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz"
     ],
     "output_transform_prefix": "AtlasToSubjectPreBABC_SyN",
     "save_state": "SavedInternalSyNState.h5",
@@ -309,8 +310,8 @@
     "winsorize_upper_quantile": 0.99
   },
   "BRAINSABC1": {
-    "executable": "BRAINSABC",
-    "atlasDefinition": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/ExtendedAtlasDefinition.xml",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSABC",
+    "atlasDefinition": "/Shared/sinapse/pydra-cjohnson/ExtendedAtlasDefinition.xml",
     "atlasToSubjectTransform": "atlas_to_subject.h5",
     "atlasToSubjectTransformType": "SyN",
     "debuglevel": "0",
@@ -326,21 +327,21 @@
     "outputLabels": "brain_label_seg.nii.gz",
     "posteriorTemplate": "POSTERIOR_%s.nii.gz",
     "posteriors": [
-      "POST_AIR.nii.gz",
-      "POST_BASAL.nii.gz",
-      "POST_CRBLGM.nii.gz",
-      "POST_CRBLWM.nii.gz",
-      "POST_CSF.nii.gz",
-      "POST_GLOBUS.nii.gz",
-      "POST_HIPPOCAMPUS.nii.gz",
-      "POST_NOTCSF.nii.gz",
-      "POST_NOTGM.nii.gz",
-      "POST_NOTVB.nii.gz",
-      "POST_NOTWM.nii.gz",
-      "POST_SURFGM.nii.gz",
-      "POST_THALAMUS.nii.gz",
-      "POST_VB.nii.gz",
-      "POST_WM.nii.gz"
+      "POSTERIOR_AIR.nii.gz",
+      "POSTERIOR_BASAL.nii.gz",
+      "POSTERIOR_CRBLGM.nii.gz",
+      "POSTERIOR_CRBLWM.nii.gz",
+      "POSTERIOR_CSF.nii.gz",
+      "POSTERIOR_GLOBUS.nii.gz",
+      "POSTERIOR_HIPPOCAMPUS.nii.gz",
+      "POSTERIOR_NOTCSF.nii.gz",
+      "POSTERIOR_NOTGM.nii.gz",
+      "POSTERIOR_NOTVB.nii.gz",
+      "POSTERIOR_NOTWM.nii.gz",
+      "POSTERIOR_SURFGM.nii.gz",
+      "POSTERIOR_THALAMUS.nii.gz",
+      "POSTERIOR_VB.nii.gz",
+      "POSTERIOR_WM.nii.gz"
     ],
     "t1_average": "t1_average_BRAINSABC.nii.gz",
     "purePlugsThreshold": 0.100000,
@@ -348,56 +349,56 @@
     "useKNN": " "
   },
   "BRAINSResample2": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_leftHemisphere.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
     "interpolationMode": "Linear",
     "outputVolume": "template_leftHemisphere.nii.gz",
     "pixelType": "binary"
   },
   "BRAINSResample3": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/hncma-atlas.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
     "interpolationMode": "NearestNeighbor",
     "outputVolume": "hncma_atlas.nii.gz",
     "pixelType": "short"
   },
   "BRAINSResample4": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_rightHemisphere.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
     "interpolationMode": "Linear",
     "outputVolume": "template_rightHemisphere.nii.gz",
     "pixelType": "binary"
   },
   "BRAINSResample5": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_nac_labels.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
     "interpolationMode": "NearestNeighbor",
     "outputVolume": "template_nac_labels.nii.gz",
     "pixelType": "short"
   },
   "BRAINSResample6": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_ventricles.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
     "interpolationMode": "Linear",
     "outputVolume": "template_ventricles.nii.gz",
     "pixelType": "binary"
   },
   "BRAINSResample7": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_WMPM2_labels.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
     "interpolationMode": "NearestNeighbor",
     "outputVolume": "template_WMPM2_labels.nii.gz",
     "pixelType": "short"
   },
   "BRAINSResample8": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/template_headregion.nii.gz",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
     "interpolationMode": "Linear",
     "outputVolume": "template_headregion.nii.gz",
     "pixelType": "binary"
   },
   "BRAINSCreateLabelMapFromProbabilityMaps1": {
-    "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSCreateLabelMapFromProbabilityMaps",
     "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
     "dirtyLabelVolume": "fixed_headlabels_seg.nii.gz",
     "foregroundPriors": [
@@ -417,7 +418,6 @@
       0,
       0
     ],
-    "nonAirRegionMask": "/localscratch/Users/cjohnson30/output_dir/fixedImageROIAutoMask.nii.gz",
     "priorLabelCodes": [
       1,
       2,
@@ -438,7 +438,7 @@
     "inclusionThreshold": 0.0
   },
   "BRAINSLandmarkInitializer3": {
-    "executable": "BRAINSLandmarkInitializer",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSLandmarkInitializer",
     "inputMovingLandmarkFilename": [
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/BCD_ACPC_Landmarks.fcsv",
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
@@ -461,16 +461,16 @@
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/23163/BCD_ACPC_Landmarks.fcsv",
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/21003/BCD_ACPC_Landmarks.fcsv"
     ],
-    "inputWeightFilename": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS_DEFACE/code/Atlas/20141004_BCD/template_weights_50Lmks.wts",
+    "inputWeightFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
   },
   "BRAINSROIAuto3": {
-    "executable": "BRAINSROIAuto",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "ANTSRegistration3": {
-    "executable": "antsRegistration",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image_filename": "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
     "moving_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/",
     "moving_image_masks_dir": [
