@@ -751,6 +751,20 @@ if __name__ == "__main__":
             print(f"inputVolumes: {inputVolumes}")
             return inputVolumes
 
+        @pydra.mark.task
+        def set_implicitOutputs(inputVolumeTypes):
+            if "T2" in inputVolumeTypes:
+                implicitOutputs = (
+                    [experiment_configuration[configkey].get("t1_average")]
+                    + [experiment_configuration[configkey].get("t2_average")]
+                    + experiment_configuration[configkey].get("posteriors")
+                )
+            else:
+                implicitOutputs = [
+                    experiment_configuration[configkey].get("t1_average")
+                ] + experiment_configuration[configkey].get("posteriors")
+            return implicitOutputs
+
         workflow_name = "abc_workflow1"
         configkey = "BRAINSABC1"
         print(f"Making task {workflow_name}")
@@ -782,6 +796,12 @@ if __name__ == "__main__":
                 name="set_inputVolumes",
                 inputVolumeCropped=abc_workflow.lzin.inputVolumeCropped,
                 inputVolumes=abc_workflow.lzin.inputVolumes,
+            )
+        )
+        abc_workflow.add(
+            set_implicitOutputs(
+                name="set_implicitOutputs",
+                inputVolumeTypes=abc_workflow.lzin.inputVolumeTypes,
             )
         )
 
@@ -845,16 +865,7 @@ if __name__ == "__main__":
         abc_task.inputs.outputLabels = experiment_configuration[configkey].get(
             "outputLabels"
         )
-        if "T2" in abc_workflow.lzin.inputVolumeTypes:
-            abc_task.inputs.implicitOutputs = (
-                [experiment_configuration[configkey].get("t1_average")]
-                + [experiment_configuration[configkey].get("t2_average")]
-                + experiment_configuration[configkey].get("posteriors")
-            )
-        else:
-            abc_task.inputs.implicitOutputs = [
-                experiment_configuration[configkey].get("t1_average")
-            ] + experiment_configuration[configkey].get("posteriors")
+        abc_task.inputs.implicitOutputs = abc_workflow.set_implicitOutputs.lzout.out
 
         abc_workflow.add(abc_task)
         abc_workflow.add(
