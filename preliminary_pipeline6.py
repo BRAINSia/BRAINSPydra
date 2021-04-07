@@ -845,9 +845,16 @@ if __name__ == "__main__":
         abc_task.inputs.outputLabels = experiment_configuration[configkey].get(
             "outputLabels"
         )
-        abc_task.inputs.implicitOutputs = [
-            experiment_configuration[configkey].get("t1_average")
-        ] + experiment_configuration[configkey].get("posteriors")
+        if "T2" in abc_workflow.lzin.inputVolumeTypes:
+            abc_task.inputs.implicitOutputs = (
+                [experiment_configuration[configkey].get("t1_average")]
+                + [experiment_configuration[configkey].get("t2_average")]
+                + experiment_configuration[configkey].get("posteriors")
+            )
+        else:
+            abc_task.inputs.implicitOutputs = [
+                experiment_configuration[configkey].get("t1_average")
+            ] + experiment_configuration[configkey].get("posteriors")
 
         abc_workflow.add(abc_task)
         abc_workflow.add(
