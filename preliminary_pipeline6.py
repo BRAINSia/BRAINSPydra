@@ -2093,11 +2093,11 @@ if __name__ == "__main__":
     # #    make_graphs(jointFusion_node)
     # #    make_graphs(processing_node)
     #
-    # # Run the entire pipeline
-    # with pydra.Submitter(plugin="cf") as sub:
-    #     sub(source_node)
-    # result = source_node.result()
-    # print(result)
+    # Run the entire pipeline
+    with pydra.Submitter(plugin="cf") as sub:
+        sub(source_node)
+    result = source_node.result()
+    print(result)
     #
     # @pydra.mark.task
     # def copy(source_output_dir, session):
