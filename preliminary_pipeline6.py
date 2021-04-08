@@ -993,64 +993,99 @@ if __name__ == "__main__":
         configkey = "BRAINSResample3"
         print(f"Making task {workflow_name}")
 
-        @pydra.mark.task
-        def check_for_None_inputVolume(inputVolume, referenceVolume):
-            if inputVolume == None:
-                placeholder_workflow = pydra.Workflow(name=workflow_name)
+        resample_workflow = pydra.Workflow(
+            name=workflow_name,
+            input_spec=["referenceVolume", "inputVolume"],
+            referenceVolume=referenceVolume,
+            inputVolume=inputVolume,
+        )
+        # Create the pydra-sem generated task
+        resample_task = BRAINSResample(
+            "BRAINSResample",
+            executable=experiment_configuration[configkey]["executable"],
+        ).get_task()
+        resample_task.inputs.referenceVolume = resample_workflow.lzin.referenceVolume
+        resample_task.inputs.inputVolume = resample_workflow.lzin.inputVolume
+        resample_task.inputs.outputVolume = resample_workflow.outputVolume.lzout.out
+        resample_task.inputs.interpolationMode = experiment_configuration[
+            configkey
+        ].get("interpolationMode")
+        resample_task.inputs.pixelType = experiment_configuration[configkey].get(
+            "pixelType"
+        )
 
-                @pydra.mark.task
-                def return_None():
-                    return None
+        resample_workflow.add(resample_task)
+        resample_workflow.set_output(
+            [("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)]
+        )
 
-                placeholder_workflow.add(return_None(name="return_None"))
-                placeholder_workflow.set_output(
-                    [("outputVolume", placeholder_workflow.return_None.lzout.out)]
-                )
-                return placeholder_workflow
-            else:
+        # # @pydra.mark.task
+        # # def conditional_resample(inputVolume, referenceVolume):
+        # #     if inputVolume == None:
+        # #         # placeholder_workflow = pydra.Workflow(name=workflow_name)
+        # #         #
+        # #         # @pydra.mark.task
+        # #         # def return_None():
+        # #         #     return None
+        # #         #
+        # #         # placeholder_workflow.add(return_None(name="return_None"))
+        # #         # placeholder_workflow.set_output(
+        # #         #     [("outputVolume", placeholder_workflow.return_None.lzout.out)]
+        # #         # )
+        # #         # return placeholder_workflow
+        # #         return None
+        # #     else:
+        # #
+        # #         # Define the workflow and its lazy inputs
+        # #         # resample_workflow = pydra.Workflow(
+        # #         #     name=workflow_name,
+        # #         #     input_spec=["referenceVolume", "inputVolume"],
+        # #         #     referenceVolume=referenceVolume,
+        # #         #     inputVolume=inputVolume,
+        # #         # )
+        # #
+        # #         # Create the pydra-sem generated task
+        # #         resample_task = BRAINSResample(
+        # #             "BRAINSResample",
+        # #             executable=experiment_configuration[configkey]["executable"],
+        # #         ).get_task()
+        # #
+        # #         # Set task inputs
+        # #         resample_task.inputs.referenceVolume = (
+        # #             resample_workflow.lzin.referenceVolume
+        # #         )
+        # #         resample_task.inputs.inputVolume = resample_workflow.lzin.inputVolume
+        # #         resample_task.inputs.outputVolume = experiment_configuration[
+        # #             configkey
+        # #         ].get("outputVolume")
+        # #         resample_task.inputs.interpolationMode = experiment_configuration[
+        # #             configkey
+        # #         ].get("interpolationMode")
+        # #         resample_task.inputs.pixelType = experiment_configuration[
+        # #             configkey
+        # #         ].get("pixelType")
+        # #         # resample_workflow.add(resample_task())
+        # #         # resample_workflow.set_output(
+        # #         #     [("outputVolume", resample_workflow.BRAINSResample.lzout.outputVolume)]
+        # #         # )
+        # #         return resample_task.lzout.outputVolume
+        #
+        # resample_workflow.add(
+        #     conditional_resample(
+        #         name="conditional_resample",
+        #         inputVolume=resample_workflow.lzin.inputVolume,
+        #         referenceVolume=resample_workflow.lzin.referenceVolume,
+        #     )
+        # )
+        # resample_workflow.set_output(
+        #     [("outputVolume", resample_workflow.conditional_resample.lzout.out)]
+        # )
 
-                # Define the workflow and its lazy inputs
-                resample_workflow = pydra.Workflow(
-                    name=workflow_name,
-                    input_spec=["referenceVolume", "inputVolume"],
-                    referenceVolume=referenceVolume,
-                    inputVolume=inputVolume,
-                )
-
-                # Create the pydra-sem generated task
-                resample_task = BRAINSResample(
-                    "BRAINSResample",
-                    executable=experiment_configuration[configkey]["executable"],
-                ).get_task()
-
-                # Set task inputs
-                resample_task.inputs.referenceVolume = (
-                    resample_workflow.lzin.referenceVolume
-                )
-                resample_task.inputs.inputVolume = resample_workflow.lzin.inputVolume
-                resample_task.inputs.outputVolume = experiment_configuration[
-                    configkey
-                ].get("outputVolume")
-                resample_task.inputs.interpolationMode = experiment_configuration[
-                    configkey
-                ].get("interpolationMode")
-                resample_task.inputs.pixelType = experiment_configuration[
-                    configkey
-                ].get("pixelType")
-
-                resample_workflow.add(resample_task)
-                resample_workflow.set_output(
-                    [
-                        (
-                            "outputVolume",
-                            resample_workflow.BRAINSResample.lzout.outputVolume,
-                        )
-                    ]
-                )
-
-                return resample_workflow
-
-        return check_for_None_inputVolume(inputVolume, referenceVolume)
+        #         return resample_workflow
+        # resample_workflow.add(fill_workflow(name="fill_workflow", workflow))
+        #
+        #
+        # return check_for_None_inputVolume(inputVolume, referenceVolume)
 
     # def make_resample_workflow3(referenceVolume, warpTransform) -> pydra.Workflow:
     #     from sem_tasks.registration import BRAINSResample
