@@ -994,9 +994,10 @@ if __name__ == "__main__":
         resample_task.inputs.interpolationMode = experiment_configuration[
             configkey
         ].get("interpolationMode")
-        resample_task.inputs.outputVolume = experiment_configuration[configkey].get(
-            "outputVolume"
-        )
+        resample_task.inputs.outputVolume = resample_workflow.outputVolume.lzout.out
+        #     experiment_configuration[configkey].get(
+        #     "outputVolume"
+        # )
         resample_task.inputs.pixelType = experiment_configuration[configkey].get(
             "pixelType"
         )
