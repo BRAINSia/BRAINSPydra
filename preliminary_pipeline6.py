@@ -2108,26 +2108,31 @@ if __name__ == "__main__":
     #     ]
     # )
 
-    processing_node.add(prejointFusion_node_with_T2)
-    processing_node.add(prejointFusion_node_without_T2)
+    processing_node_with_T2.add(prejointFusion_node_with_T2)
+    processing_node_without_T2.add(prejointFusion_node_without_T2)
     # processing_node.add(jointFusion_node_with_T2)
     # processing_node.add(jointFusion_node_without_T2)
-    processing_node.set_output(
+    processing_node_with_T2.set_output(
         [
             (
                 "prejointFusion_out",
-                processing_node.prejointFusion_node_with_T2.lzout.all_,
+                processing_node_with_T2.prejointFusion_node_with_T2.lzout.all_,
             ),
+        ]
+    )
+    processing_node_without_T2.set_output(
+        [
             (
                 "prejointFusion_out",
-                processing_node.prejointFusion_node_without_T2.lzout.all_,
+                processing_node_without_T2.prejointFusion_node_without_T2.lzout.all_,
             ),
             # ("jointFusion_out", processing_node.jointFusion_node_with_T2.lzout.all_),
             # ("jointFusion_out", processing_node.jointFusion_node_without_T2.lzout.all_),
         ]
     )
 
-    source_node.add(processing_node)
+    source_node.add(processing_node_with_T2)
+    source_node.add(processing_node_without_T2)
     source_node.add(prejointFusion_node_with_T2)
     source_node.add(prejointFusion_node_without_T2)
     # source_node.add(jointFusion_node_with_T2)
