@@ -62,6 +62,7 @@ if __name__ == "__main__":
     def get_inputs_workflow(my_source_node, containsT2: bool):
         @pydra.mark.task
         def get_input_field(input_dict: dict, containsT2, field):
+            print(f"input_dict: {input_dict}")
             if containsT2:
                 session_dicts = input_dict["sessions_with_T2"]
             else:
