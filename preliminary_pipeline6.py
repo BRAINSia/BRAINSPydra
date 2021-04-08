@@ -2139,7 +2139,10 @@ if __name__ == "__main__":
     # source_node.add(jointFusion_node_without_T2)
 
     # Set the output of the source node to the same as the output of the sink_node
-    source_node.set_output([("out", source_node.processing_node.lzout.all_)])
+    source_node.set_output([
+                            ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
+                            ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
+                            ])
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     # def make_graphs(node: pydra.Workflow):
