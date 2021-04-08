@@ -1627,7 +1627,7 @@ if __name__ == "__main__":
 
     # Fill the processing node with BRAINS and ANTs applications
     prejointFusion_node_with_T2 = pydra.Workflow(
-        name="prejointFusion_node",
+        name="prejointFusion_node_with_T2",
         input_spec=["input_data"],
         input_data=processing_node.lzin.input_data_with_T2,
     )
@@ -1765,7 +1765,7 @@ if __name__ == "__main__":
     # )
     #
     prejointFusion_node_without_T2 = pydra.Workflow(
-        name="prejointFusion_node",
+        name="prejointFusion_node_without_T2",
         input_spec=["input_data"],
         input_data=processing_node.lzin.input_data_with_T2,
     )
