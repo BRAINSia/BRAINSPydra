@@ -1767,7 +1767,7 @@ if __name__ == "__main__":
     prejointFusion_node_without_T2 = pydra.Workflow(
         name="prejointFusion_node_without_T2",
         input_spec=["input_data"],
-        input_data=processing_node.lzin.input_data_with_T2,
+        input_data=processing_node.lzin.input_data_without_T2,
     )
     prejointFusion_node_without_T2.add(
         get_inputs_workflow(my_source_node=prejointFusion_node_without_T2)
