@@ -724,7 +724,10 @@ if __name__ == "__main__":
 
         @pydra.mark.task
         def get_t1_average(outputs):
-            return outputs[0]
+            if "t1_average_BRAINSABC.nii.gz" in outputs:
+                return outputs[outputs.index("t1_average_BRAINSABC.nii.gz")]
+            else:
+                return None
 
         @pydra.mark.task
         def get_t2_average(outputs, inputVolumeTypes):
@@ -877,7 +880,8 @@ if __name__ == "__main__":
         )
         abc_workflow.add(
             get_t1_average(
-                name="get_t1_average", outputs=abc_task.lzout.implicitOutputs
+                name="get_t1_average",
+                outputs=abc_task.lzout.implicitOutputs,
             )
         )
         abc_workflow.add(
