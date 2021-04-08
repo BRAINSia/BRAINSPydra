@@ -1006,7 +1006,9 @@ if __name__ == "__main__":
         ).get_task()
         resample_task.inputs.referenceVolume = resample_workflow.lzin.referenceVolume
         resample_task.inputs.inputVolume = resample_workflow.lzin.inputVolume
-        resample_task.inputs.outputVolume = resample_workflow.outputVolume.lzout.out
+        resample_task.inputs.outputVolume = experiment_configuration[configkey].get(
+            "outputVolume"
+        )
         resample_task.inputs.interpolationMode = experiment_configuration[
             configkey
         ].get("interpolationMode")
