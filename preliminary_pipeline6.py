@@ -79,7 +79,6 @@ if __name__ == "__main__":
                 name="get_inputVolumes",
                 input_dict=get_inputs_workflow.lzin.input_data,
                 field="inputVolumes",
-                containsT2=containsT2,
             )
         )
         get_inputs_workflow.add(
@@ -87,7 +86,6 @@ if __name__ == "__main__":
                 name="get_inputVolumeTypes",
                 input_dict=get_inputs_workflow.lzin.input_data,
                 field="inputVolumeTypes",
-                containsT2=containsT2,
             )
         )
         # Get the list of landmark files from input_data_dictionary
@@ -96,7 +94,6 @@ if __name__ == "__main__":
                 name="get_inputLandmarksEMSP",
                 input_dict=get_inputs_workflow.lzin.input_data,
                 field="inputLandmarksEMSP",
-                containsT2=containsT2,
             )
         )
 
