@@ -59,11 +59,15 @@ if __name__ == "__main__":
                 new_filename = f"{Path(Path(directory) / Path(parent_dir) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
             return new_filename
 
-    def get_inputs_workflow(my_source_node):
+    def get_inputs_workflow(my_source_node, containsT2: bool):
         @pydra.mark.task
-        def get_input_field(input_dict: dict, field):
-            if field in input_dict:
-                return input_dict[field]
+        def get_input_field(input_dict: dict, containsT2, field):
+            if containsT2:
+                session_dicts = input_dict["sessions_with_T2"]
+            else:
+                session_dicts = input_dict["sessions_without_T2"]
+            if field in session_dicts:
+                return session_dicts[field]
             else:
                 return None
 
@@ -78,6 +82,7 @@ if __name__ == "__main__":
                 name="get_inputVolumes",
                 input_dict=get_inputs_workflow.lzin.input_data,
                 field="inputVolumes",
+                containsT2=containsT2,
             )
         )
         get_inputs_workflow.add(
@@ -85,6 +90,7 @@ if __name__ == "__main__":
                 name="get_inputVolumeTypes",
                 input_dict=get_inputs_workflow.lzin.input_data,
                 field="inputVolumeTypes",
+                containsT2=containsT2,
             )
         )
         # Get the list of landmark files from input_data_dictionary
@@ -93,6 +99,7 @@ if __name__ == "__main__":
                 name="get_inputLandmarksEMSP",
                 input_dict=get_inputs_workflow.lzin.input_data,
                 field="inputLandmarksEMSP",
+                containsT2=containsT2,
             )
         )
 
@@ -1603,28 +1610,36 @@ if __name__ == "__main__":
     # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
     source_node = pydra.Workflow(
         name="source_node",
-        input_spec=["input_data"],
+        input_spec=["input_data_with_T2", "input_data_without_T2"],
         cache_dir=experiment_configuration["cache_dir"],
     )
-    source_node.inputs.input_data = input_data_dictionary["input_data"]
+    source_node.inputs.input_data_with_T2 = input_data_dictionary["input_data"].get(
+        "sessions_with_T2"
+    )
+    source_node.inputs.input_data_without_T2 = input_data_dictionary["input_data"].get(
+        "sessions_without_T2"
+    )
     source_node.split(
-        "input_data"
+        ["input_data_with_T2", "input_data_without_T2"]
     )  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
     processing_node = pydra.Workflow(
         name="processing_node",
         input_spec=["input_data"],
-        input_data=source_node.lzin.input_data,
+        input_data_without_T2=source_node.lzin.input_data_without_T2,
+        input_data_with_T2=source_node.lzin.input_data_with_T2,
     )
 
     # Fill the processing node with BRAINS and ANTs applications
     prejointFusion_node = pydra.Workflow(
         name="prejointFusion_node",
         input_spec=["input_data"],
-        input_data=processing_node.lzin.input_data,
+        input_data=processing_node.lzin.input_data_with_T2,
     )
-    prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
+    prejointFusion_node.add(
+        get_inputs_workflow(my_source_node=prejointFusion_node, containsT2=True)
+    )
     prejointFusion_node.add(
         get_inputVolumesT1(
             name="get_inputVolumesT1",
@@ -1638,76 +1653,76 @@ if __name__ == "__main__":
             inputLandmarksEMSP=prejointFusion_node.inputs_workflow.lzout.inputLandmarksEMSP,
         )
     )
-    prejointFusion_node.add(
-        make_roi_workflow1(
-            inputVolume=prejointFusion_node.bcd_workflow1.lzout.outputResampledVolume
-        )
-    )
-    prejointFusion_node.add(
-        make_landmarkInitializer_workflow1(
-            inputMovingLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInInputSpace
-        )
-    )
-    prejointFusion_node.add(
-        make_landmarkInitializer_workflow2(
-            inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
-        )
-    )
-    prejointFusion_node.add(
-        make_resample_workflow1(
-            inputVolume=prejointFusion_node.get_inputVolumesT1.lzout.out,
-            warpTransform=prejointFusion_node.landmarkInitializer_workflow1.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node.add(
-        make_roi_workflow2(
-            inputVolume=prejointFusion_node.roi_workflow1.lzout.outputVolume
-        )
-    )
-    prejointFusion_node.add(
-        make_antsRegistration_workflow1(
-            fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow2.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node.add(
-        make_antsRegistration_workflow2(
-            fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node.antsRegistration_workflow1.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node.add(
-        make_abc_workflow1(
-            inputVolumes=prejointFusion_node.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node.inputs_workflow.lzout.inputVolumeTypes,
-            inputVolumeCropped=prejointFusion_node.roi_workflow1.lzout.outputVolume,
-            restoreState=prejointFusion_node.antsRegistration_workflow2.lzout.save_state,
-        )
-    )
-    prejointFusion_node.add(
-        make_resample_workflow2(
-            referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average,
-            warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=[
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-            ],
-        ).split("inputVolume")
-    )
-
-    prejointFusion_node.add(
-        make_resample_workflow3(
-            referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average,
-            inputVolume=prejointFusion_node.abc_workflow1.lzout.t2_average,
-        )
-    )
+    # prejointFusion_node.add(
+    #     make_roi_workflow1(
+    #         inputVolume=prejointFusion_node.bcd_workflow1.lzout.outputResampledVolume
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_landmarkInitializer_workflow1(
+    #         inputMovingLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInInputSpace
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_landmarkInitializer_workflow2(
+    #         inputFixedLandmarkFilename=prejointFusion_node.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_resample_workflow1(
+    #         inputVolume=prejointFusion_node.get_inputVolumesT1.lzout.out,
+    #         warpTransform=prejointFusion_node.landmarkInitializer_workflow1.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_roi_workflow2(
+    #         inputVolume=prejointFusion_node.roi_workflow1.lzout.outputVolume
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_antsRegistration_workflow1(
+    #         fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node.landmarkInitializer_workflow2.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_antsRegistration_workflow2(
+    #         fixed_image=prejointFusion_node.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node.antsRegistration_workflow1.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_abc_workflow1(
+    #         inputVolumes=prejointFusion_node.inputs_workflow.lzout.inputVolumes,
+    #         inputVolumeTypes=prejointFusion_node.inputs_workflow.lzout.inputVolumeTypes,
+    #         inputVolumeCropped=prejointFusion_node.roi_workflow1.lzout.outputVolume,
+    #         restoreState=prejointFusion_node.antsRegistration_workflow2.lzout.save_state,
+    #     )
+    # )
+    # prejointFusion_node.add(
+    #     make_resample_workflow2(
+    #         referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average,
+    #         warpTransform=prejointFusion_node.abc_workflow1.lzout.atlasToSubjectTransform,
+    #         inputVolume=[
+    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+    #         ],
+    #     ).split("inputVolume")
+    # )
+    #
+    # prejointFusion_node.add(
+    #     make_resample_workflow3(
+    #         referenceVolume=prejointFusion_node.abc_workflow1.lzout.t1_average,
+    #         inputVolume=prejointFusion_node.abc_workflow1.lzout.t2_average,
+    #     )
+    # )
     # prejointFusion_node.add(
     #     make_createLabelMapFromProbabilityMaps_workflow1(
     #         inputProbabilityVolume=prejointFusion_node.abc_workflow1.lzout.posteriors,
@@ -1758,28 +1773,28 @@ if __name__ == "__main__":
     prejointFusion_node.set_output(
         [
             ("bcd_workflow1", prejointFusion_node.bcd_workflow1.lzout.all_),
-            ("roi_workflow1", prejointFusion_node.roi_workflow1.lzout.all_),
-            (
-                "landmarkInitializer_workflow1",
-                prejointFusion_node.landmarkInitializer_workflow1.lzout.all_,
-            ),
-            (
-                "landmarkInitializer_workflow2",
-                prejointFusion_node.landmarkInitializer_workflow2.lzout.all_,
-            ),
-            ("resample_workflow1", prejointFusion_node.resample_workflow1.lzout.all_),
-            ("roi_workflow2", prejointFusion_node.roi_workflow2.lzout.all_),
-            (
-                "antsRegistration_workflow1",
-                prejointFusion_node.antsRegistration_workflow1.lzout.all_,
-            ),
-            (
-                "antsRegistration_workflow2",
-                prejointFusion_node.antsRegistration_workflow2.lzout.all_,
-            ),
-            ("abc_workflow1", prejointFusion_node.abc_workflow1.lzout.all_),
-            ("resample_workflow2", prejointFusion_node.resample_workflow2.lzout.all_),
-            ("resample_workflow3", prejointFusion_node.resample_workflow3.lzout.all_),
+            # ("roi_workflow1", prejointFusion_node.roi_workflow1.lzout.all_),
+            # (
+            #     "landmarkInitializer_workflow1",
+            #     prejointFusion_node.landmarkInitializer_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "landmarkInitializer_workflow2",
+            #     prejointFusion_node.landmarkInitializer_workflow2.lzout.all_,
+            # ),
+            # ("resample_workflow1", prejointFusion_node.resample_workflow1.lzout.all_),
+            # ("roi_workflow2", prejointFusion_node.roi_workflow2.lzout.all_),
+            # (
+            #     "antsRegistration_workflow1",
+            #     prejointFusion_node.antsRegistration_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsRegistration_workflow2",
+            #     prejointFusion_node.antsRegistration_workflow2.lzout.all_,
+            # ),
+            # ("abc_workflow1", prejointFusion_node.abc_workflow1.lzout.all_),
+            # ("resample_workflow2", prejointFusion_node.resample_workflow2.lzout.all_),
+            # ("resample_workflow3", prejointFusion_node.resample_workflow3.lzout.all_),
             # ("resample_workflow4", prejointFusion_node.resample_workflow4.lzout.all_),
             # ("resample_workflow5", prejointFusion_node.resample_workflow5.lzout.all_),
             # ("resample_workflow6", prejointFusion_node.resample_workflow6.lzout.all_),
