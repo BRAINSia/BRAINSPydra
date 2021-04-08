@@ -1613,23 +1613,40 @@ if __name__ == "__main__":
     source_node.inputs.input_data_without_T2 = input_data_dictionary["input_data"].get(
         "sessions_without_T2"
     )
-    source_node.split(
-        ["input_data_with_T2", "input_data_without_T2"]
-    )  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
+    # source_node.split(
+    #     ["input_data_with_T2", "input_data_without_T2"]
+    # )  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
+
+    source_node_with_T2 = pydra.Workflow(
+        name="source_node_with_T2",
+        input_spec=["input_data_with_T2"],
+        input_data_with_T2=source_node.lzin.input_data_with_T2,
+    ).split("input_data_with_T2")
+
+    source_node_without_T2 = pydra.Workflow(
+        name="source_node_without_T2",
+        input_spec=["input_data_without_T2"],
+        input_data_without_T2=source_node.lzin.input_data_without_T2,
+    ).split("input_data_without_T2")
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
-    processing_node = pydra.Workflow(
-        name="processing_node",
-        input_spec=["input_data_with_T2", "input_data_without_T2"],
-        input_data_without_T2=source_node.lzin.input_data_without_T2,
+    processing_node_with_T2 = pydra.Workflow(
+        name="processing_node_with_T2",
+        input_spec=["input_data_with_T2"],
         input_data_with_T2=source_node.lzin.input_data_with_T2,
+    )
+
+    processing_node_without_T2 = pydra.Workflow(
+        name="processing_node_without_T2",
+        input_spec=["input_data_without_T2"],
+        input_data_without_T2=source_node.lzin.input_data_without_T2,
     )
 
     # Fill the processing node with BRAINS and ANTs applications
     prejointFusion_node_with_T2 = pydra.Workflow(
         name="prejointFusion_node_with_T2",
         input_spec=["input_data"],
-        input_data=processing_node.lzin.input_data_with_T2,
+        input_data=processing_node_with_T2.lzin.input_data_with_T2,
     )
     prejointFusion_node_with_T2.add(
         get_inputs_workflow(my_source_node=prejointFusion_node_with_T2)
@@ -1767,7 +1784,7 @@ if __name__ == "__main__":
     prejointFusion_node_without_T2 = pydra.Workflow(
         name="prejointFusion_node_without_T2",
         input_spec=["input_data"],
-        input_data=processing_node.lzin.input_data_without_T2,
+        input_data=processing_node_without_T2.lzin.input_data_without_T2,
     )
     prejointFusion_node_without_T2.add(
         get_inputs_workflow(my_source_node=prejointFusion_node_without_T2)
