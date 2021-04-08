@@ -722,26 +722,51 @@ if __name__ == "__main__":
     ) -> pydra.Workflow:
         from sem_tasks.segmentation.specialized import BRAINSABC
 
+        averaged_filenames_by_type = {
+            "T1": "t1_average_BRAINSABC.nii.gz",
+            "T2": "t2_average_BRAINSABC.nii.gz",
+            "PD": "pd_average_BRAINSABC.nii.gz",
+            "FL": "fl_average_BRAINSABC.nii.gz",
+        }
+
         @pydra.mark.task
-        def get_t1_average(outputs):
-            if "t1_average_BRAINSABC.nii.gz" in outputs:
-                return outputs[outputs.index("t1_average_BRAINSABC.nii.gz")]
+        def get_averaged_file(outputs, filetype):
+            output_filenames = [x.name for x in outputs]
+            if averaged_filenames_by_type[filetype] in output_filenames:
+                return outputs[
+                    output_filenames.index(averaged_filenames_by_type[filetype])
+                ]
             else:
                 return None
 
-        @pydra.mark.task
-        def get_t2_average(outputs, inputVolumeTypes):
-            if "T2" in inputVolumeTypes:
-                return outputs[1]
-            else:
-                return None
+        # @pydra.mark.task
+        # def get_t2_average(outputs):
+        #     if averaged_filenames_by_type["T2"] in outputs:
+        #         return outputs[outputs.index(averaged_filenames_by_type["T2"])]
+        #     else:
+        #         return None
+        #
+        # @pydra.mark.task
+        # def get_pd_average(outputs):
+        #     if averaged_filenames_by_type["PD"] in outputs:
+        #         return outputs[outputs.index(averaged_filenames_by_type["PD"])]
+        #     else:
+        #         return None
+        #
+        # @pydra.mark.task
+        # def get_fl_average(outputs):
+        #     if averaged_filenames_by_type["FL"] in outputs:
+        #         return outputs[outputs.index(averaged_filenames_by_type["FL"])]
+        #     else:
+        #         return None
 
         @pydra.mark.task
-        def get_posteriors(outputs, inputVolumeTypes):
-            if "T2" in inputVolumeTypes:
-                return outputs[2:]
-            else:
-                return outputs[1:]
+        def get_posteriors(outputs):
+            posteriors_starting_index = 0
+            for averaged_output in list(averaged_filenames_by_type.values()):
+                if averaged_output in outputs:
+                    posteriors_starting_index += 1
+            return outputs[posteriors_starting_index:]
 
         @pydra.mark.task
         def print_input(x, element):
@@ -879,23 +904,37 @@ if __name__ == "__main__":
             )
         )
         abc_workflow.add(
-            get_t1_average(
+            get_averaged_file(
                 name="get_t1_average",
                 outputs=abc_task.lzout.implicitOutputs,
+                filetype="T1",
             )
         )
         abc_workflow.add(
-            get_t2_average(
+            get_averaged_file(
                 name="get_t2_average",
                 outputs=abc_task.lzout.implicitOutputs,
-                inputVolumeTypes=abc_workflow.lzin.inputVolumeTypes,
+                filetype="T2",
+            )
+        )
+        abc_workflow.add(
+            get_averaged_file(
+                name="get_pd_average",
+                outputs=abc_task.lzout.implicitOutputs,
+                filetype="PD",
+            )
+        )
+        abc_workflow.add(
+            get_averaged_file(
+                name="get_fl_average",
+                outputs=abc_task.lzout.implicitOutputs,
+                filetype="FL",
             )
         )
         abc_workflow.add(
             get_posteriors(
                 name="get_posteriors",
                 outputs=abc_task.lzout.implicitOutputs,
-                inputVolumeTypes=abc_workflow.lzin.inputVolumeTypes,
             )
         )
         abc_workflow.set_output(
@@ -909,6 +948,8 @@ if __name__ == "__main__":
                 ),
                 ("t1_average", abc_workflow.get_t1_average.lzout.out),
                 ("t2_average", abc_workflow.get_t2_average.lzout.out),
+                ("pd_average", abc_workflow.get_pd_average.lzout.out),
+                ("fl_average", abc_workflow.get_fl_average.lzout.out),
                 ("posteriors", abc_workflow.get_posteriors.lzout.out),
             ]
         )
