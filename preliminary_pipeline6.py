@@ -1626,7 +1626,7 @@ if __name__ == "__main__":
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
     processing_node = pydra.Workflow(
         name="processing_node",
-        input_spec=["input_data"],
+        input_spec=["input_data_with_T2", "input_data_without_T2"],
         input_data_without_T2=source_node.lzin.input_data_without_T2,
         input_data_with_T2=source_node.lzin.input_data_with_T2,
     )
