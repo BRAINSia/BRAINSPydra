@@ -843,9 +843,6 @@ if __name__ == "__main__":
         abc_task.inputs.filterMethod = experiment_configuration[configkey].get(
             "filterMethod"
         )
-        # abc_task.inputs.inputVolumeTypes = experiment_configuration[configkey].get(
-        #     "inputVolumeTypes"
-        # )
         abc_task.inputs.interpolationMode = experiment_configuration[configkey].get(
             "interpolationMode"
         )
@@ -1559,7 +1556,7 @@ if __name__ == "__main__":
         )
         antsRegistration_task.inputs.output_warped_image = (
             antsRegistration_workflow.make_output_warped_image.lzout.out
-        )  # experiment_configuration[configkey].get('output_warped_image')
+        )
 
         antsRegistration_workflow.add(antsRegistration_task)
         antsRegistration_workflow.set_output(
