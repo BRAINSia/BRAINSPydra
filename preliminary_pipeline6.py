@@ -2097,8 +2097,16 @@ if __name__ == "__main__":
     # processing_node.add(jointFusion_node_without_T2)
     processing_node.set_output(
         [
-            ("prejointFusion_out", processing_node.prejointFusion_node.lzout.all_),
-            # ("jointFusion_out", processing_node.jointFusion_node.lzout.all_),
+            (
+                "prejointFusion_out",
+                processing_node.prejointFusion_node_with_T2.lzout.all_,
+            ),
+            (
+                "prejointFusion_out",
+                processing_node.prejointFusion_node_without_T2.lzout.all_,
+            ),
+            # ("jointFusion_out", processing_node.jointFusion_node_with_T2.lzout.all_),
+            # ("jointFusion_out", processing_node.jointFusion_node_without_T2.lzout.all_),
         ]
     )
 
