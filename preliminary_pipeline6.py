@@ -730,7 +730,7 @@ if __name__ == "__main__":
         }
 
         @pydra.mark.task
-        def get_averaged_file(outputs, filetype):
+        def get_averaged_volume(outputs, filetype):
             output_filenames = [x.name for x in outputs]
             if averaged_filenames_by_type[filetype] in output_filenames:
                 return outputs[
@@ -739,32 +739,12 @@ if __name__ == "__main__":
             else:
                 return None
 
-        # @pydra.mark.task
-        # def get_t2_average(outputs):
-        #     if averaged_filenames_by_type["T2"] in outputs:
-        #         return outputs[outputs.index(averaged_filenames_by_type["T2"])]
-        #     else:
-        #         return None
-        #
-        # @pydra.mark.task
-        # def get_pd_average(outputs):
-        #     if averaged_filenames_by_type["PD"] in outputs:
-        #         return outputs[outputs.index(averaged_filenames_by_type["PD"])]
-        #     else:
-        #         return None
-        #
-        # @pydra.mark.task
-        # def get_fl_average(outputs):
-        #     if averaged_filenames_by_type["FL"] in outputs:
-        #         return outputs[outputs.index(averaged_filenames_by_type["FL"])]
-        #     else:
-        #         return None
-
         @pydra.mark.task
         def get_posteriors(outputs):
+            output_filenames = [x.name for x in outputs]
             posteriors_starting_index = 0
             for averaged_output in list(averaged_filenames_by_type.values()):
-                if averaged_output in outputs:
+                if averaged_output in output_filenames:
                     posteriors_starting_index += 1
             return outputs[posteriors_starting_index:]
 
@@ -904,28 +884,28 @@ if __name__ == "__main__":
             )
         )
         abc_workflow.add(
-            get_averaged_file(
+            get_averaged_volume(
                 name="get_t1_average",
                 outputs=abc_task.lzout.implicitOutputs,
                 filetype="T1",
             )
         )
         abc_workflow.add(
-            get_averaged_file(
+            get_averaged_volume(
                 name="get_t2_average",
                 outputs=abc_task.lzout.implicitOutputs,
                 filetype="T2",
             )
         )
         abc_workflow.add(
-            get_averaged_file(
+            get_averaged_volume(
                 name="get_pd_average",
                 outputs=abc_task.lzout.implicitOutputs,
                 filetype="PD",
             )
         )
         abc_workflow.add(
-            get_averaged_file(
+            get_averaged_volume(
                 name="get_fl_average",
                 outputs=abc_task.lzout.implicitOutputs,
                 filetype="FL",
