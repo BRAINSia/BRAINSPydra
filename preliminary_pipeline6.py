@@ -1614,7 +1614,7 @@ if __name__ == "__main__":
         "sessions_without_T2"
     )
     source_node.split(
-        ("input_data_with_T2", "input_data_without_T2")
+        ["input_data_with_T2", "input_data_without_T2"]
     )  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
