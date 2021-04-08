@@ -140,52 +140,14 @@
   },
     "BRAINSResample2": {
     "executable": "BRAINSResample",
-    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "template_leftHemisphere.nii.gz",
     "pixelType": "binary"
   },
     "BRAINSResample3": {
     "executable": "BRAINSResample",
-    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-    "interpolationMode": "NearestNeighbor",
-    "outputVolume": "hncma_atlas.nii.gz",
-    "pixelType": "short"
-  },
-    "BRAINSResample4": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
     "interpolationMode": "Linear",
-    "outputVolume": "template_rightHemisphere.nii.gz",
-    "pixelType": "binary"
-  },
-    "BRAINSResample5": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-    "interpolationMode": "NearestNeighbor",
-    "outputVolume": "template_nac_labels.nii.gz",
+    "outputVolume": "t2_resampled_in_t1.nii.gz",
     "pixelType": "short"
-  },
-    "BRAINSResample6": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-    "interpolationMode": "Linear",
-    "outputVolume": "template_ventricles.nii.gz",
-    "pixelType": "binary"
-  },
-    "BRAINSResample7": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-    "interpolationMode": "NearestNeighbor",
-    "outputVolume": "template_WMPM2_labels.nii.gz",
-    "pixelType": "short"
-  },
-    "BRAINSResample8": {
-    "executable": "BRAINSResample",
-    "inputVolume": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-    "interpolationMode": "Linear",
-    "outputVolume": "template_headregion.nii.gz",
-    "pixelType": "binary"
   },
   "BRAINSCreateLabelMapFromProbabilityMaps1": {
     "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
