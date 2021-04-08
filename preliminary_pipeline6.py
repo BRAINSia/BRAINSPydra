@@ -59,16 +59,12 @@ if __name__ == "__main__":
                 new_filename = f"{Path(Path(directory) / Path(parent_dir) / Path(before_str+Path(filename).with_suffix('').with_suffix('').name))}{append_str}{extension}"
             return new_filename
 
-    def get_inputs_workflow(my_source_node, containsT2: bool):
+    def get_inputs_workflow(my_source_node):
         @pydra.mark.task
-        def get_input_field(input_dict: dict, containsT2, field):
+        def get_input_field(input_dict: dict, field):
             print(f"input_dict: {input_dict}")
-            if containsT2:
-                session_dicts = input_dict["sessions_with_T2"]
-            else:
-                session_dicts = input_dict["sessions_without_T2"]
-            if field in session_dicts:
-                return session_dicts[field]
+            if field in input_dict:
+                return input_dict[field]
             else:
                 return None
 
@@ -1621,7 +1617,7 @@ if __name__ == "__main__":
         "sessions_without_T2"
     )
     source_node.split(
-        ["input_data_with_T2", "input_data_without_T2"]
+        ("input_data_with_T2", "input_data_without_T2")
     )  # Create an iterable for each t1 input file (for preliminary pipeline 3, the input files are .txt)
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
@@ -1638,9 +1634,7 @@ if __name__ == "__main__":
         input_spec=["input_data"],
         input_data=processing_node.lzin.input_data_with_T2,
     )
-    prejointFusion_node.add(
-        get_inputs_workflow(my_source_node=prejointFusion_node, containsT2=True)
-    )
+    prejointFusion_node.add(get_inputs_workflow(my_source_node=prejointFusion_node))
     prejointFusion_node.add(
         get_inputVolumesT1(
             name="get_inputVolumesT1",
