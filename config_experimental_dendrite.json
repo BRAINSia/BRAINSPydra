@@ -1,6 +1,6 @@
 {
   "output_dir": "/Shared/sinapse/pydra-cjohnson/output_dir_from_argon_30",
-  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_full_run_multithreaded_Shared_30",
+  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_dendrite",
   "graph_dir": "/Shared/sinapse/pydra-cjohnson/graph_dir_argon_30",
   "num_threads": 4,
   "BRAINSConstellationDetector1": {
