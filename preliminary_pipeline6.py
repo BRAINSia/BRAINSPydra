@@ -1173,7 +1173,7 @@ if __name__ == "__main__":
 
         return landmark_initializer_workflow
 
-    def make_antsRegistration_workflow3(
+    def make_antsRegistration_workflow3_without_T2(
         fixed_image, fixed_image_masks, initial_moving_transform
     ) -> pydra.Workflow:
 
@@ -1188,7 +1188,208 @@ if __name__ == "__main__":
             return atlas_id
 
         workflow_name = "antsRegistration_workflow3"
-        configkey = "ANTSRegistration3"
+        configkey = "ANTSRegistration3_without_T2"
+        print(f"Making task {workflow_name}")
+
+        # Define the workflow and its lazy inputs
+        antsRegistration_workflow = pydra.Workflow(
+            name=workflow_name,
+            input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"],
+            fixed_image=fixed_image,
+            fixed_image_masks=fixed_image_masks,
+            initial_moving_transform=initial_moving_transform,
+        )
+
+        antsRegistration_workflow.add(
+            get_atlas_id_from_landmark_initializer_transform(
+                name="atlas_id",
+                landmark_initializer_transform=antsRegistration_workflow.lzin.initial_moving_transform,
+            )
+        )
+
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_moving_image",
+                directory=experiment_configuration[configkey].get("moving_image_dir"),
+                parent_dir=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "moving_image_filename"
+                ),
+            )
+        )
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_moving_image_masks",
+                directory=experiment_configuration[configkey].get("moving_image_dir"),
+                parent_dir=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "moving_image_masks_filename"
+                ),
+            )
+        )
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_output_transform_prefix",
+                before_str=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "output_transform_prefix_suffix"
+                ),
+            )
+        )
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_output_warped_image",
+                before_str=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "output_warped_image_suffix"
+                ),
+            )
+        )
+
+        registration = Registration()
+        registration._cmd = experiment_configuration[configkey].get("executable")
+        if environment_configuration["set_threads"]:
+            # Set the number of threads to be used by ITK
+            antsRegistration_task = registration
+            antsRegistration_task.set_default_num_threads(1)
+            antsRegistration_task.inputs.num_threads = 1
+            antsRegistration_task = Nipype1Task(antsRegistration_task)
+        else:
+            # Use the default number of threads (1)
+            antsRegistration_task = Nipype1Task(registration)
+
+        # Set task inputs
+        antsRegistration_task.inputs.fixed_image = (
+            antsRegistration_workflow.lzin.fixed_image
+        )
+        antsRegistration_task.inputs.fixed_image_masks = (
+            antsRegistration_workflow.lzin.fixed_image_masks
+        )
+        antsRegistration_task.inputs.initial_moving_transform = (
+            antsRegistration_workflow.lzin.initial_moving_transform
+        )
+        antsRegistration_task.inputs.moving_image = (
+            antsRegistration_workflow.make_moving_image.lzout.out
+        )
+        antsRegistration_task.inputs.moving_image_masks = (
+            antsRegistration_workflow.make_moving_image_masks.lzout.out
+        )
+
+        antsRegistration_task.inputs.save_state = experiment_configuration[
+            configkey
+        ].get("save_state")
+        antsRegistration_task.inputs.transforms = experiment_configuration[
+            configkey
+        ].get("transforms")
+        antsRegistration_task.inputs.transform_parameters = experiment_configuration[
+            configkey
+        ].get("transform_parameters")
+        antsRegistration_task.inputs.number_of_iterations = experiment_configuration[
+            configkey
+        ].get("number_of_iterations")
+        antsRegistration_task.inputs.dimension = experiment_configuration[
+            configkey
+        ].get("dimensionality")
+        antsRegistration_task.inputs.write_composite_transform = (
+            experiment_configuration[configkey].get("write_composite_transform")
+        )
+        antsRegistration_task.inputs.collapse_output_transforms = (
+            experiment_configuration[configkey].get("collapse_output_transforms")
+        )
+        antsRegistration_task.inputs.verbose = experiment_configuration[configkey].get(
+            "verbose"
+        )
+        antsRegistration_task.inputs.initialize_transforms_per_stage = (
+            experiment_configuration[configkey].get("initialize_transforms_per_stage")
+        )
+        antsRegistration_task.inputs.float = experiment_configuration[configkey].get(
+            "float"
+        )
+        antsRegistration_task.inputs.metric = experiment_configuration[configkey].get(
+            "metric"
+        )
+        antsRegistration_task.inputs.metric_weight = experiment_configuration[
+            configkey
+        ].get("metric_weight")
+        antsRegistration_task.inputs.radius_or_number_of_bins = (
+            experiment_configuration[configkey].get("radius_or_number_of_bins")
+        )
+        antsRegistration_task.inputs.sampling_strategy = experiment_configuration[
+            configkey
+        ].get("sampling_strategy")
+        antsRegistration_task.inputs.sampling_percentage = experiment_configuration[
+            configkey
+        ].get("sampling_percentage")
+        antsRegistration_task.inputs.convergence_threshold = experiment_configuration[
+            configkey
+        ].get("convergence_threshold")
+        antsRegistration_task.inputs.convergence_window_size = experiment_configuration[
+            configkey
+        ].get("convergence_window_size")
+        antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration[
+            configkey
+        ].get("smoothing_sigmas")
+        antsRegistration_task.inputs.sigma_units = experiment_configuration[
+            configkey
+        ].get("sigma_units")
+        antsRegistration_task.inputs.shrink_factors = experiment_configuration[
+            configkey
+        ].get("shrink_factors")
+        antsRegistration_task.inputs.use_estimate_learning_rate_once = (
+            experiment_configuration[configkey].get("use_estimate_learning_rate_once")
+        )
+        antsRegistration_task.inputs.use_histogram_matching = experiment_configuration[
+            configkey
+        ].get("use_histogram_matching")
+        antsRegistration_task.inputs.winsorize_lower_quantile = (
+            experiment_configuration[configkey].get("winsorize_lower_quantile")
+        )
+        antsRegistration_task.inputs.winsorize_upper_quantile = (
+            experiment_configuration[configkey].get("winsorize_upper_quantile")
+        )
+
+        # Set the variables that set output file names
+        antsRegistration_task.inputs.output_transform_prefix = (
+            antsRegistration_workflow.make_output_transform_prefix.lzout.out
+        )
+        antsRegistration_task.inputs.output_warped_image = (
+            antsRegistration_workflow.make_output_warped_image.lzout.out
+        )
+
+        antsRegistration_workflow.add(antsRegistration_task)
+        antsRegistration_workflow.set_output(
+            [
+                ("save_state", antsRegistration_task.lzout.save_state),
+                (
+                    "composite_transform",
+                    antsRegistration_task.lzout.composite_transform,
+                ),
+                (
+                    "inverse_composite_transform",
+                    antsRegistration_task.lzout.inverse_composite_transform,
+                ),
+                ("warped_image", antsRegistration_task.lzout.warped_image),
+            ]
+        )
+
+        return antsRegistration_workflow
+
+    def make_antsRegistration_workflow3_with_T2(
+        fixed_image, fixed_image_masks, initial_moving_transform
+    ) -> pydra.Workflow:
+
+        from pydra.tasks.nipype1.utils import Nipype1Task
+        from nipype.interfaces.ants import Registration
+
+        @pydra.mark.task
+        def get_atlas_id_from_landmark_initializer_transform(
+            landmark_initializer_transform,
+        ):
+            atlas_id = Path(landmark_initializer_transform).name.split("_")[1]
+            return atlas_id
+
+        workflow_name = "antsRegistration_workflow3"
+        configkey = "ANTSRegistration3_with_T2"
         print(f"Making task {workflow_name}")
 
         # Define the workflow and its lazy inputs
@@ -1779,7 +1980,7 @@ if __name__ == "__main__":
     #     )
     # )
     # prejointFusion_node_with_T2.add(
-    #     make_antsRegistration_workflow3(
+    #     make_antsRegistration_workflow3_with_T2(
     #         fixed_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
     #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
     #         initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
@@ -1805,7 +2006,17 @@ if __name__ == "__main__":
     #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
     #     )
     # )
-    #
+    # prejointFusion_node_with_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=3,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms3"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+    #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
+
     prejointFusion_node_without_T2 = pydra.Workflow(
         name="prejointFusion_node_without_T2",
         input_spec=["input_data"],
