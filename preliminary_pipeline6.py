@@ -1594,11 +1594,12 @@ if __name__ == "__main__":
     def get_inputVolumesT1(inputVolumes, inputVolumeTypes):
         inputVolumesT1 = []
         print(f"inputVolumeTypes: {inputVolumeTypes}")
-        for index, ele in enumerate(inputVolumeTypes):
-            print(f"ele: {ele}")
-            if ele == "T1":
-                inputVolumesT1.append(inputVolumes[index])
-        print(f"inputVolumesT1: {inputVolumesT1}")
+        if inputVolumeTypes != None:
+            for index, ele in enumerate(inputVolumeTypes):
+                print(f"ele: {ele}")
+                if ele == "T1":
+                    inputVolumesT1.append(inputVolumes[index])
+            print(f"inputVolumesT1: {inputVolumesT1}")
         return inputVolumesT1
 
     # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
@@ -2139,10 +2140,12 @@ if __name__ == "__main__":
     # source_node.add(jointFusion_node_without_T2)
 
     # Set the output of the source node to the same as the output of the sink_node
-    source_node.set_output([
-                            ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
-                            ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
-                            ])
+    source_node.set_output(
+        [
+            ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
+            ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
+        ]
+    )
 
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
     # def make_graphs(node: pydra.Workflow):
