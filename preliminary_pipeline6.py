@@ -1629,43 +1629,44 @@ if __name__ == "__main__":
         "sessions_without_T2"
     )
 
-    # source_node.add(
-    #     print_inputs(
-    #         name="print_input_data_with_T2",
-    #         input=source_node.lzin.input_data_with_T2,
-    #         input_type="input_data_with_T2",
-    #     )
+    @pydra.mark.task
+    def get_sessions_data(input_data):
+        return input_data
+
+    source_node.add(
+        get_sessions_data(
+            name="get_sessions_with_T2", input_data=source_node.lzin.input_data_with_T2
+        ).split("input_data")
+    )
+
+    source_node.add(
+        get_sessions_data(
+            name="get_sessions_without_T2",
+            input_data=source_node.lzin.input_data_without_T2,
+        ).split("input_data")
+    )
+
+    # source_node_with_T2 = pydra.Workflow(
+    #     name="source_node_with_T2",
+    #     input_spec=["input_data_with_T2"],
     # )
+    # source_node_with_T2.inputs.input_data_with_T2 = source_node.lzin.input_data_with_T2
+    # source_node_with_T2.split("input_data_with_T2")
 
-    # source_node.add(
-    #     print_inputs(
-    #         name="print_input_data_without_T2",
-    #         input=source_node.lzin.input_data_without_T2,
-    #         input_type="input_data_without_T2",
-    #     )
+    # source_node_without_T2 = pydra.Workflow(
+    #     name="source_node_without_T2",
+    #     input_spec=["input_data_without_T2"],
     # )
-
-    source_node_with_T2 = pydra.Workflow(
-        name="source_node_with_T2",
-        input_spec=["input_data_with_T2"],
-    )
-    source_node_with_T2.inputs.input_data_with_T2 = source_node.lzin.input_data_with_T2
-    source_node_with_T2.split("input_data_with_T2")
-
-    source_node_without_T2 = pydra.Workflow(
-        name="source_node_without_T2",
-        input_spec=["input_data_without_T2"],
-    )
-    source_node_without_T2.inputs.input_data_without_T2 = (
-        source_node.lzin.input_data_without_T2
-    )
-    source_node_without_T2.split("input_data_without_T2")
+    # source_node_without_T2.inputs.input_data_without_T2 = (
+    #     source_node.lzin.input_data_without_T2
+    # )
+    # source_node_without_T2.split("input_data_without_T2")
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
     processing_node_with_T2 = pydra.Workflow(
         name="processing_node_with_T2",
         input_spec=["input_data_with_T2"],
-        input_data_with_T2=source_node_with_T2.lzin.input_data_with_T2,
+        input_data_with_T2=source_node.get_sessions_with_T2.lzout.out,
     )
     processing_node_with_T2.add(
         print_inputs(
@@ -1678,7 +1679,7 @@ if __name__ == "__main__":
     processing_node_without_T2 = pydra.Workflow(
         name="processing_node_without_T2",
         input_spec=["input_data_without_T2"],
-        input_data_without_T2=source_node_without_T2.lzin.input_data_without_T2,
+        input_data_without_T2=source_node.get_sessions_without_T2.lzout.out,
     )
     processing_node_without_T2.add(
         print_inputs(
@@ -2181,30 +2182,30 @@ if __name__ == "__main__":
         ]
     )
 
-    source_node_without_T2.add(processing_node_without_T2)
-    source_node_with_T2.add(processing_node_with_T2)
+    # source_node_without_T2.add(processing_node_without_T2)
+    # source_node_with_T2.add(processing_node_with_T2)
 
-    source_node_with_T2.set_output(
-        [
-            # ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
-            ("out_with_T2", processing_node_with_T2.lzout.out)
-        ]
-    )
+    # source_node_with_T2.set_output(
+    #     [
+    #         # ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
+    #         ("out_with_T2", processing_node_with_T2.lzout.out)
+    #     ]
+    # )
 
-    source_node_without_T2.set_output(
-        [
-            # ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
-            (
-                "out_without_T2",
-                processing_node_without_T2.lzout.out,
-            )
-        ]
-    )
+    # source_node_without_T2.set_output(
+    #     [
+    #         # ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
+    #         (
+    #             "out_without_T2",
+    #             processing_node_without_T2.lzout.out,
+    #         )
+    #     ]
+    # )
 
-    source_node.add(source_node_with_T2)
-    source_node.add(source_node_without_T2)
-    # source_node.add(processing_node_with_T2)
-    # source_node.add(processing_node_without_T2)
+    # source_node.add(source_node_with_T2)
+    # source_node.add(source_node_without_T2)
+    source_node.add(processing_node_with_T2)
+    source_node.add(processing_node_without_T2)
     # source_node.add(prejointFusion_node_with_T2)
     # source_node.add(prejointFusion_node_without_T2)
     # source_node.add(jointFusion_node_with_T2)
@@ -2215,7 +2216,8 @@ if __name__ == "__main__":
         [
             # ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
             # ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
-            ("out", source_node_with_T2.lzout.out_with_T2)
+            # ("out", source_node_with_T2.lzout.out_with_T2)
+            ("out", source_node.get_sessions_with_T2.lzout.out)
         ]
     )
 
