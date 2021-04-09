@@ -1619,6 +1619,10 @@ if __name__ == "__main__":
         return inputVolumesT1
 
     @pydra.mark.task
+    def get_firstT1(inputVolumesT1):
+        return inputVolumesT1[0]
+
+    @pydra.mark.task
     def print_inputs(input, input_type):
         print(f"{input_type}: {input}")
         return input
@@ -1683,8 +1687,14 @@ if __name__ == "__main__":
         )
     )
     prejointFusion_node_with_T2.add(
+        get_firstT1(
+            name="get_firstT1",
+            inputVolumesT1=prejointFusion_node_with_T2.get_inputVolumesT1.lzout.out,
+        )
+    )
+    prejointFusion_node_with_T2.add(
         make_bcd_workflow1(
-            inputVolume=prejointFusion_node_with_T2.get_inputVolumesT1.lzout.out,
+            inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
             inputLandmarksEMSP=prejointFusion_node_with_T2.inputs_workflow.lzout.inputLandmarksEMSP,
         )
     )
@@ -1705,7 +1715,7 @@ if __name__ == "__main__":
     )
     prejointFusion_node_with_T2.add(
         make_resample_workflow1(
-            inputVolume=prejointFusion_node_with_T2.get_inputVolumesT1.lzout.out,
+            inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
             warpTransform=prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
         )
     )
@@ -1821,8 +1831,14 @@ if __name__ == "__main__":
         )
     )
     prejointFusion_node_without_T2.add(
+        get_firstT1(
+            name="get_firstT1",
+            inputVolumesT1=prejointFusion_node_without_T2.get_inputVolumesT1.lzout.out,
+        )
+    )
+    prejointFusion_node_without_T2.add(
         make_bcd_workflow1(
-            inputVolume=prejointFusion_node_without_T2.get_inputVolumesT1.lzout.out,
+            inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
             inputLandmarksEMSP=prejointFusion_node_without_T2.inputs_workflow.lzout.inputLandmarksEMSP,
         )
     )
@@ -1843,7 +1859,7 @@ if __name__ == "__main__":
     )
     prejointFusion_node_without_T2.add(
         make_resample_workflow1(
-            inputVolume=prejointFusion_node_without_T2.get_inputVolumesT1.lzout.out,
+            inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
             warpTransform=prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
         )
     )
