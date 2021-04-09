@@ -19,35 +19,35 @@
     "writeBranded2DImage": "BCD_Branded2DQCimage.png"
   },
   "BRAINSROIAuto1": {
-    "executable": "BRAINSROIAuto",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "cropOutput": " ",
     "outputVolume": "Cropped_BCD_ACPC_Aligned.nii.gz"
   },
   "BRAINSLandmarkInitializer1": {
-    "executable": "BRAINSLandmarkInitializer",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSLandmarkInitializer",
     "inputFixedLandmarkFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "inputWeightFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_subject_to_atlas_transform.h5"
   },
   "BRAINSLandmarkInitializer2": {
-    "executable": "BRAINSLandmarkInitializer",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSLandmarkInitializer",
     "inputMovingLandmarkFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_landmarks_50Lmks.fcsv",
     "inputWeightFilename": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_weights_50Lmks.wts",
     "outputTransformFilename": "landmarkInitializer_atlas_to_subject_transform.h5"
   },
   "BRAINSResample1": {
-    "executable": "BRAINSResample",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "subject2atlas.nii.gz"
   },
   "BRAINSROIAuto2": {
-    "executable": "BRAINSROIAuto",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 15.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "ANTSRegistration1": {
-    "executable": "/mnt/c/2020_Grad_School/Research/install/bin/antsRegistration",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_t1_denoised_gaussian.nii.gz",
     "moving_image_masks": [
       "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
@@ -181,7 +181,7 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSRegistration2": {
-    "executable": "antsRegistration",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_t1_denoised_gaussian.nii.gz",
     "moving_image_masks": [
       "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
@@ -310,7 +310,7 @@
     "winsorize_upper_quantile": 0.99
   },
   "BRAINSABC1": {
-    "executable": "BRAINSABC",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSABC",
     "atlasDefinition": "/Shared/sinapse/pydra-cjohnson/ExtendedAtlasDefinition.xml",
     "atlasToSubjectTransform": "atlas_to_subject.h5",
     "atlasToSubjectTransformType": "SyN",
@@ -401,7 +401,7 @@
     "inclusionThreshold": 0.0
   },
   "BRAINSLandmarkInitializer3": {
-    "executable": "BRAINSLandmarkInitializer",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSLandmarkInitializer",
     "inputMovingLandmarkFilename": [
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/BCD_ACPC_Landmarks.fcsv",
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/99056/BCD_ACPC_Landmarks.fcsv",
@@ -428,12 +428,12 @@
     "outputTransformFilename": "landmarkInitializer_99056_to_subject_transform.h5"
   },
   "BRAINSROIAuto3": {
-    "executable": "BRAINSROIAuto",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSROIAuto",
     "ROIAutoDilateSize": 10.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "ANTSRegistration3": {
-    "executable": "antsRegistration",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image_filename": "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
     "moving_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/",
     "moving_image_masks_dir": [
@@ -630,6 +630,7 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSApplyTransforms1": {
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsApplyTransforms",
     "dimension": 3,
     "float": false,
     "interpolation": "MultiLabel",
@@ -638,6 +639,7 @@
     "output_image_end": "fswm_2_subj_lbl.nii.gz"
   },
   "ANTSApplyTransforms2": {
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsApplyTransforms",
     "dimension": 3,
     "float": false,
     "interpolation": "MultiLabel",
@@ -646,6 +648,7 @@
     "output_image_end": "_2_subj_lbl.nii.gz"
   },
   "ANTSJointFusion1": {
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsJointFusion",
     "alpha": 0.1,
     "beta": 2.0,
     "dimension": 3,
