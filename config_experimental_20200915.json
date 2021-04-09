@@ -4,7 +4,7 @@
   "graph_dir": "/Shared/sinapse/pydra-cjohnson/graph_dir_argon",
   "num_threads": 4,
   "BRAINSConstellationDetector1": {
-    "executable": "BRAINSConstellationDetector",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSConstellationDetector",
     "LLSModel": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/LLSModel_50Lmks.h5 ",
     "acLowerBound": 80.000000,
     "atlasLandmarkWeights": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/20141004_BCD/template_weights_50Lmks.wts ",
