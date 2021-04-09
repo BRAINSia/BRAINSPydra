@@ -350,18 +350,18 @@
     "useKNN": " "
   },
   "BRAINSResample2": {
-    "executable": "BRAINSResample",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
     "interpolationMode": "Linear",
     "pixelType": "binary"
   },
   "BRAINSResample3": {
-    "executable": "BRAINSResample",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
     "interpolationMode": "Linear",
     "outputVolume": "t2_resampled_in_t1.nii.gz",
     "pixelType": "short"
   },
   "BRAINSCreateLabelMapFromProbabilityMaps1": {
-    "executable": "BRAINSCreateLabelMapFromProbabilityMaps",
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSCreateLabelMapFromProbabilityMaps",
     "cleanLabelVolume": "fixed_brainlabels_seg.nii.gz",
     "dirtyLabelVolume": "fixed_headlabels_seg.nii.gz",
     "foregroundPriors": [
@@ -432,7 +432,7 @@
     "ROIAutoDilateSize": 10.000000,
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
-  "ANTSRegistration3": {
+  "ANTSRegistration3_without_T2": {
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image_filename": "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
     "moving_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/",
@@ -447,7 +447,6 @@
       "registrationMask.nii.gz"
     ],
     "output_transform_prefix_suffix": "_ToSubjectPreJointFusion_SyN",
-    "moving_image": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/t1_average_BRAINSABC_GaussianDenoised.nii.gz",
     "moving_image_masks": [
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
@@ -629,6 +628,217 @@
     "winsorize_lower_quantile": 0.01,
     "winsorize_upper_quantile": 0.99
   },
+  "ANTSRegistration3_with_T2": {
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
+    "moving_image_filename": "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
+    "moving_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/",
+    "moving_image_masks_dir": [
+      "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/"
+    ],
+    "moving_image_masks_filename": [
+      "registrationMask.nii.gz",
+      "registrationMask.nii.gz",
+      "registrationMask.nii.gz",
+      "registrationMask.nii.gz",
+      "registrationMask.nii.gz"
+    ],
+    "output_transform_prefix_suffix": "_ToSubjectPreJointFusion_SyN",
+    "moving_image_masks": [
+      "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
+      "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
+      "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
+      "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/registrationMask.nii.gz",
+      "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/91300/registrationMask.nii.gz"
+    ],
+    "save_state": "SavedAtlasState.h5",
+    "verbose": true,
+    "collapse_output_transforms": false,
+    "dimensionality": 3,
+    "float": true,
+    "initialize_transforms_per_stage": true,
+    "transforms": [
+      "Affine",
+      "Affine",
+      "SyN",
+      "SyN",
+      "SyN"
+    ],
+    "transform_parameters": [
+      [
+        0.1
+      ],
+      [
+        0.1
+      ],
+      [
+        0.1,
+        3.0,
+        0.0
+      ],
+      [
+        0.1,
+        3.0,
+        0.0
+      ],
+      [
+        0.1,
+        3.0,
+        0.0
+      ]
+    ],
+    "number_of_iterations": [
+      [
+        1000,
+        1000,
+        500
+      ],
+      [
+        500,
+        500
+      ],
+      [
+        1000,
+        250
+      ],
+      [
+        140
+      ],
+      [
+        25
+      ]
+    ],
+    "write_composite_transform": true,
+    "metric": [
+      "MI",
+      "MI",
+      "MI",
+      "CC",
+      "CC",
+      "CC",
+      "CC",
+      "CC"
+    ],
+    "metric_weight": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "radius_or_number_of_bins": [
+      32,
+      32,
+      32,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "sampling_strategy": [
+      "Regular",
+      "Regular",
+      "Regular",
+      "None",
+      "None",
+      "None",
+      "None",
+      "None"
+    ],
+    "sampling_percentage": [
+      0.5,
+      0.5,
+      0.5,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "convergence_threshold": [
+      0.00000005,
+      0.0000005,
+      0.0000005,
+      0.000005,
+      0.00005
+    ],
+    "convergence_window_size": [
+      12,
+      12,
+      12,
+      12,
+      12
+    ],
+    "smoothing_sigmas": [
+      [
+        3,
+        2,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        1
+      ],
+      [
+        0
+      ]
+    ],
+    "sigma_units": [
+      "vox",
+      "vox",
+      "vox",
+      "vox",
+      "vox"
+    ],
+    "shrink_factors": [
+      [
+        8,
+        4,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        2
+      ],
+      [
+        1
+      ]
+    ],
+    "use_estimate_learning_rate_once": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "use_histogram_matching": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "output_warped_image_suffix": "_2subject.nii.gz",
+    "winsorize_lower_quantile": 0.01,
+    "winsorize_upper_quantile": 0.99
+  },
   "ANTSApplyTransforms1": {
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsApplyTransforms",
     "dimension": 3,
@@ -646,6 +856,15 @@
     "input_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas",
     "input_image_filename": "wholeBrain_label.nii.gz",
     "output_image_end": "_2_subj_lbl.nii.gz"
+  },
+  "ANTSApplyTransforms3": {
+    "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsApplyTransforms",
+    "dimension": 3,
+    "float": false,
+    "interpolation": "BSpline",
+    "input_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas",
+    "input_image_filename": "t2_average_BRAINSABC_GaussianDenoised.nii.gz",
+    "output_image_end": "_t2.nii.gz"
   },
   "ANTSJointFusion1": {
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsJointFusion",
