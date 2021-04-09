@@ -1823,27 +1823,27 @@ if __name__ == "__main__":
     #     )
     # )
     #
-    # prejointFusion_node_without_T2 = pydra.Workflow(
-    #     name="prejointFusion_node_without_T2",
-    #     input_spec=["input_data"],
-    #     input_data=processing_node_without_T2.lzin.input_data_without_T2,
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     get_inputs_workflow(my_source_node=prejointFusion_node_without_T2)
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     get_inputVolumesT1(
-    #         name="get_inputVolumesT1",
-    #         inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
-    #         inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
-    #     )
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     make_bcd_workflow1(
-    #         inputVolume=prejointFusion_node_without_T2.get_inputVolumesT1.lzout.out,
-    #         inputLandmarksEMSP=prejointFusion_node_without_T2.inputs_workflow.lzout.inputLandmarksEMSP,
-    #     )
-    # )
+    prejointFusion_node_without_T2 = pydra.Workflow(
+        name="prejointFusion_node_without_T2",
+        input_spec=["input_data"],
+        input_data=processing_node_without_T2.lzin.input_data_without_T2,
+    )
+    prejointFusion_node_without_T2.add(
+        get_inputs_workflow(my_source_node=prejointFusion_node_without_T2)
+    )
+    prejointFusion_node_without_T2.add(
+        get_inputVolumesT1(
+            name="get_inputVolumesT1",
+            inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
+        )
+    )
+    prejointFusion_node_without_T2.add(
+        make_bcd_workflow1(
+            inputVolume=prejointFusion_node_without_T2.get_inputVolumesT1.lzout.out,
+            inputLandmarksEMSP=prejointFusion_node_without_T2.inputs_workflow.lzout.inputLandmarksEMSP,
+        )
+    )
     # prejointFusion_node_without_T2.add(
     #     make_roi_workflow1(
     #         inputVolume=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputResampledVolume
@@ -2026,69 +2026,69 @@ if __name__ == "__main__":
         ]
     )
 
-    # prejointFusion_node_without_T2.set_output(
-    #     [
-    #         ("bcd_workflow1", prejointFusion_node_without_T2.bcd_workflow1.lzout.all_),
-    # ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
-    # (
-    #     "landmarkInitializer_workflow1",
-    #     prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.all_,
-    # ),
-    # (
-    #     "landmarkInitializer_workflow2",
-    #     prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
-    # ),
-    # ("resample_workflow1", prejointFusion_node_without_T2.resample_workflow1.lzout.all_),
-    # ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
-    # (
-    #     "antsRegistration_workflow1",
-    #     prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
-    # ),
-    # (
-    #     "antsRegistration_workflow2",
-    #     prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
-    # ),
-    # ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-    # ("resample_workflow2", prejointFusion_node_without_T2.resample_workflow2.lzout.all_),
-    # ("resample_workflow3", prejointFusion_node_without_T2.resample_workflow3.lzout.all_),
-    # ("resample_workflow4", prejointFusion_node_without_T2.resample_workflow4.lzout.all_),
-    # ("resample_workflow5", prejointFusion_node_without_T2.resample_workflow5.lzout.all_),
-    # ("resample_workflow6", prejointFusion_node_without_T2.resample_workflow6.lzout.all_),
-    # ("resample_workflow7", prejointFusion_node_without_T2.resample_workflow7.lzout.all_),
-    # ("resample_workflow8", prejointFusion_node_without_T2.resample_workflow8.lzout.all_),
-    # (
-    #     "createLabelMapFromProbabilityMaps_workflow1",
-    #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-    # ),
-    # (
-    #     "landmarkInitializer_workflow3",
-    #     prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
-    # ),
-    # ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
-    # (
-    #     "antsRegistration_workflow3",
-    #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
-    # ),
-    # (
-    #     "antsApplyTransforms_workflow1",
-    #     prejointFusion_node_without_T2.antsApplyTransforms_workflow1.lzout.all_,
-    # ),
-    # (
-    #     "antsApplyTransforms_workflow2",
-    #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.all_,
-    # ),
-    # (
-    #     "atlas_image",
-    #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.warped_image,
-    # ),
-    # (
-    #     "atlas_segmentation_image",
-    #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.output_image,
-    # ),
-    # ("target_image", prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average),
-    # ("mask_image", prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume),
-    #     ]
-    # )
+    prejointFusion_node_without_T2.set_output(
+        [
+            ("bcd_workflow1", prejointFusion_node_without_T2.bcd_workflow1.lzout.all_),
+            # ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
+            # (
+            #     "landmarkInitializer_workflow1",
+            #     prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "landmarkInitializer_workflow2",
+            #     prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
+            # ),
+            # ("resample_workflow1", prejointFusion_node_without_T2.resample_workflow1.lzout.all_),
+            # ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
+            # (
+            #     "antsRegistration_workflow1",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsRegistration_workflow2",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
+            # ),
+            # ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
+            # ("resample_workflow2", prejointFusion_node_without_T2.resample_workflow2.lzout.all_),
+            # ("resample_workflow3", prejointFusion_node_without_T2.resample_workflow3.lzout.all_),
+            # ("resample_workflow4", prejointFusion_node_without_T2.resample_workflow4.lzout.all_),
+            # ("resample_workflow5", prejointFusion_node_without_T2.resample_workflow5.lzout.all_),
+            # ("resample_workflow6", prejointFusion_node_without_T2.resample_workflow6.lzout.all_),
+            # ("resample_workflow7", prejointFusion_node_without_T2.resample_workflow7.lzout.all_),
+            # ("resample_workflow8", prejointFusion_node_without_T2.resample_workflow8.lzout.all_),
+            # (
+            #     "createLabelMapFromProbabilityMaps_workflow1",
+            #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "landmarkInitializer_workflow3",
+            #     prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
+            # ),
+            # ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
+            # (
+            #     "antsRegistration_workflow3",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow1",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow2",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "atlas_image",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.warped_image,
+            # ),
+            # (
+            #     "atlas_segmentation_image",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.output_image,
+            # ),
+            # ("target_image", prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average),
+            # ("mask_image", prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume),
+        ]
+    )
 
     # jointFusion_node_with_T2 = pydra.Workflow(
     #     name="jointFusion_node_with_T2",
@@ -2151,7 +2151,7 @@ if __name__ == "__main__":
     # )
 
     processing_node_with_T2.add(prejointFusion_node_with_T2)
-    # processing_node_without_T2.add(prejointFusion_node_without_T2)
+    processing_node_without_T2.add(prejointFusion_node_without_T2)
     # processing_node.add(jointFusion_node_with_T2)
     # processing_node.add(jointFusion_node_without_T2)
     processing_node_with_T2.set_output(
@@ -2167,10 +2167,10 @@ if __name__ == "__main__":
     processing_node_without_T2.set_output(
         [
             (
-                # "prejointFusion_out",
-                # processing_node_without_T2.prejointFusion_node_without_T2.lzout.all_,
-                "out",
-                processing_node_without_T2.print_input_data_without_T2.lzout.out,
+                "prejointFusion_out",
+                processing_node_without_T2.prejointFusion_node_without_T2.lzout.all_,
+                # "out",
+                # processing_node_without_T2.print_input_data_without_T2.lzout.out,
             ),
             # ("jointFusion_out", processing_node.jointFusion_node_with_T2.lzout.all_),
             # ("jointFusion_out", processing_node.jointFusion_node_without_T2.lzout.all_),
@@ -2210,7 +2210,7 @@ if __name__ == "__main__":
     source_node.set_output(
         [
             ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
-            # ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
+            ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
             # ("out", source_node_with_T2.lzout.out_with_T2)
             # ("out", source_node.get_sessions_with_T2.lzout.out)
         ]
@@ -2245,7 +2245,7 @@ if __name__ == "__main__":
     with pydra.Submitter(plugin="cf") as sub:
         sub(source_node)
     result = source_node.result()
-    # print(result)
+    print(result)
     #
     # @pydra.mark.task
     # def copy(source_output_dir, session):
