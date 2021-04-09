@@ -1607,7 +1607,7 @@ if __name__ == "__main__":
         return antsJointFusion_workflow
 
     @pydra.mark.task
-    def get_inputVolumesT1(inputVolumes, inputVolumeTypes):
+    def get_firstT1(inputVolumes, inputVolumeTypes):
         inputVolumesT1 = []
         print(f"inputVolumeTypes: {inputVolumeTypes}")
         if inputVolumeTypes != None:
@@ -1616,10 +1616,6 @@ if __name__ == "__main__":
                 if ele == "T1":
                     inputVolumesT1.append(inputVolumes[index])
             print(f"inputVolumesT1: {inputVolumesT1}")
-        return inputVolumesT1
-
-    @pydra.mark.task
-    def get_firstT1(inputVolumesT1):
         return inputVolumesT1[0]
 
     @pydra.mark.task
@@ -1680,16 +1676,10 @@ if __name__ == "__main__":
         get_inputs_workflow(my_source_node=prejointFusion_node_with_T2)
     )
     prejointFusion_node_with_T2.add(
-        get_inputVolumesT1(
-            name="get_inputVolumesT1",
-            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
-        )
-    )
-    prejointFusion_node_with_T2.add(
         get_firstT1(
             name="get_firstT1",
-            inputVolumesT1=prejointFusion_node_with_T2.get_inputVolumesT1.lzout.out,
+            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
         )
     )
     prejointFusion_node_with_T2.add(
@@ -1738,36 +1728,37 @@ if __name__ == "__main__":
             initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
         )
     )
-    # prejointFusion_node_with_T2.add(
-    #     make_abc_workflow1(
-    #         inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
-    #         inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
-    #         inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-    #         restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
-    #     )
-    # )
-    # prejointFusion_node_with_T2.add(
-    #     make_resample_workflow2(
-    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-    #         warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-    #         inputVolume=[
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-    #         ],
-    #     ).split("inputVolume")
-    # )
-    #
-    # prejointFusion_node_with_T2.add(
-    #     make_resample_workflow3(
-    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-    #         inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-    #     )
-    # )
+    prejointFusion_node_with_T2.add(
+        make_abc_workflow1(
+            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
+            inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+            restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
+        )
+    )
+    prejointFusion_node_with_T2.add(
+        make_resample_workflow2(
+            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+            inputVolume=[
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+            ],
+        ).split("inputVolume")
+    )
+
+    prejointFusion_node_with_T2.add(
+        make_resample_workflow3(
+            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+        )
+    )
+
     # prejointFusion_node_with_T2.add(
     #     make_createLabelMapFromProbabilityMaps_workflow1(
     #         inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
@@ -1824,16 +1815,10 @@ if __name__ == "__main__":
         get_inputs_workflow(my_source_node=prejointFusion_node_without_T2)
     )
     prejointFusion_node_without_T2.add(
-        get_inputVolumesT1(
-            name="get_inputVolumesT1",
-            inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
-        )
-    )
-    prejointFusion_node_without_T2.add(
         get_firstT1(
             name="get_firstT1",
-            inputVolumesT1=prejointFusion_node_without_T2.get_inputVolumesT1.lzout.out,
+            inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
         )
     )
     prejointFusion_node_without_T2.add(
@@ -1882,36 +1867,29 @@ if __name__ == "__main__":
             initial_moving_transform=prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.composite_transform,
         )
     )
-    # prejointFusion_node_without_T2.add(
-    #     make_abc_workflow1(
-    #         inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
-    #         inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
-    #         inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-    #         restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
-    #     )
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     make_resample_workflow2(
-    #         referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-    #         warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-    #         inputVolume=[
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-    #         ],
-    #     ).split("inputVolume")
-    # )
-    #
-    # prejointFusion_node_without_T2.add(
-    #     make_resample_workflow3(
-    #         referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-    #         inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t2_average,
-    #     )
-    # )
+    prejointFusion_node_without_T2.add(
+        make_abc_workflow1(
+            inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
+            inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+            restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
+        )
+    )
+    prejointFusion_node_without_T2.add(
+        make_resample_workflow2(
+            referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+            warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+            inputVolume=[
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+            ],
+        ).split("inputVolume")
+    )
     # prejointFusion_node_without_T2.add(
     #     make_createLabelMapFromProbabilityMaps_workflow1(
     #         inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
@@ -1985,14 +1963,15 @@ if __name__ == "__main__":
                 "antsRegistration_workflow2",
                 prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
             ),
-            # ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            # ("resample_workflow2", prejointFusion_node_with_T2.resample_workflow2.lzout.all_),
-            # ("resample_workflow3", prejointFusion_node_with_T2.resample_workflow3.lzout.all_),
-            # ("resample_workflow4", prejointFusion_node_with_T2.resample_workflow4.lzout.all_),
-            # ("resample_workflow5", prejointFusion_node_with_T2.resample_workflow5.lzout.all_),
-            # ("resample_workflow6", prejointFusion_node_with_T2.resample_workflow6.lzout.all_),
-            # ("resample_workflow7", prejointFusion_node_with_T2.resample_workflow7.lzout.all_),
-            # ("resample_workflow8", prejointFusion_node_with_T2.resample_workflow8.lzout.all_),
+            ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+            ),
+            (
+                "resample_workflow3",
+                prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
+            ),
             # (
             #     "createLabelMapFromProbabilityMaps_workflow1",
             #     prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
@@ -2052,14 +2031,11 @@ if __name__ == "__main__":
                 "antsRegistration_workflow2",
                 prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
             ),
-            # ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-            # ("resample_workflow2", prejointFusion_node_without_T2.resample_workflow2.lzout.all_),
-            # ("resample_workflow3", prejointFusion_node_without_T2.resample_workflow3.lzout.all_),
-            # ("resample_workflow4", prejointFusion_node_without_T2.resample_workflow4.lzout.all_),
-            # ("resample_workflow5", prejointFusion_node_without_T2.resample_workflow5.lzout.all_),
-            # ("resample_workflow6", prejointFusion_node_without_T2.resample_workflow6.lzout.all_),
-            # ("resample_workflow7", prejointFusion_node_without_T2.resample_workflow7.lzout.all_),
-            # ("resample_workflow8", prejointFusion_node_without_T2.resample_workflow8.lzout.all_),
+            ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
+            ),
             # (
             #     "createLabelMapFromProbabilityMaps_workflow1",
             #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
