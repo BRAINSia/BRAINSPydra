@@ -115,6 +115,11 @@ if __name__ == "__main__":
     def make_bcd_workflow1(inputVolume, inputLandmarksEMSP) -> pydra.Workflow:
         from sem_tasks.segmentation.specialized import BRAINSConstellationDetector
 
+        @pydra.mark.task
+        def print_input(x):
+            print(f"input: {x}")
+            return x
+
         workflow_name = "bcd_workflow1"
         configkey = "BRAINSConstellationDetector1"
         print(f"Making task {workflow_name}")
@@ -125,6 +130,10 @@ if __name__ == "__main__":
             input_spec=["inputVolume", "inputLandmarksEMSP"],
             inputVolume=inputVolume,
             inputLandmarksEMSP=inputLandmarksEMSP,
+        )
+
+        bcd_workflow.add(
+            print_input(name="print_input", x=bcd_workflow.lzin.inputVolume)
         )
 
         # Create the pydra-sem generated task
