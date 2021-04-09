@@ -1621,14 +1621,19 @@ if __name__ == "__main__":
     source_node_with_T2 = pydra.Workflow(
         name="source_node_with_T2",
         input_spec=["input_data_with_T2"],
-        input_data_with_T2=source_node.lzin.input_data_with_T2,
     )  # .split("input_data_with_T2")
+    source_node_with_T2.inputs.input_data_with_T2 = source_node.lzin.input_data_with_T2
+    source_node_with_T2.split("input_data_with_T2")
 
     source_node_without_T2 = pydra.Workflow(
         name="source_node_without_T2",
         input_spec=["input_data_without_T2"],
-        input_data_without_T2=source_node.lzin.input_data_without_T2,
+        # input_data_without_T2=source_node.lzin.input_data_without_T2,
     )  # .split("input_data_without_T2")
+    source_node_without_T2.inputs.input_data_without_T2 = (
+        source_node.lzin.input_data_without_T2
+    )
+    source_node_without_T2.split("input_data_without_T2")
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
     processing_node_with_T2 = pydra.Workflow(
