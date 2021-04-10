@@ -1937,48 +1937,48 @@ if __name__ == "__main__":
             restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
         )
     )
-    # prejointFusion_node_with_T2.add(
-    #     make_resample_workflow2(
-    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-    #         warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-    #         inputVolume=[
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-    #         ],
-    #     ).split("inputVolume")
-    # )
+    prejointFusion_node_with_T2.add(
+        make_resample_workflow2(
+            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+            inputVolume=[
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+            ],
+        ).split("inputVolume")
+    )
 
-    # prejointFusion_node_with_T2.add(
-    #     make_resample_workflow3(
-    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-    #         inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-    #     )
-    # )
+    prejointFusion_node_with_T2.add(
+        make_resample_workflow3(
+            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+        )
+    )
 
-    # prejointFusion_node_with_T2.add(
-    #     make_createLabelMapFromProbabilityMaps_workflow1(
-    #         inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
-    #         nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-    #     )
-    # )
-    # prejointFusion_node_with_T2.add(
-    #     make_landmarkInitializer_workflow3(
-    #         inputMovingLandmarkFilename=experiment_configuration[
-    #             "BRAINSLandmarkInitializer3"
-    #         ].get("inputMovingLandmarkFilename"),
-    #         inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
-    #     ).split("inputMovingLandmarkFilename")
-    # )
-    # prejointFusion_node_with_T2.add(
-    #     make_roi_workflow3(
-    #         inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
-    #     )
-    # )
+    prejointFusion_node_with_T2.add(
+        make_createLabelMapFromProbabilityMaps_workflow1(
+            inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
+            nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+        )
+    )
+    prejointFusion_node_with_T2.add(
+        make_landmarkInitializer_workflow3(
+            inputMovingLandmarkFilename=experiment_configuration[
+                "BRAINSLandmarkInitializer3"
+            ].get("inputMovingLandmarkFilename"),
+            inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+        ).split("inputMovingLandmarkFilename")
+    )
+    prejointFusion_node_with_T2.add(
+        make_roi_workflow3(
+            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
+        )
+    )
     # prejointFusion_node_with_T2.add(
     #     make_antsRegistration_workflow3_with_T2(
     #         fixed_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
@@ -2086,40 +2086,40 @@ if __name__ == "__main__":
             restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
         )
     )
-    # prejointFusion_node_without_T2.add(
-    #     make_resample_workflow2(
-    #         referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-    #         warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-    #         inputVolume=[
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-    #             "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-    #         ],
-    #     ).split("inputVolume")
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     make_createLabelMapFromProbabilityMaps_workflow1(
-    #         inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
-    #         nonAirRegionMask=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-    #     )
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     make_landmarkInitializer_workflow3(
-    #         inputMovingLandmarkFilename=experiment_configuration[
-    #             "BRAINSLandmarkInitializer3"
-    #         ].get("inputMovingLandmarkFilename"),
-    #         inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
-    #     ).split("inputMovingLandmarkFilename")
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     make_roi_workflow3(
-    #         inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
-    #     )
-    # )
+    prejointFusion_node_without_T2.add(
+        make_resample_workflow2(
+            referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+            warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+            inputVolume=[
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+            ],
+        ).split("inputVolume")
+    )
+    prejointFusion_node_without_T2.add(
+        make_createLabelMapFromProbabilityMaps_workflow1(
+            inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
+            nonAirRegionMask=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+        )
+    )
+    prejointFusion_node_without_T2.add(
+        make_landmarkInitializer_workflow3(
+            inputMovingLandmarkFilename=experiment_configuration[
+                "BRAINSLandmarkInitializer3"
+            ].get("inputMovingLandmarkFilename"),
+            inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+        ).split("inputMovingLandmarkFilename")
+    )
+    prejointFusion_node_without_T2.add(
+        make_roi_workflow3(
+            inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
+        )
+    )
     # prejointFusion_node_without_T2.add(
     #     make_antsRegistration_workflow3(
     #         fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
@@ -2175,23 +2175,23 @@ if __name__ == "__main__":
                 prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
             ),
             ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
-            # ),
-            # (
-            #     "resample_workflow3",
-            #     prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
-            # ),
-            # (
-            #     "createLabelMapFromProbabilityMaps_workflow1",
-            #     prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow3",
-            #     prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
-            # ),
-            # ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+            ),
+            (
+                "resample_workflow3",
+                prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
+            ),
+            (
+                "createLabelMapFromProbabilityMaps_workflow1",
+                prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow3",
+                prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
+            ),
+            ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
             # (
             #     "antsRegistration_workflow3",
             #     prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
@@ -2243,19 +2243,19 @@ if __name__ == "__main__":
                 prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
             ),
             ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
-            # ),
-            # (
-            #     "createLabelMapFromProbabilityMaps_workflow1",
-            #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow3",
-            #     prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
-            # ),
-            # ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
+            ),
+            (
+                "createLabelMapFromProbabilityMaps_workflow1",
+                prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow3",
+                prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
+            ),
+            ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
             # (
             #     "antsRegistration_workflow3",
             #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
@@ -2411,32 +2411,43 @@ if __name__ == "__main__":
         sub(source_node)
     result = source_node.result()
     print(result)
-    #
-    # @pydra.mark.task
-    # def copy(source_output_dir, session):
-    #     p = Path(source_output_dir)
-    #     output_files = []
-    #     output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
-    #     output_dir.mkdir(exist_ok=True, parents=True)
-    #     # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
-    #     for cache_filepath in p.glob("**/[!_]*"):
-    #         output_files.append(cache_filepath)
-    #         output_filepath = output_dir / cache_filepath.name
-    #         # Remove a file if it already exists so it can be replaced by a new file or hardlink
-    #         if output_filepath.exists():
-    #             output_filepath.unlink()
-    #         if environment_configuration.get("hard_links"):
-    #             print(f"Hardlinking {cache_filepath} to {output_filepath}")
-    #             cache_filepath.link_to(output_filepath)
-    #         else:
-    #             print(f"Copying {cache_filepath} to {output_filepath}")
-    #             copyfile(cache_filepath, output_filepath)
-    #     return output_files
-    #
-    # # After processing all the files, copy the results to a local output directory
+
+    @pydra.mark.task
+    def copy(source_output_dir, session):
+        p = Path(source_output_dir)
+        output_files = []
+        output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
+        for cache_filepath in p.glob("**/[!_]*"):
+            output_files.append(cache_filepath)
+            output_filepath = output_dir / cache_filepath.name
+            # Remove a file if it already exists so it can be replaced by a new file or hardlink
+            if output_filepath.exists():
+                output_filepath.unlink()
+            if environment_configuration.get("hard_links"):
+                print(f"Hardlinking {cache_filepath} to {output_filepath}")
+                cache_filepath.link_to(output_filepath)
+            else:
+                print(f"Copying {cache_filepath} to {output_filepath}")
+                copyfile(cache_filepath, output_filepath)
+        return output_files
+
+    # After processing all the files, copy the results to a local output directory
     # sessions = [
-    #     sess_data["session"] for sess_data in input_data_dictionary.get("input_data")
+    #     sess_data["session"]
+    #     for sess_data in input_data_dictionary.get("input_data").get("sessions_with_T2")
     # ]
+    # print(sessions)
+    print(source_node.output_dir)
+    # print(source_node.processing_node_with_T2.output_dir)
+    # print(source_node.processing_node_without_T2.output_dir)
+    # .join(
+    #     [
+    #         sess_data["sessions_without_T2"]["session"]
+    #         for sess_data in input_data_dictionary.get("input_data")
+    #     ]
+    # )
     # sink_node = pydra.Workflow(
     #     name="sink_node",
     #     input_spec=["output_directory", "session"],
