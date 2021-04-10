@@ -2175,10 +2175,10 @@ if __name__ == "__main__":
                 prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
             ),
             ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            (
-                "resample_workflow2",
-                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
-            ),
+            # (
+            #     "resample_workflow2",
+            #     prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+            # ),
             # (
             #     "resample_workflow3",
             #     prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
@@ -2243,10 +2243,10 @@ if __name__ == "__main__":
                 prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
             ),
             ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-            (
-                "resample_workflow2",
-                prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
-            ),
+            # (
+            #     "resample_workflow2",
+            #     prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
+            # ),
             # (
             #     "createLabelMapFromProbabilityMaps_workflow1",
             #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
