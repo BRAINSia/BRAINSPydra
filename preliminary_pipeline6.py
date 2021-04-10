@@ -1929,14 +1929,14 @@ if __name__ == "__main__":
             initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
         )
     )
-    # prejointFusion_node_with_T2.add(
-    #     make_abc_workflow1(
-    #         inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
-    #         inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
-    #         inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-    #         restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
-    #     )
-    # )
+    prejointFusion_node_with_T2.add(
+        make_abc_workflow1(
+            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
+            inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+            restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
+        )
+    )
     # prejointFusion_node_with_T2.add(
     #     make_resample_workflow2(
     #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
@@ -2078,14 +2078,14 @@ if __name__ == "__main__":
             initial_moving_transform=prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.composite_transform,
         )
     )
-    # prejointFusion_node_without_T2.add(
-    #     make_abc_workflow1(
-    #         inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
-    #         inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
-    #         inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-    #         restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
-    #     )
-    # )
+    prejointFusion_node_without_T2.add(
+        make_abc_workflow1(
+            inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
+            inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
+            inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+            restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
+        )
+    )
     # prejointFusion_node_without_T2.add(
     #     make_resample_workflow2(
     #         referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
@@ -2174,11 +2174,11 @@ if __name__ == "__main__":
                 "antsRegistration_workflow2",
                 prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
             ),
-            # ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
-            # ),
+            ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+            ),
             # (
             #     "resample_workflow3",
             #     prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
@@ -2242,11 +2242,11 @@ if __name__ == "__main__":
                 "antsRegistration_workflow2",
                 prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
             ),
-            # ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
-            # ),
+            ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
+            ),
             # (
             #     "createLabelMapFromProbabilityMaps_workflow1",
             #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
