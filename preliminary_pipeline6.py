@@ -1957,7 +1957,16 @@ if __name__ == "__main__":
         make_resample_workflow2(
             referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
             warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+            inputVolume=[
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+            ]
+            # inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
         ).split("inputVolume")
     )
 
@@ -2100,7 +2109,16 @@ if __name__ == "__main__":
         make_resample_workflow2(
             referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
             warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+            inputVolume=[
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+            ]
+            # inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
         ).split("inputVolume")
     )
     prejointFusion_node_without_T2.add(
@@ -2357,8 +2375,8 @@ if __name__ == "__main__":
 
     processing_node_with_T2.add(prejointFusion_node_with_T2)
     processing_node_without_T2.add(prejointFusion_node_without_T2)
-    processing_node.add(jointFusion_node_with_T2)
-    processing_node.add(jointFusion_node_without_T2)
+    processing_node_with_T2.add(jointFusion_node_with_T2)
+    processing_node_without_T2.add(jointFusion_node_without_T2)
     processing_node_with_T2.set_output(
         [
             (
@@ -2373,9 +2391,15 @@ if __name__ == "__main__":
                 "prejointFusion_out",
                 processing_node_without_T2.prejointFusion_node_without_T2.lzout.all_,
             ),
-            ("jointFusion_out", processing_node.jointFusion_node_without_T2.lzout.all_),
+            (
+                "jointFusion_out",
+                processing_node_without_T2.jointFusion_node_without_T2.lzout.all_,
+            ),
         ]
     )
+
+    source_node.add(prejointFusion_node_with_T2)
+    source_node.add(prejointFusion_node_without_T2)
 
     source_node.add(processing_node_with_T2)
     source_node.add(processing_node_without_T2)
