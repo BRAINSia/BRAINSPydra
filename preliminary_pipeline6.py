@@ -1283,10 +1283,6 @@ if __name__ == "__main__":
         antsRegistration_task.inputs.moving_image_masks = (
             antsRegistration_workflow.make_moving_image_masks.lzout.out
         )
-
-        antsRegistration_task.inputs.save_state = experiment_configuration[
-            configkey
-        ].get("save_state")
         antsRegistration_task.inputs.transforms = experiment_configuration[
             configkey
         ].get("transforms")
@@ -1368,7 +1364,6 @@ if __name__ == "__main__":
         antsRegistration_workflow.add(antsRegistration_task)
         antsRegistration_workflow.set_output(
             [
-                ("save_state", antsRegistration_task.lzout.save_state),
                 (
                     "composite_transform",
                     antsRegistration_task.lzout.composite_transform,
@@ -1384,7 +1379,7 @@ if __name__ == "__main__":
         return antsRegistration_workflow
 
     def make_antsRegistration_workflow3_with_T2(
-        fixed_image, fixed_image_masks, initial_moving_transform
+        fixed_image_T1, fixed_image_T2, fixed_image_masks, initial_moving_transform
     ) -> pydra.Workflow:
 
         from pydra.tasks.nipype1.utils import Nipype1Task
@@ -1397,6 +1392,10 @@ if __name__ == "__main__":
             atlas_id = Path(landmark_initializer_transform).name.split("_")[1]
             return atlas_id
 
+        @pydra.mark.task
+        def get_fixed_images(fixed_image_T1, fixed_image_T2):
+            return [fixed_image_T1, fixed_image_T2]
+
         workflow_name = "antsRegistration_workflow3"
         configkey = "ANTSRegistration3_with_T2"
         print(f"Making task {workflow_name}")
@@ -1404,8 +1403,14 @@ if __name__ == "__main__":
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
             name=workflow_name,
-            input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"],
-            fixed_image=fixed_image,
+            input_spec=[
+                "fixed_image_T1",
+                "fixed_image_T2",
+                "fixed_image_masks",
+                "initial_moving_transform",
+            ],
+            fixed_image_T1=fixed_image_T1,
+            fixed_image_T2=fixed_image_T2,
             fixed_image_masks=fixed_image_masks,
             initial_moving_transform=initial_moving_transform,
         )
@@ -1435,6 +1440,13 @@ if __name__ == "__main__":
                 filename=experiment_configuration[configkey].get(
                     "moving_image_masks_filename"
                 ),
+            )
+        )
+        antsRegistration_workflow.add(
+            get_fixed_images(
+                name="get_fixed_images",
+                fixed_image_T1=fixed_image_T1,
+                fixed_image_T2=fixed_image_T2,
             )
         )
         antsRegistration_workflow.add(
@@ -1470,7 +1482,7 @@ if __name__ == "__main__":
 
         # Set task inputs
         antsRegistration_task.inputs.fixed_image = (
-            antsRegistration_workflow.lzin.fixed_image
+            antsRegistration_workflow.get_fixed_images.lzout.out
         )
         antsRegistration_task.inputs.fixed_image_masks = (
             antsRegistration_workflow.lzin.fixed_image_masks
@@ -1484,10 +1496,6 @@ if __name__ == "__main__":
         antsRegistration_task.inputs.moving_image_masks = (
             antsRegistration_workflow.make_moving_image_masks.lzout.out
         )
-
-        antsRegistration_task.inputs.save_state = experiment_configuration[
-            configkey
-        ].get("save_state")
         antsRegistration_task.inputs.transforms = experiment_configuration[
             configkey
         ].get("transforms")
@@ -1569,7 +1577,6 @@ if __name__ == "__main__":
         antsRegistration_workflow.add(antsRegistration_task)
         antsRegistration_workflow.set_output(
             [
-                ("save_state", antsRegistration_task.lzout.save_state),
                 (
                     "composite_transform",
                     antsRegistration_task.lzout.composite_transform,
@@ -1988,13 +1995,13 @@ if __name__ == "__main__":
             inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
         )
     )
-    # prejointFusion_node_with_T2.add(
-    #     make_antsRegistration_workflow3_with_T2(
-    #         fixed_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-    #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
-    #         initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
-    #     )
-    # )
+    prejointFusion_node_with_T2.add(
+        make_antsRegistration_workflow3_with_T2(
+            fixed_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
+            initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+        )
+    )
     # prejointFusion_node_with_T2.add(
     #     make_antsApplyTransforms_workflow(
     #         index=1,
@@ -2129,13 +2136,13 @@ if __name__ == "__main__":
             inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
         )
     )
-    # prejointFusion_node_without_T2.add(
-    #     make_antsRegistration_workflow3(
-    #         fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-    #         fixed_image_masks=prejointFusion_node_without_T2.roi_workflow3.lzout.outputROIMaskVolume,
-    #         initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
-    #     )
-    # )
+    prejointFusion_node_without_T2.add(
+        make_antsRegistration_workflow3_without_T2(
+            fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+            fixed_image_masks=prejointFusion_node_without_T2.roi_workflow3.lzout.outputROIMaskVolume,
+            initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+        )
+    )
     # prejointFusion_node_without_T2.add(
     #     make_antsApplyTransforms_workflow(
     #         index=1,

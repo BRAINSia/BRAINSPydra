@@ -1,6 +1,6 @@
 {
-  "output_dir": "/Shared/sinapse/pydra-cjohnson/output_dir_argon",
-  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_argon",
+  "output_dir": "/Shared/sinapse/pydra-cjohnson/output_dir_caudate",
+  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_caudate",
   "graph_dir": "/Shared/sinapse/pydra-cjohnson/graph_dir_argon",
   "num_threads": 4,
   "BRAINSConstellationDetector1": {
@@ -630,7 +630,10 @@
   },
   "ANTSRegistration3_with_T2": {
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
-    "moving_image_filename": "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
+    "moving_image_filename": [
+      "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
+      "t2_average_BRAINSABC_GaussianDenoised.nii.gz"
+    ],
     "moving_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/",
     "moving_image_masks_dir": [
       "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/"
@@ -710,53 +713,83 @@
     "write_composite_transform": true,
     "metric": [
       "MI",
-      "MI",
-      "MI",
+      [
+        "MI",
+        "MI"
+      ],
       "CC",
-      "CC",
-      "CC",
-      "CC",
-      "CC"
+      [
+        "CC",
+        "CC"
+      ],
+      [
+        "CC",
+        "CC"
+      ]
     ],
     "metric_weight": [
       1,
+      [
+        1,
+        1
+      ],
       1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ]
     ],
     "radius_or_number_of_bins": [
       32,
-      32,
-      32,
+      [
+        32,
+        32
+      ],
       4,
-      4,
-      4,
-      4,
-      4
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        4
+      ]
     ],
     "sampling_strategy": [
       "Regular",
-      "Regular",
-      "Regular",
+      [
+        "Regular",
+        "Regular"
+      ],
       "None",
-      "None",
-      "None",
-      "None",
-      "None"
+      [
+        "None",
+        "None"
+      ],
+      [
+        "None",
+        "None"
+      ]
     ],
     "sampling_percentage": [
       0.5,
-      0.5,
-      0.5,
+      [
+        0.5,
+        0.5
+      ],
       1,
-      1,
-      1,
-      1,
-      1
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ]
     ],
     "convergence_threshold": [
       0.00000005,
