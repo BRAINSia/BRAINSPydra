@@ -351,6 +351,15 @@
   },
   "BRAINSResample2": {
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSResample",
+    "inputVolumes": [
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
+      "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
+    ],
     "interpolationMode": "Linear",
     "pixelType": "binary"
   },
