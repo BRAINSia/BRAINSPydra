@@ -1425,6 +1425,13 @@ if __name__ == "__main__":
                 landmark_initializer_transform=antsRegistration_workflow.lzin.initial_moving_transform,
             )
         )
+        antsRegistration_workflow.add(
+            print_inputs(
+                name="atlas_id_print",
+                input=antsRegistration_workflow.atlas_id.lzout.output,
+                input_type="atlas_id",
+            )
+        )
 
         antsRegistration_workflow.add(
             make_filename(
