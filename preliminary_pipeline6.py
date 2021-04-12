@@ -1397,11 +1397,11 @@ if __name__ == "__main__":
 
         @pydra.mark.task
         def get_fixed_images(fixed_image_T1, fixed_image_T2):
-            fixed_images = []
-            fixed_images.append(fixed_image_T1)
-            fixed_images.append(fixed_image_T2)
-            print(f"fixed_images: {fixed_images}")
-            return fixed_images
+            # fixed_images = []
+            # fixed_images.append(fixed_image_T1)
+            # fixed_images.append(fixed_image_T2)
+            # print(f"fixed_images: {fixed_images}")
+            return fixed_image_T1
 
         workflow_name = "antsRegistration_workflow3"
         configkey = "ANTSRegistration3_with_T2"
