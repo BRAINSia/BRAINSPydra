@@ -2475,10 +2475,6 @@ if __name__ == "__main__":
     data = pickle.load(f)
     f.close()
 
-    print(data.processing_node_with_T2.output_dir)
-    print(data.processing_node_with_T2.inputs.input_data_with_T2)
-
-    print(processing_node_without_T2.output_dir)
     # After processing all the files, copy the results to a local output directory
     sessions_with_T2 = [
         sess_data["session"]
