@@ -1971,12 +1971,12 @@ if __name__ == "__main__":
         ).split("inputVolume")
     )
 
-    # prejointFusion_node_with_T2.add(
-    #     make_resample_workflow3(
-    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-    #         inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-    #     )
-    # )
+    prejointFusion_node_with_T2.add(
+        make_resample_workflow3(
+            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+        )
+    )
 
     # prejointFusion_node_with_T2.add(
     #     make_createLabelMapFromProbabilityMaps_workflow1(
@@ -2192,10 +2192,10 @@ if __name__ == "__main__":
                 "resample_workflow2",
                 prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
             ),
-            # (
-            #     "resample_workflow3",
-            #     prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
-            # ),
+            (
+                "resample_workflow3",
+                prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
+            ),
             # (
             #     "createLabelMapFromProbabilityMaps_workflow1",
             #     prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
