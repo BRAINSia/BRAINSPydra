@@ -1428,7 +1428,7 @@ if __name__ == "__main__":
         antsRegistration_workflow.add(
             print_inputs(
                 name="atlas_id_print",
-                input=antsRegistration_workflow.atlas_id.lzout.output,
+                input=antsRegistration_workflow.atlas_id.lzout.out,
                 input_type="atlas_id",
             )
         )
