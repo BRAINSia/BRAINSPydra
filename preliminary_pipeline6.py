@@ -2310,65 +2310,65 @@ if __name__ == "__main__":
         ]
     )
 
-    jointFusion_node_with_T2 = pydra.Workflow(
-        name="jointFusion_node_with_T2",
-        input_spec=[
-            "atlas_image",
-            "atlas_segmentation_image",
-            "target_image",
-            "mask_image",
-        ],
-        atlas_image=prejointFusion_node_with_T2.lzout.atlas_image,
-        atlas_segmentation_image=prejointFusion_node_with_T2.lzout.atlas_segmentation_image,
-        target_image=prejointFusion_node_with_T2.lzout.target_image,
-        mask_image=prejointFusion_node_with_T2.lzout.mask_image,
-    )
-    jointFusion_node_with_T2.add(
-        make_antsJointFusion_workflow1(
-            atlas_image=jointFusion_node_with_T2.lzin.atlas_image,
-            atlas_segmentation_image=jointFusion_node_with_T2.lzin.atlas_segmentation_image,
-            target_image=jointFusion_node_with_T2.lzin.target_image,
-            mask_image=jointFusion_node_with_T2.lzin.mask_image,
-        )
-    )
-    jointFusion_node_with_T2.set_output(
-        [
-            (
-                "jointFusion_node_with_T2_out",
-                jointFusion_node_with_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
-            )
-        ]
-    )
+    # jointFusion_node_with_T2 = pydra.Workflow(
+    #     name="jointFusion_node_with_T2",
+    #     input_spec=[
+    #         "atlas_image",
+    #         "atlas_segmentation_image",
+    #         "target_image",
+    #         "mask_image",
+    #     ],
+    #     atlas_image=prejointFusion_node_with_T2.lzout.atlas_image,
+    #     atlas_segmentation_image=prejointFusion_node_with_T2.lzout.atlas_segmentation_image,
+    #     target_image=prejointFusion_node_with_T2.lzout.target_image,
+    #     mask_image=prejointFusion_node_with_T2.lzout.mask_image,
+    # )
+    # jointFusion_node_with_T2.add(
+    #     make_antsJointFusion_workflow1(
+    #         atlas_image=jointFusion_node_with_T2.lzin.atlas_image,
+    #         atlas_segmentation_image=jointFusion_node_with_T2.lzin.atlas_segmentation_image,
+    #         target_image=jointFusion_node_with_T2.lzin.target_image,
+    #         mask_image=jointFusion_node_with_T2.lzin.mask_image,
+    #     )
+    # )
+    # jointFusion_node_with_T2.set_output(
+    #     [
+    #         (
+    #             "jointFusion_node_with_T2_out",
+    #             jointFusion_node_with_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
+    #         )
+    #     ]
+    # )
 
-    jointFusion_node_without_T2 = pydra.Workflow(
-        name="jointFusion_node_without_T2",
-        input_spec=[
-            "atlas_image",
-            "atlas_segmentation_image",
-            "target_image",
-            "mask_image",
-        ],
-        atlas_image=prejointFusion_node_without_T2.lzout.atlas_image,
-        atlas_segmentation_image=prejointFusion_node_without_T2.lzout.atlas_segmentation_image,
-        target_image=prejointFusion_node_without_T2.lzout.target_image,
-        mask_image=prejointFusion_node_without_T2.lzout.mask_image,
-    )
-    jointFusion_node_without_T2.add(
-        make_antsJointFusion_workflow1(
-            atlas_image=jointFusion_node_without_T2.lzin.atlas_image,
-            atlas_segmentation_image=jointFusion_node_without_T2.lzin.atlas_segmentation_image,
-            target_image=jointFusion_node_without_T2.lzin.target_image,
-            mask_image=jointFusion_node_without_T2.lzin.mask_image,
-        )
-    )
-    jointFusion_node_without_T2.set_output(
-        [
-            (
-                "jointFusion_node_without_T2_out",
-                jointFusion_node_without_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
-            )
-        ]
-    )
+    # jointFusion_node_without_T2 = pydra.Workflow(
+    #     name="jointFusion_node_without_T2",
+    #     input_spec=[
+    #         "atlas_image",
+    #         "atlas_segmentation_image",
+    #         "target_image",
+    #         "mask_image",
+    #     ],
+    #     atlas_image=prejointFusion_node_without_T2.lzout.atlas_image,
+    #     atlas_segmentation_image=prejointFusion_node_without_T2.lzout.atlas_segmentation_image,
+    #     target_image=prejointFusion_node_without_T2.lzout.target_image,
+    #     mask_image=prejointFusion_node_without_T2.lzout.mask_image,
+    # )
+    # jointFusion_node_without_T2.add(
+    #     make_antsJointFusion_workflow1(
+    #         atlas_image=jointFusion_node_without_T2.lzin.atlas_image,
+    #         atlas_segmentation_image=jointFusion_node_without_T2.lzin.atlas_segmentation_image,
+    #         target_image=jointFusion_node_without_T2.lzin.target_image,
+    #         mask_image=jointFusion_node_without_T2.lzin.mask_image,
+    #     )
+    # )
+    # jointFusion_node_without_T2.set_output(
+    #     [
+    #         (
+    #             "jointFusion_node_without_T2_out",
+    #             jointFusion_node_without_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
+    #         )
+    #     ]
+    # )
 
     processing_node_with_T2.add(prejointFusion_node_with_T2)
     processing_node_without_T2.add(prejointFusion_node_without_T2)
