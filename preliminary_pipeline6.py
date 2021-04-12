@@ -1699,9 +1699,12 @@ if __name__ == "__main__":
             )
         )
 
+        applyTransforms = ApplyTransforms()
+        applyTransforms._cmd = experiment_configuration[configkey].get("executable")
+
         if environment_configuration["set_threads"]:
             # Set the number of threads to be used by ITK
-            antsApplyTransforms_task = ApplyTransforms()
+            antsApplyTransforms_task = applyTransforms
             antsApplyTransforms_task.set_default_num_threads(
                 experiment_configuration["num_threads"]
             )
@@ -1711,7 +1714,7 @@ if __name__ == "__main__":
             antsApplyTransforms_task = Nipype1Task(antsApplyTransforms_task)
         else:
             # Use the default number of threads (1)
-            antsApplyTransforms_task = Nipype1Task(ApplyTransforms())
+            antsApplyTransforms_task = Nipype1Task(applyTransforms)
 
         # Set task inputs
         antsApplyTransforms_task.inputs.input_image = (
@@ -1778,15 +1781,18 @@ if __name__ == "__main__":
             to_list(name="to_list", value=antsJointFusion_workflow.lzin.target_image)
         )
 
+        jointFusion = JointFusion()
+        jointFusion._cmd = experiment_configuration[configkey].get("executable")
+
         if environment_configuration["set_threads"]:
             # Set the number of threads to be used by ITK
-            antsJointFusion_task = JointFusion()
+            antsJointFusion_task = jointFusion
             antsJointFusion_task.set_default_num_threads(1)
             antsJointFusion_task.inputs.num_threads = 1
             antsJointFusion_task = Nipype1Task(antsJointFusion_task)
         else:
             # Use the default number of threads (1)
-            antsJointFusion_task = Nipype1Task(JointFusion())
+            antsJointFusion_task = Nipype1Task(jointFusion)
 
         antsJointFusion_task.inputs.atlas_image = (
             antsJointFusion_workflow.lzin.atlas_image
@@ -1999,36 +2005,36 @@ if __name__ == "__main__":
             initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
         )
     )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=1,
-            output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=2,
-            output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=3,
-            output_image_end=experiment_configuration["ANTSApplyTransforms3"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=1,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=2,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=3,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms3"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+    #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
 
     # Fill prejointFusion_node_without_T2 with the tasks coming before JointFusion
     prejointFusion_node_without_T2 = pydra.Workflow(
@@ -2133,31 +2139,31 @@ if __name__ == "__main__":
             initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
         )
     )
-    prejointFusion_node_without_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=1,
-            output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=2,
-            output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=1,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=2,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
 
     # Combine the results of the processing to this point into lists as input to JointFusion
     prejointFusion_node_with_T2.set_output(
         [
-            ("test", prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes),
+            # ("test", prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes),
             ("bcd_workflow1", prejointFusion_node_with_T2.bcd_workflow1.lzout.all_),
             ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
             (
@@ -2203,36 +2209,36 @@ if __name__ == "__main__":
                 "antsRegistration_workflow3",
                 prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
             ),
-            (
-                "antsApplyTransforms_workflow1",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow1.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow2",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.all_,
-            ),
-            (
-                "atlas_image",
-                prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.warped_image,
-            ),
-            (
-                "atlas_segmentation_image",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.output_image,
-            ),
-            (
-                "target_image",
-                prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            ),
-            (
-                "mask_image",
-                prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            ),
+            # (
+            #     "antsApplyTransforms_workflow1",
+            #     prejointFusion_node_with_T2.antsApplyTransforms_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow2",
+            #     prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "atlas_image",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.warped_image,
+            # ),
+            # (
+            #     "atlas_segmentation_image",
+            #     prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.output_image,
+            # ),
+            # (
+            #     "target_image",
+            #     prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            # ),
+            # (
+            #     "mask_image",
+            #     prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+            # ),
         ]
     )
 
     prejointFusion_node_without_T2.set_output(
         [
-            ("test", prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes),
+            # ("test", prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes),
             ("bcd_workflow1", prejointFusion_node_without_T2.bcd_workflow1.lzout.all_),
             ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
             (
@@ -2274,30 +2280,30 @@ if __name__ == "__main__":
                 "antsRegistration_workflow3",
                 prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
             ),
-            (
-                "antsApplyTransforms_workflow1",
-                prejointFusion_node_without_T2.antsApplyTransforms_workflow1.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow2",
-                prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.all_,
-            ),
-            (
-                "atlas_image",
-                prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.warped_image,
-            ),
-            (
-                "atlas_segmentation_image",
-                prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.output_image,
-            ),
-            (
-                "target_image",
-                prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            ),
-            (
-                "mask_image",
-                prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            ),
+            # (
+            #     "antsApplyTransforms_workflow1",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow2",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "atlas_image",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.warped_image,
+            # ),
+            # (
+            #     "atlas_segmentation_image",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.output_image,
+            # ),
+            # (
+            #     "target_image",
+            #     prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+            # ),
+            # (
+            #     "mask_image",
+            #     prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+            # ),
         ]
     )
 
