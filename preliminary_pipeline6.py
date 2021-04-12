@@ -1397,6 +1397,7 @@ if __name__ == "__main__":
 
         @pydra.mark.task
         def get_fixed_images(fixed_image_T1, fixed_image_T2):
+            print(f"fixed_images: {[fixed_image_T1, fixed_image_T2]}")
             return [fixed_image_T1, fixed_image_T2]
 
         workflow_name = "antsRegistration_workflow3"
@@ -1470,14 +1471,6 @@ if __name__ == "__main__":
                 ),
             )
         )
-
-        # antsRegistration_workflow.add(
-        #     print_inputs(
-        #         name="atlas_id",
-        #         input=antsRegistration_workflow.atlas_id.lzout.out,
-        #         input_type="atlas_id",
-        #     )
-        # )
 
         registration = Registration()
         registration._cmd = experiment_configuration[configkey].get("executable")
