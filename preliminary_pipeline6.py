@@ -1471,6 +1471,14 @@ if __name__ == "__main__":
             )
         )
 
+        antsRegistration_workflow.add(
+            print_inputs(
+                name="moving_image",
+                input=antsRegistration_workflow.atlas_id.lzout.out,
+                input_type="atlas_id",
+            )
+        )
+
         registration = Registration()
         registration._cmd = experiment_configuration[configkey].get("executable")
         if environment_configuration["set_threads"]:
