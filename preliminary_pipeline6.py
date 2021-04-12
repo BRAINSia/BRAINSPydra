@@ -1963,13 +1963,13 @@ if __name__ == "__main__":
             restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
         )
     )
-    # prejointFusion_node_with_T2.add(
-    #     make_resample_workflow2(
-    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-    #         warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-    #         inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
-    #     ).split("inputVolume")
-    # )
+    prejointFusion_node_with_T2.add(
+        make_resample_workflow2(
+            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+        ).split("inputVolume")
+    )
 
     # prejointFusion_node_with_T2.add(
     #     make_resample_workflow3(
@@ -2106,13 +2106,13 @@ if __name__ == "__main__":
             restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
         )
     )
-    # prejointFusion_node_without_T2.add(
-    #     make_resample_workflow2(
-    #         referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-    #         warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-    #         inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
-    #     ).split("inputVolume")
-    # )
+    prejointFusion_node_without_T2.add(
+        make_resample_workflow2(
+            referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+            warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+        ).split("inputVolume")
+    )
     # prejointFusion_node_without_T2.add(
     #     make_createLabelMapFromProbabilityMaps_workflow1(
     #         inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
@@ -2188,10 +2188,10 @@ if __name__ == "__main__":
                 prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
             ),
             ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
-            # ),
+            (
+                "resample_workflow2",
+                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+            ),
             # (
             #     "resample_workflow3",
             #     prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
@@ -2263,10 +2263,10 @@ if __name__ == "__main__":
                 prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
             ),
             ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
-            # ),
+            (
+                "resample_workflow2",
+                prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
+            ),
             # (
             #     "createLabelMapFromProbabilityMaps_workflow1",
             #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
