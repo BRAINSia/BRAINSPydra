@@ -1426,16 +1426,16 @@ if __name__ == "__main__":
             )
         )
 
-        # antsRegistration_workflow.add(
-        #     make_filename(
-        #         name="make_moving_image",
-        #         directory=experiment_configuration[configkey].get("moving_image_dir"),
-        #         parent_dir=antsRegistration_workflow.atlas_id.lzout.out,
-        #         filename=experiment_configuration[configkey].get(
-        #             "moving_image_filename"
-        #         ),
-        #     )
-        # )
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_moving_image",
+                directory=experiment_configuration[configkey].get("moving_image_dir"),
+                parent_dir=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "moving_image_filename"
+                ),
+            )
+        )
         # antsRegistration_workflow.add(
         #     make_filename(
         #         name="make_moving_image_masks",
@@ -1590,7 +1590,11 @@ if __name__ == "__main__":
                 #     antsRegistration_task.lzout.inverse_composite_transform,
                 # ),
                 # ("warped_image", antsRegistration_task.lzout.warped_image),
-                ("atlas_id", antsRegistration_workflow.atlas_id.lzout.out)
+                ("atlas_id", antsRegistration_workflow.atlas_id.lzout.out),
+                (
+                    "make_moving_image",
+                    antsRegistration_workflow.make_moving_image.lzout.out,
+                ),
             ]
         )
 
