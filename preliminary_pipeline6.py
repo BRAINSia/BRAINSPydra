@@ -1457,156 +1457,143 @@ if __name__ == "__main__":
                 fixed_image_T2=antsRegistration_workflow.lzin.fixed_image_T2,
             )
         )
-        # antsRegistration_workflow.add(
-        #     make_filename(
-        #         name="make_output_transform_prefix",
-        #         before_str=antsRegistration_workflow.atlas_id.lzout.out,
-        #         filename=experiment_configuration[configkey].get(
-        #             "output_transform_prefix_suffix"
-        #         ),
-        #     )
-        # )
-        # antsRegistration_workflow.add(
-        #     make_filename(
-        #         name="make_output_warped_image",
-        #         before_str=antsRegistration_workflow.atlas_id.lzout.out,
-        #         filename=experiment_configuration[configkey].get(
-        #             "output_warped_image_suffix"
-        #         ),
-        #     )
-        # )
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_output_transform_prefix",
+                before_str=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "output_transform_prefix_suffix"
+                ),
+            )
+        )
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_output_warped_image",
+                before_str=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "output_warped_image_suffix"
+                ),
+            )
+        )
 
-        # registration = Registration()
-        # registration._cmd = experiment_configuration[configkey].get("executable")
-        # if environment_configuration["set_threads"]:
-        #     # Set the number of threads to be used by ITK
-        #     antsRegistration_task = registration
-        #     antsRegistration_task.set_default_num_threads(1)
-        #     antsRegistration_task.inputs.num_threads = 1
-        #     antsRegistration_task = Nipype1Task(antsRegistration_task)
-        # else:
-        #     # Use the default number of threads (1)
-        #     antsRegistration_task = Nipype1Task(registration)
+        registration = Registration()
+        registration._cmd = experiment_configuration[configkey].get("executable")
+        if environment_configuration["set_threads"]:
+            # Set the number of threads to be used by ITK
+            antsRegistration_task = registration
+            antsRegistration_task.set_default_num_threads(1)
+            antsRegistration_task.inputs.num_threads = 1
+            antsRegistration_task = Nipype1Task(antsRegistration_task)
+        else:
+            # Use the default number of threads (1)
+            antsRegistration_task = Nipype1Task(registration)
 
-        # # Set task inputs
-        # antsRegistration_task.inputs.fixed_image = (
-        #     antsRegistration_workflow.get_fixed_images.lzout.out
-        # )
-        # antsRegistration_task.inputs.fixed_image_masks = (
-        #     antsRegistration_workflow.lzin.fixed_image_masks
-        # )
-        # antsRegistration_task.inputs.initial_moving_transform = (
-        #     antsRegistration_workflow.lzin.initial_moving_transform
-        # )
-        # antsRegistration_task.inputs.moving_image = (
-        #     antsRegistration_workflow.make_moving_image.lzout.out
-        # )
-        # antsRegistration_task.inputs.moving_image_masks = (
-        #     antsRegistration_workflow.make_moving_image_masks.lzout.out
-        # )
-        # antsRegistration_task.inputs.transforms = experiment_configuration[
-        #     configkey
-        # ].get("transforms")
-        # antsRegistration_task.inputs.transform_parameters = experiment_configuration[
-        #     configkey
-        # ].get("transform_parameters")
-        # antsRegistration_task.inputs.number_of_iterations = experiment_configuration[
-        #     configkey
-        # ].get("number_of_iterations")
-        # antsRegistration_task.inputs.dimension = experiment_configuration[
-        #     configkey
-        # ].get("dimensionality")
-        # antsRegistration_task.inputs.write_composite_transform = (
-        #     experiment_configuration[configkey].get("write_composite_transform")
-        # )
-        # antsRegistration_task.inputs.collapse_output_transforms = (
-        #     experiment_configuration[configkey].get("collapse_output_transforms")
-        # )
-        # antsRegistration_task.inputs.verbose = experiment_configuration[configkey].get(
-        #     "verbose"
-        # )
-        # antsRegistration_task.inputs.initialize_transforms_per_stage = (
-        #     experiment_configuration[configkey].get("initialize_transforms_per_stage")
-        # )
-        # antsRegistration_task.inputs.float = experiment_configuration[configkey].get(
-        #     "float"
-        # )
-        # antsRegistration_task.inputs.metric = experiment_configuration[configkey].get(
-        #     "metric"
-        # )
-        # antsRegistration_task.inputs.metric_weight = experiment_configuration[
-        #     configkey
-        # ].get("metric_weight")
-        # antsRegistration_task.inputs.radius_or_number_of_bins = (
-        #     experiment_configuration[configkey].get("radius_or_number_of_bins")
-        # )
-        # antsRegistration_task.inputs.sampling_strategy = experiment_configuration[
-        #     configkey
-        # ].get("sampling_strategy")
-        # antsRegistration_task.inputs.sampling_percentage = experiment_configuration[
-        #     configkey
-        # ].get("sampling_percentage")
-        # antsRegistration_task.inputs.convergence_threshold = experiment_configuration[
-        #     configkey
-        # ].get("convergence_threshold")
-        # antsRegistration_task.inputs.convergence_window_size = experiment_configuration[
-        #     configkey
-        # ].get("convergence_window_size")
-        # antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration[
-        #     configkey
-        # ].get("smoothing_sigmas")
-        # antsRegistration_task.inputs.sigma_units = experiment_configuration[
-        #     configkey
-        # ].get("sigma_units")
-        # antsRegistration_task.inputs.shrink_factors = experiment_configuration[
-        #     configkey
-        # ].get("shrink_factors")
-        # antsRegistration_task.inputs.use_estimate_learning_rate_once = (
-        #     experiment_configuration[configkey].get("use_estimate_learning_rate_once")
-        # )
-        # antsRegistration_task.inputs.use_histogram_matching = experiment_configuration[
-        #     configkey
-        # ].get("use_histogram_matching")
-        # antsRegistration_task.inputs.winsorize_lower_quantile = (
-        #     experiment_configuration[configkey].get("winsorize_lower_quantile")
-        # )
-        # antsRegistration_task.inputs.winsorize_upper_quantile = (
-        #     experiment_configuration[configkey].get("winsorize_upper_quantile")
-        # )
+        # Set task inputs
+        antsRegistration_task.inputs.fixed_image = (
+            antsRegistration_workflow.get_fixed_images.lzout.out
+        )
+        antsRegistration_task.inputs.fixed_image_masks = (
+            antsRegistration_workflow.lzin.fixed_image_masks
+        )
+        antsRegistration_task.inputs.initial_moving_transform = (
+            antsRegistration_workflow.lzin.initial_moving_transform
+        )
+        antsRegistration_task.inputs.moving_image = (
+            antsRegistration_workflow.make_moving_image.lzout.out
+        )
+        antsRegistration_task.inputs.moving_image_masks = (
+            antsRegistration_workflow.make_moving_image_masks.lzout.out
+        )
+        antsRegistration_task.inputs.transforms = experiment_configuration[
+            configkey
+        ].get("transforms")
+        antsRegistration_task.inputs.transform_parameters = experiment_configuration[
+            configkey
+        ].get("transform_parameters")
+        antsRegistration_task.inputs.number_of_iterations = experiment_configuration[
+            configkey
+        ].get("number_of_iterations")
+        antsRegistration_task.inputs.dimension = experiment_configuration[
+            configkey
+        ].get("dimensionality")
+        antsRegistration_task.inputs.write_composite_transform = (
+            experiment_configuration[configkey].get("write_composite_transform")
+        )
+        antsRegistration_task.inputs.collapse_output_transforms = (
+            experiment_configuration[configkey].get("collapse_output_transforms")
+        )
+        antsRegistration_task.inputs.verbose = experiment_configuration[configkey].get(
+            "verbose"
+        )
+        antsRegistration_task.inputs.initialize_transforms_per_stage = (
+            experiment_configuration[configkey].get("initialize_transforms_per_stage")
+        )
+        antsRegistration_task.inputs.float = experiment_configuration[configkey].get(
+            "float"
+        )
+        antsRegistration_task.inputs.metric = experiment_configuration[configkey].get(
+            "metric"
+        )
+        antsRegistration_task.inputs.metric_weight = experiment_configuration[
+            configkey
+        ].get("metric_weight")
+        antsRegistration_task.inputs.radius_or_number_of_bins = (
+            experiment_configuration[configkey].get("radius_or_number_of_bins")
+        )
+        antsRegistration_task.inputs.sampling_strategy = experiment_configuration[
+            configkey
+        ].get("sampling_strategy")
+        antsRegistration_task.inputs.sampling_percentage = experiment_configuration[
+            configkey
+        ].get("sampling_percentage")
+        antsRegistration_task.inputs.convergence_threshold = experiment_configuration[
+            configkey
+        ].get("convergence_threshold")
+        antsRegistration_task.inputs.convergence_window_size = experiment_configuration[
+            configkey
+        ].get("convergence_window_size")
+        antsRegistration_task.inputs.smoothing_sigmas = experiment_configuration[
+            configkey
+        ].get("smoothing_sigmas")
+        antsRegistration_task.inputs.sigma_units = experiment_configuration[
+            configkey
+        ].get("sigma_units")
+        antsRegistration_task.inputs.shrink_factors = experiment_configuration[
+            configkey
+        ].get("shrink_factors")
+        antsRegistration_task.inputs.use_estimate_learning_rate_once = (
+            experiment_configuration[configkey].get("use_estimate_learning_rate_once")
+        )
+        antsRegistration_task.inputs.use_histogram_matching = experiment_configuration[
+            configkey
+        ].get("use_histogram_matching")
+        antsRegistration_task.inputs.winsorize_lower_quantile = (
+            experiment_configuration[configkey].get("winsorize_lower_quantile")
+        )
+        antsRegistration_task.inputs.winsorize_upper_quantile = (
+            experiment_configuration[configkey].get("winsorize_upper_quantile")
+        )
 
-        # # Set the variables that set output file names
-        # antsRegistration_task.inputs.output_transform_prefix = (
-        #     antsRegistration_workflow.make_output_transform_prefix.lzout.out
-        # )
-        # antsRegistration_task.inputs.output_warped_image = (
-        #     antsRegistration_workflow.make_output_warped_image.lzout.out
-        # )
+        # Set the variables that set output file names
+        antsRegistration_task.inputs.output_transform_prefix = (
+            antsRegistration_workflow.make_output_transform_prefix.lzout.out
+        )
+        antsRegistration_task.inputs.output_warped_image = (
+            antsRegistration_workflow.make_output_warped_image.lzout.out
+        )
 
-        # antsRegistration_workflow.add(antsRegistration_task)
+        antsRegistration_workflow.add(antsRegistration_task)
         antsRegistration_workflow.set_output(
             [
-                # (
-                #     "composite_transform",
-                #     antsRegistration_task.lzout.composite_transform,
-                # ),
-                # (
-                #     "inverse_composite_transform",
-                #     antsRegistration_task.lzout.inverse_composite_transform,
-                # ),
-                # ("warped_image", antsRegistration_task.lzout.warped_image),
-                ("atlas_id", antsRegistration_workflow.atlas_id.lzout.out),
                 (
-                    "make_moving_image",
-                    antsRegistration_workflow.make_moving_image.lzout.out,
+                    "composite_transform",
+                    antsRegistration_task.lzout.composite_transform,
                 ),
                 (
-                    "make_moving_image_masks",
-                    antsRegistration_workflow.make_moving_image_masks.lzout.out,
+                    "inverse_composite_transform",
+                    antsRegistration_task.lzout.inverse_composite_transform,
                 ),
-                (
-                    "get_fixed_images",
-                    antsRegistration_workflow.get_fixed_images.lzout.out,
-                ),
+                ("warped_image", antsRegistration_task.lzout.warped_image),
             ]
         )
 
@@ -2150,13 +2137,13 @@ if __name__ == "__main__":
             inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
         )
     )
-    # prejointFusion_node_without_T2.add(
-    #     make_antsRegistration_workflow3_without_T2(
-    #         fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-    #         fixed_image_masks=prejointFusion_node_without_T2.roi_workflow3.lzout.outputROIMaskVolume,
-    #         initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
-    #     )
-    # )
+    prejointFusion_node_without_T2.add(
+        make_antsRegistration_workflow3_without_T2(
+            fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+            fixed_image_masks=prejointFusion_node_without_T2.roi_workflow3.lzout.outputROIMaskVolume,
+            initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+        )
+    )
     # prejointFusion_node_without_T2.add(
     #     make_antsApplyTransforms_workflow(
     #         index=1,
@@ -2181,48 +2168,47 @@ if __name__ == "__main__":
     # Combine the results of the processing to this point into lists as input to JointFusion
     prejointFusion_node_with_T2.set_output(
         [
-            # ("test", prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes),
-            # ("bcd_workflow1", prejointFusion_node_with_T2.bcd_workflow1.lzout.all_),
-            # ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
-            # (
-            #     "landmarkInitializer_workflow1",
-            #     prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow2",
-            #     prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
-            # ),
-            # (
-            #     "resample_workflow1",
-            #     prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
-            # ),
-            # ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
-            # (
-            #     "antsRegistration_workflow1",
-            #     prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "antsRegistration_workflow2",
-            #     prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
-            # ),
-            # ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
-            # ),
-            # (
-            #     "resample_workflow3",
-            #     prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
-            # ),
-            # (
-            #     "createLabelMapFromProbabilityMaps_workflow1",
-            #     prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow3",
-            #     prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
-            # ),
-            # ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
+            ("bcd_workflow1", prejointFusion_node_with_T2.bcd_workflow1.lzout.all_),
+            ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
+            (
+                "landmarkInitializer_workflow1",
+                prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow2",
+                prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
+            ),
+            (
+                "resample_workflow1",
+                prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
+            ),
+            ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
+            (
+                "antsRegistration_workflow1",
+                prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
+            ),
+            (
+                "antsRegistration_workflow2",
+                prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
+            ),
+            ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+            ),
+            (
+                "resample_workflow3",
+                prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
+            ),
+            (
+                "createLabelMapFromProbabilityMaps_workflow1",
+                prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow3",
+                prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
+            ),
+            ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
             (
                 "antsRegistration_workflow3",
                 prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
@@ -2256,48 +2242,47 @@ if __name__ == "__main__":
 
     prejointFusion_node_without_T2.set_output(
         [
-            # ("test", prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes),
-            # ("bcd_workflow1", prejointFusion_node_without_T2.bcd_workflow1.lzout.all_),
-            # ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
-            # (
-            #     "landmarkInitializer_workflow1",
-            #     prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow2",
-            #     prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
-            # ),
-            # (
-            #     "resample_workflow1",
-            #     prejointFusion_node_without_T2.resample_workflow1.lzout.all_,
-            # ),
-            # ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
-            # (
-            #     "antsRegistration_workflow1",
-            #     prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "antsRegistration_workflow2",
-            #     prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
-            # ),
-            # ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-            # (
-            #     "resample_workflow2",
-            #     prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
-            # ),
-            # (
-            #     "createLabelMapFromProbabilityMaps_workflow1",
-            #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow3",
-            #     prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
-            # ),
+            ("bcd_workflow1", prejointFusion_node_without_T2.bcd_workflow1.lzout.all_),
+            ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
+            (
+                "landmarkInitializer_workflow1",
+                prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow2",
+                prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
+            ),
+            (
+                "resample_workflow1",
+                prejointFusion_node_without_T2.resample_workflow1.lzout.all_,
+            ),
+            ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
+            (
+                "antsRegistration_workflow1",
+                prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
+            ),
+            (
+                "antsRegistration_workflow2",
+                prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
+            ),
+            ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
+            (
+                "resample_workflow2",
+                prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
+            ),
+            (
+                "createLabelMapFromProbabilityMaps_workflow1",
+                prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow3",
+                prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
+            ),
             ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
-            # (
-            #     "antsRegistration_workflow3",
-            #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
-            # ),
+            (
+                "antsRegistration_workflow3",
+                prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
+            ),
             # (
             #     "antsApplyTransforms_workflow1",
             #     prejointFusion_node_without_T2.antsApplyTransforms_workflow1.lzout.all_,
@@ -2466,75 +2451,73 @@ if __name__ == "__main__":
     # result = source_node.processing_node_with_T2.result()
     print(result)
 
-    # @pydra.mark.task
-    # def copy(output_directory, session):
-    #     p = Path(output_directory)
-    #     output_files = []
-    #     output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
-    #     output_dir.mkdir(exist_ok=True, parents=True)
-    #     # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
-    #     for cache_filepath in p.glob("**/[!_]*"):
-    #         output_files.append(cache_filepath)
-    #         output_filepath = output_dir / cache_filepath.name
-    #         # Remove a file if it already exists so it can be replaced by a new file or hardlink
-    #         if output_filepath.exists():
-    #             output_filepath.unlink()
-    #         if environment_configuration.get("hard_links"):
-    #             print(f"Hardlinking {cache_filepath} to {output_filepath}")
-    #             cache_filepath.link_to(output_filepath)
-    #         else:
-    #             print(f"Copying {cache_filepath} to {output_filepath}")
-    #             copyfile(cache_filepath, output_filepath)
-    #     return output_files
+    @pydra.mark.task
+    def copy(output_directory, session):
+        p = Path(output_directory)
+        output_files = []
+        output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
+        for cache_filepath in p.glob("**/[!_]*"):
+            output_files.append(cache_filepath)
+            output_filepath = output_dir / cache_filepath.name
+            # Remove a file if it already exists so it can be replaced by a new file or hardlink
+            if output_filepath.exists():
+                output_filepath.unlink()
+            if environment_configuration.get("hard_links"):
+                print(f"Hardlinking {cache_filepath} to {output_filepath}")
+                cache_filepath.link_to(output_filepath)
+            else:
+                print(f"Copying {cache_filepath} to {output_filepath}")
+                copyfile(cache_filepath, output_filepath)
+        return output_files
 
-    # print(source_node.output_dir)
+    f = open(source_node.output_dir / "_task.pklz", "rb")
+    data = pickle.load(f)
+    f.close()
 
-    # f = open(source_node.output_dir / "_task.pklz", "rb")
-    # data = pickle.load(f)
-    # f.close()
+    # After processing all the files, copy the results to a local output directory
+    sessions_with_T2 = [
+        sess_data["session"]
+        for sess_data in data.processing_node_with_T2.inputs.input_data_with_T2
+    ]
+    sessions_without_T2 = [
+        sess_data["session"]
+        for sess_data in data.processing_node_without_T2.inputs.input_data_without_T2
+    ]
 
-    # # After processing all the files, copy the results to a local output directory
-    # sessions_with_T2 = [
-    #     sess_data["session"]
-    #     for sess_data in data.processing_node_with_T2.inputs.input_data_with_T2
-    # ]
-    # sessions_without_T2 = [
-    #     sess_data["session"]
-    #     for sess_data in data.processing_node_without_T2.inputs.input_data_without_T2
-    # ]
-
-    # sink_node = pydra.Workflow(
-    #     name="sink_node",
-    #     input_spec=[
-    #         "output_directory_with_T2",
-    #         "session_with_T2",
-    #         "output_directory_without_T2",
-    #         "session_without_T2",
-    #     ],
-    #     output_directory_with_T2=data.processing_node_with_T2.output_dir,
-    #     session_with_T2=sessions_with_T2,
-    #     output_directory_without_T2=data.processing_node_without_T2.output_dir,
-    #     session_without_T2=sessions_without_T2,
-    # )
-    # sink_node.add(
-    #     copy(
-    #         name="copy_with_T2",
-    #         output_directory=sink_node.lzin.output_directory_with_T2,
-    #         session=sink_node.lzin.session_with_T2,
-    #     ).split(("output_directory", "session"))
-    # )
-    # sink_node.add(
-    #     copy(
-    #         name="copy_without_T2",
-    #         output_directory=sink_node.lzin.output_directory_without_T2,
-    #         session=sink_node.lzin.session_without_T2,
-    #     ).split(("output_directory", "session"))
-    # )
-    # sink_node.set_output(
-    #     [
-    #         ("output_with_T2", sink_node.copy_with_T2.lzout.out),
-    #         ("output_without_T2", sink_node.copy_without_T2.lzout.out),
-    #     ]
-    # )
-    # with pydra.Submitter(plugin="cf") as sub:
-    #     sub(sink_node)
+    sink_node = pydra.Workflow(
+        name="sink_node",
+        input_spec=[
+            "output_directory_with_T2",
+            "session_with_T2",
+            "output_directory_without_T2",
+            "session_without_T2",
+        ],
+        output_directory_with_T2=data.processing_node_with_T2.output_dir,
+        session_with_T2=sessions_with_T2,
+        output_directory_without_T2=data.processing_node_without_T2.output_dir,
+        session_without_T2=sessions_without_T2,
+    )
+    sink_node.add(
+        copy(
+            name="copy_with_T2",
+            output_directory=sink_node.lzin.output_directory_with_T2,
+            session=sink_node.lzin.session_with_T2,
+        ).split(("output_directory", "session"))
+    )
+    sink_node.add(
+        copy(
+            name="copy_without_T2",
+            output_directory=sink_node.lzin.output_directory_without_T2,
+            session=sink_node.lzin.session_without_T2,
+        ).split(("output_directory", "session"))
+    )
+    sink_node.set_output(
+        [
+            ("output_with_T2", sink_node.copy_with_T2.lzout.out),
+            ("output_without_T2", sink_node.copy_without_T2.lzout.out),
+        ]
+    )
+    with pydra.Submitter(plugin="cf") as sub:
+        sub(sink_node)
