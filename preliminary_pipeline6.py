@@ -43,6 +43,8 @@ if __name__ == "__main__":
         if filename is None:
             return None
         else:
+            print(filename)
+            print(directory)
             # if the input filename is a list, set the filename for each element in the list
             if type(filename) is list:
                 new_filename = []
@@ -63,8 +65,9 @@ if __name__ == "__main__":
     def get_inputs_workflow(my_source_node):
         @pydra.mark.task
         def get_input_field(input_dict: dict, field):
-            # print(f"input_dict: {input_dict}")
+            print(f"input_dict: {input_dict}")
             if field in input_dict:
+                print(f"field: {input_dict[field]}")
                 return input_dict[field]
             else:
                 return None
@@ -1826,13 +1829,13 @@ if __name__ == "__main__":
     @pydra.mark.task
     def get_firstT1(inputVolumes, inputVolumeTypes):
         inputVolumesT1 = []
-        print(f"inputVolumeTypes: {inputVolumeTypes}")
+        # print(f"inputVolumeTypes: {inputVolumeTypes}")
         if inputVolumeTypes != None:
             for index, ele in enumerate(inputVolumeTypes):
-                print(f"ele: {ele}")
+                # print(f"ele: {ele}")
                 if ele == "T1":
                     inputVolumesT1.append(inputVolumes[index])
-            print(f"inputVolumesT1: {inputVolumesT1}")
+            # print(f"inputVolumesT1: {inputVolumesT1}")
         return inputVolumesT1[0]
 
     @pydra.mark.task
@@ -1855,6 +1858,7 @@ if __name__ == "__main__":
 
     @pydra.mark.task
     def get_sessions_data(input_data):
+        print(f"sessions_data: {input_data}")
         return input_data
 
     source_node.add(
@@ -1957,16 +1961,7 @@ if __name__ == "__main__":
         make_resample_workflow2(
             referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
             warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=[
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-            ]
-            # inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
         ).split("inputVolume")
     )
 
@@ -2109,16 +2104,7 @@ if __name__ == "__main__":
         make_resample_workflow2(
             referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
             warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=[
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_leftHemisphere.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/hncma-atlas.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_rightHemisphere.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_nac_labels.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_ventricles.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_WMPM2_labels.nii.gz",
-                "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_headregion.nii.gz",
-            ]
-            # inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
         ).split("inputVolume")
     )
     prejointFusion_node_without_T2.add(
@@ -2171,6 +2157,7 @@ if __name__ == "__main__":
     # Combine the results of the processing to this point into lists as input to JointFusion
     prejointFusion_node_with_T2.set_output(
         [
+            ("test", prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes),
             ("bcd_workflow1", prejointFusion_node_with_T2.bcd_workflow1.lzout.all_),
             ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
             (
@@ -2245,6 +2232,7 @@ if __name__ == "__main__":
 
     prejointFusion_node_without_T2.set_output(
         [
+            ("test", prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes),
             ("bcd_workflow1", prejointFusion_node_without_T2.bcd_workflow1.lzout.all_),
             ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
             (
@@ -2383,6 +2371,10 @@ if __name__ == "__main__":
                 "prejointFusion_out",
                 processing_node_with_T2.prejointFusion_node_with_T2.lzout.all_,
             ),
+            (
+                "jointFusion_out",
+                processing_node_with_T2.jointFusion_node_with_T2.lzout.all_,
+            ),
         ]
     )
     processing_node_without_T2.set_output(
@@ -2398,14 +2390,16 @@ if __name__ == "__main__":
         ]
     )
 
-    source_node.add(prejointFusion_node_with_T2)
-    source_node.add(prejointFusion_node_without_T2)
+    # THIS CAUSES BIG ERRORS!
+    # source_node.add(prejointFusion_node_with_T2)
+    # source_node.add(prejointFusion_node_without_T2)
 
     source_node.add(processing_node_with_T2)
     source_node.add(processing_node_without_T2)
 
-    source_node.add(jointFusion_node_with_T2)
-    source_node.add(jointFusion_node_without_T2)
+    # THIS MIGHT CAUSE BIG ERRORS
+    # source_node.add(jointFusion_node_with_T2)
+    # source_node.add(jointFusion_node_without_T2)
 
     # Set the output of the source node to the same as the output of the sink_node
     source_node.set_output(
@@ -2478,8 +2472,8 @@ if __name__ == "__main__":
     print(data.processing_node_with_T2.output_dir)
     print(data.processing_node_with_T2.inputs.input_data_with_T2)
 
-    # print(processing_node_without_T2.output_dir)
-    # # After processing all the files, copy the results to a local output directory
+    print(processing_node_without_T2.output_dir)
+    # After processing all the files, copy the results to a local output directory
     sessions_with_T2 = [
         sess_data["session"]
         for sess_data in data.processing_node_with_T2.inputs.input_data_with_T2
