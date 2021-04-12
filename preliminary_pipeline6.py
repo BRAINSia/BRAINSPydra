@@ -1978,25 +1978,25 @@ if __name__ == "__main__":
         )
     )
 
-    # prejointFusion_node_with_T2.add(
-    #     make_createLabelMapFromProbabilityMaps_workflow1(
-    #         inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
-    #         nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-    #     )
-    # )
-    # prejointFusion_node_with_T2.add(
-    #     make_landmarkInitializer_workflow3(
-    #         inputMovingLandmarkFilename=experiment_configuration[
-    #             "BRAINSLandmarkInitializer3"
-    #         ].get("inputMovingLandmarkFilename"),
-    #         inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
-    #     ).split("inputMovingLandmarkFilename")
-    # )
-    # prejointFusion_node_with_T2.add(
-    #     make_roi_workflow3(
-    #         inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
-    #     )
-    # )
+    prejointFusion_node_with_T2.add(
+        make_createLabelMapFromProbabilityMaps_workflow1(
+            inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
+            nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+        )
+    )
+    prejointFusion_node_with_T2.add(
+        make_landmarkInitializer_workflow3(
+            inputMovingLandmarkFilename=experiment_configuration[
+                "BRAINSLandmarkInitializer3"
+            ].get("inputMovingLandmarkFilename"),
+            inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+        ).split("inputMovingLandmarkFilename")
+    )
+    prejointFusion_node_with_T2.add(
+        make_roi_workflow3(
+            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
+        )
+    )
     # prejointFusion_node_with_T2.add(
     #     make_antsRegistration_workflow3_with_T2(
     #         fixed_image_T1=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
@@ -2113,25 +2113,25 @@ if __name__ == "__main__":
             inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
         ).split("inputVolume")
     )
-    # prejointFusion_node_without_T2.add(
-    #     make_createLabelMapFromProbabilityMaps_workflow1(
-    #         inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
-    #         nonAirRegionMask=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-    #     )
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     make_landmarkInitializer_workflow3(
-    #         inputMovingLandmarkFilename=experiment_configuration[
-    #             "BRAINSLandmarkInitializer3"
-    #         ].get("inputMovingLandmarkFilename"),
-    #         inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
-    #     ).split("inputMovingLandmarkFilename")
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     make_roi_workflow3(
-    #         inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
-    #     )
-    # )
+    prejointFusion_node_without_T2.add(
+        make_createLabelMapFromProbabilityMaps_workflow1(
+            inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
+            nonAirRegionMask=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+        )
+    )
+    prejointFusion_node_without_T2.add(
+        make_landmarkInitializer_workflow3(
+            inputMovingLandmarkFilename=experiment_configuration[
+                "BRAINSLandmarkInitializer3"
+            ].get("inputMovingLandmarkFilename"),
+            inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+        ).split("inputMovingLandmarkFilename")
+    )
+    prejointFusion_node_without_T2.add(
+        make_roi_workflow3(
+            inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
+        )
+    )
     # prejointFusion_node_without_T2.add(
     #     make_antsRegistration_workflow3_without_T2(
     #         fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
