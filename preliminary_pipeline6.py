@@ -1436,16 +1436,16 @@ if __name__ == "__main__":
                 ),
             )
         )
-        # antsRegistration_workflow.add(
-        #     make_filename(
-        #         name="make_moving_image_masks",
-        #         directory=experiment_configuration[configkey].get("moving_image_dir"),
-        #         parent_dir=antsRegistration_workflow.atlas_id.lzout.out,
-        #         filename=experiment_configuration[configkey].get(
-        #             "moving_image_masks_filename"
-        #         ),
-        #     )
-        # )
+        antsRegistration_workflow.add(
+            make_filename(
+                name="make_moving_image_masks",
+                directory=experiment_configuration[configkey].get("moving_image_dir"),
+                parent_dir=antsRegistration_workflow.atlas_id.lzout.out,
+                filename=experiment_configuration[configkey].get(
+                    "moving_image_masks_filename"
+                ),
+            )
+        )
         # antsRegistration_workflow.add(
         #     get_fixed_images(
         #         name="get_fixed_images",
@@ -1594,6 +1594,10 @@ if __name__ == "__main__":
                 (
                     "make_moving_image",
                     antsRegistration_workflow.make_moving_image.lzout.out,
+                ),
+                (
+                    "make_moving_image_masks",
+                    antsRegistration_workflow.make_moving_image_masks.lzout.out,
                 ),
             ]
         )
