@@ -2196,15 +2196,15 @@ if __name__ == "__main__":
                 "resample_workflow3",
                 prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
             ),
-            # (
-            #     "createLabelMapFromProbabilityMaps_workflow1",
-            #     prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow3",
-            #     prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
-            # ),
-            # ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
+            (
+                "createLabelMapFromProbabilityMaps_workflow1",
+                prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow3",
+                prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
+            ),
+            ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
             # (
             #     "antsRegistration_workflow3",
             #     prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
@@ -2267,15 +2267,15 @@ if __name__ == "__main__":
                 "resample_workflow2",
                 prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
             ),
-            # (
-            #     "createLabelMapFromProbabilityMaps_workflow1",
-            #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            # ),
-            # (
-            #     "landmarkInitializer_workflow3",
-            #     prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
-            # ),
-            # ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
+            (
+                "createLabelMapFromProbabilityMaps_workflow1",
+                prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            ),
+            (
+                "landmarkInitializer_workflow3",
+                prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
+            ),
+            ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
             # (
             #     "antsRegistration_workflow3",
             #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
