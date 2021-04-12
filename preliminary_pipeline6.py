@@ -1446,13 +1446,13 @@ if __name__ == "__main__":
                 ),
             )
         )
-        # antsRegistration_workflow.add(
-        #     get_fixed_images(
-        #         name="get_fixed_images",
-        #         fixed_image_T1=fixed_image_T1,
-        #         fixed_image_T2=fixed_image_T2,
-        #     )
-        # )
+        antsRegistration_workflow.add(
+            get_fixed_images(
+                name="get_fixed_images",
+                fixed_image_T1=fixed_image_T1,
+                fixed_image_T2=fixed_image_T2,
+            )
+        )
         # antsRegistration_workflow.add(
         #     make_filename(
         #         name="make_output_transform_prefix",
@@ -1598,6 +1598,10 @@ if __name__ == "__main__":
                 (
                     "make_moving_image_masks",
                     antsRegistration_workflow.make_moving_image_masks.lzout.out,
+                ),
+                (
+                    "get_fixed_images",
+                    antsRegistration_workflow.get_fixed_images.lzout.out,
                 ),
             ]
         )
