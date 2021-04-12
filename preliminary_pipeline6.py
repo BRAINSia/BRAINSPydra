@@ -1997,14 +1997,14 @@ if __name__ == "__main__":
             inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
         )
     )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow3_with_T2(
-            fixed_image_T1=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            fixed_image_T2=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
-        )
-    )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsRegistration_workflow3_with_T2(
+    #         fixed_image_T1=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         fixed_image_T2=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+    #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+    #     )
+    # )
     # prejointFusion_node_with_T2.add(
     #     make_antsApplyTransforms_workflow(
     #         index=1,
@@ -2205,10 +2205,10 @@ if __name__ == "__main__":
                 prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
             ),
             ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
-            (
-                "antsRegistration_workflow3",
-                prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
-            ),
+            # (
+            #     "antsRegistration_workflow3",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
+            # ),
             # (
             #     "antsApplyTransforms_workflow1",
             #     prejointFusion_node_with_T2.antsApplyTransforms_workflow1.lzout.all_,
