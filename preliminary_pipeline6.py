@@ -2448,75 +2448,75 @@ if __name__ == "__main__":
     # result = source_node.processing_node_with_T2.result()
     print(result)
 
-    @pydra.mark.task
-    def copy(output_directory, session):
-        p = Path(output_directory)
-        output_files = []
-        output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
-        output_dir.mkdir(exist_ok=True, parents=True)
-        # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
-        for cache_filepath in p.glob("**/[!_]*"):
-            output_files.append(cache_filepath)
-            output_filepath = output_dir / cache_filepath.name
-            # Remove a file if it already exists so it can be replaced by a new file or hardlink
-            if output_filepath.exists():
-                output_filepath.unlink()
-            if environment_configuration.get("hard_links"):
-                print(f"Hardlinking {cache_filepath} to {output_filepath}")
-                cache_filepath.link_to(output_filepath)
-            else:
-                print(f"Copying {cache_filepath} to {output_filepath}")
-                copyfile(cache_filepath, output_filepath)
-        return output_files
+    # @pydra.mark.task
+    # def copy(output_directory, session):
+    #     p = Path(output_directory)
+    #     output_files = []
+    #     output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
+    #     output_dir.mkdir(exist_ok=True, parents=True)
+    #     # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
+    #     for cache_filepath in p.glob("**/[!_]*"):
+    #         output_files.append(cache_filepath)
+    #         output_filepath = output_dir / cache_filepath.name
+    #         # Remove a file if it already exists so it can be replaced by a new file or hardlink
+    #         if output_filepath.exists():
+    #             output_filepath.unlink()
+    #         if environment_configuration.get("hard_links"):
+    #             print(f"Hardlinking {cache_filepath} to {output_filepath}")
+    #             cache_filepath.link_to(output_filepath)
+    #         else:
+    #             print(f"Copying {cache_filepath} to {output_filepath}")
+    #             copyfile(cache_filepath, output_filepath)
+    #     return output_files
 
-    print(source_node.output_dir)
+    # print(source_node.output_dir)
 
-    f = open(source_node.output_dir / "_task.pklz", "rb")
-    data = pickle.load(f)
-    f.close()
+    # f = open(source_node.output_dir / "_task.pklz", "rb")
+    # data = pickle.load(f)
+    # f.close()
 
-    # After processing all the files, copy the results to a local output directory
-    sessions_with_T2 = [
-        sess_data["session"]
-        for sess_data in data.processing_node_with_T2.inputs.input_data_with_T2
-    ]
-    sessions_without_T2 = [
-        sess_data["session"]
-        for sess_data in data.processing_node_without_T2.inputs.input_data_without_T2
-    ]
+    # # After processing all the files, copy the results to a local output directory
+    # sessions_with_T2 = [
+    #     sess_data["session"]
+    #     for sess_data in data.processing_node_with_T2.inputs.input_data_with_T2
+    # ]
+    # sessions_without_T2 = [
+    #     sess_data["session"]
+    #     for sess_data in data.processing_node_without_T2.inputs.input_data_without_T2
+    # ]
 
-    sink_node = pydra.Workflow(
-        name="sink_node",
-        input_spec=[
-            "output_directory_with_T2",
-            "session_with_T2",
-            "output_directory_without_T2",
-            "session_without_T2",
-        ],
-        output_directory_with_T2=data.processing_node_with_T2.output_dir,
-        session_with_T2=sessions_with_T2,
-        output_directory_without_T2=data.processing_node_without_T2.output_dir,
-        session_without_T2=sessions_without_T2,
-    )
-    sink_node.add(
-        copy(
-            name="copy_with_T2",
-            output_directory=sink_node.lzin.output_directory_with_T2,
-            session=sink_node.lzin.session_with_T2,
-        ).split(("output_directory", "session"))
-    )
-    sink_node.add(
-        copy(
-            name="copy_without_T2",
-            output_directory=sink_node.lzin.output_directory_without_T2,
-            session=sink_node.lzin.session_without_T2,
-        ).split(("output_directory", "session"))
-    )
-    sink_node.set_output(
-        [
-            ("output_with_T2", sink_node.copy_with_T2.lzout.out),
-            ("output_without_T2", sink_node.copy_without_T2.lzout.out),
-        ]
-    )
-    with pydra.Submitter(plugin="cf") as sub:
-        sub(sink_node)
+    # sink_node = pydra.Workflow(
+    #     name="sink_node",
+    #     input_spec=[
+    #         "output_directory_with_T2",
+    #         "session_with_T2",
+    #         "output_directory_without_T2",
+    #         "session_without_T2",
+    #     ],
+    #     output_directory_with_T2=data.processing_node_with_T2.output_dir,
+    #     session_with_T2=sessions_with_T2,
+    #     output_directory_without_T2=data.processing_node_without_T2.output_dir,
+    #     session_without_T2=sessions_without_T2,
+    # )
+    # sink_node.add(
+    #     copy(
+    #         name="copy_with_T2",
+    #         output_directory=sink_node.lzin.output_directory_with_T2,
+    #         session=sink_node.lzin.session_with_T2,
+    #     ).split(("output_directory", "session"))
+    # )
+    # sink_node.add(
+    #     copy(
+    #         name="copy_without_T2",
+    #         output_directory=sink_node.lzin.output_directory_without_T2,
+    #         session=sink_node.lzin.session_without_T2,
+    #     ).split(("output_directory", "session"))
+    # )
+    # sink_node.set_output(
+    #     [
+    #         ("output_with_T2", sink_node.copy_with_T2.lzout.out),
+    #         ("output_without_T2", sink_node.copy_without_T2.lzout.out),
+    #     ]
+    # )
+    # with pydra.Submitter(plugin="cf") as sub:
+    #     sub(sink_node)
