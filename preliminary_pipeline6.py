@@ -1397,11 +1397,12 @@ if __name__ == "__main__":
 
         @pydra.mark.task
         def get_fixed_images(fixed_image_T1, fixed_image_T2):
+            return [fixed_image_T1, fixed_image_T2]
             # fixed_images = []
             # fixed_images.append(fixed_image_T1)
             # fixed_images.append(fixed_image_T2)
             # print(f"fixed_images: {fixed_images}")
-            return fixed_image_T1
+            # return fixed_image_T1
 
         workflow_name = "antsRegistration_workflow3"
         configkey = "ANTSRegistration3_with_T2"
@@ -1449,13 +1450,13 @@ if __name__ == "__main__":
                 ),
             )
         )
-        # antsRegistration_workflow.add(
-        #     get_fixed_images(
-        #         name="get_fixed_images",
-        #         fixed_image_T1=fixed_image_T1,
-        #         fixed_image_T2=fixed_image_T2,
-        #     )
-        # )
+        antsRegistration_workflow.add(
+            get_fixed_images(
+                name="get_fixed_images",
+                fixed_image_T1=antsRegistration_workflow.lzin.fixed_image_T1,
+                fixed_image_T2=antsRegistration_workflow.lzin.fixed_image_T2,
+            )
+        )
         # antsRegistration_workflow.add(
         #     make_filename(
         #         name="make_output_transform_prefix",
@@ -1602,10 +1603,10 @@ if __name__ == "__main__":
                     "make_moving_image_masks",
                     antsRegistration_workflow.make_moving_image_masks.lzout.out,
                 ),
-                # (
-                #     "get_fixed_images",
-                #     antsRegistration_workflow.get_fixed_images.lzout.out,
-                # ),
+                (
+                    "get_fixed_images",
+                    antsRegistration_workflow.get_fixed_images.lzout.out,
+                ),
             ]
         )
 
