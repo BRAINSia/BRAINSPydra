@@ -1578,7 +1578,7 @@ if __name__ == "__main__":
         #     antsRegistration_workflow.make_output_warped_image.lzout.out
         # )
 
-        antsRegistration_workflow.add(antsRegistration_task)
+        # antsRegistration_workflow.add(antsRegistration_task)
         antsRegistration_workflow.set_output(
             [
                 # (
