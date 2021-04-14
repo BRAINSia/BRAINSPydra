@@ -31,6 +31,11 @@ if __name__ == "__main__":
     with open(args.input_data_dictionary) as f:
         input_data_dictionary = json.load(f)
 
+    # Set ANTS_MAX_THREADS to the minimum of 4 and environment_configuration["max_threads"]
+    ANTS_MAX_THREADS = 4
+    if environment_configuration["max_threads"] < 4:
+        ANTS_MAX_THREADS = environment_configuration["max_threads"]
+
     @pydra.mark.task
     def make_filename(
         filename="",
@@ -456,12 +461,8 @@ if __name__ == "__main__":
         if environment_configuration["set_threads"]:
             # Set the number of threads to be used by ITK
             antsRegistration_task = registration
-            antsRegistration_task.set_default_num_threads(
-                experiment_configuration["num_threads"]
-            )
-            antsRegistration_task.inputs.num_threads = experiment_configuration[
-                "num_threads"
-            ]
+            antsRegistration_task.set_default_num_threads(ANTS_MAX_THREADS)
+            antsRegistration_task.inputs.num_threads = ANTS_MAX_THREADS
             antsRegistration_task = Nipype1Task(antsRegistration_task)
         else:
             # Use the default number of threads (1)
@@ -610,12 +611,8 @@ if __name__ == "__main__":
         if environment_configuration["set_threads"]:
             # Set the number of threads to be used by ITK
             antsRegistration_task = registration
-            antsRegistration_task.set_default_num_threads(
-                experiment_configuration["num_threads"]
-            )
-            antsRegistration_task.inputs.num_threads = experiment_configuration[
-                "num_threads"
-            ]
+            antsRegistration_task.set_default_num_threads(ANTS_MAX_THREADS)
+            antsRegistration_task.inputs.num_threads = ANTS_MAX_THREADS
             antsRegistration_task = Nipype1Task(antsRegistration_task)
         else:
             # Use the default number of threads (1)
@@ -845,6 +842,8 @@ if __name__ == "__main__":
             name="BRAINSABC",
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
+
+        abc_task.inputs.numberOfThreads = environment_configuration["max_threads"]
 
         # Set task inputs
         abc_task.inputs.inputVolumes = abc_workflow.set_inputVolumes.lzout.out
@@ -1710,12 +1709,8 @@ if __name__ == "__main__":
         if environment_configuration["set_threads"]:
             # Set the number of threads to be used by ITK
             antsApplyTransforms_task = applyTransforms
-            antsApplyTransforms_task.set_default_num_threads(
-                experiment_configuration["num_threads"]
-            )
-            antsApplyTransforms_task.inputs.num_threads = experiment_configuration[
-                "num_threads"
-            ]
+            antsApplyTransforms_task.set_default_num_threads(ANTS_MAX_THREADS)
+            antsApplyTransforms_task.inputs.num_threads = ANTS_MAX_THREADS
             antsApplyTransforms_task = Nipype1Task(antsApplyTransforms_task)
         else:
             # Use the default number of threads (1)
