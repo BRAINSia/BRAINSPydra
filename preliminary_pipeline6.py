@@ -4,6 +4,7 @@ from shutil import copyfile
 import json
 import argparse
 import pickle
+from dask.distributed import Client, LocalCluster
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -1855,10 +1856,10 @@ if __name__ == "__main__":
         input_spec=["input_data_with_T2", "input_data_without_T2"],
         cache_dir=experiment_configuration["cache_dir"],
     )
-    source_node.inputs.input_data_with_T2 = input_data_dictionary["input_data"].get(
+    source_node.inputs.input_data_with_T2 = input_data_dictionary.get(
         "sessions_with_T2"
     )
-    source_node.inputs.input_data_without_T2 = input_data_dictionary["input_data"].get(
+    source_node.inputs.input_data_without_T2 = input_data_dictionary.get(
         "sessions_without_T2"
     )
 
@@ -1915,126 +1916,126 @@ if __name__ == "__main__":
             inputLandmarksEMSP=prejointFusion_node_with_T2.inputs_workflow.lzout.inputLandmarksEMSP,
         )
     )
-    prejointFusion_node_with_T2.add(
-        make_roi_workflow1(
-            inputVolume=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputResampledVolume
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_landmarkInitializer_workflow1(
-            inputMovingLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_landmarkInitializer_workflow2(
-            inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_resample_workflow1(
-            inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
-            warpTransform=prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_roi_workflow2(
-            inputVolume=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow1(
-            fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow2(
-            fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_abc_workflow1(
-            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
-            inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_resample_workflow2(
-            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
-        ).split("inputVolume")
-    )
+    # prejointFusion_node_with_T2.add(
+    #     make_roi_workflow1(
+    #         inputVolume=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputResampledVolume
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_landmarkInitializer_workflow1(
+    #         inputMovingLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_landmarkInitializer_workflow2(
+    #         inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_resample_workflow1(
+    #         inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
+    #         warpTransform=prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_roi_workflow2(
+    #         inputVolume=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsRegistration_workflow1(
+    #         fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsRegistration_workflow2(
+    #         fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_abc_workflow1(
+    #         inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
+    #         inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
+    #         inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+    #         restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_resample_workflow2(
+    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+    #         inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+    #     ).split("inputVolume")
+    # )
 
-    prejointFusion_node_with_T2.add(
-        make_resample_workflow3(
-            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-        )
-    )
+    # prejointFusion_node_with_T2.add(
+    #     make_resample_workflow3(
+    #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+    #     )
+    # )
 
-    prejointFusion_node_with_T2.add(
-        make_createLabelMapFromProbabilityMaps_workflow1(
-            inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
-            nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_landmarkInitializer_workflow3(
-            inputMovingLandmarkFilename=experiment_configuration[
-                "BRAINSLandmarkInitializer3"
-            ].get("inputMovingLandmarkFilename"),
-            inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
-        ).split("inputMovingLandmarkFilename")
-    )
-    prejointFusion_node_with_T2.add(
-        make_roi_workflow3(
-            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow3_with_T2(
-            fixed_image_T1=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            fixed_image_T2=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=1,
-            output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=2,
-            output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=3,
-            output_image_end=experiment_configuration["ANTSApplyTransforms3"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
+    # prejointFusion_node_with_T2.add(
+    #     make_createLabelMapFromProbabilityMaps_workflow1(
+    #         inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
+    #         nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_landmarkInitializer_workflow3(
+    #         inputMovingLandmarkFilename=experiment_configuration[
+    #             "BRAINSLandmarkInitializer3"
+    #         ].get("inputMovingLandmarkFilename"),
+    #         inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+    #     ).split("inputMovingLandmarkFilename")
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_roi_workflow3(
+    #         inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsRegistration_workflow3_with_T2(
+    #         fixed_image_T1=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         fixed_image_T2=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+    #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=1,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=2,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=3,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms3"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+    #         transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
 
     # Fill prejointFusion_node_without_T2 with the tasks coming before JointFusion
     prejointFusion_node_without_T2 = pydra.Workflow(
@@ -2058,327 +2059,327 @@ if __name__ == "__main__":
             inputLandmarksEMSP=prejointFusion_node_without_T2.inputs_workflow.lzout.inputLandmarksEMSP,
         )
     )
-    prejointFusion_node_without_T2.add(
-        make_roi_workflow1(
-            inputVolume=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputResampledVolume
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_landmarkInitializer_workflow1(
-            inputMovingLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_landmarkInitializer_workflow2(
-            inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_resample_workflow1(
-            inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
-            warpTransform=prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_roi_workflow2(
-            inputVolume=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsRegistration_workflow1(
-            fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsRegistration_workflow2(
-            fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_abc_workflow1(
-            inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
-            inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-            restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_resample_workflow2(
-            referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
-        ).split("inputVolume")
-    )
-    prejointFusion_node_without_T2.add(
-        make_createLabelMapFromProbabilityMaps_workflow1(
-            inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
-            nonAirRegionMask=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_landmarkInitializer_workflow3(
-            inputMovingLandmarkFilename=experiment_configuration[
-                "BRAINSLandmarkInitializer3"
-            ].get("inputMovingLandmarkFilename"),
-            inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
-        ).split("inputMovingLandmarkFilename")
-    )
-    prejointFusion_node_without_T2.add(
-        make_roi_workflow3(
-            inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsRegistration_workflow3_without_T2(
-            fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            fixed_image_masks=prejointFusion_node_without_T2.roi_workflow3.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=1,
-            output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=2,
-            output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
-        )
-    )
+    # prejointFusion_node_without_T2.add(
+    #     make_roi_workflow1(
+    #         inputVolume=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputResampledVolume
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_landmarkInitializer_workflow1(
+    #         inputMovingLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_landmarkInitializer_workflow2(
+    #         inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_resample_workflow1(
+    #         inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
+    #         warpTransform=prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_roi_workflow2(
+    #         inputVolume=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsRegistration_workflow1(
+    #         fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsRegistration_workflow2(
+    #         fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_abc_workflow1(
+    #         inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
+    #         inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
+    #         inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+    #         restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_resample_workflow2(
+    #         referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+    #         warpTransform=prejointFusion_node_without_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+    #         inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
+    #     ).split("inputVolume")
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_createLabelMapFromProbabilityMaps_workflow1(
+    #         inputProbabilityVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.posteriors,
+    #         nonAirRegionMask=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_landmarkInitializer_workflow3(
+    #         inputMovingLandmarkFilename=experiment_configuration[
+    #             "BRAINSLandmarkInitializer3"
+    #         ].get("inputMovingLandmarkFilename"),
+    #         inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+    #     ).split("inputMovingLandmarkFilename")
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_roi_workflow3(
+    #         inputVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsRegistration_workflow3_without_T2(
+    #         fixed_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+    #         fixed_image_masks=prejointFusion_node_without_T2.roi_workflow3.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=1,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsApplyTransforms_workflow(
+    #         index=2,
+    #         output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
+    #             "output_image_end"
+    #         ),
+    #         reference_image=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+    #         transform=prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.composite_transform,
+    #     )
+    # )
 
     # Combine the results of the processing to this point into lists as input to JointFusion
     prejointFusion_node_with_T2.set_output(
         [
             ("bcd_workflow1", prejointFusion_node_with_T2.bcd_workflow1.lzout.all_),
-            ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
-            (
-                "landmarkInitializer_workflow1",
-                prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.all_,
-            ),
-            (
-                "landmarkInitializer_workflow2",
-                prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
-            ),
-            (
-                "resample_workflow1",
-                prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
-            ),
-            ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
-            (
-                "antsRegistration_workflow1",
-                prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
-            ),
-            (
-                "antsRegistration_workflow2",
-                prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
-            ),
-            ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            (
-                "resample_workflow2",
-                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
-            ),
-            (
-                "resample_workflow3",
-                prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
-            ),
-            (
-                "createLabelMapFromProbabilityMaps_workflow1",
-                prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            ),
-            (
-                "landmarkInitializer_workflow3",
-                prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
-            ),
-            ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
-            (
-                "antsRegistration_workflow3",
-                prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow1",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow1.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow2",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.all_,
-            ),
-            (
-                "atlas_image",
-                prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.warped_image,
-            ),
-            (
-                "atlas_segmentation_image",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.output_image,
-            ),
-            (
-                "target_image",
-                prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            ),
-            (
-                "mask_image",
-                prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            ),
+            # ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
+            # (
+            #     "landmarkInitializer_workflow1",
+            #     prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "landmarkInitializer_workflow2",
+            #     prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "resample_workflow1",
+            #     prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
+            # ),
+            # ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
+            # (
+            #     "antsRegistration_workflow1",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsRegistration_workflow2",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
+            # ),
+            # ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
+            # (
+            #     "resample_workflow2",
+            #     prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "resample_workflow3",
+            #     prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
+            # ),
+            # (
+            #     "createLabelMapFromProbabilityMaps_workflow1",
+            #     prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "landmarkInitializer_workflow3",
+            #     prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
+            # ),
+            # ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
+            # (
+            #     "antsRegistration_workflow3",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow1",
+            #     prejointFusion_node_with_T2.antsApplyTransforms_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow2",
+            #     prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "atlas_image",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.warped_image,
+            # ),
+            # (
+            #     "atlas_segmentation_image",
+            #     prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.output_image,
+            # ),
+            # (
+            #     "target_image",
+            #     prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+            # ),
+            # (
+            #     "mask_image",
+            #     prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+            # ),
         ]
     )
 
     prejointFusion_node_without_T2.set_output(
         [
             ("bcd_workflow1", prejointFusion_node_without_T2.bcd_workflow1.lzout.all_),
-            ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
-            (
-                "landmarkInitializer_workflow1",
-                prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.all_,
-            ),
-            (
-                "landmarkInitializer_workflow2",
-                prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
-            ),
-            (
-                "resample_workflow1",
-                prejointFusion_node_without_T2.resample_workflow1.lzout.all_,
-            ),
-            ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
-            (
-                "antsRegistration_workflow1",
-                prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
-            ),
-            (
-                "antsRegistration_workflow2",
-                prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
-            ),
-            ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
-            (
-                "resample_workflow2",
-                prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
-            ),
-            (
-                "createLabelMapFromProbabilityMaps_workflow1",
-                prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            ),
-            (
-                "landmarkInitializer_workflow3",
-                prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
-            ),
-            ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
-            (
-                "antsRegistration_workflow3",
-                prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow1",
-                prejointFusion_node_without_T2.antsApplyTransforms_workflow1.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow2",
-                prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.all_,
-            ),
-            (
-                "atlas_image",
-                prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.warped_image,
-            ),
-            (
-                "atlas_segmentation_image",
-                prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.output_image,
-            ),
-            (
-                "target_image",
-                prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
-            ),
-            (
-                "mask_image",
-                prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            ),
+            # ("roi_workflow1", prejointFusion_node_without_T2.roi_workflow1.lzout.all_),
+            # (
+            #     "landmarkInitializer_workflow1",
+            #     prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "landmarkInitializer_workflow2",
+            #     prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "resample_workflow1",
+            #     prejointFusion_node_without_T2.resample_workflow1.lzout.all_,
+            # ),
+            # ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
+            # (
+            #     "antsRegistration_workflow1",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsRegistration_workflow2",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
+            # ),
+            # ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
+            # (
+            #     "resample_workflow2",
+            #     prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "createLabelMapFromProbabilityMaps_workflow1",
+            #     prejointFusion_node_without_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "landmarkInitializer_workflow3",
+            #     prejointFusion_node_without_T2.landmarkInitializer_workflow3.lzout.all_,
+            # ),
+            # ("roi_workflow3", prejointFusion_node_without_T2.roi_workflow3.lzout.all_),
+            # (
+            #     "antsRegistration_workflow3",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow1",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsApplyTransforms_workflow2",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "atlas_image",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow3.lzout.warped_image,
+            # ),
+            # (
+            #     "atlas_segmentation_image",
+            #     prejointFusion_node_without_T2.antsApplyTransforms_workflow2.lzout.output_image,
+            # ),
+            # (
+            #     "target_image",
+            #     prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
+            # ),
+            # (
+            #     "mask_image",
+            #     prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+            # ),
         ]
     )
 
-    jointFusion_node_with_T2 = pydra.Workflow(
-        name="jointFusion_node_with_T2",
-        input_spec=[
-            "atlas_image",
-            "atlas_segmentation_image",
-            "target_image",
-            "mask_image",
-        ],
-        atlas_image=prejointFusion_node_with_T2.lzout.atlas_image,
-        atlas_segmentation_image=prejointFusion_node_with_T2.lzout.atlas_segmentation_image,
-        target_image=prejointFusion_node_with_T2.lzout.target_image,
-        mask_image=prejointFusion_node_with_T2.lzout.mask_image,
-    )
-    jointFusion_node_with_T2.add(
-        make_antsJointFusion_workflow1(
-            atlas_image=jointFusion_node_with_T2.lzin.atlas_image,
-            atlas_segmentation_image=jointFusion_node_with_T2.lzin.atlas_segmentation_image,
-            target_image=jointFusion_node_with_T2.lzin.target_image,
-            mask_image=jointFusion_node_with_T2.lzin.mask_image,
-        )
-    )
-    jointFusion_node_with_T2.set_output(
-        [
-            (
-                "jointFusion_node_with_T2_out",
-                jointFusion_node_with_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
-            )
-        ]
-    )
+    # jointFusion_node_with_T2 = pydra.Workflow(
+    #     name="jointFusion_node_with_T2",
+    #     input_spec=[
+    #         "atlas_image",
+    #         "atlas_segmentation_image",
+    #         "target_image",
+    #         "mask_image",
+    #     ],
+    #     atlas_image=prejointFusion_node_with_T2.lzout.atlas_image,
+    #     atlas_segmentation_image=prejointFusion_node_with_T2.lzout.atlas_segmentation_image,
+    #     target_image=prejointFusion_node_with_T2.lzout.target_image,
+    #     mask_image=prejointFusion_node_with_T2.lzout.mask_image,
+    # )
+    # jointFusion_node_with_T2.add(
+    #     make_antsJointFusion_workflow1(
+    #         atlas_image=jointFusion_node_with_T2.lzin.atlas_image,
+    #         atlas_segmentation_image=jointFusion_node_with_T2.lzin.atlas_segmentation_image,
+    #         target_image=jointFusion_node_with_T2.lzin.target_image,
+    #         mask_image=jointFusion_node_with_T2.lzin.mask_image,
+    #     )
+    # )
+    # jointFusion_node_with_T2.set_output(
+    #     [
+    #         (
+    #             "jointFusion_node_with_T2_out",
+    #             jointFusion_node_with_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
+    #         )
+    #     ]
+    # )
 
-    jointFusion_node_without_T2 = pydra.Workflow(
-        name="jointFusion_node_without_T2",
-        input_spec=[
-            "atlas_image",
-            "atlas_segmentation_image",
-            "target_image",
-            "mask_image",
-        ],
-        atlas_image=prejointFusion_node_without_T2.lzout.atlas_image,
-        atlas_segmentation_image=prejointFusion_node_without_T2.lzout.atlas_segmentation_image,
-        target_image=prejointFusion_node_without_T2.lzout.target_image,
-        mask_image=prejointFusion_node_without_T2.lzout.mask_image,
-    )
-    jointFusion_node_without_T2.add(
-        make_antsJointFusion_workflow1(
-            atlas_image=jointFusion_node_without_T2.lzin.atlas_image,
-            atlas_segmentation_image=jointFusion_node_without_T2.lzin.atlas_segmentation_image,
-            target_image=jointFusion_node_without_T2.lzin.target_image,
-            mask_image=jointFusion_node_without_T2.lzin.mask_image,
-        )
-    )
-    jointFusion_node_without_T2.set_output(
-        [
-            (
-                "jointFusion_node_without_T2_out",
-                jointFusion_node_without_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
-            )
-        ]
-    )
+    # jointFusion_node_without_T2 = pydra.Workflow(
+    #     name="jointFusion_node_without_T2",
+    #     input_spec=[
+    #         "atlas_image",
+    #         "atlas_segmentation_image",
+    #         "target_image",
+    #         "mask_image",
+    #     ],
+    #     atlas_image=prejointFusion_node_without_T2.lzout.atlas_image,
+    #     atlas_segmentation_image=prejointFusion_node_without_T2.lzout.atlas_segmentation_image,
+    #     target_image=prejointFusion_node_without_T2.lzout.target_image,
+    #     mask_image=prejointFusion_node_without_T2.lzout.mask_image,
+    # )
+    # jointFusion_node_without_T2.add(
+    #     make_antsJointFusion_workflow1(
+    #         atlas_image=jointFusion_node_without_T2.lzin.atlas_image,
+    #         atlas_segmentation_image=jointFusion_node_without_T2.lzin.atlas_segmentation_image,
+    #         target_image=jointFusion_node_without_T2.lzin.target_image,
+    #         mask_image=jointFusion_node_without_T2.lzin.mask_image,
+    #     )
+    # )
+    # jointFusion_node_without_T2.set_output(
+    #     [
+    #         (
+    #             "jointFusion_node_without_T2_out",
+    #             jointFusion_node_without_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
+    #         )
+    #     ]
+    # )
 
     processing_node_with_T2.add(prejointFusion_node_with_T2)
     processing_node_without_T2.add(prejointFusion_node_without_T2)
-    processing_node_with_T2.add(jointFusion_node_with_T2)
-    processing_node_without_T2.add(jointFusion_node_without_T2)
+    # processing_node_with_T2.add(jointFusion_node_with_T2)
+    # processing_node_without_T2.add(jointFusion_node_without_T2)
     processing_node_with_T2.set_output(
         [
             (
                 "prejointFusion_out",
                 processing_node_with_T2.prejointFusion_node_with_T2.lzout.all_,
             ),
-            (
-                "jointFusion_out",
-                processing_node_with_T2.jointFusion_node_with_T2.lzout.all_,
-            ),
+            # (
+            #     "jointFusion_out",
+            #     processing_node_with_T2.jointFusion_node_with_T2.lzout.all_,
+            # ),
         ]
     )
     processing_node_without_T2.set_output(
@@ -2387,10 +2388,10 @@ if __name__ == "__main__":
                 "prejointFusion_out",
                 processing_node_without_T2.prejointFusion_node_without_T2.lzout.all_,
             ),
-            (
-                "jointFusion_out",
-                processing_node_without_T2.jointFusion_node_without_T2.lzout.all_,
-            ),
+            # (
+            #     "jointFusion_out",
+            #     processing_node_without_T2.jointFusion_node_without_T2.lzout.all_,
+            # ),
         ]
     )
 
@@ -2441,6 +2442,10 @@ if __name__ == "__main__":
     # Run the entire pipeline
     with pydra.Submitter(plugin="cf") as sub:
         sub(source_node)
+    # with pydra.Submitter(
+    #     plugin="dask", scheduler_file="/Shared/sinapse/pydra-cjohnson/scheduler.json"
+    # ) as sub:
+    #     sub(source_node)
 
     result = source_node.result()
     print(result)
@@ -2513,5 +2518,9 @@ if __name__ == "__main__":
             ("output_without_T2", sink_node.copy_without_T2.lzout.out),
         ]
     )
+    # with pydra.Submitter(
+    #     plugin="dask", scheduler_file="/Shared/sinapse/pydra-cjohnson/scheduler.json"
+    # ) as sub:
+    #     sub(sink_node)
     with pydra.Submitter(plugin="cf") as sub:
         sub(sink_node)
