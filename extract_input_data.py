@@ -3,6 +3,7 @@ from pathlib import Path
 import pprint
 import csv
 from BIDSFilename import *
+import json
 
 parser = argparse.ArgumentParser(
     description="Get MRI data to be processed by BRAINSPydraAutoWorkup"
@@ -15,6 +16,7 @@ parser.add_argument(
     type=str,
     help="Path to the tsv file containing information on the best series for each session",
 )
+
 parser.add_argument(
     "--session_count",
     type=int,
@@ -39,14 +41,18 @@ with open(args.best_image_table) as fd:
 
 sessions_regex = "*sub-*/ses-*/"
 
-input_dict = {"sessions_with_T2": [], "sessions_without_T2": []}
+sessions_dict = {"sessions_with_T2": [], "sessions_without_T2": []}
 
 p = Path(args.bids_path)
+total_sessions = len(list(p.glob(sessions_regex)))
 sessions = p.glob(sessions_regex)
-counter = 0
+counter = 1
 for session in sessions:
     session_id = f"{session.parent.name}_{session.name}"
-    if counter > args.session_count and args.session_count is not -1:
+    print(f"{counter} / {total_sessions} Reading data from {str(session)}")
+    if (
+        counter >= args.session_count and args.session_count != -1
+    ):  # Only read args.session_count sessions unless it is -1, then read all sessions
         break
     counter += 1
 
@@ -86,7 +92,7 @@ for session in sessions:
                 inputVolumeTypes.append(inputVolumeType)
 
     if "T2" in inputVolumeTypes:
-        input_dict["sessions_with_T2"].append(
+        sessions_dict["sessions_with_T2"].append(
             {
                 "session": session_id,
                 "inputVolumes": inputVolumes,
@@ -95,7 +101,7 @@ for session in sessions:
             }
         )
     else:
-        input_dict["sessions_without_T2"].append(
+        sessions_dict["sessions_without_T2"].append(
             {
                 "session": session_id,
                 "inputVolumes": inputVolumes,
@@ -104,5 +110,11 @@ for session in sessions:
             }
         )
 
+if args.session_count == -1:
+    output_file_name = f"input_data_dictionary_{total_sessions}.json"
+else:
+    output_file_name = f"input_data_dictionary_{args.session_count}.json"
+with open(output_file_name, "w") as out_file:
+    json.dump(sessions_dict, out_file, indent=4)
 
-pp.pprint(input_dict)
+print(f"Wrote data from {args.session_count} sessions to {output_file_name}")
