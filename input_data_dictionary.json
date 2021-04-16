@@ -1,16 +1,42 @@
 {
-  "input_data": [
+  "sessions_with_T2": [
     {
       "session": "sub-052823_ses-43817",
-      "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-002_T1w.nii.gz",
-      "t2": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-003_T2w.nii.gz",
-      "inputLandmarksEMSP": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-052823_ses-43817_run-002_T1w.fcsv"
+      "inputVolumes": [
+        "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-052823/ses-43817/sub-052823_ses-43817_run-002_rec-physicalACPC_T1w.nii.gz",
+        "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-052823/ses-43817/sub-052823_ses-43817_run-003_rec-physicalACPC_T2w.nii.gz"
+      ],
+      "inputVolumeTypes": [
+        "T1",
+        "T2"
+      ],
+      "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-052823/ses-43817/sub-052823_ses-43817_run-002_rec-physicalACPC_T1w.fcsv"
     },
     {
       "session": "sub-273625_ses-47445",
-      "t1": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T1w.nii.gz",
-      "t2": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T2w.nii.gz",
-      "inputLandmarksEMSP": "/mnt/c/2020_Grad_School/Research/BRAINSPydra/input_files/sub-273625_ses-47445_run-002_T1w.fcsv"
+      "inputVolumes": [
+        "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-273625/ses-47445/sub-273625_ses-47445_run-002_rec-physicalACPC_T1w.nii.gz",
+        "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-273625/ses-47445/sub-273625_ses-47445_run-003_rec-physicalACPC_T2w.nii.gz",
+        "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-273625/ses-47445/sub-273625_ses-47445_run-005_rec-physicalACPC_T1w.nii.gz"
+      ],
+      "inputVolumeTypes": [
+        "T1",
+        "T2",
+        "T1"
+      ],
+      "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-273625/ses-47445/sub-273625_ses-47445_run-002_rec-physicalACPC_T1w.fcsv"
+    }
+  ],
+  "sessions_without_T2": [
+    {
+      "session": "sub-697343_ses-50028",
+      "inputVolumes": [
+        "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-697343/ses-50028/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.nii.gz"
+      ],
+      "inputVolumeTypes": [
+        "T1"
+      ],
+      "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-697343/ses-50028/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.fcsv"
     }
   ]
 }
