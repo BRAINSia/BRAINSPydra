@@ -5,6 +5,7 @@ import json
 import argparse
 import pickle
 from dask.distributed import Client, LocalCluster
+import time
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -152,7 +153,9 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
+        bcd_task.inputs.numberOfThreads = 4
         # Set task inputs
+        # bcd_task.inputs.verbose = True
         bcd_task.inputs.inputVolume = bcd_workflow.lzin.inputVolume
         # bcd_task.inputs.inputVolume = bcd_workflow.first_T1.lzout.out
         bcd_task.inputs.inputLandmarksEMSP = bcd_workflow.lzin.inputLandmarksEMSP
@@ -2439,88 +2442,92 @@ if __name__ == "__main__":
     # #    make_graphs(jointFusion_node)
     # #    make_graphs(processing_node)
     #
+    t0 = time.time()
     # Run the entire pipeline
-    with pydra.Submitter(plugin="cf") as sub:
-        sub(source_node)
-    # with pydra.Submitter(
-    #     plugin="dask", scheduler_file="/Shared/sinapse/pydra-cjohnson/scheduler.json"
-    # ) as sub:
+    # with pydra.Submitter(plugin="cf") as sub:
     #     sub(source_node)
+
+    with pydra.Submitter(
+        "sge",
+        qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q all.q -pe smp 4",
+    ) as sub:
+        sub(source_node)
+    print(f"Total time: {time.time() - t0}")
 
     result = source_node.result()
     print(result)
 
-    @pydra.mark.task
-    def copy(output_directory, session):
-        p = Path(output_directory)
-        output_files = []
-        output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
-        output_dir.mkdir(exist_ok=True, parents=True)
-        # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
-        for cache_filepath in p.glob("**/[!_]*"):
-            output_files.append(cache_filepath)
-            output_filepath = output_dir / cache_filepath.name
-            # Remove a file if it already exists so it can be replaced by a new file or hardlink
-            if output_filepath.exists():
-                output_filepath.unlink()
-            if environment_configuration.get("hard_links"):
-                print(f"Hardlinking {cache_filepath} to {output_filepath}")
-                cache_filepath.link_to(output_filepath)
-            else:
-                print(f"Copying {cache_filepath} to {output_filepath}")
-                copyfile(cache_filepath, output_filepath)
-        return output_files
+    # @pydra.mark.task
+    # def copy(output_directory, session):
+    #     p = Path(output_directory)
+    #     output_files = []
+    #     output_dir = Path(experiment_configuration.get("output_dir")) / Path(session)
+    #     output_dir.mkdir(exist_ok=True, parents=True)
+    #     # Find all files created in the source_node workflow (the entire pipeline) that do not start with an underscore (not _result.pklz or _task.pklz)
+    #     for cache_filepath in p.glob("**/[!_]*"):
+    #         output_files.append(cache_filepath)
+    #         output_filepath = output_dir / cache_filepath.name
+    #         # Remove a file if it already exists so it can be replaced by a new file or hardlink
+    #         if output_filepath.exists():
+    #             output_filepath.unlink()
+    #         if environment_configuration.get("hard_links"):
+    #             print(f"Hardlinking {cache_filepath} to {output_filepath}")
+    #             cache_filepath.link_to(output_filepath)
+    #         else:
+    #             print(f"Copying {cache_filepath} to {output_filepath}")
+    #             copyfile(cache_filepath, output_filepath)
+    #     return output_files
 
-    f = open(source_node.output_dir / "_task.pklz", "rb")
-    data = pickle.load(f)
-    f.close()
+    # f = open(source_node.output_dir / "_task.pklz", "rb")
+    # data = pickle.load(f)
+    # f.close()
 
-    # After processing all the files, copy the results to a local output directory
-    sessions_with_T2 = [
-        sess_data["session"]
-        for sess_data in data.processing_node_with_T2.inputs.input_data_with_T2
-    ]
-    sessions_without_T2 = [
-        sess_data["session"]
-        for sess_data in data.processing_node_without_T2.inputs.input_data_without_T2
-    ]
+    # # After processing all the files, copy the results to a local output directory
+    # sessions_with_T2 = [
+    #     sess_data["session"]
+    #     for sess_data in data.processing_node_with_T2.inputs.input_data_with_T2
+    # ]
+    # sessions_without_T2 = [
+    #     sess_data["session"]
+    #     for sess_data in data.processing_node_without_T2.inputs.input_data_without_T2
+    # ]
 
-    sink_node = pydra.Workflow(
-        name="sink_node",
-        input_spec=[
-            "output_directory_with_T2",
-            "session_with_T2",
-            "output_directory_without_T2",
-            "session_without_T2",
-        ],
-        output_directory_with_T2=data.processing_node_with_T2.output_dir,
-        session_with_T2=sessions_with_T2,
-        output_directory_without_T2=data.processing_node_without_T2.output_dir,
-        session_without_T2=sessions_without_T2,
-    )
-    sink_node.add(
-        copy(
-            name="copy_with_T2",
-            output_directory=sink_node.lzin.output_directory_with_T2,
-            session=sink_node.lzin.session_with_T2,
-        ).split(("output_directory", "session"))
-    )
-    sink_node.add(
-        copy(
-            name="copy_without_T2",
-            output_directory=sink_node.lzin.output_directory_without_T2,
-            session=sink_node.lzin.session_without_T2,
-        ).split(("output_directory", "session"))
-    )
-    sink_node.set_output(
-        [
-            ("output_with_T2", sink_node.copy_with_T2.lzout.out),
-            ("output_without_T2", sink_node.copy_without_T2.lzout.out),
-        ]
-    )
-    # with pydra.Submitter(
-    #     plugin="dask", scheduler_file="/Shared/sinapse/pydra-cjohnson/scheduler.json"
-    # ) as sub:
+    # sink_node = pydra.Workflow(
+    #     name="sink_node",
+    #     input_spec=[
+    #         "output_directory_with_T2",
+    #         "session_with_T2",
+    #         "output_directory_without_T2",
+    #         "session_without_T2",
+    #     ],
+    #     output_directory_with_T2=data.processing_node_with_T2.output_dir,
+    #     session_with_T2=sessions_with_T2,
+    #     output_directory_without_T2=data.processing_node_without_T2.output_dir,
+    #     session_without_T2=sessions_without_T2,
+    # )
+    # sink_node.add(
+    #     copy(
+    #         name="copy_with_T2",
+    #         output_directory=sink_node.lzin.output_directory_with_T2,
+    #         session=sink_node.lzin.session_with_T2,
+    #     ).split(("output_directory", "session"))
+    # )
+    # sink_node.add(
+    #     copy(
+    #         name="copy_without_T2",
+    #         output_directory=sink_node.lzin.output_directory_without_T2,
+    #         session=sink_node.lzin.session_without_T2,
+    #     ).split(("output_directory", "session"))
+    # )
+    # sink_node.set_output(
+    #     [
+    #         ("output_with_T2", sink_node.copy_with_T2.lzout.out),
+    #         ("output_without_T2", sink_node.copy_without_T2.lzout.out),
+    #     ]
+    # )
+    # # with pydra.Submitter(
+    # #     plugin="dask", scheduler_file="/Shared/sinapse/pydra-cjohnson/scheduler.json"
+    # # ) as sub:
+    # #     sub(sink_node)
+    # with pydra.Submitter(plugin="cf") as sub:
     #     sub(sink_node)
-    with pydra.Submitter(plugin="cf") as sub:
-        sub(sink_node)
