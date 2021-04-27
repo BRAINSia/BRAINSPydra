@@ -51,7 +51,7 @@ for session in sessions:
     session_id = f"{session.parent.name}_{session.name}"
     print(f"{counter} / {total_sessions} Reading data from {str(session)}")
     if (
-        counter >= args.session_count and args.session_count != -1
+        counter > args.session_count and args.session_count != -1
     ):  # Only read args.session_count sessions unless it is -1, then read all sessions
         break
     counter += 1
@@ -68,9 +68,12 @@ for session in sessions:
         # Put the best T1 image at the beginning of the inputVolumes list and set its landmark file
         if bids_filename_obj.attribute_dict["run"] == best_t1_by_session[session_id]:
             if "T1w.nii.gz" in inputVolume.name:
-                inputLandmarksEMSP = str(
-                    inputVolume.with_suffix("").with_suffix(".fcsv")
-                )
+                if inputVolume.with_suffix("").with_suffix(".fcsv").exists():
+                    inputLandmarksEMSP = str(
+                        inputVolume.with_suffix("").with_suffix(".fcsv")
+                    )
+                else:
+                    inputLandmarksEMSP = None
                 inputVolumes.insert(0, str(inputVolume))
                 inputVolumeTypes.insert(0, "T1")
 

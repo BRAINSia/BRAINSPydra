@@ -2449,13 +2449,16 @@ if __name__ == "__main__":
 
     with pydra.Submitter(
         "sge",
-        qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q all.q -pe smp 4",
+        # qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q HJ -pe smp 4",
+        write_output_files=False,
+        qsub_args="-q HJ -pe smp 4",
+        # poll_delay=10,
     ) as sub:
         sub(source_node)
-    print(f"Total time: {time.time() - t0}")
 
     result = source_node.result()
     print(result)
+    print(f"Total time: {time.time() - t0}")
 
     # @pydra.mark.task
     # def copy(output_directory, session):
