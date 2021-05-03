@@ -6,6 +6,7 @@ import argparse
 import pickle
 from dask.distributed import Client, LocalCluster
 import time
+from pydra.engine.submitter import get_runnable_tasks
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -2442,16 +2443,21 @@ if __name__ == "__main__":
     # #    make_graphs(jointFusion_node)
     # #    make_graphs(processing_node)
     #
+    # print(source_node.graph)
+    # print(get_runnable_tasks(source_node.graph))
     t0 = time.time()
-    # Run the entire pipeline
-    # with pydra.Submitter(plugin="cf") as sub:
-    #     sub(source_node)
+    # # Run the entire pipeline
+    # # with pydra.Submitter(plugin="cf") as sub:
+    # #     sub(source_node)
 
     with pydra.Submitter(
         "sge",
         # qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q HJ -pe smp 4",
         write_output_files=False,
         qsub_args="-q HJ -pe smp 4",
+        max_jobs=500
+        # indirect_submit_host="argon-login-2",
+        # rerun=True
         # poll_delay=10,
     ) as sub:
         sub(source_node)
