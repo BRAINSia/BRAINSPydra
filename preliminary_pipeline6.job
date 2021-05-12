@@ -1,0 +1,2 @@
+#!/bin/sh
+python /Shared/sinapse/pydra-cjohnson/BRAINSPydra/preliminary_pipeline6.py /Shared/sinapse/pydra-cjohnson/BRAINSPydra/config_experimental_argon.json /Shared/sinapse/pydra-cjohnson/BRAINSPydra/config_environment_argon.json /Shared/sinapse/pydra-cjohnson/BRAINSPydra/input_data_dictionary_500.json

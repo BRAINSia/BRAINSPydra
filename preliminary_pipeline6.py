@@ -7,6 +7,9 @@ import pickle
 from dask.distributed import Client, LocalCluster
 import time
 from pydra.engine.submitter import get_runnable_tasks
+import attr
+from pydra import ShellCommandTask
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -38,6 +41,17 @@ if __name__ == "__main__":
     ANTS_MAX_THREADS = 4
     if environment_configuration["max_threads"] < 4:
         ANTS_MAX_THREADS = environment_configuration["max_threads"]
+
+    SGE_THREADS_INPUT_SPEC = (
+        "sgeThreads",
+        attr.ib(
+            type=int,
+            metadata={
+                "help_string": "The number of threads the Sun Grid engine should use in running this task",
+                "mandatory": False,
+            },
+        ),
+    )
 
     @pydra.mark.task
     def make_filename(
@@ -154,7 +168,21 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
+        bcd_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
+        updated_input_spec = bcd_task.input_spec
+
+        # Add an input spec field for the number of SGE Threads to be used
+        bcd_task = ShellCommandTask(
+            name=bcd_task.name,
+            executable=bcd_task.inputs.executable,
+            input_spec=updated_input_spec,
+            output_spec=bcd_task.output_spec,
+        )
+
+        # print(bcd_task.input_spec)
+
         bcd_task.inputs.numberOfThreads = 4
+        bcd_task.inputs.sgeThreads = bcd_task.inputs.numberOfThreads
         # Set task inputs
         # bcd_task.inputs.verbose = True
         bcd_task.inputs.inputVolume = bcd_workflow.lzin.inputVolume
@@ -1869,7 +1897,7 @@ if __name__ == "__main__":
 
     @pydra.mark.task
     def get_sessions_data(input_data):
-        print(f"sessions_data: {input_data}")
+        # print(f"sessions_data: {input_data}")
         return input_data
 
     source_node.add(
@@ -2454,11 +2482,12 @@ if __name__ == "__main__":
         "sge",
         # qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q HJ -pe smp 4",
         write_output_files=False,
-        qsub_args="-q HJ -pe smp 4",
-        max_jobs=500
-        # indirect_submit_host="argon-login-2",
+        qsub_args="-q HJ",
+        # max_jobs=750,
+        indirect_submit_host="argon-login-2",
         # rerun=True
-        # poll_delay=10,
+        poll_delay=30,
+        max_threads=500,
     ) as sub:
         sub(source_node)
 
