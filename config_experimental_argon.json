@@ -1,6 +1,6 @@
 {
   "output_dir": "/Shared/sinapse/pydra-cjohnson/output_dir_argon",
-  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_argon_50_full_allq",
+  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_argon_3_abc_8thread_itkthread",
   "graph_dir": "/Shared/sinapse/pydra-cjohnson/graph_dir_argon",
   "num_threads": 4,
   "BRAINSConstellationDetector1": {
@@ -318,7 +318,7 @@
     "winsorize_upper_quantile": 0.99
   },
   "BRAINSABC1": {
-    "threads": 4,
+    "threads": 8,
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/BRAINSABC",
     "atlasDefinition": "/Shared/sinapse/pydra-cjohnson/ExtendedAtlasDefinition.xml",
     "atlasToSubjectTransform": "atlas_to_subject.h5",
