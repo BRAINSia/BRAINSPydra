@@ -165,6 +165,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         bcd_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputVolume", "inputLandmarksEMSP"],
             inputVolume=inputVolume,
@@ -271,7 +272,10 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(
-            name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume
+            plugin="cf",
+            name=workflow_name,
+            input_spec=["inputVolume"],
+            inputVolume=inputVolume,
         )
 
         # Create the pydra-sem generated task
@@ -324,17 +328,10 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputMovingLandmarkFilename"],
             inputMovingLandmarkFilename=inputMovingLandmarkFilename,
-        )
-
-        landmark_initializer_workflow.add(
-            print_inputs(
-                name="printInnputMovingLandmarkFilename",
-                input=landmark_initializer_workflow.lzin.inputMovingLandmarkFilename,
-                input_type="inputMovingLandmarkFilename",
-            )
         )
 
         # Create the pydra-sem generated task
@@ -395,6 +392,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputFixedLandmarkFilename"],
             inputFixedLandmarkFilename=inputFixedLandmarkFilename,
@@ -457,6 +455,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputVolume", "warpTransform"],
             inputVolume=inputVolume,
@@ -511,7 +510,10 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(
-            name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume
+            plugin="cf",
+            name=workflow_name,
+            input_spec=["inputVolume"],
+            inputVolume=inputVolume,
         )
 
         # Create the pydra-sem generated task
@@ -567,6 +569,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"],
             fixed_image=fixed_image,
@@ -721,6 +724,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"],
             fixed_image=fixed_image,
@@ -929,6 +933,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         abc_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=[
                 "inputVolumes",
@@ -1117,6 +1122,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["referenceVolume", "warpTransform", "inputVolume"],
             referenceVolume=referenceVolume,
@@ -1177,6 +1183,7 @@ if __name__ == "__main__":
         print(f"Making task {workflow_name}")
 
         resample_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["referenceVolume", "inputVolume"],
             referenceVolume=referenceVolume,
@@ -1235,6 +1242,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         label_map_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputProbabilityVolume", "nonAirRegionMask"],
             inputProbabilityVolume=inputProbabilityVolume,
@@ -1316,6 +1324,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputFixedLandmarkFilename", "inputMovingLandmarkFilename"],
             inputFixedLandmarkFilename=inputFixedLandmarkFilename,
@@ -1410,6 +1419,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"],
             fixed_image=fixed_image,
@@ -1619,6 +1629,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=[
                 "fixed_image_T1",
@@ -1821,7 +1832,10 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(
-            name=workflow_name, input_spec=["inputVolume"], inputVolume=inputVolume
+            plugin="cf",
+            name=workflow_name,
+            input_spec=["inputVolume"],
+            inputVolume=inputVolume,
         )
 
         # Create the pydra-sem generated task
@@ -1892,6 +1906,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsApplyTransforms_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["reference_image", "transform"],
             reference_image=reference_image,
@@ -1993,6 +2008,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsJointFusion_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=[
                 "atlas_image",
@@ -2083,6 +2099,7 @@ if __name__ == "__main__":
 
     # Put the files into the pydra cache and split them into iterable objects. Then pass these iterables into the processing node (preliminary_workflow4)
     source_node = pydra.Workflow(
+        plugin="cf",
         name="source_node",
         input_spec=["input_data_with_T2", "input_data_without_T2"],
         cache_dir=experiment_configuration["cache_dir"],
@@ -2096,12 +2113,14 @@ if __name__ == "__main__":
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
     processing_node_with_T2 = pydra.Workflow(
+        plugin="cf",
         name="processing_node_with_T2",
         input_spec=["input_data_with_T2"],
         input_data_with_T2=source_node.lzin.input_data_with_T2,
     ).split("input_data_with_T2")
 
     processing_node_without_T2 = pydra.Workflow(
+        plugin="cf",
         name="processing_node_without_T2",
         input_spec=["input_data_without_T2"],
         input_data_without_T2=source_node.lzin.input_data_without_T2,
@@ -2109,6 +2128,7 @@ if __name__ == "__main__":
 
     # Fill prejointFusion_node_with_T2 with the tasks coming before JointFusion
     prejointFusion_node_with_T2 = pydra.Workflow(
+        plugin="cf",
         name="prejointFusion_node_with_T2",
         input_spec=["input_data"],
         input_data=processing_node_with_T2.lzin.input_data_with_T2,
@@ -2117,43 +2137,17 @@ if __name__ == "__main__":
         get_inputs_workflow(my_source_node=prejointFusion_node_with_T2)
     )
 
-    # prejointFusion_node_with_T2.add(
-    #     get_input_field(
-    #         name="get_inputVolumes",
-    #         input_dict=prejointFusion_node_with_T2.lzin.input_data,
-    #         field="inputVolumes",
-    #     )
-    # )
-    # prejointFusion_node_with_T2.add(
-    #     get_input_field(
-    #         name="get_inputVolumeTypes",
-    #         input_dict=prejointFusion_node_with_T2.lzin.input_data,
-    #         field="inputVolumeTypes",
-    #     )
-    # )
-    # # Get the list of landmark files from input_data_dictionary
-    # prejointFusion_node_with_T2.add(
-    #     get_input_field(
-    #         name="get_inputLandmarksEMSP",
-    #         input_dict=prejointFusion_node_with_T2.lzin.input_data,
-    #         field="inputLandmarksEMSP",
-    #     )
-    # )
     prejointFusion_node_with_T2.add(
         get_firstT1(
             name="get_firstT1",
             inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
             inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
-            # inputVolumes=prejointFusion_node_with_T2.get_inputVolumes.lzout.out,
-            # inputVolumeTypes=prejointFusion_node_with_T2.get_inputVolumeTypes.lzout.out,
         )
     )
     prejointFusion_node_with_T2.add(
         make_bcd_workflow1(
             inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
             inputLandmarksEMSP=prejointFusion_node_with_T2.inputs_workflow.lzout.inputLandmarksEMSP,
-            # inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
-            # inputLandmarksEMSP=prejointFusion_node_with_T2.get_inputLandmarksEMSP.lzout.out,
         )
     )
     prejointFusion_node_with_T2.add(
@@ -2166,44 +2160,44 @@ if __name__ == "__main__":
             inputMovingLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
         )
     )
-    prejointFusion_node_with_T2.add(
-        make_landmarkInitializer_workflow2(
-            inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_resample_workflow1(
-            inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
-            warpTransform=prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_roi_workflow2(
-            inputVolume=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow1(
-            fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow2(
-            fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_with_T2.add(
-        make_abc_workflow1(
-            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
-            inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
-        )
-    )
+    # prejointFusion_node_with_T2.add(
+    #     make_landmarkInitializer_workflow2(
+    #         inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_resample_workflow1(
+    #         inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
+    #         warpTransform=prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_roi_workflow2(
+    #         inputVolume=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsRegistration_workflow1(
+    #         fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_antsRegistration_workflow2(
+    #         fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_with_T2.add(
+    #     make_abc_workflow1(
+    #         inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
+    #         inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
+    #         inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+    #         restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
+    #     )
+    # )
     # prejointFusion_node_with_T2.add(
     #     make_resample_workflow2(
     #         referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
@@ -2279,6 +2273,7 @@ if __name__ == "__main__":
 
     # Fill prejointFusion_node_without_T2 with the tasks coming before JointFusion
     prejointFusion_node_without_T2 = pydra.Workflow(
+        plugin="cf",
         name="prejointFusion_node_without_T2",
         input_spec=["input_data"],
         input_data=processing_node_without_T2.lzin.input_data_without_T2,
@@ -2286,43 +2281,18 @@ if __name__ == "__main__":
     prejointFusion_node_without_T2.add(
         get_inputs_workflow(my_source_node=prejointFusion_node_without_T2)
     )
-    # prejointFusion_node_without_T2.add(
-    #     get_input_field(
-    #         name="get_inputVolumes",
-    #         input_dict=prejointFusion_node_without_T2.lzin.input_data,
-    #         field="inputVolumes",
-    #     )
-    # )
-    # prejointFusion_node_without_T2.add(
-    #     get_input_field(
-    #         name="get_inputVolumeTypes",
-    #         input_dict=prejointFusion_node_without_T2.lzin.input_data,
-    #         field="inputVolumeTypes",
-    #     )
-    # )
-    # # Get the list of landmark files from input_data_dictionary
-    # prejointFusion_node_without_T2.add(
-    #     get_input_field(
-    #         name="get_inputLandmarksEMSP",
-    #         input_dict=prejointFusion_node_without_T2.lzin.input_data,
-    #         field="inputLandmarksEMSP",
-    #     )
-    # )
+
     prejointFusion_node_without_T2.add(
         get_firstT1(
             name="get_firstT1",
             inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
             inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
-            # inputVolumes=prejointFusion_node_without_T2.get_inputVolumes.lzout.out,
-            # inputVolumeTypes=prejointFusion_node_without_T2.get_inputVolumeTypes.lzout.out,
         )
     )
     prejointFusion_node_without_T2.add(
         make_bcd_workflow1(
             inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
             inputLandmarksEMSP=prejointFusion_node_without_T2.inputs_workflow.lzout.inputLandmarksEMSP,
-            # inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
-            # inputLandmarksEMSP=prejointFusion_node_without_T2.get_inputLandmarksEMSP.lzout.out,
         )
     )
     prejointFusion_node_without_T2.add(
@@ -2335,44 +2305,44 @@ if __name__ == "__main__":
             inputMovingLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
         )
     )
-    prejointFusion_node_without_T2.add(
-        make_landmarkInitializer_workflow2(
-            inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_resample_workflow1(
-            inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
-            warpTransform=prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_roi_workflow2(
-            inputVolume=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsRegistration_workflow1(
-            fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_antsRegistration_workflow2(
-            fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.composite_transform,
-        )
-    )
-    prejointFusion_node_without_T2.add(
-        make_abc_workflow1(
-            inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
-            inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
-            restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
-        )
-    )
+    # prejointFusion_node_without_T2.add(
+    #     make_landmarkInitializer_workflow2(
+    #         inputFixedLandmarkFilename=prejointFusion_node_without_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_resample_workflow1(
+    #         inputVolume=prejointFusion_node_without_T2.get_firstT1.lzout.out,
+    #         warpTransform=prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_roi_workflow2(
+    #         inputVolume=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsRegistration_workflow1(
+    #         fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_antsRegistration_workflow2(
+    #         fixed_image=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+    #         fixed_image_masks=prejointFusion_node_without_T2.roi_workflow2.lzout.outputROIMaskVolume,
+    #         initial_moving_transform=prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.composite_transform,
+    #     )
+    # )
+    # prejointFusion_node_without_T2.add(
+    #     make_abc_workflow1(
+    #         inputVolumes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumes,
+    #         inputVolumeTypes=prejointFusion_node_without_T2.inputs_workflow.lzout.inputVolumeTypes,
+    #         inputVolumeCropped=prejointFusion_node_without_T2.roi_workflow1.lzout.outputVolume,
+    #         restoreState=prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.save_state,
+    #     )
+    # )
     # prejointFusion_node_without_T2.add(
     #     make_resample_workflow2(
     #         referenceVolume=prejointFusion_node_without_T2.abc_workflow1.lzout.t1_average,
@@ -2436,24 +2406,24 @@ if __name__ == "__main__":
                 "landmarkInitializer_workflow1",
                 prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.all_,
             ),
-            (
-                "landmarkInitializer_workflow2",
-                prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
-            ),
-            (
-                "resample_workflow1",
-                prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
-            ),
-            ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
-            (
-                "antsRegistration_workflow1",
-                prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
-            ),
-            (
-                "antsRegistration_workflow2",
-                prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
-            ),
-            ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
+            # (
+            #     "landmarkInitializer_workflow2",
+            #     prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "resample_workflow1",
+            #     prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
+            # ),
+            # ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
+            # (
+            #     "antsRegistration_workflow1",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsRegistration_workflow2",
+            #     prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
+            # ),
+            # ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
             # (
             #     "resample_workflow2",
             #     prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
@@ -2510,24 +2480,24 @@ if __name__ == "__main__":
                 "landmarkInitializer_workflow1",
                 prejointFusion_node_without_T2.landmarkInitializer_workflow1.lzout.all_,
             ),
-            (
-                "landmarkInitializer_workflow2",
-                prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
-            ),
-            (
-                "resample_workflow1",
-                prejointFusion_node_without_T2.resample_workflow1.lzout.all_,
-            ),
-            ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
-            (
-                "antsRegistration_workflow1",
-                prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
-            ),
-            (
-                "antsRegistration_workflow2",
-                prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
-            ),
-            ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
+            # (
+            #     "landmarkInitializer_workflow2",
+            #     prejointFusion_node_without_T2.landmarkInitializer_workflow2.lzout.all_,
+            # ),
+            # (
+            #     "resample_workflow1",
+            #     prejointFusion_node_without_T2.resample_workflow1.lzout.all_,
+            # ),
+            # ("roi_workflow2", prejointFusion_node_without_T2.roi_workflow2.lzout.all_),
+            # (
+            #     "antsRegistration_workflow1",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow1.lzout.all_,
+            # ),
+            # (
+            #     "antsRegistration_workflow2",
+            #     prejointFusion_node_without_T2.antsRegistration_workflow2.lzout.all_,
+            # ),
+            # ("abc_workflow1", prejointFusion_node_without_T2.abc_workflow1.lzout.all_),
             # (
             #     "resample_workflow2",
             #     prejointFusion_node_without_T2.resample_workflow2.lzout.all_,
@@ -2573,6 +2543,7 @@ if __name__ == "__main__":
     )
 
     # jointFusion_node_with_T2 = pydra.Workflow(
+    #     plugin="cf",
     #     name="jointFusion_node_with_T2",
     #     input_spec=[
     #         "atlas_image",
@@ -2603,6 +2574,7 @@ if __name__ == "__main__":
     # )
 
     # jointFusion_node_without_T2 = pydra.Workflow(
+    #     plugin="cf",
     #     name="jointFusion_node_without_T2",
     #     input_spec=[
     #         "atlas_image",
@@ -2708,14 +2680,17 @@ if __name__ == "__main__":
         "sge",
         # qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q all.q",
         write_output_files=False,
-        qsub_args="-q HJ",
+        qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q all.q",
         # max_jobs=750,
         indirect_submit_host="argon-login-2",
-        max_job_array_length=50,
+        max_job_array_length=100,
         # rerun=True
-        poll_delay=30,
-        default_threads_per_task=4,
-        # max_threads=3000,
+        poll_delay=5,
+        default_threads_per_task=1,
+        max_threads=2000,
+        poll_for_result_file=True,
+        collect_jobs_delay=30,
+        polls_before_checking_evicted=12,
     ) as sub:
         sub(source_node)
 

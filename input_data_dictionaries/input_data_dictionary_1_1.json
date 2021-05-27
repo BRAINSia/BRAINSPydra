@@ -1,0 +1,17 @@
+{
+    "sessions_with_T2": [],
+    "sessions_without_T2": [
+        {
+            "session": "sub-624351_ses-27968",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-27968/sub-624351_ses-27968_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-27968/sub-624351_ses-27968_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-27968/sub-624351_ses-27968_run-003_rec-physicalACPC_T1w.fcsv"
+        }
+    ]
+}

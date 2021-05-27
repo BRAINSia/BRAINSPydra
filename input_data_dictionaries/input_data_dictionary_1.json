@@ -1,0 +1,15 @@
+{
+  "sessions_with_T2": [],
+  "sessions_without_T2": [
+    {
+      "session": "sub-697343_ses-50028",
+      "inputVolumes": [
+        "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-697343/ses-50028/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.nii.gz"
+      ],
+      "inputVolumeTypes": [
+        "T1"
+      ],
+      "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-697343/ses-50028/sub-697343_ses-50028_run-002_rec-physicalACPC_T1w.fcsv"
+    }
+  ]
+}
