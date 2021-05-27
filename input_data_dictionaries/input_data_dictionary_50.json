@@ -1,0 +1,656 @@
+{
+    "sessions_with_T2": [
+        {
+            "session": "sub-624351_ses-54567",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-54567/sub-624351_ses-54567_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-54567/sub-624351_ses-54567_run-004_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-54567/sub-624351_ses-54567_run-004_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-54567/sub-624351_ses-54567_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2",
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-54567/sub-624351_ses-54567_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-624351_ses-29749",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-29749/sub-624351_ses-29749_run-301_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-29749/sub-624351_ses-29749_run-901_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-29749/sub-624351_ses-29749_run-701_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-29749/sub-624351_ses-29749_run-401_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-29749/sub-624351_ses-29749_run-801_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T1",
+                "T2",
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-29749/sub-624351_ses-29749_run-301_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-624351_ses-98402",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-98402/sub-624351_ses-98402_run-301_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-98402/sub-624351_ses-98402_run-801_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-98402/sub-624351_ses-98402_run-701_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-98402/sub-624351_ses-98402_run-401_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "T2",
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-98402/sub-624351_ses-98402_run-301_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-509243_ses-12681",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-12681/sub-509243_ses-12681_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-12681/sub-509243_ses-12681_run-003_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-12681/sub-509243_ses-12681_run-003_rec-physicalACPC_PD.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "PD"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-12681/sub-509243_ses-12681_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-509243_ses-38372",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-38372/sub-509243_ses-38372_run-004_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-38372/sub-509243_ses-38372_run-003_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-38372/sub-509243_ses-38372_run-003_rec-physicalACPC_PD.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "PD"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-38372/sub-509243_ses-38372_run-004_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-509243_ses-90068",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-90068/sub-509243_ses-90068_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-90068/sub-509243_ses-90068_run-004_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-90068/sub-509243_ses-90068_run-004_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-509243/ses-90068/sub-509243_ses-90068_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-360509_ses-97281",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-360509/ses-97281/sub-360509_ses-97281_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-360509/ses-97281/sub-360509_ses-97281_run-004_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-360509/ses-97281/sub-360509_ses-97281_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-360509_ses-83178",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-360509/ses-83178/sub-360509_ses-83178_run-004_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-360509/ses-83178/sub-360509_ses-83178_run-005_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-360509/ses-83178/sub-360509_ses-83178_run-005_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-360509/ses-83178/sub-360509_ses-83178_run-004_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-580586_ses-40057",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-40057/sub-580586_ses-40057_run-301_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-40057/sub-580586_ses-40057_run-401_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-40057/sub-580586_ses-40057_run-401_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-40057/sub-580586_ses-40057_run-301_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-580586_ses-78709",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-78709/sub-580586_ses-78709_run-401_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-78709/sub-580586_ses-78709_run-501_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-78709/sub-580586_ses-78709_run-501_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-580586/ses-78709/sub-580586_ses-78709_run-401_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-94552",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-94552/sub-001845_ses-94552_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-94552/sub-001845_ses-94552_run-005_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-94552/sub-001845_ses-94552_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-94552/sub-001845_ses-94552_run-004_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-94552/sub-001845_ses-94552_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-59911",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-59911/sub-001845_ses-59911_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-59911/sub-001845_ses-59911_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-59911/sub-001845_ses-59911_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-44963",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44963/sub-001845_ses-44963_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44963/sub-001845_ses-44963_run-003_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44963/sub-001845_ses-44963_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44963/sub-001845_ses-44963_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-64812",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-64812/sub-001845_ses-64812_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-64812/sub-001845_ses-64812_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-64812/sub-001845_ses-64812_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-15991",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-15991/sub-001845_ses-15991_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-15991/sub-001845_ses-15991_run-003_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-15991/sub-001845_ses-15991_run-003_rec-physicalACPC_PD.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "PD"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-15991/sub-001845_ses-15991_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-20030",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-20030/sub-001845_ses-20030_run-005_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-20030/sub-001845_ses-20030_run-006_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-20030/sub-001845_ses-20030_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-20030/sub-001845_ses-20030_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T1",
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-20030/sub-001845_ses-20030_run-005_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-66189",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-66189/sub-001845_ses-66189_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-66189/sub-001845_ses-66189_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-66189/sub-001845_ses-66189_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-95804",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-95804/sub-001845_ses-95804_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-95804/sub-001845_ses-95804_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-95804/sub-001845_ses-95804_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-44202",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44202/sub-001845_ses-44202_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44202/sub-001845_ses-44202_run-004_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44202/sub-001845_ses-44202_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44202/sub-001845_ses-44202_run-005_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-44202/sub-001845_ses-44202_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-63819",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-63819/sub-001845_ses-63819_run-019_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-63819/sub-001845_ses-63819_run-020_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-63819/sub-001845_ses-63819_run-004_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-63819/sub-001845_ses-63819_run-005_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-63819/sub-001845_ses-63819_run-019_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-95205",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-95205/sub-342204_ses-95205_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-95205/sub-342204_ses-95205_run-005_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-95205/sub-342204_ses-95205_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-95205/sub-342204_ses-95205_run-004_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-95205/sub-342204_ses-95205_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-58589",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-58589/sub-342204_ses-58589_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-58589/sub-342204_ses-58589_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-58589/sub-342204_ses-58589_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-35883",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-35883/sub-342204_ses-35883_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-35883/sub-342204_ses-35883_run-003_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-35883/sub-342204_ses-35883_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-35883/sub-342204_ses-35883_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-78814",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-78814/sub-342204_ses-78814_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-78814/sub-342204_ses-78814_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-78814/sub-342204_ses-78814_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-43729",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-43729/sub-342204_ses-43729_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-43729/sub-342204_ses-43729_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-43729/sub-342204_ses-43729_run-005_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-43729/sub-342204_ses-43729_run-004_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T1",
+                "T2",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-43729/sub-342204_ses-43729_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-65761",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-65761/sub-342204_ses-65761_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-65761/sub-342204_ses-65761_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-65761/sub-342204_ses-65761_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-020690_ses-63793",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-63793/sub-020690_ses-63793_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-63793/sub-020690_ses-63793_run-004_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-63793/sub-020690_ses-63793_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-63793/sub-020690_ses-63793_run-005_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-63793/sub-020690_ses-63793_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-020690_ses-95632",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-95632/sub-020690_ses-95632_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-95632/sub-020690_ses-95632_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-95632/sub-020690_ses-95632_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-020690_ses-48596",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-48596/sub-020690_ses-48596_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-48596/sub-020690_ses-48596_run-003_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-48596/sub-020690_ses-48596_run-003_rec-physicalACPC_PD.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "PD"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-48596/sub-020690_ses-48596_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-020690_ses-81826",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-81826/sub-020690_ses-81826_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-81826/sub-020690_ses-81826_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-81826/sub-020690_ses-81826_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-020690_ses-23388",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-23388/sub-020690_ses-23388_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-23388/sub-020690_ses-23388_run-003_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-23388/sub-020690_ses-23388_run-003_rec-physicalACPC_PD.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "PD"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-23388/sub-020690_ses-23388_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-020690_ses-10026",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-10026/sub-020690_ses-10026_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-10026/sub-020690_ses-10026_run-003_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-10026/sub-020690_ses-10026_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-10026/sub-020690_ses-10026_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-187482_ses-42861",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-42861/sub-187482_ses-42861_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-42861/sub-187482_ses-42861_run-004_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-42861/sub-187482_ses-42861_run-004_rec-physicalACPC_PD.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "PD"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-42861/sub-187482_ses-42861_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-187482_ses-98532",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-98532/sub-187482_ses-98532_run-005_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-98532/sub-187482_ses-98532_run-004_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-98532/sub-187482_ses-98532_run-004_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-98532/sub-187482_ses-98532_run-005_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-187482_ses-17966",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-17966/sub-187482_ses-17966_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-17966/sub-187482_ses-17966_run-003_rec-physicalACPC_T2w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-17966/sub-187482_ses-17966_run-003_rec-physicalACPC_PD.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T2",
+                "PD"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-17966/sub-187482_ses-17966_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-070174_ses-20650",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-070174/ses-20650/sub-070174_ses-20650_run-002_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-070174/ses-20650/sub-070174_ses-20650_run-003_rec-physicalACPC_PD.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-070174/ses-20650/sub-070174_ses-20650_run-003_rec-physicalACPC_T2w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "PD",
+                "T2"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-070174/ses-20650/sub-070174_ses-20650_run-002_rec-physicalACPC_T1w.fcsv"
+        }
+    ],
+    "sessions_without_T2": [
+        {
+            "session": "sub-624351_ses-27968",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-27968/sub-624351_ses-27968_run-003_rec-physicalACPC_T1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-27968/sub-624351_ses-27968_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-624351/ses-27968/sub-624351_ses-27968_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-23814",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-23814/sub-001845_ses-23814_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-23814/sub-001845_ses-23814_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-96364",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-96364/sub-001845_ses-96364_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-96364/sub-001845_ses-96364_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-72373",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-72373/sub-001845_ses-72373_run-004_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-72373/sub-001845_ses-72373_run-004_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-001845_ses-53081",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-53081/sub-001845_ses-53081_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-001845/ses-53081/sub-001845_ses-53081_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-74483",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-74483/sub-342204_ses-74483_run-003_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-74483/sub-342204_ses-74483_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-64713",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-64713/sub-342204_ses-64713_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-64713/sub-342204_ses-64713_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-342204_ses-65698",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-65698/sub-342204_ses-65698_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-342204/ses-65698/sub-342204_ses-65698_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-020690_ses-90617",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-90617/sub-020690_ses-90617_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-020690/ses-90617/sub-020690_ses-90617_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-187482_ses-72128",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-72128/sub-187482_ses-72128_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-72128/sub-187482_ses-72128_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-187482_ses-73862",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-73862/sub-187482_ses-73862_run-004_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-187482/ses-73862/sub-187482_ses-73862_run-004_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-070174_ses-58404",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-070174/ses-58404/sub-070174_ses-58404_run-002_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-070174/ses-58404/sub-070174_ses-58404_run-002_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-057664_ses-11034",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-057664/ses-11034/sub-057664_ses-11034_run-003_rec-physicalACPC_T1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-057664/ses-11034/sub-057664_ses-11034_run-003_rec-physicalACPC_T1w.fcsv"
+        },
+        {
+            "session": "sub-057664_ses-99372",
+            "inputVolumes": [
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-057664/ses-99372/sub-057664_ses-99372_run-003_rec-physicalACPC_BADT1w.nii.gz",
+                "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-057664/ses-99372/sub-057664_ses-99372_run-005_rec-physicalACPC_BADT1w.nii.gz"
+            ],
+            "inputVolumeTypes": [
+                "T1",
+                "T1"
+            ],
+            "inputLandmarksEMSP": "/Shared/sinapse/chdi_bids/DELETEME/PREDICTHD_BIDS/derivatives/physicalACPC/sub-057664/ses-99372/sub-057664_ses-99372_run-003_rec-physicalACPC_BADT1w.fcsv"
+        }
+    ]
+}
