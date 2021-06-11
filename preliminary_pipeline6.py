@@ -2681,16 +2681,13 @@ if __name__ == "__main__":
 
     with pydra.Submitter(
         "sge",
-        # qsub_args="-o /Shared/sinapse/pydra-cjohnson/log -e /Shared/sinapse/pydra-cjohnson/error -q all.q",
         write_output_files=False,
         qsub_args="-q HJ",
-        # max_jobs=1500,
         indirect_submit_host="argon-login-2",
-        max_job_array_length=50,
-        # rerun=True
+        max_job_array_length=5,
         poll_delay=5,
         default_threads_per_task=8,
-        max_threads=500,
+        max_threads=504,
         poll_for_result_file=True,
         collect_jobs_delay=30,
         polls_before_checking_evicted=12,
