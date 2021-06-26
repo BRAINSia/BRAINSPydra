@@ -587,36 +587,6 @@ if __name__ == "__main__":
 
         registration = Registration()
         registration._cmd = experiment_configuration[configkey].get("executable")
-        # antsRegistration_task = Nipype1Task(registration)
-        # if environment_configuration["set_threads"]:
-            # Set the number of threads to be used by ITK
-            # antsRegistration_task = registration
-            # antsRegistration_task.set_default_num_threads(
-            #     experiment_configuration[configkey].get("threads")
-            # )
-            # antsRegistration_task.inputs.num_threads = experiment_configuration[
-            #     configkey
-            # ].get("threads")
-            # registration.inputs.num_threads = experiment_configuration[configkey].get(
-            #     "threads"
-            # )
-            # antsRegistration_task = Nipype1Task(registration)
-
-            # antsRegistration_task.inputs.num_threads = experiment_configuration[
-            #     configkey
-            # ].get("threads")
-        # else:
-            # Use the default number of threads
-            # antsRegistration_task = Nipype1Task(registration)
-
-        # registration.inputs.num_threads = experiment_configuration[configkey].get(
-        #     "threads"
-        # )
-        # antsRegistration_task = Nipype1Task(registration)
-
-        # antsRegistration_task.inputs.num_threads = experiment_configuration[
-        #     configkey
-        # ].get("threads")
 
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
@@ -765,27 +735,7 @@ if __name__ == "__main__":
 
         registration = Registration()
         registration._cmd = experiment_configuration[configkey].get("executable")
-        # antsRegistration_task = Nipype1Task(registration)
-        # if environment_configuration["set_threads"]:
-        #     # Set the number of threads to be used by ITK
-        #     registration.inputs.num_threads = experiment_configuration[configkey].get(
-        #         "threads"
-        #     )
-        #     #     antsRegistration_task = registration
-        #     #     antsRegistration_task.set_default_num_threads(
-        #     #         experiment_configuration[configkey].get("threads")
-        #     #     )
-        #     #     antsRegistration_task.inputs.num_threads = experiment_configuration[
-        #     #         configkey
-        #     #     ].get("threads")
-        #     antsRegistration_task = Nipype1Task(registration)
 
-        #     antsRegistration_task.inputs.num_threads = experiment_configuration[
-        #         configkey
-        #     ].get("threads")
-        # else:
-        #     # Use the default number of threads
-        #     antsRegistration_task = Nipype1Task(registration)
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
 
@@ -1527,24 +1477,7 @@ if __name__ == "__main__":
         
         registration = Registration()
         registration._cmd = experiment_configuration[configkey].get("executable")
-        # antsRegistration_task = Nipype1Task(registration)
-        # if environment_configuration["set_threads"]:
-        #     # Set the number of threads to be used by ITK
-        #     registration.inputs.num_threads = experiment_configuration[configkey].get(
-        #         "threads"
-        #     )
-        #     #     antsRegistration_task = registration
-        #     #     antsRegistration_task.set_default_num_threads(1)
-        #     #     antsRegistration_task.inputs.num_threads = 1
-        #     antsRegistration_task = Nipype1Task(registration)
 
-        #     antsRegistration_task.inputs.num_threads = experiment_configuration[
-        #         configkey
-        #     ].get("threads")
-
-        # else:
-        #     # Use the default number of threads
-        #     antsRegistration_task = Nipype1Task(registration)
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
         antsRegistration_task.qsub_args=f"-q all.q -l mem_384G -pe smp {experiment_configuration[configkey].get('threads')}"
@@ -1757,28 +1690,11 @@ if __name__ == "__main__":
 
         registration = Registration()
         registration._cmd = experiment_configuration[configkey].get("executable")
-        # antsRegistration_task = Nipype1Task(registration)
-        # if environment_configuration["set_threads"]:
-        #     # Set the number of threads to be used by ITK
-        #     registration.inputs.num_threads = experiment_configuration[configkey].get(
-        #         "threads"
-        #     )
-        #     #     antsRegistration_task = registration
-        #     #     antsRegistration_task.set_default_num_threads(1)
-        #     #     antsRegistration_task.inputs.num_threads = 1
-        #     #     antsRegistration_task = Nipype1Task(antsRegistration_task)
-        #     antsRegistration_task = Nipype1Task(registration)
 
-        #     antsRegistration_task.inputs.num_threads = experiment_configuration[
-        #         configkey
-        #     ].get("threads")
-        # else:
-        #     # Use the default number of threads
-        #     antsRegistration_task = Nipype1Task(registration)
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
         antsRegistration_task.qsub_args=f"-q all.q -l mem_384G -pe smp {experiment_configuration[configkey].get('threads')}"
-        # antsRegistration_task.inputs.num_threads = -1
+
         # Set task inputs
         antsRegistration_task.inputs.fixed_image = (
             antsRegistration_workflow.get_fixed_images.lzout.out
