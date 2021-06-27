@@ -1,6 +1,6 @@
 {
   "output_dir": "/Shared/sinapse/pydra-cjohnson/output_dir_argon",
-  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_3_roi3",
+  "cache_dir": "/Shared/sinapse/pydra-cjohnson/cache_dir_10_debug",
   "graph_dir": "/Shared/sinapse/pydra-cjohnson/graph_dir_argon",
   "num_threads": 4,
   "BRAINSConstellationDetector1": {
@@ -53,7 +53,7 @@
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "ANTSRegistration1": {
-    "threads": 4,
+    "threads": 16,
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_t1_denoised_gaussian.nii.gz",
     "moving_image_masks": [
@@ -188,7 +188,7 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSRegistration2": {
-    "threads": 4,
+    "threads": 16,
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/Atlas/Atlas_20131115/template_t1_denoised_gaussian.nii.gz",
     "moving_image_masks": [
@@ -456,7 +456,7 @@
     "outputROIMaskVolume": "fixedImageROIAutoMask.nii.gz"
   },
   "ANTSRegistration3_without_T2": {
-    "threads": 8,
+    "threads": 16,
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image_filename": "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
     "moving_image_dir": "/Shared/johnsonhj/ReferenceData/20160523_HDAdultAtlas/",
@@ -653,7 +653,7 @@
     "winsorize_upper_quantile": 0.99
   },
   "ANTSRegistration3_with_T2": {
-    "threads": 8,
+    "threads": 16,
     "executable": "/Shared/johnsonhj/Binaries/Linux/CentOS/Core/apps/BRAINSTools/20200913/bin/antsRegistration",
     "moving_image_filename": [
       "t1_average_BRAINSABC_GaussianDenoised.nii.gz",
