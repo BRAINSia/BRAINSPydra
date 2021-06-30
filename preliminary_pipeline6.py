@@ -165,7 +165,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         bcd_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputVolume", "inputLandmarksEMSP"],
             inputVolume=inputVolume,
@@ -272,7 +272,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputVolume"],
             inputVolume=inputVolume,
@@ -329,7 +329,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputMovingLandmarkFilename"],
             inputMovingLandmarkFilename=inputMovingLandmarkFilename,
@@ -395,7 +395,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputFixedLandmarkFilename"],
             inputFixedLandmarkFilename=inputFixedLandmarkFilename,
@@ -459,7 +459,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputVolume", "warpTransform"],
             inputVolume=inputVolume,
@@ -516,7 +516,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputVolume"],
             inputVolume=inputVolume,
@@ -725,7 +725,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"],
             fixed_image=fixed_image,
@@ -926,7 +926,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         abc_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=[
                 "inputVolumes",
@@ -1117,7 +1117,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         resample_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["referenceVolume", "warpTransform", "inputVolume"],
             referenceVolume=referenceVolume,
@@ -1180,7 +1180,7 @@ if __name__ == "__main__":
         print(f"Making task {workflow_name}")
 
         resample_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["referenceVolume", "inputVolume"],
             referenceVolume=referenceVolume,
@@ -1241,7 +1241,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         label_map_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputProbabilityVolume", "nonAirRegionMask"],
             inputProbabilityVolume=inputProbabilityVolume,
@@ -1325,7 +1325,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         landmark_initializer_workflow = pydra.Workflow(
-            # plugin="cf",
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputFixedLandmarkFilename", "inputMovingLandmarkFilename"],
             inputFixedLandmarkFilename=inputFixedLandmarkFilename,
@@ -1422,6 +1422,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["fixed_image", "fixed_image_masks", "initial_moving_transform"],
             fixed_image=fixed_image,
@@ -1622,6 +1623,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsRegistration_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=[
                 "fixed_image_T1",
@@ -1815,6 +1817,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         roi_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["inputVolume"],
             inputVolume=inputVolume,
@@ -1881,6 +1884,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsApplyTransforms_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=["reference_image", "transform"],
             reference_image=reference_image,
@@ -1986,6 +1990,7 @@ if __name__ == "__main__":
 
         # Define the workflow and its lazy inputs
         antsJointFusion_workflow = pydra.Workflow(
+            plugin="cf",
             name=workflow_name,
             input_spec=[
                 "atlas_image",
