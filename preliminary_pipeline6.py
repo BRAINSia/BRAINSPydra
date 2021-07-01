@@ -590,7 +590,7 @@ if __name__ == "__main__":
 
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
-        antsRegistration_task.qsub_args = f"-l h_rt=01:00:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=01:00:00 -q all.q -l mem_free=25G -pe smp {experiment_configuration[configkey].get('threads')}"
 
         # antsRegistration_task.inputs.num_threads = -1
 
@@ -739,7 +739,7 @@ if __name__ == "__main__":
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
 
-        antsRegistration_task.qsub_args = f"-l h_rt=02:00:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=02:00:00 -q all.q -l mem_free=25G -pe smp {experiment_configuration[configkey].get('threads')}"
         # antsRegistration_task.inputs.num_threads = -1
         # Set subject-specific files
         antsRegistration_task.inputs.fixed_image = (
@@ -981,7 +981,7 @@ if __name__ == "__main__":
         # # Set task inputs
         # abc_task.inputs.sgeThreads = experiment_configuration[configkey].get("threads")
 
-        abc_task.qsub_args = f"-l h_rt=02:00:00 -l mem_free=50G -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
+        abc_task.qsub_args = f"-l h_rt=02:00:00 -l mem_free=25G -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
         abc_task.inputs.numberOfThreads = experiment_configuration[configkey].get(
             "threads"
@@ -1481,7 +1481,7 @@ if __name__ == "__main__":
 
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
-        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=25G -pe smp {experiment_configuration[configkey].get('threads')}"
         # antsRegistration_task.inputs.num_threads = -1
         # Set task inputs
         antsRegistration_task.inputs.fixed_image = (
@@ -1695,7 +1695,7 @@ if __name__ == "__main__":
 
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
-        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=25G -pe smp {experiment_configuration[configkey].get('threads')}"
 
         # Set task inputs
         antsRegistration_task.inputs.fixed_image = (
@@ -2033,7 +2033,7 @@ if __name__ == "__main__":
         #     antsJointFusion_task = Nipype1Task(jointFusion)
         jointFusion.inputs.num_threads = -1
         antsJointFusion_task = Nipype1Task(jointFusion)
-        antsJointFusion_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsJointFusion_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=25G -pe smp {experiment_configuration[configkey].get('threads')}"
         # antsJointFusion_task.inputs.num_threads = -1
         antsJointFusion_task.inputs.atlas_image = (
             antsJointFusion_workflow.lzin.atlas_image
