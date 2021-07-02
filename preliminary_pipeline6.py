@@ -590,7 +590,7 @@ if __name__ == "__main__":
 
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
-        antsRegistration_task.qsub_args = f"-l h_rt=01:00:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=01:00:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
 
         # antsRegistration_task.inputs.num_threads = -1
 
@@ -739,7 +739,7 @@ if __name__ == "__main__":
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
 
-        antsRegistration_task.qsub_args = f"-l h_rt=02:00:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=02:00:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
         # antsRegistration_task.inputs.num_threads = -1
         # Set subject-specific files
         antsRegistration_task.inputs.fixed_image = (
@@ -981,7 +981,7 @@ if __name__ == "__main__":
         # # Set task inputs
         # abc_task.inputs.sgeThreads = experiment_configuration[configkey].get("threads")
 
-        abc_task.qsub_args = f"-l h_rt=02:00:00 -l mem_free=50G -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
+        abc_task.qsub_args = f"-l h_rt=02:00:00 -l mem_free=15G -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
         abc_task.inputs.numberOfThreads = experiment_configuration[configkey].get(
             "threads"
@@ -1481,7 +1481,7 @@ if __name__ == "__main__":
 
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
-        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
         # antsRegistration_task.inputs.num_threads = -1
         # Set task inputs
         antsRegistration_task.inputs.fixed_image = (
@@ -1695,7 +1695,7 @@ if __name__ == "__main__":
 
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
-        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
 
         # Set task inputs
         antsRegistration_task.inputs.fixed_image = (
@@ -2033,7 +2033,7 @@ if __name__ == "__main__":
         #     antsJointFusion_task = Nipype1Task(jointFusion)
         jointFusion.inputs.num_threads = -1
         antsJointFusion_task = Nipype1Task(jointFusion)
-        antsJointFusion_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=50G -pe smp {experiment_configuration[configkey].get('threads')}"
+        antsJointFusion_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
         # antsJointFusion_task.inputs.num_threads = -1
         antsJointFusion_task.inputs.atlas_image = (
             antsJointFusion_workflow.lzin.atlas_image
@@ -2105,12 +2105,14 @@ if __name__ == "__main__":
     )
 
     # Make the processing workflow to take the input data, process it, and pass the processed data to the sink_node
-    processing_node_with_T2 = pydra.Workflow(
-        plugin="cf",
-        name="processing_node_with_T2",
-        input_spec=["input_data_with_T2"],
-        input_data_with_T2=source_node.lzin.input_data_with_T2,
-    ).split("input_data_with_T2")
+
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        processing_node_with_T2 = pydra.Workflow(
+            plugin="cf",
+            name="processing_node_with_T2",
+            input_spec=["input_data_with_T2"],
+            input_data_with_T2=source_node.lzin.input_data_with_T2,
+        ).split("input_data_with_T2")
 
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         processing_node_without_T2 = pydra.Workflow(
@@ -2120,150 +2122,153 @@ if __name__ == "__main__":
             input_data_without_T2=source_node.lzin.input_data_without_T2,
         ).split("input_data_without_T2")
 
-    # Fill prejointFusion_node_with_T2 with the tasks coming before JointFusion
-    prejointFusion_node_with_T2 = pydra.Workflow(
-        plugin="cf",
-        name="prejointFusion_node_with_T2",
-        input_spec=["input_data"],
-        input_data=processing_node_with_T2.lzin.input_data_with_T2,
-    )
-    prejointFusion_node_with_T2.add(
-        get_inputs_workflow(my_source_node=prejointFusion_node_with_T2)
-    )
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        # Fill prejointFusion_node_with_T2 with the tasks coming before JointFusion
+        prejointFusion_node_with_T2 = pydra.Workflow(
+            plugin="cf",
+            name="prejointFusion_node_with_T2",
+            input_spec=["input_data"],
+            input_data=processing_node_with_T2.lzin.input_data_with_T2,
+        )
+        prejointFusion_node_with_T2.add(
+            get_inputs_workflow(my_source_node=prejointFusion_node_with_T2)
+        )
 
-    prejointFusion_node_with_T2.add(
-        get_firstT1(
-            name="get_firstT1",
-            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
+        prejointFusion_node_with_T2.add(
+            get_firstT1(
+                name="get_firstT1",
+                inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
+                inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_bcd_workflow1(
-            inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
-            inputLandmarksEMSP=prejointFusion_node_with_T2.inputs_workflow.lzout.inputLandmarksEMSP,
+        prejointFusion_node_with_T2.add(
+            make_bcd_workflow1(
+                inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
+                inputLandmarksEMSP=prejointFusion_node_with_T2.inputs_workflow.lzout.inputLandmarksEMSP,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_roi_workflow1(
-            inputVolume=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputResampledVolume
+        prejointFusion_node_with_T2.add(
+            make_roi_workflow1(
+                inputVolume=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputResampledVolume
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_landmarkInitializer_workflow1(
-            inputMovingLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
+        prejointFusion_node_with_T2.add(
+            make_landmarkInitializer_workflow1(
+                inputMovingLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInInputSpace
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_landmarkInitializer_workflow2(
-            inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
+        prejointFusion_node_with_T2.add(
+            make_landmarkInitializer_workflow2(
+                inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_resample_workflow1(
-            inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
-            warpTransform=prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
+        prejointFusion_node_with_T2.add(
+            make_resample_workflow1(
+                inputVolume=prejointFusion_node_with_T2.get_firstT1.lzout.out,
+                warpTransform=prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.outputTransformFilename,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_roi_workflow2(
-            inputVolume=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume
+        prejointFusion_node_with_T2.add(
+            make_roi_workflow2(
+                inputVolume=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow1(
-            fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
+        prejointFusion_node_with_T2.add(
+            make_antsRegistration_workflow1(
+                fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+                fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+                initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.outputTransformFilename,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow2(
-            fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
+        prejointFusion_node_with_T2.add(
+            make_antsRegistration_workflow2(
+                fixed_image=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+                fixed_image_masks=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+                initial_moving_transform=prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.composite_transform,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_abc_workflow1(
-            inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
-            inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
-            inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
-            restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
+        prejointFusion_node_with_T2.add(
+            make_abc_workflow1(
+                inputVolumes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumes,
+                inputVolumeTypes=prejointFusion_node_with_T2.inputs_workflow.lzout.inputVolumeTypes,
+                inputVolumeCropped=prejointFusion_node_with_T2.roi_workflow1.lzout.outputVolume,
+                restoreState=prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.save_state,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_resample_workflow2(
-            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
-            inputVolume=experiment_configuration["BRAINSResample2"].get("inputVolumes"),
-        ).split("inputVolume")
-    )
+        prejointFusion_node_with_T2.add(
+            make_resample_workflow2(
+                referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+                warpTransform=prejointFusion_node_with_T2.abc_workflow1.lzout.atlasToSubjectTransform,
+                inputVolume=experiment_configuration["BRAINSResample2"].get(
+                    "inputVolumes"
+                ),
+            ).split("inputVolume")
+        )
 
-    prejointFusion_node_with_T2.add(
-        make_resample_workflow3(
-            referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+        prejointFusion_node_with_T2.add(
+            make_resample_workflow3(
+                referenceVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+                inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+            )
         )
-    )
 
-    prejointFusion_node_with_T2.add(
-        make_createLabelMapFromProbabilityMaps_workflow1(
-            inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
-            nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+        prejointFusion_node_with_T2.add(
+            make_createLabelMapFromProbabilityMaps_workflow1(
+                inputProbabilityVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.posteriors,
+                nonAirRegionMask=prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_landmarkInitializer_workflow3(
-            inputMovingLandmarkFilename=experiment_configuration[
-                "BRAINSLandmarkInitializer3"
-            ].get("inputMovingLandmarkFilename"),
-            inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
-        ).split("inputMovingLandmarkFilename")
-    )
-    prejointFusion_node_with_T2.add(
-        make_roi_workflow3(
-            inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
+        prejointFusion_node_with_T2.add(
+            make_landmarkInitializer_workflow3(
+                inputMovingLandmarkFilename=experiment_configuration[
+                    "BRAINSLandmarkInitializer3"
+                ].get("inputMovingLandmarkFilename"),
+                inputFixedLandmarkFilename=prejointFusion_node_with_T2.bcd_workflow1.lzout.outputLandmarksInACPCAlignedSpace,
+            ).split("inputMovingLandmarkFilename")
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsRegistration_workflow3_with_T2(
-            fixed_image_T1=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            fixed_image_T2=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-            fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
-            initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+        prejointFusion_node_with_T2.add(
+            make_roi_workflow3(
+                inputVolume=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=1,
-            output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+        prejointFusion_node_with_T2.add(
+            make_antsRegistration_workflow3_with_T2(
+                fixed_image_T1=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+                fixed_image_T2=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+                fixed_image_masks=prejointFusion_node_with_T2.roi_workflow3.lzout.outputROIMaskVolume,
+                initial_moving_transform=prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.outputTransformFilename,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=2,
-            output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+        prejointFusion_node_with_T2.add(
+            make_antsApplyTransforms_workflow(
+                index=1,
+                output_image_end=experiment_configuration["ANTSApplyTransforms1"].get(
+                    "output_image_end"
+                ),
+                reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+                transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+            )
         )
-    )
-    prejointFusion_node_with_T2.add(
-        make_antsApplyTransforms_workflow(
-            index=3,
-            output_image_end=experiment_configuration["ANTSApplyTransforms3"].get(
-                "output_image_end"
-            ),
-            reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
-            transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+        prejointFusion_node_with_T2.add(
+            make_antsApplyTransforms_workflow(
+                index=2,
+                output_image_end=experiment_configuration["ANTSApplyTransforms2"].get(
+                    "output_image_end"
+                ),
+                reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+                transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+            )
         )
-    )
+        prejointFusion_node_with_T2.add(
+            make_antsApplyTransforms_workflow(
+                index=3,
+                output_image_end=experiment_configuration["ANTSApplyTransforms3"].get(
+                    "output_image_end"
+                ),
+                reference_image=prejointFusion_node_with_T2.abc_workflow1.lzout.t2_average,
+                transform=prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.composite_transform,
+            )
+        )
 
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         # Fill prejointFusion_node_without_T2 with the tasks coming before JointFusion
@@ -2395,79 +2400,80 @@ if __name__ == "__main__":
         )
 
     # Combine the results of the processing to this point into lists as input to JointFusion
-    prejointFusion_node_with_T2.set_output(
-        [
-            ("bcd_workflow1", prejointFusion_node_with_T2.bcd_workflow1.lzout.all_),
-            ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
-            (
-                "landmarkInitializer_workflow1",
-                prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.all_,
-            ),
-            (
-                "landmarkInitializer_workflow2",
-                prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
-            ),
-            (
-                "resample_workflow1",
-                prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
-            ),
-            ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
-            (
-                "antsRegistration_workflow1",
-                prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
-            ),
-            (
-                "antsRegistration_workflow2",
-                prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
-            ),
-            ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
-            (
-                "resample_workflow2",
-                prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
-            ),
-            (
-                "resample_workflow3",
-                prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
-            ),
-            (
-                "createLabelMapFromProbabilityMaps_workflow1",
-                prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
-            ),
-            (
-                "landmarkInitializer_workflow3",
-                prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
-            ),
-            ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
-            (
-                "antsRegistration_workflow3",
-                prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow1",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow1.lzout.all_,
-            ),
-            (
-                "antsApplyTransforms_workflow2",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.all_,
-            ),
-            (
-                "atlas_image",
-                prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.warped_image,
-            ),
-            (
-                "atlas_segmentation_image",
-                prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.output_image,
-            ),
-            (
-                "target_image",
-                prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
-            ),
-            (
-                "mask_image",
-                prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
-            ),
-        ]
-    )
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        prejointFusion_node_with_T2.set_output(
+            [
+                ("bcd_workflow1", prejointFusion_node_with_T2.bcd_workflow1.lzout.all_),
+                ("roi_workflow1", prejointFusion_node_with_T2.roi_workflow1.lzout.all_),
+                (
+                    "landmarkInitializer_workflow1",
+                    prejointFusion_node_with_T2.landmarkInitializer_workflow1.lzout.all_,
+                ),
+                (
+                    "landmarkInitializer_workflow2",
+                    prejointFusion_node_with_T2.landmarkInitializer_workflow2.lzout.all_,
+                ),
+                (
+                    "resample_workflow1",
+                    prejointFusion_node_with_T2.resample_workflow1.lzout.all_,
+                ),
+                ("roi_workflow2", prejointFusion_node_with_T2.roi_workflow2.lzout.all_),
+                (
+                    "antsRegistration_workflow1",
+                    prejointFusion_node_with_T2.antsRegistration_workflow1.lzout.all_,
+                ),
+                (
+                    "antsRegistration_workflow2",
+                    prejointFusion_node_with_T2.antsRegistration_workflow2.lzout.all_,
+                ),
+                ("abc_workflow1", prejointFusion_node_with_T2.abc_workflow1.lzout.all_),
+                (
+                    "resample_workflow2",
+                    prejointFusion_node_with_T2.resample_workflow2.lzout.all_,
+                ),
+                (
+                    "resample_workflow3",
+                    prejointFusion_node_with_T2.resample_workflow3.lzout.all_,
+                ),
+                (
+                    "createLabelMapFromProbabilityMaps_workflow1",
+                    prejointFusion_node_with_T2.createLabelMapFromProbabilityMaps_workflow1.lzout.all_,
+                ),
+                (
+                    "landmarkInitializer_workflow3",
+                    prejointFusion_node_with_T2.landmarkInitializer_workflow3.lzout.all_,
+                ),
+                ("roi_workflow3", prejointFusion_node_with_T2.roi_workflow3.lzout.all_),
+                (
+                    "antsRegistration_workflow3",
+                    prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.all_,
+                ),
+                (
+                    "antsApplyTransforms_workflow1",
+                    prejointFusion_node_with_T2.antsApplyTransforms_workflow1.lzout.all_,
+                ),
+                (
+                    "antsApplyTransforms_workflow2",
+                    prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.all_,
+                ),
+                (
+                    "atlas_image",
+                    prejointFusion_node_with_T2.antsRegistration_workflow3.lzout.warped_image,
+                ),
+                (
+                    "atlas_segmentation_image",
+                    prejointFusion_node_with_T2.antsApplyTransforms_workflow2.lzout.output_image,
+                ),
+                (
+                    "target_image",
+                    prejointFusion_node_with_T2.abc_workflow1.lzout.t1_average,
+                ),
+                (
+                    "mask_image",
+                    prejointFusion_node_with_T2.roi_workflow2.lzout.outputROIMaskVolume,
+                ),
+            ]
+        )
 
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         prejointFusion_node_without_T2.set_output(
@@ -2555,36 +2561,37 @@ if __name__ == "__main__":
             ]
         )
 
-    jointFusion_node_with_T2 = pydra.Workflow(
-        plugin="cf",
-        name="jointFusion_node_with_T2",
-        input_spec=[
-            "atlas_image",
-            "atlas_segmentation_image",
-            "target_image",
-            "mask_image",
-        ],
-        atlas_image=prejointFusion_node_with_T2.lzout.atlas_image,
-        atlas_segmentation_image=prejointFusion_node_with_T2.lzout.atlas_segmentation_image,
-        target_image=prejointFusion_node_with_T2.lzout.target_image,
-        mask_image=prejointFusion_node_with_T2.lzout.mask_image,
-    )
-    jointFusion_node_with_T2.add(
-        make_antsJointFusion_workflow1(
-            atlas_image=jointFusion_node_with_T2.lzin.atlas_image,
-            atlas_segmentation_image=jointFusion_node_with_T2.lzin.atlas_segmentation_image,
-            target_image=jointFusion_node_with_T2.lzin.target_image,
-            mask_image=jointFusion_node_with_T2.lzin.mask_image,
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        jointFusion_node_with_T2 = pydra.Workflow(
+            plugin="cf",
+            name="jointFusion_node_with_T2",
+            input_spec=[
+                "atlas_image",
+                "atlas_segmentation_image",
+                "target_image",
+                "mask_image",
+            ],
+            atlas_image=prejointFusion_node_with_T2.lzout.atlas_image,
+            atlas_segmentation_image=prejointFusion_node_with_T2.lzout.atlas_segmentation_image,
+            target_image=prejointFusion_node_with_T2.lzout.target_image,
+            mask_image=prejointFusion_node_with_T2.lzout.mask_image,
         )
-    )
-    jointFusion_node_with_T2.set_output(
-        [
-            (
-                "jointFusion_node_with_T2_out",
-                jointFusion_node_with_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
+        jointFusion_node_with_T2.add(
+            make_antsJointFusion_workflow1(
+                atlas_image=jointFusion_node_with_T2.lzin.atlas_image,
+                atlas_segmentation_image=jointFusion_node_with_T2.lzin.atlas_segmentation_image,
+                target_image=jointFusion_node_with_T2.lzin.target_image,
+                mask_image=jointFusion_node_with_T2.lzin.mask_image,
             )
-        ]
-    )
+        )
+        jointFusion_node_with_T2.set_output(
+            [
+                (
+                    "jointFusion_node_with_T2_out",
+                    jointFusion_node_with_T2.antsJointFusion_workflow1.lzout.out_label_fusion,
+                )
+            ]
+        )
 
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         jointFusion_node_without_T2 = pydra.Workflow(
@@ -2618,24 +2625,28 @@ if __name__ == "__main__":
             ]
         )
 
-    processing_node_with_T2.add(prejointFusion_node_with_T2)
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        processing_node_with_T2.add(prejointFusion_node_with_T2)
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         processing_node_without_T2.add(prejointFusion_node_without_T2)
-    processing_node_with_T2.add(jointFusion_node_with_T2)
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        processing_node_with_T2.add(jointFusion_node_with_T2)
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         processing_node_without_T2.add(jointFusion_node_without_T2)
-    processing_node_with_T2.set_output(
-        [
-            (
-                "prejointFusion_out",
-                processing_node_with_T2.prejointFusion_node_with_T2.lzout.all_,
-            ),
-            (
-                "jointFusion_out",
-                processing_node_with_T2.jointFusion_node_with_T2.lzout.all_,
-            ),
-        ]
-    )
+
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        processing_node_with_T2.set_output(
+            [
+                (
+                    "prejointFusion_out",
+                    processing_node_with_T2.prejointFusion_node_with_T2.lzout.all_,
+                ),
+                (
+                    "jointFusion_out",
+                    processing_node_with_T2.jointFusion_node_with_T2.lzout.all_,
+                ),
+            ]
+        )
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         processing_node_without_T2.set_output(
             [
@@ -2650,23 +2661,32 @@ if __name__ == "__main__":
             ]
         )
 
-    source_node.add(processing_node_with_T2)
+    if len(input_data_dictionary["sessions_with_T2"]) > 0:
+        source_node.add(processing_node_with_T2)
     if len(input_data_dictionary["sessions_without_T2"]) > 0:
         source_node.add(processing_node_without_T2)
 
     # Set the output of the source node to the same as the output of the sink_node
-    if len(input_data_dictionary["sessions_without_T2"]) > 0:
+    if (
+        len(input_data_dictionary["sessions_without_T2"]) > 0
+        and len(input_data_dictionary["sessions_with_T2"]) > 0
+    ):
         source_node.set_output(
             [
                 ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
                 ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
             ]
         )
-    else:
+    elif len(input_data_dictionary["sessions_with_T2"]) > 0:
         source_node.set_output(
             [
                 ("out_with_T2", source_node.processing_node_with_T2.lzout.all_),
-                # ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
+            ]
+        )
+    elif len(input_data_dictionary["sessions_without_T2"]) > 0:
+        source_node.set_output(
+            [
+                ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
             ]
         )
     # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
