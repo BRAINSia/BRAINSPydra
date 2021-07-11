@@ -155,9 +155,6 @@ if __name__ == "__main__":
             print(f"input: {x}")
             return x
 
-        # @pydra.mark.task
-        # def get_first_T1(inputVolume):
-        #     return inputVolume[0]
 
         workflow_name = "bcd_workflow1"
         configkey = "BRAINSConstellationDetector1"
@@ -178,27 +175,13 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
-        # bcd_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = bcd_task.input_spec
 
-        # Add an input spec field for the number of SGE Threads to be used
-        # bcd_task = ShellCommandTask(
-        #     name=bcd_task.name,
-        #     executable=bcd_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=bcd_task.output_spec,
-        # )
-
-        # print(bcd_task.input_spec)
         bcd_task.qsub_args = f"-l h_rt=00:30:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
         bcd_task.inputs.numberOfThreads = experiment_configuration[configkey].get(
             "threads"
         )
-        # bcd_task.inputs.sgeThreads = experiment_configuration[configkey].get("threads")
-        # Set task inputs
-        # bcd_task.inputs.verbose = True
+
         bcd_task.inputs.inputVolume = bcd_workflow.lzin.inputVolume
-        # bcd_task.inputs.inputVolume = bcd_workflow.first_T1.lzout.out
         bcd_task.inputs.inputLandmarksEMSP = bcd_workflow.lzin.inputLandmarksEMSP
         bcd_task.inputs.inputTemplateModel = experiment_configuration[configkey].get(
             "inputTemplateModel"
@@ -284,20 +267,9 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey].get("executable"),
         ).get_task()
 
-        # roi_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = roi_task.input_spec
-
-        # Add an input spec field for the number of SGE Threads to be used
-        # roi_task = ShellCommandTask(
-        #     name=roi_task.name,
-        #     executable=roi_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=roi_task.output_spec,
-        # )
 
         # Set task inputs
         roi_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
-        # roi_task.inputs.sgeThreads = experiment_configuration[configkey].get("threads")
         roi_task.inputs.inputVolume = roi_workflow.lzin.inputVolume
         roi_task.inputs.ROIAutoDilateSize = experiment_configuration[configkey].get(
             "ROIAutoDilateSize"
@@ -307,7 +279,7 @@ if __name__ == "__main__":
         )
         roi_task.inputs.outputVolume = experiment_configuration[configkey].get(
             "outputVolume"
-        )  # roi_workflow.outputVolume.lzout.out
+        )
 
         roi_workflow.add(roi_task)
         roi_workflow.set_output(
@@ -341,21 +313,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey].get("executable"),
         ).get_task()
 
-        # landmark_initializer_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = landmark_initializer_task.input_spec
-
-        # Add an input spec field for the number of SGE Threads to be used
-        # landmark_initializer_task = ShellCommandTask(
-        #     name=landmark_initializer_task.name,
-        #     executable=landmark_initializer_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=landmark_initializer_task.output_spec,
-        # )
-
-        # Set task inputs
-        # landmark_initializer_task.inputs.sgeThreads = experiment_configuration[
-        #     configkey
-        # ].get("threads")
 
         landmark_initializer_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
@@ -371,7 +328,7 @@ if __name__ == "__main__":
         ].get("inputWeightFilename")
         landmark_initializer_task.inputs.outputTransformFilename = (
             experiment_configuration[configkey].get("outputTransformFilename")
-        )  # landmark_initializer_workflow.outputTransformFilename.lzout.out
+        ) 
 
         landmark_initializer_workflow.add(landmark_initializer_task)
         landmark_initializer_workflow.set_output(
@@ -407,21 +364,7 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey].get("executable"),
         ).get_task()
 
-        # landmark_initializer_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = landmark_initializer_task.input_spec
 
-        # # Add an input spec field for the number of SGE Threads to be used
-        # landmark_initializer_task = ShellCommandTask(
-        #     name=landmark_initializer_task.name,
-        #     executable=landmark_initializer_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=landmark_initializer_task.output_spec,
-        # )
-
-        # Set task inputs
-        # landmark_initializer_task.inputs.sgeThreads = experiment_configuration[
-        #     configkey
-        # ].get("threads")
         landmark_initializer_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
         # Set task inputs
@@ -472,21 +415,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
-        # resample_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = resample_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # resample_task = ShellCommandTask(
-        #     name=resample_task.name,
-        #     executable=resample_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=resample_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # resample_task.inputs.sgeThreads = experiment_configuration[configkey].get(
-        #     "threads"
-        # )
 
         resample_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
@@ -528,19 +456,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey].get("executable"),
         ).get_task()
 
-        # roi_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = roi_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # roi_task = ShellCommandTask(
-        #     name=roi_task.name,
-        #     executable=roi_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=roi_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # roi_task.inputs.sgeThreads = experiment_configuration[configkey].get("threads")
 
         roi_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
@@ -592,7 +507,6 @@ if __name__ == "__main__":
         antsRegistration_task = Nipype1Task(registration)
         antsRegistration_task.qsub_args = f"-l h_rt=01:00:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
 
-        # antsRegistration_task.inputs.num_threads = -1
 
         # Set subject-specific files
         antsRegistration_task.inputs.fixed_image = (
@@ -740,7 +654,6 @@ if __name__ == "__main__":
         antsRegistration_task = Nipype1Task(registration)
 
         antsRegistration_task.qsub_args = f"-l h_rt=02:00:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
-        # antsRegistration_task.inputs.num_threads = -1
         # Set subject-specific files
         antsRegistration_task.inputs.fixed_image = (
             antsRegistration_workflow.lzin.fixed_image
@@ -967,19 +880,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
-        # abc_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = abc_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # abc_task = ShellCommandTask(
-        #     name=abc_task.name,
-        #     executable=abc_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=abc_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # abc_task.inputs.sgeThreads = experiment_configuration[configkey].get("threads")
 
         abc_task.qsub_args = f"-l h_rt=02:00:00 -l mem_free=15G -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
@@ -1041,13 +941,7 @@ if __name__ == "__main__":
         abc_task.inputs.implicitOutputs = abc_workflow.set_implicitOutputs.lzout.out
 
         abc_workflow.add(abc_task)
-        # abc_workflow.add(
-        #     print_input(
-        #         name="print_inputVolumes",
-        #         x=abc_task.inputs.inputVolumes,
-        #         element="inputVolumes",
-        #     )
-        # )
+
         abc_workflow.add(
             get_averaged_volume(
                 name="get_t1_average",
@@ -1136,21 +1030,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
-        # resample_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = resample_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # resample_task = ShellCommandTask(
-        #     name=resample_task.name,
-        #     executable=resample_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=resample_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # resample_task.inputs.sgeThreads = experiment_configuration[configkey].get(
-        #     "threads"
-        # )
 
         resample_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
         # Set task inputs
@@ -1192,21 +1071,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
-        # resample_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = resample_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # resample_task = ShellCommandTask(
-        #     name=resample_task.name,
-        #     executable=resample_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=resample_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # resample_task.inputs.sgeThreads = experiment_configuration[configkey].get(
-        #     "threads"
-        # )
 
         resample_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
@@ -1254,21 +1118,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey]["executable"],
         ).get_task()
 
-        # label_map_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = label_map_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # label_map_task = ShellCommandTask(
-        #     name=label_map_task.name,
-        #     executable=label_map_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=label_map_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # label_map_task.inputs.sgeThreads = experiment_configuration[configkey].get(
-        #     "threads"
-        # )
 
         label_map_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
@@ -1354,21 +1203,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey].get("executable"),
         ).get_task()
 
-        # landmark_initializer_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = landmark_initializer_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # landmark_initializer_task = ShellCommandTask(
-        #     name=landmark_initializer_task.name,
-        #     executable=landmark_initializer_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=landmark_initializer_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # landmark_initializer_task.inputs.sgeThreads = experiment_configuration[
-        #     configkey
-        # ].get("threads")
 
         landmark_initializer_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
@@ -1482,7 +1316,6 @@ if __name__ == "__main__":
         registration.inputs.num_threads = -1
         antsRegistration_task = Nipype1Task(registration)
         antsRegistration_task.qsub_args = f"-l h_rt=02:30:00 -q all.q -l mem_free=15G -pe smp {experiment_configuration[configkey].get('threads')}"
-        # antsRegistration_task.inputs.num_threads = -1
         # Set task inputs
         antsRegistration_task.inputs.fixed_image = (
             antsRegistration_workflow.lzin.fixed_image
@@ -1611,11 +1444,7 @@ if __name__ == "__main__":
         @pydra.mark.task
         def get_fixed_images(fixed_image_T1, fixed_image_T2):
             return [fixed_image_T1, fixed_image_T2]
-            # fixed_images = []
-            # fixed_images.append(fixed_image_T1)
-            # fixed_images.append(fixed_image_T2)
-            # print(f"fixed_images: {fixed_images}")
-            # return fixed_image_T1
+
 
         workflow_name = "antsRegistration_workflow3"
         configkey = "ANTSRegistration3_with_T2"
@@ -1829,20 +1658,6 @@ if __name__ == "__main__":
             executable=experiment_configuration[configkey].get("executable"),
         ).get_task()
 
-        # roi_task.input_spec.fields.append(SGE_THREADS_INPUT_SPEC)
-        # updated_input_spec = roi_task.input_spec
-
-        # # Add an input spec field for the number of SGE Threads to be used
-        # roi_task = ShellCommandTask(
-        #     name=roi_task.name,
-        #     executable=roi_task.inputs.executable,
-        #     input_spec=updated_input_spec,
-        #     output_spec=roi_task.output_spec,
-        # )
-
-        # # Set task inputs
-        # roi_task.inputs.sgeThreads = experiment_configuration[configkey].get("threads")
-
         roi_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
 
         # Set task inputs
@@ -1917,30 +1732,10 @@ if __name__ == "__main__":
 
         applyTransforms = ApplyTransforms()
         applyTransforms._cmd = experiment_configuration[configkey].get("executable")
-        # antsApplyTransforms_task = Nipype1Task(applyTransforms)
 
-        # if environment_configuration["set_threads"]:
-        #     # Set the number of threads to be used by ITK
-        #     applyTransforms.inputs.num_threads = experiment_configuration[
-        #         configkey
-        #     ].get("threads")
-
-        #     # antsApplyTransforms_task = applyTransforms
-        #     # antsApplyTransforms_task.set_default_num_threads(ANTS_MAX_THREADS)
-        #     # antsApplyTransforms_task.inputs.num_threads = ANTS_MAX_THREADS
-        #     # antsApplyTransforms_task = Nipype1Task(antsApplyTransforms_task)
-        #     antsApplyTransforms_task = Nipype1Task(applyTransforms)
-
-        #     antsApplyTransforms_task.inputs.num_threads = experiment_configuration[
-        #         configkey
-        #     ].get("threads")
-        # else:
-        #     # Use the default number of threads (1)
-        #     antsApplyTransforms_task = Nipype1Task(applyTransforms)
         applyTransforms.inputs.num_threads = -1
         antsApplyTransforms_task = Nipype1Task(applyTransforms)
         antsApplyTransforms_task.qsub_args = f"-l h_rt=00:15:00 -q all.q -pe smp {experiment_configuration[configkey].get('threads')}"
-        # antsApplyTransforms_task.inputs.num_threads = -1
         # Set task inputs
         antsApplyTransforms_task.inputs.input_image = (
             antsApplyTransforms_workflow.input_image.lzout.out
@@ -2689,37 +2484,7 @@ if __name__ == "__main__":
                 ("out_without_T2", source_node.processing_node_without_T2.lzout.all_),
             ]
         )
-    # Create graphs representing the connections within the pipeline (first in a .dot file then converted to a pdf and png
-    # def make_graphs(node: pydra.Workflow):
-    #     graph_dir = Path(experiment_configuration["graph_dir"])
-    #     graph_dir.mkdir(parents=True, exist_ok=True)
-    #     node.create_dotfile(
-    #         type="simple",
-    #         export=["pdf", "png"],
-    #         name=graph_dir / Path(f"{node.name}_simple"),
-    #     )
-    #     node.create_dotfile(
-    #         type="nested",
-    #         export=["pdf", "png"],
-    #         name=graph_dir / Path(f"{node.name}_nested"),
-    #     )
-    #     node.create_dotfile(
-    #         type="detailed",
-    #         export=["pdf", "png"],
-    #         name=graph_dir / Path(f"{node.name}_detailed"),
-    #     )
-    #     print(f"Created the {node.name} graph visual")
-    #
-    # #    make_graphs(prejointFusion_node)
-    # #    make_graphs(jointFusion_node)
-    # #    make_graphs(processing_node)
-    #
-    # print(source_node.graph)
-    # print(get_runnable_tasks(source_node.graph))
-    # t0 = time.time()
-    # Run the entire pipeline
-    # with pydra.Submitter(plugin="cf") as sub:
-    #     sub(source_node)
+
 
     with pydra.Submitter(
         "sge",
@@ -2736,10 +2501,6 @@ if __name__ == "__main__":
         max_mem_free=450,
     ) as sub:
         sub(source_node)
-
-    # result = source_node.result()
-    # print(result)
-    # print(f"Total time: {time.time() - t0}")
 
     @pydra.mark.task
     def copy(output_directory, session):
