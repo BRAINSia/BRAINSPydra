@@ -1,2 +1,0 @@
-#!/bin/sh
-/Users/cjohnson30/anaconda3/bin/python -c 'from pydra.engine.helpers import load_and_run; import sys; tasks=["task0", "task1", "task2", "task3", "task4"]; print(tasks[int(sys.argv[1])]) ' ${SGE_TASK_ID}
