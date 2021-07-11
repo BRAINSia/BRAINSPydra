@@ -1,2 +1,0 @@
-#!/bin/sh
-/Users/cjohnson30/anaconda3/bin/python -m profile -s time -c "import sys; from pydra.engine.helpers import load_and_run; task_pkls=[('/Shared/sinapse/pydra-cjohnson/tmp/31da89c9-f25b-4999-bb61-6080510e247e/SGEWorker_scripts/6b3031fa06e841b49c8bceffe0505614/_task.pklz', None, False)]; task_index=int(sys.argv[1])-1;" $SGE_TASK_ID
