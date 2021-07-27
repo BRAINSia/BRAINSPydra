@@ -1,5 +1,12 @@
 # BRAINSPydra
 
+### Using BRAINSPydra
+
+Using BRAINSPydra to run AutoWorkup using the Pydra dataflow engine requires the following steps:
+1) Define config_environment and config_experimental (examples: config_environment_argon.json and config_experimental_argon.json)
+2) Generate an array job of AutoWorkup pipelines to avoid the Pydra overhead of submitting many sessions through the same pipeline script. Further instruction is given in `Generating Pipeline Jobs`.
+3) Submit the array job of pipelines to the Sun Grid Engine. Further instruction is given in `Running the Pipeline`.
+
 ### Generating Pipeline Jobs
 
 #### Parameters
