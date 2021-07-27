@@ -1,6 +1,39 @@
 # BRAINSPydra
 
 ### Generating Pipeline Jobs
+
+#### Parameters
+```
+positional arguments:
+  bids_path             The path to the top level of the bids dataset
+  best_image_table      Path to the tsv file containing information on the best series for each
+                        session
+  data_dictionary_dir   Path the the directory to store the generated input_data_dictionary__.json
+                        files
+  pipeline_script       Path to the python pipeline script to run BAW using pydra
+  experimental_config   Path to the experimental configuration json file defining settings for each of
+                        the BRAINSTools applications
+  environmental_config  Path to the environmental configuration json file defining overall settings
+                        for the system being used
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --output_job_path OUTPUT_JOB_PATH
+                        Output path to the job file that will be run to execute the pipeline on all
+                        the input data dictionary files
+  --max_sessions_per_file MAX_SESSIONS_PER_FILE
+                        The number of sessions to be recorded per json file (-1 for all sessions in
+                        one file)
+  --session_count SESSION_COUNT
+                        The number of sessions from which to have data extracted
+  --original_sessions_list_file ORIGINAL_SESSIONS_LIST_FILE
+                        The path to a list file where each line is a session (sess-#####) processed in
+                        the original BAW predicthd run
+  --bad_sessions_list BAD_SESSIONS_LIST
+                        The path to a list file where each line is a session (sess-####) that should
+                        not be processed
+```
+
 #### Example
 ```
 
@@ -22,7 +55,7 @@ python3.8 extract_input_data.py \
 
 ### Running the Pipeline
 
-### Parameters
+#### Parameters
 ```
 usage: preliminary_pipeline6.py [-h] config_experimental config_environment input_data_dictionary
 
