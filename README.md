@@ -22,6 +22,22 @@ python3.8 extract_input_data.py \
 
 ### Running the Pipeline
 
+### Parameters
+```
+usage: preliminary_pipeline6.py [-h] config_experimental config_environment input_data_dictionary
+
+Move echo numbers in fmap BIDS data to JSON sidecars
+
+positional arguments:
+  config_experimental   Path to the json file for configuring task parameters
+  config_environment    Path to the json file for setting environment config parameters
+  input_data_dictionary
+                        Path to the json file for input data
+
+optional arguments:
+  -h, --help            show this help message and exit
+```
+
 #### Example
 ```
 
