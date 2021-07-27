@@ -52,7 +52,7 @@ psutil==5.8.0
 puremagic==1.10
 py==1.10.0
 pydot==1.4.2
-pydra==0.14.1
+git+git://git@github.com:chasejohnson3/pydra.git#pydra
 -e git+git@github.com:nipype/pydra-nipype1.git@4c0bea186a11ede1beb670cab6c2dcf352acc3de#egg=pydra_nipype1
 Pygments==2.8.1
 PyLD==2.0.3
