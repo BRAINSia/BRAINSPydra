@@ -52,7 +52,7 @@ python3.8 extract_input_data.py \
 ./preliminary_pipeline6.py \
 ./config_experimental_argon.json \
 ./config_environment_argon.json \
---output_job_path pipeline_10.job \
+--output_job_path pipeline_20.job \
 --max_sessions_per_file 10 \
 --original_sessions_list_file ./my_sessions.list \
 --session_count 20
@@ -80,11 +80,11 @@ optional arguments:
 #### Example
 ```
 
-qsub -o /Shared/sinapse/pydra-cjohnson/log_10 \
--e /Shared/sinapse/pydra-cjohnson/error_10 \
+qsub -o /Shared/sinapse/pydra-cjohnson/log_20 \
+-e /Shared/sinapse/pydra-cjohnson/error_20 \
 -M charles-e-johnson@uiowa.edu \
 -pe smp 1 -q HJ -m be \
--t 1-1 pipeline_10.job
+-t 1-2 pipeline_20.job
 
 ```
 
