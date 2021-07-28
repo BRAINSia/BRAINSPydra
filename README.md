@@ -47,17 +47,15 @@ optional arguments:
 
 python3.8 extract_input_data.py \
 /Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE \
-/Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE/phenotype \
-/bids_best_image_table.tsv \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/input_data_dictionaries \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/preliminary_pipeline6.py \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/config_experimental_argon.json \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/config_environment_argon.json \
+/Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE/phenotype/bids_best_image_table.tsv \
+./input_data_dictionaries \
+./preliminary_pipeline6.py \
+./config_experimental_argon.json \
+./config_environment_argon.json \
 --output_job_path pipeline_10.job \
---max_sessions_per_file 150 \
---original_sessions_list_file \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/orig_sessions.list \
---session_count 10
+--max_sessions_per_file 10 \
+--original_sessions_list_file ./my_sessions.list \
+--session_count 20
 
 ```
 
