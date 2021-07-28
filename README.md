@@ -91,4 +91,4 @@ qsub -o /Shared/sinapse/pydra-cjohnson/log_20 \
 ### Other Notes
 
 #### Rerunning the Pipeline
-If all array job entries in pipeline_10.job complete, but not all sessions are fully processed, rerun the pipeline. Before rerunning, run the command `rm *.lock` in the cache_dir given in the `config_experimental` JSON file. Then, run the same command used to run the pipeline, as in `Running the Pipeline/Example`
+If all array job entries in pipeline_20.job complete, but not all sessions are fully processed, rerun the pipeline. Before rerunning, run the command `rm *.lock` in the cache_dir given in the `config_experimental` JSON file. Then, run the same command used to run the pipeline, as in `Running the Pipeline/Example`
