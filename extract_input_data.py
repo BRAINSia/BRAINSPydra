@@ -72,6 +72,8 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
+Path(args.data_dictionary_dir).mkdir(exist_ok=True)
+
 pp = pprint.PrettyPrinter(depth=6)
 
 # Read the tsv file identifying the best t1 image in each session
@@ -108,7 +110,10 @@ saved_sessions_count = 0
 sessions = p.glob(sessions_regex)
 # counter = 1
 for session in sessions:
-    if args.original_sessions_list_file == "" or Path(session).name in sessions_to_record:
+    if (
+        args.original_sessions_list_file == ""
+        or Path(session).name in sessions_to_record
+    ):
         if args.bad_sessions_list == "" or Path(session).name not in bad_sessions:
             session_id = f"{session.parent.name}_{session.name}"
             if (
@@ -118,20 +123,19 @@ for session in sessions:
             # if args.session_count == -1:
             # else:
             # print(f"{counter} / {args.session_count} Reading data from {str(session)}")
-            print(f"{saved_sessions_count+1} / {total_sessions} Reading data from {str(session)}")
-
+            print(
+                f"{saved_sessions_count+1} / {total_sessions} Reading data from {str(session)}"
+            )
 
             inputVolumes = []
             inputVolumeTypes = []
 
-            
             nifty_files_in_anat = list(session.glob("anat/*.nii.gz"))
             # print(f"nfia: {nifty_files_in_anat}")
             nifty_files_not_in_anat = list(session.glob("*.nii.gz"))
             # print(f"nfnia: {nifty_files_not_in_anat}")
             nifty_files = nifty_files_in_anat + nifty_files_not_in_anat
             # print(f"nf: {nifty_files}")
-
 
             for inputVolume in nifty_files:
                 if "BAD" not in inputVolume.name:
@@ -142,8 +146,8 @@ for session in sessions:
                         # print(f"attr_dict: {bids_filename_obj.attribute_dict}")
                         # Put the best T1 image at the beginning of the inputVolumes list and set its landmark file
                         if (
-                            "run" in bids_filename_obj.attribute_dict and 
-                            bids_filename_obj.attribute_dict["run"]
+                            "run" in bids_filename_obj.attribute_dict
+                            and bids_filename_obj.attribute_dict["run"]
                             == best_t1_by_session[session_id]
                         ):
                             if "T1w.nii.gz" in inputVolume.name:
@@ -172,8 +176,10 @@ for session in sessions:
             if "T1" in inputVolumeTypes:
                 first_t1_index = inputVolumeTypes.index("T1")
                 first_t1 = Path(inputVolumes[first_t1_index])
-                if first_t1.with_suffix('').with_suffix('.fcsv').exists():
-                    inputLandmarksEMSP = str(first_t1.with_suffix('').with_suffix('.fcsv'))
+                if first_t1.with_suffix("").with_suffix(".fcsv").exists():
+                    inputLandmarksEMSP = str(
+                        first_t1.with_suffix("").with_suffix(".fcsv")
+                    )
                 else:
                     inputLandmarksEMSP = None
                 print("Adding to saved_sessions")
@@ -214,9 +220,6 @@ for session in sessions:
         else:
             print("in bad sessions")
     # counter += 1
-
-    
-
 
 
 output_file_name = Path(args.data_dictionary_dir) / Path(
