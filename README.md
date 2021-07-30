@@ -47,17 +47,15 @@ optional arguments:
 
 python3.8 extract_input_data.py \
 /Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE \
-/Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE/phenotype \
-/bids_best_image_table.tsv \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/input_data_dictionaries \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/preliminary_pipeline6.py \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/config_experimental_argon.json \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/config_environment_argon.json \
---output_job_path pipeline_10.job \
---max_sessions_per_file 150 \
---original_sessions_list_file \
-/Shared/sinapse/pydra-cjohnson/BRAINSPydra/orig_sessions.list \
---session_count 10
+/Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE/phenotype/bids_best_image_table.tsv \
+$(pwd)/input_data_dictionaries \
+$(pwd)/preliminary_pipeline6.py \
+$(pwd)/config_experimental_argon.json \
+$(pwd)/config_environment_argon.json \
+--output_job_path pipeline_20.job \
+--max_sessions_per_file 10 \
+--original_sessions_list_file ./my_sessions.list \
+--session_count 20
 
 ```
 
@@ -82,15 +80,11 @@ optional arguments:
 #### Example
 ```
 
-qsub -o /Shared/sinapse/pydra-cjohnson/log_10 \
--e /Shared/sinapse/pydra-cjohnson/error_10 \
--M charles-e-johnson@uiowa.edu \
--pe smp 1 -q HJ -m be \
--t 1-1 pipeline_10.job
+qsub -pe smp 1 -q HJ -t 1-2 pipeline_20.job
 
 ```
 
 ### Other Notes
 
 #### Rerunning the Pipeline
-If all array job entries in pipeline_10.job complete, but not all sessions are fully processed, rerun the pipeline. Before rerunning, run the command `rm *.lock` in the cache_dir given in the `config_experimental` JSON file. Then, run the same command used to run the pipeline, as in `Running the Pipeline/Example`
+If all array job entries in pipeline_20.job complete, but not all sessions are fully processed, rerun the pipeline. Before rerunning, run the command `rm *.lock` in the cache_dir given in the `config_experimental` JSON file. Then, run the same command used to run the pipeline, as in `Running the Pipeline/Example`
