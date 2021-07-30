@@ -48,10 +48,10 @@ optional arguments:
 python3.8 extract_input_data.py \
 /Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE \
 /Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE/phenotype/bids_best_image_table.tsv \
-./input_data_dictionaries \
-./preliminary_pipeline6.py \
-./config_experimental_argon.json \
-./config_environment_argon.json \
+$(pwd)/input_data_dictionaries \
+$(pwd)/preliminary_pipeline6.py \
+$(pwd)/config_experimental_argon.json \
+$(pwd)/config_environment_argon.json \
 --output_job_path pipeline_20.job \
 --max_sessions_per_file 10 \
 --original_sessions_list_file ./my_sessions.list \
@@ -80,11 +80,7 @@ optional arguments:
 #### Example
 ```
 
-qsub -o /Shared/sinapse/pydra-cjohnson/log_20 \
--e /Shared/sinapse/pydra-cjohnson/error_20 \
--M charles-e-johnson@uiowa.edu \
--pe smp 1 -q HJ -m be \
--t 1-2 pipeline_20.job
+qsub -pe smp 1 -q HJ -t 1-2 pipeline_20.job
 
 ```
 
