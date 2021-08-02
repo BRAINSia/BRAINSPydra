@@ -46,8 +46,8 @@ optional arguments:
 ```
 
 python3.8 extract_input_data.py \
-/Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE \
-/Shared/sinapse/CHASE_ALEX_TEMPCOPY/PREDICTHD_BIDS_DEFACE/phenotype/bids_best_image_table.tsv \
+/Shared/johnsonhj/ReferenceData/PREDICTHD_BIDS_DEFACE \
+/Shared/johnsonhj/ReferenceData/PREDICTHD_BIDS_DEFACE/phenotype/bids_best_image_table.tsv \
 $(pwd)/input_data_dictionaries \
 $(pwd)/preliminary_pipeline6.py \
 $(pwd)/config_experimental_argon.json \
